@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Image Compressor - DUFL</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    #file-input {
+      display: none;
+    }
+    .file-input-label {
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+    }
+    .file-input-label:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+
+<body class="service-details-page">
+  <main class="main">
+    <div class="page-title dark-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0"><a href="https://tools.dufl.web.id"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="https://www.dufl.web.id">Premium Stuff</a></li>
+            <li><a href="https://tools.dufl.web.id">Free Stuff</a></li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <section id="service-details" class="service-details section">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4">
+          <div class="col-lg-10">
+            <div class="content">
+              <h3>Image Compressor</h3>
+              <p>
+               A Simple, Fast and efficient solution for shrinking the size of your images.
+              </p>
+              <div class="container mx-auto">
+                  <section class="flex flex-col items-center justify-center">
+                      <input type="file" id="file-input" accept="image/*" class="sr-only">
+                      <label for="file-input" class="file-input-label btn btn-primary">
+                          Choose Image
+                      </label>
+                      <div class="w-full max-w-xl">
+                          <div class="flex items-center justify-between">
+                              <label for="quality-slider" class="text-lg font-medium text-gray-300">Compression Quality</label>
+                              <span id="quality-value" class="text-xl font-bold text-green-400">80%</span>
+                          </div>
+                          <input type="range" id="quality-slider" min="0" max="100" value="80" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                      </div>
+                  </section>
+                  <section id="image-comparison" class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                      <div class="text-center">
+                          <b class="">Original Image</b>
+                          <div class="relative w-full overflow-hidden rounded-lg border-2 border-gray-700 shadow-xl aspect-video">
+                              <img id="original-image" src="https://placehold.co/600x400/1e293b/a1a1aa?text=Select+an+Image" alt="Original Image" class="w-full h-full object-contain transition-all duration-300">
+                          </div>
+                      </div>
+                      <div class="text-center">
+                          <b class="">Compressed Image</b>
+                          <div class="relative w-full overflow-hidden rounded-lg border-2 border-gray-700 shadow-xl aspect-video">
+                              <img id="compressed-image" src="https://placehold.co/600x400/1e293b/a1a1aa?text=Compressed+Image" alt="Compressed Image" class="w-full h-full object-contain transition-all duration-300">
+                          </div>
+                          <div id="size-info" class="text-lg font-semibold mt-4 space-y-2">
+                              <p id="original-size">Original Size: -</p>
+                              <p id="compressed-size">Compressed Size: -</p>
+                              <p id="savings">Savings: -</p>
+                          </div>
+                          <button id="download-btn" class="btn btn-primary" disabled>
+                              Download Image
+                          </button>
+                      </div>
+                  </section>
+              </div>
+              <script>
+                  const fileInput = document.getElementById('file-input');
+                  const qualitySlider = document.getElementById('quality-slider');
+                  const qualityValue = document.getElementById('quality-value');
+                  const originalImageEl = document.getElementById('original-image');
+                  const compressedImageEl = document.getElementById('compressed-image');
+                  const originalSizeEl = document.getElementById('original-size');
+                  const compressedSizeEl = document.getElementById('compressed-size');
+                  const savingsEl = document.getElementById('savings');
+                  const downloadBtn = document.getElementById('download-btn');
+
+                  let originalImage = null;
+                  let originalSize = 0;
+                  const formatBytes = (bytes) => {
+                      if (bytes === 0) return '0 Bytes';
+                      const k = 1024;
+                      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+                      const i = Math.floor(Math.log(bytes) / Math.log(k));
+                      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+                  };
+                  const compressImage = () => {
+                      if (!originalImage) return;
+
+                      const quality = qualitySlider.value / 100;
+                      const imageType = 'image/jpeg';
+                      const canvas = document.createElement('canvas');
+                      const ctx = canvas.getContext('2d');
+
+                      canvas.width = originalImage.naturalWidth;
+                      canvas.height = originalImage.naturalHeight;
+
+                      ctx.drawImage(originalImage, 0, 0);
+                      const compressedDataUrl = canvas.toDataURL(imageType, quality);
+                      
+                      // Set the compressed image source
+                      compressedImageEl.src = compressedDataUrl;
+                      downloadBtn.disabled = false;
+
+                      // Calculate compressed size from the data URL
+                      const compressedSize = compressedDataUrl.length * 0.75; // Approximation for base64
+
+                      // Calculate savings
+                      const savings = originalSize - compressedSize;
+                      const savingsPercentage = (savings / originalSize) * 100;
+
+                      // Update the size information on the page
+                      originalSizeEl.textContent = `Original Size: ${formatBytes(originalSize)}`;
+                      compressedSizeEl.textContent = `Compressed Size: ${formatBytes(compressedSize)}`;
+                      savingsEl.textContent = `Savings: ${formatBytes(savings)} (${savingsPercentage.toFixed(2)}%)`;
+                  };
+
+                  // Event listener for the file input change
+                  fileInput.addEventListener('change', (e) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                          // Read the file as a data URL
+                          const reader = new FileReader();
+                          reader.onload = (event) => {
+                              const imageDataUrl = event.target.result;
+
+                              // Create a new Image object to get dimensions and perform compression later
+                              originalImage = new Image();
+                              originalImage.onload = () => {
+                                  // Display the original image
+                                  originalImageEl.src = imageDataUrl;
+                                  originalImageEl.style.display = 'block';
+
+                                  // Calculate original size
+                                  originalSize = imageDataUrl.length * 0.75;
+
+                                  // Start compression with the default quality
+                                  compressImage();
+                              };
+                              originalImage.src = imageDataUrl;
+                          };
+                          reader.readAsDataURL(file);
+                      }
+                  });
+
+                  // Event listener for the slider input
+                  qualitySlider.addEventListener('input', (e) => {
+                      // Update the displayed percentage value
+                      qualityValue.textContent = `${e.target.value}%`;
+                      
+                      // Re-compress the image with the new quality
+                      compressImage();
+                  });
+
+                  // Event listener for the download button
+                  downloadBtn.addEventListener('click', () => {
+                      // Get the compressed image data URL
+                      const compressedDataUrl = compressedImageEl.src;
+                      // Create a temporary link element
+                      const link = document.createElement('a');
+                      link.href = compressedDataUrl;
+                      link.download = `compressed_image_${qualitySlider.value}.jpg`;
+                      
+                      // Programmatically click the link to trigger the download
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                  });
+              </script>
+            </div>
+            
+          </div>
+
+          <div class="col-lg-2">
+            <div class="service-info">
+              <h4>Service Information</h4>
+              <div class="info-item">
+                <i class="bi bi-person-check"></i>
+                <h5>Project By</h5>
+                <p>Widi Firmansyah</p>
+              </div>
+              <div class="info-item">
+                <div class="service-details-slider swiper init-swiper">
+                  <script type="application/json" class="swiper-config">
+                    {
+                      "loop": true,
+                      "speed": 600,
+                      "autoplay": {
+                        "delay": 5000
+                      },
+                      "slidesPerView": 1,
+                      "pagination": {
+                        "el": ".swiper-pagination",
+                        "type": "bullets",
+                        "clickable": true
+                      }
+                    }
+                  </script>
+                  <div class="swiper-wrapper align-items-center">
+                    <div class="swiper-slide">
+                      <!-- <img src="../assets/img/services/img-comp.png" alt="" class="img-fluid" loading="lazy"> -->
+                    </div>
+                  </div>
+                  <div class="swiper-pagination"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative">
+
+    <div class="container">
+      <div class="copyright text-center ">
+        <a href="https://tools.dufl.web.id"><p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights Reserved</span></p></a>
+      </div>
+      <div class="credits">
+        Designed by <a href="https://widifirmaan.web.id/">Widi Firmans</a>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/vendor/typed.js/typed.umd.js"></script>
+  <script src="../assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="../assets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="../assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="../assets/js/services.js"></script>
+
+</body>
+
+</html>

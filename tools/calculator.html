@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Scientific Calculator - DUFL</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+  </style>
+</head>
+
+<body class="service-details-page">
+  <main class="main">
+    <div class="page-title dark-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0"><a href="https://tools.dufl.web.id"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="https://www.dufl.web.id">Premium Stuff</a></li>
+            <li><a href="https://tools.dufl.web.id">Free Stuff</a></li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <section id="service-details" class="service-details section">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4">
+          <div class="col-lg-10">
+            <div class="content">
+              <h3>Scientific Calculator</h3>
+              <p>
+                A Simple, Fast online calculator powered by javascript.
+              </p>
+              <div class="container mx-auto">
+                  <div class="row pb-2">
+                        <div class="col">
+                            <textarea id="history" rows="4" style="text-align:right " readonly
+                                class="form-control "></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row pb-2">
+                                <div class="col">
+                                    <input type="text" readonly class="form-control "
+                                        style="text-align: right" id="expression1">
+                                </div>
+                            </div>
+                            <div class="row pb-2">
+                                <div class="col" id="content-desktop">
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="Ans"
+                                                class="form-control" onclick="answer()" />
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="sin"
+                                                class="form-control" onclick="sinfn()" />
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="cos"
+                                                class="form-control" onclick="cosfn()" />
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="tan"
+                                                class="form-control" onclick="tanfn()" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="button" value="EXP"
+                                                class="form-control" onclick="exp()" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col" id="content-desktop">
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="%"
+                                                class="form-control"
+                                                onclick="percentage()" />
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="π"
+                                                class="form-control" onclick="pi()" />
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="e"
+                                                class="form-control" onclick="e()" />
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="ln"
+                                                class="form-control" onclick="lnfn()" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="button" value="log"
+                                                class="form-control" onclick="logfn()" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col" id="content-desktop">
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="!"
+                                                class="form-control" onclick="factorial()" />
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="√"
+                                                class="form-control" onclick="squareroot()" />
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="x&#8319"
+                                                class="form-control" onclick="power()" />
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="x&#178"
+                                                class="form-control" onclick="square()" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="button" value="|x|"
+                                                class="form-control" onclick="abs()" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div id="content-desktop">
+                                        <div class="row pb-2">
+                                            <div class="col">
+                                                <input type="button" value="("
+                                                    class="form-control"
+                                                    onclick="display1('(')" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="7" class="form-control"
+                                                onclick="display1('7')" />
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="4" class="form-control"
+                                                onclick="display1('4')" />
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="1" class="form-control"
+                                                onclick="display1('1')" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="button" value="0" class="form-control"
+                                                onclick="display1('0')" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div id="content-desktop">
+                                        <div class="row pb-2">
+                                            <div class="col">
+                                                <input type="button" value=")"
+                                                    class="form-control"
+                                                    onclick="display1(')')" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="8" class="form-control"
+                                                onclick="display1('8')" />
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="5" class="form-control"
+                                                onclick="display1('5')" />
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="2" class="form-control"
+                                                onclick="display1('2')" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="button" value="."
+                                                class="form-control" onclick="display1('.')" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="C"
+                                                class="form-control" onclick="allclr()" />
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="9" class="form-control"
+                                                onclick="display1('9')" />
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="6" class="form-control"
+                                                onclick="display1('6')" />
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="3" class="form-control"
+                                                onclick="display1('3')" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="button" value="="
+                                                class="form-control"
+                                                onclick="runtwofunction()" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="⌫"
+                                                class="form-control UpZIS" onclick="back()" />
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="÷"
+                                                class="form-control mF5fo"
+                                                onclick="display1('/')" />
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="×"
+                                                class="form-control mF5fo"
+                                                onclick="multiply()" />
+                                        </div>
+                                    </div>
+                                    <div class="row pb-2">
+                                        <div class="col">
+                                            <input type="button" value="-"
+                                                class="form-control mF5fo"
+                                                onclick="display1('-')" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="button" value="+"
+                                                class="form-control mF5fo"
+                                                onclick="display1('+')" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              </div>
+              
+            </div>
+            
+          </div>
+
+          <div class="col-lg-2">
+            <div class="service-info">
+              <h4>Service Information</h4>
+              <div class="info-item">
+                <i class="bi bi-person-check"></i>
+                <h5>Project By</h5>
+                <p>Widi Firmansyah</p>
+              </div>
+              <div class="info-item">
+                <div class="service-details-slider swiper init-swiper">
+                  <script type="application/json" class="swiper-config">
+                    {
+                      "loop": true,
+                      "speed": 600,
+                      "autoplay": {
+                        "delay": 5000
+                      },
+                      "slidesPerView": 1,
+                      "pagination": {
+                        "el": ".swiper-pagination",
+                        "type": "bullets",
+                        "clickable": true
+                      }
+                    }
+                  </script>
+                  <div class="swiper-wrapper align-items-center">
+                    <div class="swiper-slide">
+                      <!-- <img src="../assets/img/services/img-comp.png" alt="" class="img-fluid" loading="lazy"> -->
+                    </div>
+                  </div>
+                  <div class="swiper-pagination"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative">
+
+    <div class="container">
+      <div class="copyright text-center ">
+        <a href="https://tools.dufl.web.id"><p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights Reserved</span></p></a>
+      </div>
+      <div class="credits">
+        Designed by <a href="https://widifirmaan.web.id/">Widi Firmans</a>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/vendor/typed.js/typed.umd.js"></script>
+  <script src="../assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="../assets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="../assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="../assets/js/services.js"></script>
+  <script src="../assets/js/calculator.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Image Compressor - DUFL</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    #file-input {
+      display: none;
+    }
+    .file-input-label {
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+    }
+    .file-input-label:hover {
+      transform: translateY(-2px);
+    }
+    .tire {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+    }
+    .tire-inner {
+      width: 100px;
+      height: 100px;
+      background-image: url(../assets/img/rims.png);
+      background-color: black;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) translateZ(10px);
+      overflow: hidden; /* Hide spokes that stick out */
+    }
+    .tire-outer {
+            background-image: url(../assets/img/tire.png);
+          /* background-position: center; */
+      background-size: cover;
+      background-position: center;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+          left: 50%;
+            transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.5); /* Black with 50% opacity */
+      background-blend-mode: darken;
+        }
+        .tire.spin {
+            animation: spin-3d 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+        }
+        @keyframes spin-3d {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+        .result-container.pop {
+            animation: pop-in 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+        }
+        @keyframes pop-in {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+  </style>
+</head>
+
+<body class="service-details-page">
+  <main class="main">
+    <div class="page-title dark-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0"><a href="https://tools.dufl.web.id"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="https://www.dufl.web.id">Premium Stuff</a></li>
+            <li><a href="https://tools.dufl.web.id">Free Stuff</a></li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <section id="service-details" class="service-details section">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4">
+          <div class="col-lg-10">
+            <div class="content">
+              <h3>Tire Size comparation</h3>
+              <p>A Simple, Fast and efficient solution for shrinking the size of your images.</p>
+              <div class="container mx-auto">
+                <div class="flex flex-col md:flex-row items-start justify-center">
+                  <div class="space-y-4 w-full">
+                    <h2 class="">Original Tire</h2>
+                    <div class="">
+                      <label for="width1" class="">Tire Width (mm)</label>
+                      <input type="number" id="width1" placeholder="205" class="form-control">
+                    </div>
+                    <div class="">
+                      <label for="aspectRatio1" class="">Aspect Ratio (%)</label>
+                      <input type="number" id="aspectRatio1" placeholder="55" class="form-control">
+                    </div>
+                    <div class="">
+                      <label for="diameter1" class="">Wheel Diameter (inches)</label>
+                      <input type="number" id="diameter1" placeholder="16" class="form-control">
+                    </div>
+                  </div>
+                  <div class="space-y-4 w-full">
+                    <h2 class="">New Tire</h2>
+                    <div class="">
+                      <label for="width2" class="">Tire Width (mm)</label>
+                      <input type="number" id="width2" placeholder="225" class="form-control">
+                    </div>
+                    <div class="">
+                      <label for="aspectRatio2" class="">Aspect Ratio (%)</label>
+                      <input type="number" id="aspectRatio2" placeholder="50" class="form-control">
+                    </div>
+                    <div class="">
+                      <label for="diameter2" class="">Wheel Diameter (inches)</label>
+                      <input type="number" id="diameter2" placeholder="17" class="form-control">
+                    </div>
+                  </div>
+                </div>
+
+                <button id="calculateBtn" class="btn btn-primary">
+                  Calculate Comparison
+                </button>
+
+                <div id="results" class="result-container mt-8 hidden text-center">
+                  <h3 class="">Comparison Results</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+                          <!-- Original Tire Results -->
+                    <div>
+                      <span class="block text-sm font-bold text-gray-400">Original Tire</span>
+                      <span class="block text-sm text-gray-400">Total Diameter:</span>
+                      <span id="diameter1Result" class="text-lg font-bold text-green-400"></span>
+                      <span class="block text-sm text-gray-400">Circumference:</span>
+                      <span id="circumference1Result" class="text-lg font-bold text-green-400"></span>
+                    </div>
+                          <!-- New Tire Results -->
+                    <div>
+                      <span class="block text-sm font-bold text-gray-400">New Tire</span>
+                      <span class="block text-sm text-gray-400">Total Diameter:</span>
+                      <span id="diameter2Result" class="text-lg font-bold text-green-400"></span>
+                      <span class="block text-sm text-gray-400">Circumference:</span>
+                      <span id="circumference2Result" class="text-lg font-bold text-green-400"></span>
+                    </div>
+                          <!-- Differences -->
+                    <div>
+                      <span class="block text-sm font-bold text-gray-400">Difference</span>
+                      <span class="block text-sm text-gray-400">Diameter Change:</span>
+                      <span id="diameterDiffResult" class="text-lg font-bold text-yellow-400"></span>
+                      <span class="block text-sm text-gray-400">Circumference Change:</span>
+                      <span id="circumferenceDiffResult" class="text-lg font-bold text-yellow-400"></span>
+                    </div>
+                  </div>
+                      
+                  <div class="flex flex-row items-center justify-center pt-8 gap-10">
+                    <div class="flex flex-col items-center">
+                      <div id="tireContainer1" class="tire-container">
+                        <div id="tireVisual1" class="tire">
+                          <div class="tire-outer"></div>
+                            <div class="tire-inner">
+                              <div class="hub"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <span class="text-gray-400 mt-2">Original</span>
+                       </div>
+
+                          <!-- New Tire Visual -->
+                        <div class="flex flex-col items-center">
+                          <div id="tireContainer2" class="tire-container">
+                            <div id="tireVisual2" class="tire">
+                              <div class="tire-outer"></div>
+                              <div class="tire-inner">
+                                <div class="hub"></div>
+                              </div>
+                            </div>
+                          </div>
+                          <span class="text-gray-400 mt-2">New</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="messageBox" class="hidden mt-4 p-4 text-center rounded-lg bg-red-800 text-red-200 font-semibold"></div>
+                  </div>
+                  <script>
+                      document.addEventListener('DOMContentLoaded', () => {
+                          const width1Input = document.getElementById('width1');
+                          const aspectRatio1Input = document.getElementById('aspectRatio1');
+                          const diameter1Input = document.getElementById('diameter1');
+                          const width2Input = document.getElementById('width2');
+                          const aspectRatio2Input = document.getElementById('aspectRatio2');
+                          const diameter2Input = document.getElementById('diameter2');
+                          const calculateBtn = document.getElementById('calculateBtn');
+                          const resultsDiv = document.getElementById('results');
+                          const diameter1ResultSpan = document.getElementById('diameter1Result');
+                          const circumference1ResultSpan = document.getElementById('circumference1Result');
+                          const diameter2ResultSpan = document.getElementById('diameter2Result');
+                          const circumference2ResultSpan = document.getElementById('circumference2Result');
+                          const diameterDiffResultSpan = document.getElementById('diameterDiffResult');
+                          const circumferenceDiffResultSpan = document.getElementById('circumferenceDiffResult');
+                          const messageBox = document.getElementById('messageBox');
+                          const tireVisual1 = document.getElementById('tireVisual1');
+                          const tireVisual2 = document.getElementById('tireVisual2');
+                          const tireContainer1 = document.getElementById('tireContainer1');
+                          const tireContainer2 = document.getElementById('tireContainer2');
+
+                          const BASE_DIAMETER = 25; // A reasonable base diameter in inches for scaling visuals
+                          const BASE_PIXEL_SIZE = 150; // The base pixel size for the visual
+
+                          function calculateTireMetrics(width, aspectRatio, diameter) {
+                              if (isNaN(width) || isNaN(aspectRatio) || isNaN(diameter) || width <= 0 || aspectRatio <= 0 || diameter <= 0) {
+                                  return null;
+                              }
+                              const sidewallHeight = width * (aspectRatio / 100);
+                              const totalDiameterMM = (sidewallHeight * 2) + (diameter * 25.4);
+                              const totalDiameterInches = totalDiameterMM / 25.4;
+                              const circumferenceInches = totalDiameterInches * Math.PI;
+                              return { diameter: totalDiameterInches, circumference: circumferenceInches };
+                          }
+
+                          function updateTireVisual(visualContainer, visualElement, calculatedDiameter) {
+                              const scaleFactor = calculatedDiameter / BASE_DIAMETER;
+                              const newSize = BASE_PIXEL_SIZE * scaleFactor;
+                              visualContainer.style.width = `${newSize}px`;
+                              visualContainer.style.height = `${newSize}px`;
+                              visualElement.classList.remove('spin');
+                              void visualElement.offsetWidth; // Trigger reflow
+                              visualElement.classList.add('spin');
+                          }
+
+                          calculateBtn.addEventListener('click', () => {
+                              // Clear previous results and messages
+                              resultsDiv.classList.add('hidden');
+                              messageBox.classList.add('hidden');
+                              messageBox.textContent = '';
+                              
+                              // Fetch values from inputs
+                              const width1 = parseFloat(width1Input.value);
+                              const aspectRatio1 = parseFloat(aspectRatio1Input.value);
+                              const diameter1 = parseFloat(diameter1Input.value);
+                              const width2 = parseFloat(width2Input.value);
+                              const aspectRatio2 = parseFloat(aspectRatio2Input.value);
+                              const diameter2 = parseFloat(diameter2Input.value);
+
+                              const originalMetrics = calculateTireMetrics(width1, aspectRatio1, diameter1);
+                              const newMetrics = calculateTireMetrics(width2, aspectRatio2, diameter2);
+
+                              if (!originalMetrics || !newMetrics) {
+                                  messageBox.textContent = 'Please enter valid positive numbers for all fields.';
+                                  messageBox.classList.remove('hidden');
+                                  return;
+                              }
+
+                              // Display original tire results
+                              diameter1ResultSpan.textContent = `${originalMetrics.diameter.toFixed(2)} inches`;
+                              circumference1ResultSpan.textContent = `${originalMetrics.circumference.toFixed(2)} inches`;
+
+                              // Display new tire results
+                              diameter2ResultSpan.textContent = `${newMetrics.diameter.toFixed(2)} inches`;
+                              circumference2ResultSpan.textContent = `${newMetrics.circumference.toFixed(2)} inches`;
+
+                              // Calculate and display differences
+                              const diameterDiff = ((newMetrics.diameter - originalMetrics.diameter) / originalMetrics.diameter) * 100;
+                              const circumferenceDiff = ((newMetrics.circumference - originalMetrics.circumference) / originalMetrics.circumference) * 100;
+                              
+                              diameterDiffResultSpan.textContent = `${diameterDiff.toFixed(2)}%`;
+                              circumferenceDiffResultSpan.textContent = `${circumferenceDiff.toFixed(2)}%`;
+
+                              // Set color for difference
+                              diameterDiffResultSpan.style.color = diameterDiff > 0 ? '#86efac' : '#f87171'; // green or red
+                              circumferenceDiffResultSpan.style.color = circumferenceDiff > 0 ? '#86efac' : '#f87171';
+
+                              // Update tire visuals based on calculated diameters
+                              updateTireVisual(tireContainer1, tireVisual1, originalMetrics.diameter);
+                              updateTireVisual(tireContainer2, tireVisual2, newMetrics.diameter);
+
+                              // Show and animate results
+                              resultsDiv.classList.remove('hidden');
+                              setTimeout(() => {
+                                resultsDiv.classList.add('pop');
+                              }, 10); 
+                          });
+                      });
+                  </script>
+            </div>
+          </div>
+
+          <div class="col-lg-2">
+            <div class="service-info">
+              <h4>Service Information</h4>
+              <div class="info-item">
+                <i class="bi bi-person-check"></i>
+                <h5>Project By</h5>
+                <p>Widi Firmansyah</p>
+              </div>
+              <div class="info-item">
+                <div class="service-details-slider swiper init-swiper">
+                  <script type="application/json" class="swiper-config">
+                    {
+                      "loop": true,
+                      "speed": 600,
+                      "autoplay": {
+                        "delay": 5000
+                      },
+                      "slidesPerView": 1,
+                      "pagination": {
+                        "el": ".swiper-pagination",
+                        "type": "bullets",
+                        "clickable": true
+                      }
+                    }
+                  </script>
+                  <div class="swiper-wrapper align-items-center">
+                    <div class="swiper-slide">
+                      <!-- <img src="../assets/img/services/img-comp.png" alt="" class="img-fluid" loading="lazy"> -->
+                    </div>
+                  </div>
+                  <div class="swiper-pagination"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative">
+
+    <div class="container">
+      <div class="copyright text-center ">
+        <a href="https://tools.dufl.web.id"><p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights Reserved</span></p></a>
+      </div>
+      <div class="credits">
+        Designed by <a href="https://widifirmaan.web.id/">Widi Firmans</a>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/vendor/typed.js/typed.umd.js"></script>
+  <script src="../assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="../assets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="../assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="../assets/js/services.js"></script>
+
+</body>
+
+</html>
