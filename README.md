@@ -1,5 +1,7 @@
 # DUFL Tools - Lightweight JavaScript AIO Tools
 
+![DUFL Tools Preview](assets/img/preview.png)
+
 A collection of free, lightweight online tools built with HTML, CSS, JavaScript, and PHP. This project is designed to be highly efficient, running primarily on client-side technology to minimize server load, wrapped in an optimized Docker container.
 
 ## 🚀 Features
