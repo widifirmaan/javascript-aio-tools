@@ -11,7 +11,9 @@
   <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
@@ -28,11 +30,11 @@
   <main class="main">
     <div class="page-title dark-background">
       <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0"><a href="https://tools.dufl.web.id"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
+        <h1 class="mb-2 mb-lg-0"><a href="/"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="https://www.dufl.web.id">Premium Stuff</a></li>
-            <li><a href="https://tools.dufl.web.id">Free Stuff</a></li>
+            <li><a href="/">Free Stuff</a></li>
           </ol>
         </nav>
       </div>
@@ -44,7 +46,7 @@
             <div class="content">
               <h3>Image Converter</h3>
               <p>
-               A Simple, Fast and efficient solution for change image format.
+                A Simple, Fast and efficient solution for change image format.
               </p>
               <div class="container">
                 <div class="input-section">
@@ -52,41 +54,42 @@
                   <input type="file" id="image-upload" class="form-control" accept="image/*">
                 </div>
                 <div id="preview-container" class="pt-2 pb-2">
-                  <img id="image-preview" src="#" alt="Image preview" style="max-width: 100%; height: auto; display: none;" class="img img-fluid">
+                  <img id="image-preview" src="#" alt="Image preview"
+                    style="max-width: 100%; height: auto; display: none;" class="img img-fluid">
                 </div>
                 <div class="output-section pb-2">
                   <label for="format-select">Choose output format:</label>
                   <select id="format-select" class="form-control">
                     <option value="jpeg">JPG</option>
-                      <option value="png">PNG</option>
-                      <option value="webp">WEBP</option>
-                    </select>
+                    <option value="png">PNG</option>
+                    <option value="webp">WEBP</option>
+                  </select>
                 </div>
                 <button id="convert-btn" class="button btn btn-primary pb-2">Convert</button>
                 <div id="download-link-container"></div>
               </div>
               <script>
-               document.getElementById('image-upload').addEventListener('change', (event) => {
+                document.getElementById('image-upload').addEventListener('change', (event) => {
                   const file = event.target.files.item(0);
                   const preview = document.getElementById('image-preview');
                   const previewContainer = document.getElementById('preview-container');
 
                   if (file) {
-                      const reader = new FileReader();
-                      reader.onload = (e) => {
-                          preview.src = e.target.result;
-                          preview.style.display = 'block';
-                          previewContainer.style.display = 'block';
-                      };
-                      reader.readAsDataURL(file);
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                      preview.src = e.target.result;
+                      preview.style.display = 'block';
+                      previewContainer.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
                   } else {
-                      preview.src = '#';
-                      preview.style.display = 'none';
-                      previewContainer.style.display = 'none';
+                    preview.src = '#';
+                    preview.style.display = 'none';
+                    previewContainer.style.display = 'none';
                   }
-              });
+                });
 
-              document.getElementById('convert-btn').addEventListener('click', () => {
+                document.getElementById('convert-btn').addEventListener('click', () => {
                   const fileInput = document.getElementById('image-upload');
                   const formatSelect = document.getElementById('format-select');
                   const downloadContainer = document.getElementById('download-link-container');
@@ -94,64 +97,64 @@
 
                   const file = fileInput.files.item(0);
                   if (!file) {
-                      alert('Please select an image first.');
-                      return;
+                    alert('Please select an image first.');
+                    return;
                   }
 
                   const reader = new FileReader();
                   reader.onload = (event) => {
-                      const image = new Image();
-                      image.src = event.target.result;
+                    const image = new Image();
+                    image.src = event.target.result;
 
-                      image.onload = () => {
-                          const canvas = document.createElement('canvas');
-                          canvas.width = image.width;
-                          canvas.height = image.height;
-                          const ctx = canvas.getContext('2d');
-                          ctx.drawImage(image, 0, 0);
+                    image.onload = () => {
+                      const canvas = document.createElement('canvas');
+                      canvas.width = image.width;
+                      canvas.height = image.height;
+                      const ctx = canvas.getContext('2d');
+                      ctx.drawImage(image, 0, 0);
 
-                          const format = formatSelect.value;
-                          let mimeType;
-                          let extension;
+                      const format = formatSelect.value;
+                      let mimeType;
+                      let extension;
 
-                          switch (format) {
-                              case 'jpeg':
-                                  mimeType = 'image/jpeg';
-                                  extension = 'jpg';
-                                  break;
-                              case 'png':
-                                  mimeType = 'image/png';
-                                  extension = 'png';
-                                  break;
-                              case 'webp':
-                                  mimeType = 'image/webp';
-                                  extension = 'webp';
-                                  break;
-                              default:
-                                  alert('Invalid format selected.');
-                                  return;
-                          }
+                      switch (format) {
+                        case 'jpeg':
+                          mimeType = 'image/jpeg';
+                          extension = 'jpg';
+                          break;
+                        case 'png':
+                          mimeType = 'image/png';
+                          extension = 'png';
+                          break;
+                        case 'webp':
+                          mimeType = 'image/webp';
+                          extension = 'webp';
+                          break;
+                        default:
+                          alert('Invalid format selected.');
+                          return;
+                      }
 
-                          canvas.toBlob((blob) => {
-                              const url = URL.createObjectURL(blob);
-                              const a = document.createElement('a');
-                              a.href = url;
-                              a.download = `converted-image.${extension}`;
-                              a.textContent = 'Download Converted Image';
-                              a.id = 'download-link';
-                              a.class = 'button btn btn-primary';
+                      canvas.toBlob((blob) => {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `converted-image.${extension}`;
+                        a.textContent = 'Download Converted Image';
+                        a.id = 'download-link';
+                        a.class = 'button btn btn-primary';
 
-                              downloadContainer.innerHTML = '';
-                              downloadContainer.appendChild(a);
-                          }, mimeType);
-                      };
+                        downloadContainer.innerHTML = '';
+                        downloadContainer.appendChild(a);
+                      }, mimeType);
+                    };
                   };
 
                   reader.readAsDataURL(file);
-              });
+                });
               </script>
             </div>
-            
+
           </div>
 
           <div class="col-lg-2">
@@ -200,7 +203,9 @@
 
     <div class="container">
       <div class="copyright text-center ">
-        <a href="https://tools.dufl.web.id"><p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights Reserved</span></p></a>
+        <a href="/">
+          <p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights Reserved</span></p>
+        </a>
       </div>
       <div class="credits">
         Designed by <a href="https://widifirmaan.web.id/">Widi Firmans</a>
@@ -210,7 +215,8 @@
   </footer>
 
   <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>

@@ -37,11 +37,11 @@
   <main class="main">
     <div class="page-title dark-background">
       <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0"><a href="https://tools.dufl.web.id"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
+        <h1 class="mb-2 mb-lg-0"><a href="/"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="https://www.dufl.web.id">Premium Stuff</a></li>
-            <li><a href="https://tools.dufl.web.id">Free Stuff</a></li>
+            <li><a href="/">Free Stuff</a></li>
           </ol>
         </nav>
       </div>
@@ -56,66 +56,77 @@
                A Simple, Fast and efficient solution for image Backgroud removal Tools
               </p>
               <div class="container mx-auto">
-                <form action="" method="post" enctype="multipart/form-data">
-                  <div class="form-group">
-                    <label for="imageFile">Choose an Image:</label>
-                    <input type="file" name="imageFile" id="imageFile" required>
-                  </div>
-                  <button type="submit" name="submit">Remove Background</button>
-                </form>
+                <div class="alert alert-info" role="alert">
+                  <i class="bi bi-info-circle"></i> <strong>Lightweight Mode:</strong> Background removal is performed 100% in your browser using AI. No images are uploaded to the server.
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label for="imageInput" class="form-label">Choose an Image:</label>
+                    <input type="file" id="imageInput" accept="image/*" class="form-control">
+                </div>
+                <button id="processBtn" class="btn btn-primary w-100 mb-3">
+                  <i class="bi bi-magic"></i> Remove Background
+                </button>
+                
+                <div id="status" class="alert alert-warning" style="display:none;">
+                    <div class="d-flex align-items-center">
+                        <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                        <span>Processing... Downloading AI models (first time only)...</span>
+                    </div>
+                </div>
+
+                <div id="resultContainer" class="mt-4 text-center" style="display:none;">
+                    <h4>Result:</h4>
+                    <div class="mb-3">
+                        <img id="resultImage" src="" alt="Processed Image" class="img-fluid border rounded" style="max-height: 400px; background-image: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px;">
+                    </div>
+                    <a id="downloadLink" href="#" class="btn btn-success" download="removed_bg.png">
+                      <i class="bi bi-download"></i> Download Image
+                    </a>
+                </div>
               </div>
-              <?php
-                if (isset($_POST['submit']) && isset($_FILES['imageFile'])) {
-                    $uploadDir = 'uploads/';
-                    $outputDir = 'output/';
 
-                    // Create directories if they don't exist
-                    if (!is_dir($uploadDir)) {
-                        mkdir($uploadDir);
+              <script type="module">
+                import { removeBackground } from 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm';
+
+                const fileInput = document.getElementById('imageInput');
+                const processBtn = document.getElementById('processBtn');
+                const statusDiv = document.getElementById('status');
+                const resultContainer = document.getElementById('resultContainer');
+                const resultImage = document.getElementById('resultImage');
+                const downloadLink = document.getElementById('downloadLink');
+
+                processBtn.addEventListener('click', async () => {
+                    const file = fileInput.files[0];
+                    if (!file) {
+                        alert('Please select an image first.');
+                        return;
                     }
-                    if (!is_dir($outputDir)) {
-                        mkdir($outputDir);
+
+                    // Show loading state
+                    processBtn.disabled = true;
+                    statusDiv.style.display = 'block';
+                    resultContainer.style.display = 'none';
+
+                    try {
+                        const blob = await removeBackground(file);
+                        const url = URL.createObjectURL(blob);
+                        
+                        resultImage.src = url;
+                        downloadLink.href = url;
+                        
+                        statusDiv.style.display = 'none';
+                        resultContainer.style.display = 'block';
+                    } catch (error) {
+                        console.error(error);
+                        statusDiv.className = 'alert alert-danger';
+                        statusDiv.innerHTML = 'Error processing image: ' + error.message;
+                    } finally {
+                        processBtn.disabled = false;
                     }
+                });
+              </script>
 
-                    $fileName = basename($_FILES['imageFile']['name']);
-                    $uploadedFile = $uploadDir . $fileName;
-
-                    if (move_uploaded_file($_FILES['imageFile']['tmp_name'], $uploadedFile)) {
-                        try {
-                            // Check if Imagick extension is available
-                            if (!class_exists('Imagick')) {
-                                throw new Exception("The Imagick extension is not installed or enabled.");
-                            }
-
-                            $outputFileName = 'transparent_' . pathinfo($fileName, PATHINFO_FILENAME) . '.png';
-                            $outputFile = $outputDir . $outputFileName;
-                            $command = 'rembg i '.escapeshellarg($uploadedFile).' '.escapeshellarg($outputFile);
-                            echo $command;
-                            shell_exec($command);
-
-                            echo '<div class="success">Background removed successfully!</div>';
-                            echo '<div class="result">';
-                            echo '<h2>Result:</h2>';
-                            echo '<img src="' . htmlspecialchars($outputFile) . '" alt="Image with transparent background">';
-                            echo '</div>';
-
-                            // Clean up the temporary uploaded file
-                            // unlink($uploadedFile);
-
-                        } catch (ImagickException $e) {
-                            echo '<div class="error">ImageMagick Error: ' . $e->getMessage() . '</div>';
-                            // Clean up the temporary uploaded file on error
-                            if (file_exists($uploadedFile)) {
-                                // unlink($uploadedFile);
-                            }
-                        } catch (Exception $e) {
-                            echo '<div class="error">Error: ' . $e->getMessage() . '</div>';
-                        }
-                    } else {
-                        echo '<div class="error">Failed to upload image.</div>';
-                    }
-                }
-                ?>
             </div>
             
           </div>
@@ -166,7 +177,7 @@
 
     <div class="container">
       <div class="copyright text-center ">
-        <a href="https://tools.dufl.web.id"><p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights Reserved</span></p></a>
+        <a href="/"><p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights Reserved</span></p></a>
       </div>
       <div class="credits">
         Designed by <a href="https://widifirmaan.web.id/">Widi Firmans</a>

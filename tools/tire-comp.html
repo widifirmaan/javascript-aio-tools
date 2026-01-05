@@ -11,7 +11,9 @@
   <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
@@ -23,13 +25,16 @@
     #file-input {
       display: none;
     }
+
     .file-input-label {
       cursor: pointer;
       transition: transform 0.2s ease-in-out;
     }
+
     .file-input-label:hover {
       transform: translateY(-2px);
     }
+
     .tire {
       width: 100%;
       height: 100%;
@@ -37,6 +42,7 @@
       transform-style: preserve-3d;
       transition: transform 0.5s ease;
     }
+
     .tire-inner {
       width: 100px;
       height: 100px;
@@ -50,35 +56,54 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) translateZ(10px);
-      overflow: hidden; /* Hide spokes that stick out */
+      overflow: hidden;
+      /* Hide spokes that stick out */
     }
+
     .tire-outer {
-            background-image: url(../assets/img/tire.png);
-          /* background-position: center; */
+      background-image: url(../assets/img/tire.png);
+      /* background-position: center; */
       background-size: cover;
       background-position: center;
       border-radius: 50%;
       position: absolute;
       top: 50%;
-          left: 50%;
-            transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.5); /* Black with 50% opacity */
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.5);
+      /* Black with 50% opacity */
       background-blend-mode: darken;
-        }
-        .tire.spin {
-            animation: spin-3d 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-        }
-        @keyframes spin-3d {
-            from { transform: rotateY(0deg); }
-            to { transform: rotateY(360deg); }
-        }
-        .result-container.pop {
-            animation: pop-in 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-        }
-        @keyframes pop-in {
-            0% { transform: scale(0.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
+    }
+
+    .tire.spin {
+      animation: spin-3d 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+    }
+
+    @keyframes spin-3d {
+      from {
+        transform: rotateY(0deg);
+      }
+
+      to {
+        transform: rotateY(360deg);
+      }
+    }
+
+    .result-container.pop {
+      animation: pop-in 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+    }
+
+    @keyframes pop-in {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
   </style>
 </head>
 
@@ -86,11 +111,11 @@
   <main class="main">
     <div class="page-title dark-background">
       <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0"><a href="https://tools.dufl.web.id"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
+        <h1 class="mb-2 mb-lg-0"><a href="/"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="https://www.dufl.web.id">Premium Stuff</a></li>
-            <li><a href="https://tools.dufl.web.id">Free Stuff</a></li>
+            <li><a href="/">Free Stuff</a></li>
           </ol>
         </nav>
       </div>
@@ -143,7 +168,7 @@
                 <div id="results" class="result-container mt-8 hidden text-center">
                   <h3 class="">Comparison Results</h3>
                   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
-                          <!-- Original Tire Results -->
+                    <!-- Original Tire Results -->
                     <div>
                       <span class="block text-sm font-bold text-gray-400">Original Tire</span>
                       <span class="block text-sm text-gray-400">Total Diameter:</span>
@@ -151,7 +176,7 @@
                       <span class="block text-sm text-gray-400">Circumference:</span>
                       <span id="circumference1Result" class="text-lg font-bold text-green-400"></span>
                     </div>
-                          <!-- New Tire Results -->
+                    <!-- New Tire Results -->
                     <div>
                       <span class="block text-sm font-bold text-gray-400">New Tire</span>
                       <span class="block text-sm text-gray-400">Total Diameter:</span>
@@ -159,7 +184,7 @@
                       <span class="block text-sm text-gray-400">Circumference:</span>
                       <span id="circumference2Result" class="text-lg font-bold text-green-400"></span>
                     </div>
-                          <!-- Differences -->
+                    <!-- Differences -->
                     <div>
                       <span class="block text-sm font-bold text-gray-400">Difference</span>
                       <span class="block text-sm text-gray-400">Diameter Change:</span>
@@ -168,136 +193,137 @@
                       <span id="circumferenceDiffResult" class="text-lg font-bold text-yellow-400"></span>
                     </div>
                   </div>
-                      
+
                   <div class="flex flex-row items-center justify-center pt-8 gap-10">
                     <div class="flex flex-col items-center">
                       <div id="tireContainer1" class="tire-container">
                         <div id="tireVisual1" class="tire">
                           <div class="tire-outer"></div>
-                            <div class="tire-inner">
-                              <div class="hub"></div>
-                            </div>
+                          <div class="tire-inner">
+                            <div class="hub"></div>
                           </div>
-                        </div>
-                        <span class="text-gray-400 mt-2">Original</span>
-                       </div>
-
-                          <!-- New Tire Visual -->
-                        <div class="flex flex-col items-center">
-                          <div id="tireContainer2" class="tire-container">
-                            <div id="tireVisual2" class="tire">
-                              <div class="tire-outer"></div>
-                              <div class="tire-inner">
-                                <div class="hub"></div>
-                              </div>
-                            </div>
-                          </div>
-                          <span class="text-gray-400 mt-2">New</span>
                         </div>
                       </div>
+                      <span class="text-gray-400 mt-2">Original</span>
                     </div>
-                    <div id="messageBox" class="hidden mt-4 p-4 text-center rounded-lg bg-red-800 text-red-200 font-semibold"></div>
+
+                    <!-- New Tire Visual -->
+                    <div class="flex flex-col items-center">
+                      <div id="tireContainer2" class="tire-container">
+                        <div id="tireVisual2" class="tire">
+                          <div class="tire-outer"></div>
+                          <div class="tire-inner">
+                            <div class="hub"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <span class="text-gray-400 mt-2">New</span>
+                    </div>
                   </div>
-                  <script>
-                      document.addEventListener('DOMContentLoaded', () => {
-                          const width1Input = document.getElementById('width1');
-                          const aspectRatio1Input = document.getElementById('aspectRatio1');
-                          const diameter1Input = document.getElementById('diameter1');
-                          const width2Input = document.getElementById('width2');
-                          const aspectRatio2Input = document.getElementById('aspectRatio2');
-                          const diameter2Input = document.getElementById('diameter2');
-                          const calculateBtn = document.getElementById('calculateBtn');
-                          const resultsDiv = document.getElementById('results');
-                          const diameter1ResultSpan = document.getElementById('diameter1Result');
-                          const circumference1ResultSpan = document.getElementById('circumference1Result');
-                          const diameter2ResultSpan = document.getElementById('diameter2Result');
-                          const circumference2ResultSpan = document.getElementById('circumference2Result');
-                          const diameterDiffResultSpan = document.getElementById('diameterDiffResult');
-                          const circumferenceDiffResultSpan = document.getElementById('circumferenceDiffResult');
-                          const messageBox = document.getElementById('messageBox');
-                          const tireVisual1 = document.getElementById('tireVisual1');
-                          const tireVisual2 = document.getElementById('tireVisual2');
-                          const tireContainer1 = document.getElementById('tireContainer1');
-                          const tireContainer2 = document.getElementById('tireContainer2');
+                </div>
+                <div id="messageBox"
+                  class="hidden mt-4 p-4 text-center rounded-lg bg-red-800 text-red-200 font-semibold"></div>
+              </div>
+              <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                  const width1Input = document.getElementById('width1');
+                  const aspectRatio1Input = document.getElementById('aspectRatio1');
+                  const diameter1Input = document.getElementById('diameter1');
+                  const width2Input = document.getElementById('width2');
+                  const aspectRatio2Input = document.getElementById('aspectRatio2');
+                  const diameter2Input = document.getElementById('diameter2');
+                  const calculateBtn = document.getElementById('calculateBtn');
+                  const resultsDiv = document.getElementById('results');
+                  const diameter1ResultSpan = document.getElementById('diameter1Result');
+                  const circumference1ResultSpan = document.getElementById('circumference1Result');
+                  const diameter2ResultSpan = document.getElementById('diameter2Result');
+                  const circumference2ResultSpan = document.getElementById('circumference2Result');
+                  const diameterDiffResultSpan = document.getElementById('diameterDiffResult');
+                  const circumferenceDiffResultSpan = document.getElementById('circumferenceDiffResult');
+                  const messageBox = document.getElementById('messageBox');
+                  const tireVisual1 = document.getElementById('tireVisual1');
+                  const tireVisual2 = document.getElementById('tireVisual2');
+                  const tireContainer1 = document.getElementById('tireContainer1');
+                  const tireContainer2 = document.getElementById('tireContainer2');
 
-                          const BASE_DIAMETER = 25; // A reasonable base diameter in inches for scaling visuals
-                          const BASE_PIXEL_SIZE = 150; // The base pixel size for the visual
+                  const BASE_DIAMETER = 25; // A reasonable base diameter in inches for scaling visuals
+                  const BASE_PIXEL_SIZE = 150; // The base pixel size for the visual
 
-                          function calculateTireMetrics(width, aspectRatio, diameter) {
-                              if (isNaN(width) || isNaN(aspectRatio) || isNaN(diameter) || width <= 0 || aspectRatio <= 0 || diameter <= 0) {
-                                  return null;
-                              }
-                              const sidewallHeight = width * (aspectRatio / 100);
-                              const totalDiameterMM = (sidewallHeight * 2) + (diameter * 25.4);
-                              const totalDiameterInches = totalDiameterMM / 25.4;
-                              const circumferenceInches = totalDiameterInches * Math.PI;
-                              return { diameter: totalDiameterInches, circumference: circumferenceInches };
-                          }
+                  function calculateTireMetrics(width, aspectRatio, diameter) {
+                    if (isNaN(width) || isNaN(aspectRatio) || isNaN(diameter) || width <= 0 || aspectRatio <= 0 || diameter <= 0) {
+                      return null;
+                    }
+                    const sidewallHeight = width * (aspectRatio / 100);
+                    const totalDiameterMM = (sidewallHeight * 2) + (diameter * 25.4);
+                    const totalDiameterInches = totalDiameterMM / 25.4;
+                    const circumferenceInches = totalDiameterInches * Math.PI;
+                    return { diameter: totalDiameterInches, circumference: circumferenceInches };
+                  }
 
-                          function updateTireVisual(visualContainer, visualElement, calculatedDiameter) {
-                              const scaleFactor = calculatedDiameter / BASE_DIAMETER;
-                              const newSize = BASE_PIXEL_SIZE * scaleFactor;
-                              visualContainer.style.width = `${newSize}px`;
-                              visualContainer.style.height = `${newSize}px`;
-                              visualElement.classList.remove('spin');
-                              void visualElement.offsetWidth; // Trigger reflow
-                              visualElement.classList.add('spin');
-                          }
+                  function updateTireVisual(visualContainer, visualElement, calculatedDiameter) {
+                    const scaleFactor = calculatedDiameter / BASE_DIAMETER;
+                    const newSize = BASE_PIXEL_SIZE * scaleFactor;
+                    visualContainer.style.width = `${newSize}px`;
+                    visualContainer.style.height = `${newSize}px`;
+                    visualElement.classList.remove('spin');
+                    void visualElement.offsetWidth; // Trigger reflow
+                    visualElement.classList.add('spin');
+                  }
 
-                          calculateBtn.addEventListener('click', () => {
-                              // Clear previous results and messages
-                              resultsDiv.classList.add('hidden');
-                              messageBox.classList.add('hidden');
-                              messageBox.textContent = '';
-                              
-                              // Fetch values from inputs
-                              const width1 = parseFloat(width1Input.value);
-                              const aspectRatio1 = parseFloat(aspectRatio1Input.value);
-                              const diameter1 = parseFloat(diameter1Input.value);
-                              const width2 = parseFloat(width2Input.value);
-                              const aspectRatio2 = parseFloat(aspectRatio2Input.value);
-                              const diameter2 = parseFloat(diameter2Input.value);
+                  calculateBtn.addEventListener('click', () => {
+                    // Clear previous results and messages
+                    resultsDiv.classList.add('hidden');
+                    messageBox.classList.add('hidden');
+                    messageBox.textContent = '';
 
-                              const originalMetrics = calculateTireMetrics(width1, aspectRatio1, diameter1);
-                              const newMetrics = calculateTireMetrics(width2, aspectRatio2, diameter2);
+                    // Fetch values from inputs
+                    const width1 = parseFloat(width1Input.value);
+                    const aspectRatio1 = parseFloat(aspectRatio1Input.value);
+                    const diameter1 = parseFloat(diameter1Input.value);
+                    const width2 = parseFloat(width2Input.value);
+                    const aspectRatio2 = parseFloat(aspectRatio2Input.value);
+                    const diameter2 = parseFloat(diameter2Input.value);
 
-                              if (!originalMetrics || !newMetrics) {
-                                  messageBox.textContent = 'Please enter valid positive numbers for all fields.';
-                                  messageBox.classList.remove('hidden');
-                                  return;
-                              }
+                    const originalMetrics = calculateTireMetrics(width1, aspectRatio1, diameter1);
+                    const newMetrics = calculateTireMetrics(width2, aspectRatio2, diameter2);
 
-                              // Display original tire results
-                              diameter1ResultSpan.textContent = `${originalMetrics.diameter.toFixed(2)} inches`;
-                              circumference1ResultSpan.textContent = `${originalMetrics.circumference.toFixed(2)} inches`;
+                    if (!originalMetrics || !newMetrics) {
+                      messageBox.textContent = 'Please enter valid positive numbers for all fields.';
+                      messageBox.classList.remove('hidden');
+                      return;
+                    }
 
-                              // Display new tire results
-                              diameter2ResultSpan.textContent = `${newMetrics.diameter.toFixed(2)} inches`;
-                              circumference2ResultSpan.textContent = `${newMetrics.circumference.toFixed(2)} inches`;
+                    // Display original tire results
+                    diameter1ResultSpan.textContent = `${originalMetrics.diameter.toFixed(2)} inches`;
+                    circumference1ResultSpan.textContent = `${originalMetrics.circumference.toFixed(2)} inches`;
 
-                              // Calculate and display differences
-                              const diameterDiff = ((newMetrics.diameter - originalMetrics.diameter) / originalMetrics.diameter) * 100;
-                              const circumferenceDiff = ((newMetrics.circumference - originalMetrics.circumference) / originalMetrics.circumference) * 100;
-                              
-                              diameterDiffResultSpan.textContent = `${diameterDiff.toFixed(2)}%`;
-                              circumferenceDiffResultSpan.textContent = `${circumferenceDiff.toFixed(2)}%`;
+                    // Display new tire results
+                    diameter2ResultSpan.textContent = `${newMetrics.diameter.toFixed(2)} inches`;
+                    circumference2ResultSpan.textContent = `${newMetrics.circumference.toFixed(2)} inches`;
 
-                              // Set color for difference
-                              diameterDiffResultSpan.style.color = diameterDiff > 0 ? '#86efac' : '#f87171'; // green or red
-                              circumferenceDiffResultSpan.style.color = circumferenceDiff > 0 ? '#86efac' : '#f87171';
+                    // Calculate and display differences
+                    const diameterDiff = ((newMetrics.diameter - originalMetrics.diameter) / originalMetrics.diameter) * 100;
+                    const circumferenceDiff = ((newMetrics.circumference - originalMetrics.circumference) / originalMetrics.circumference) * 100;
 
-                              // Update tire visuals based on calculated diameters
-                              updateTireVisual(tireContainer1, tireVisual1, originalMetrics.diameter);
-                              updateTireVisual(tireContainer2, tireVisual2, newMetrics.diameter);
+                    diameterDiffResultSpan.textContent = `${diameterDiff.toFixed(2)}%`;
+                    circumferenceDiffResultSpan.textContent = `${circumferenceDiff.toFixed(2)}%`;
 
-                              // Show and animate results
-                              resultsDiv.classList.remove('hidden');
-                              setTimeout(() => {
-                                resultsDiv.classList.add('pop');
-                              }, 10); 
-                          });
-                      });
-                  </script>
+                    // Set color for difference
+                    diameterDiffResultSpan.style.color = diameterDiff > 0 ? '#86efac' : '#f87171'; // green or red
+                    circumferenceDiffResultSpan.style.color = circumferenceDiff > 0 ? '#86efac' : '#f87171';
+
+                    // Update tire visuals based on calculated diameters
+                    updateTireVisual(tireContainer1, tireVisual1, originalMetrics.diameter);
+                    updateTireVisual(tireContainer2, tireVisual2, newMetrics.diameter);
+
+                    // Show and animate results
+                    resultsDiv.classList.remove('hidden');
+                    setTimeout(() => {
+                      resultsDiv.classList.add('pop');
+                    }, 10);
+                  });
+                });
+              </script>
             </div>
           </div>
 
@@ -345,7 +371,9 @@
 
     <div class="container">
       <div class="copyright text-center ">
-        <a href="https://tools.dufl.web.id"><p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights Reserved</span></p></a>
+        <a href="/">
+          <p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights Reserved</span></p>
+        </a>
       </div>
       <div class="credits">
         Designed by <a href="https://widifirmaan.web.id/">Widi Firmans</a>
@@ -355,7 +383,8 @@
   </footer>
 
   <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>

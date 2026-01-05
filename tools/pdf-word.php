@@ -34,7 +34,13 @@
 </head>
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['pdfFile'])) {
-  $target_dir = "/home/tools/htdocs/tools.dufl.web.id/pdftemp/"; // Directory to store uploaded PDFs
+  $target_dir = __DIR__ . "/pdftemp/"; // Directory to store uploaded PDFs
+  
+  // Ensure directory exists
+  if (!is_dir($target_dir)) {
+      mkdir($target_dir, 0777, true);
+  }
+
   $target_file = $target_dir . basename($_FILES["pdfFile"]["name"]);
   $outputDir = $target_dir . basename($_FILES["name"]). ".docx";
   $uploadOk = 1;
@@ -58,16 +64,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['pdfFile'])) {
   // If everything is ok, try to upload file
   } else {
     if (move_uploaded_file($_FILES["pdfFile"]["tmp_name"], $target_file)) {
-      // echo "The file ". htmlspecialchars( basename( $_FILES["pdfFile"]["name"])). " has been uploaded.";
-      $commandHigh = 'libreoffice --headless --infilter="writer_pdf_import" --convert-to docx --outdir '.escapeshellarg($target_dir).' '.escapeshellarg($target_file);
-      $commandFast = 'cd ../pdftemp && abiword --to=docx '.escapeshellarg($target_file);
-      if (isset($_POST['method']) == 1){
-        $command = $commandHigh;
-      }else{
-        $command = $commandFast;
-      }
+      // LibreOffice (Heavy) - Not installed in Docker
+      // $commandHigh = 'libreoffice --headless --infilter="writer_pdf_import" --convert-to docx --outdir '.escapeshellarg($target_dir).' '.escapeshellarg($target_file);
+      
+      // AbiWord (Light) - Installed in Docker
+      // Note: running from current directory due to path issues
+      $commandFast = 'abiword --to=docx '.escapeshellarg($target_file);
+      
+      // Force use of AbiWord regardless of user selection since it is the only one available
+      $command = $commandFast;
+    
       shell_exec($command);
-      echo $command;
+      // echo $command; // Debugging
+
       $fileName = basename($_FILES["pdfFile"]["name"]);
       $path_parts = pathinfo($fileName);
       $filename_without_extension = $path_parts['filename'];
@@ -110,11 +119,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['pdfFile'])) {
   <main class="main">
     <div class="page-title dark-background">
       <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0"><a href="https://tools.dufl.web.id"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
+        <h1 class="mb-2 mb-lg-0"><a href="/"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="https://www.dufl.web.id">Premium Stuff</a></li>
-            <li><a href="https://tools.dufl.web.id">Free Stuff</a></li>
+            <li><a href="/">Free Stuff</a></li>
           </ol>
         </nav>
       </div>
@@ -204,7 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['pdfFile'])) {
 
     <div class="container">
       <div class="copyright text-center ">
-        <a href="https://tools.dufl.web.id"><p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights Reserved</span></p></a>
+        <a href="/"><p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights Reserved</span></p></a>
       </div>
       <div class="credits">
         Designed by <a href="https://widifirmaan.web.id/">Widi Firmans</a>

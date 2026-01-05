@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +11,9 @@
   <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
@@ -25,29 +26,33 @@
     #editor-container {
       display: flex;
     }
+
     #line-numbers {
       width: 3.5rem;
       text-align: right;
-      user-select: none; /* Prevent the user from selecting the line numbers */
-      overflow: hidden; /* Hide scrollbar */
+      user-select: none;
+      /* Prevent the user from selecting the line numbers */
+      overflow: hidden;
+      /* Hide scrollbar */
     }
 
-        /* Styles for the main editing area */
-        #editor-area {
-            width: 100%;
-            height: 24rem;
-            overflow-y: auto;
-            outline: none;
-            line-height: 1.51;
-        }
-        #editor-area::-webkit-scrollbar {
-            width: 8px;
-        }
+    /* Styles for the main editing area */
+    #editor-area {
+      width: 100%;
+      height: 24rem;
+      overflow-y: auto;
+      outline: none;
+      line-height: 1.51;
+    }
 
-        /* Hide the file input element visually */
-        #file-import {
-            display: none;
-        }
+    #editor-area::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    /* Hide the file input element visually */
+    #file-import {
+      display: none;
+    }
   </style>
 </head>
 
@@ -55,11 +60,11 @@
   <main class="main">
     <div class="page-title dark-background">
       <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0"><a href="https://tools.dufl.web.id"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
+        <h1 class="mb-2 mb-lg-0"><a href="/"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="https://www.dufl.web.id">Premium Stuff</a></li>
-            <li><a href="https://tools.dufl.web.id">Free Stuff</a></li>
+            <li><a href="/">Free Stuff</a></li>
           </ol>
         </nav>
       </div>
@@ -71,46 +76,47 @@
             <div class="content">
               <h3>Text Edittor</h3>
               <p>
-               Start writing below. Your progress will be counted in real-time.
+                Start writing below. Your progress will be counted in real-time.
               </p>
               <div class="container mx-auto">
                 <div id="toolbar" class="flex flex-wrap items-center row p-2">
                   <select id="font-family" class="form-control col p-2">
-                      <option value="Inter">Inter</option>
-                      <option value="Arial">Arial</option>
-                      <option value="Verdana">Verdana</option>
-                      <option value="Georgia">Georgia</option>
-                      <option value="Times New Roman">Times New Roman</option>
-                      <option value="Courier New">Courier New</option>
+                    <option value="Inter">Inter</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Courier New">Courier New</option>
                   </select>
                   <select id="font-size" class="form-control col p-2">
-                      <option value="1">Small</option>
-                      <option value="3" selected>Normal</option>
-                      <option value="5">Large</option>
-                      <option value="7">Extra Large</option>
+                    <option value="1">Small</option>
+                    <option value="3" selected>Normal</option>
+                    <option value="5">Large</option>
+                    <option value="7">Extra Large</option>
                   </select>
                   <button id="bold-btn" class="form-control col p-2">
-                      <span class="font-bold">B</span>
+                    <span class="font-bold">B</span>
                   </button>
                   <button id="italic-btn" class="form-control col p-2">
-                      <span class="italic">I</span>
+                    <span class="italic">I</span>
                   </button>
                   <button id="underline-btn" class="form-control col p-2">
-                      <span class="underline ">U</span>
+                    <span class="underline ">U</span>
                   </button>
                   <button id="import-btn" class="form-control col p-2">
-                      Import Text
+                    Import Text
                   </button>
                   <input type="file" id="file-import" accept=".txt">
                   <button id="save-btn" class="form-control col p-2">
-                      Save
+                    Save
                   </button>
                 </div>
                 <div id="editor-container" class="border rounded">
                   <div id="line-numbers" class="mt-3">1<br></div>
-                    <div id="editor-area" contenteditable="true" class="w-full h-auto p-2 m-1 overflow-y-auto border rounded focus:outline-none ">
+                  <div id="editor-area" contenteditable="true"
+                    class="w-full h-auto p-2 m-1 overflow-y-auto border rounded focus:outline-none ">
                   </div>
-                </div><br/>
+                </div><br />
                 <div class="rounded flex justify-between items-center form-control p-2">
                   <span id="word-count">Words: 0</span>
                   <span id="char-count">Characters: 0</span>
@@ -133,123 +139,123 @@
                 /**
                  * Updates the line numbers display based on the content of the editor.
                  */
-                 const updateLineNumbers = () => {
-                    // Count the number of lines. Since the editor inserts <div> tags on new lines,
-                    // we can count the children to get the number of lines.
-                    // If the editor is empty, it's one line.
-                    let lineCount = editorArea.children.length === 0 && editorArea.textContent.trim() === '' ? 1 : editorArea.children.length;
-                    
-                    // Check if the initial line has content
-                    if (editorArea.textContent.trim() !== '' && editorArea.children.length === 0 && editorArea.children.length === null) {
-                        lineCount = editorArea.textContent.split('\n').length;
-                    } else if (editorArea.children.length > 0) {
-                        lineCount = editorArea.children.length;
-                    }
+                const updateLineNumbers = () => {
+                  // Count the number of lines. Since the editor inserts <div> tags on new lines,
+                  // we can count the children to get the number of lines.
+                  // If the editor is empty, it's one line.
+                  let lineCount = editorArea.children.length === 0 && editorArea.textContent.trim() === '' ? 1 : editorArea.children.length;
 
-                    // Generate the line number text
-                    let numbersHtml = '';
-                    for (let i = 1; i <= lineCount; i++) {
-                        numbersHtml += i + '<br>';
-                    }
-                    lineNumbers.innerHTML = numbersHtml;
+                  // Check if the initial line has content
+                  if (editorArea.textContent.trim() !== '' && editorArea.children.length === 0 && editorArea.children.length === null) {
+                    lineCount = editorArea.textContent.split('\n').length;
+                  } else if (editorArea.children.length > 0) {
+                    lineCount = editorArea.children.length;
+                  }
+
+                  // Generate the line number text
+                  let numbersHtml = '';
+                  for (let i = 1; i <= lineCount; i++) {
+                    numbersHtml += i + '<br>';
+                  }
+                  lineNumbers.innerHTML = numbersHtml;
                 };
-                
+
                 /**
                  * Updates the word and character counts in the status bar.
                  */
                 const updateCounts = () => {
-                    // Get the plain text content from the editor
-                    const text = editorArea.textContent;
-                    
-                    // Calculate character count (including spaces)
-                    charCountSpan.textContent = `Characters: ${text.length}`;
+                  // Get the plain text content from the editor
+                  const text = editorArea.textContent;
 
-                    // Calculate word count
-                    // Split the text by any whitespace and filter out empty strings
-                    const words = text.split(/\s+/).filter(word => word.length > 0);
-                    wordCountSpan.textContent = `Words: ${words.length}`;
+                  // Calculate character count (including spaces)
+                  charCountSpan.textContent = `Characters: ${text.length}`;
+
+                  // Calculate word count
+                  // Split the text by any whitespace and filter out empty strings
+                  const words = text.split(/\s+/).filter(word => word.length > 0);
+                  wordCountSpan.textContent = `Words: ${words.length}`;
                 };
 
                 // Add event listeners for real-time updates
                 editorArea.addEventListener('input', () => {
-                    updateCounts();
-                    updateLineNumbers();
+                  updateCounts();
+                  updateLineNumbers();
                 });
 
                 // Sync the scroll position of the line numbers with the editor area
                 editorArea.addEventListener('scroll', () => {
-                    lineNumbers.scrollTop = editorArea.scrollTop;
+                  lineNumbers.scrollTop = editorArea.scrollTop;
                 });
 
                 // Add event listeners for the formatting buttons
                 // document.execCommand() is a simple, built-in method for text formatting
                 boldBtn.addEventListener('click', () => {
-                    document.execCommand('bold', false, null);
+                  document.execCommand('bold', false, null);
                 });
                 italicBtn.addEventListener('click', () => {
-                    document.execCommand('italic', false, null);
+                  document.execCommand('italic', false, null);
                 });
                 underlineBtn.addEventListener('click', () => {
-                    document.execCommand('underline', false, null);
+                  document.execCommand('underline', false, null);
                 });
 
                 // Add event listeners for the font selectors
                 fontFamilySelect.addEventListener('change', (e) => {
-                    document.execCommand('fontName', false, e.target.value);
+                  document.execCommand('fontName', false, e.target.value);
                 });
                 fontSizeSelect.addEventListener('change', (e) => {
-                    document.execCommand('fontSize', false, e.target.value);
+                  document.execCommand('fontSize', false, e.target.value);
                 });
 
                 // Event listener for the new "Import" button
                 importBtn.addEventListener('click', () => {
-                    fileImportInput.click(); // Programmatically click the hidden file input
+                  fileImportInput.click(); // Programmatically click the hidden file input
                 });
 
                 // Event listener to handle the file when it is selected
                 fileImportInput.addEventListener('change', (event) => {
-                    const file = event.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            // Set the editor's content to the text from the file
-                            editorArea.textContent = e.target.result;
-                            // Update counts and line numbers after loading the content
-                            updateCounts();
-                            updateLineNumbers();
-                        };
-                        // Read the file as a text string
-                        reader.readAsText(file);
-                    }
+                  const file = event.target.files[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                      // Set the editor's content to the text from the file
+                      editorArea.textContent = e.target.result;
+                      // Update counts and line numbers after loading the content
+                      updateCounts();
+                      updateLineNumbers();
+                    };
+                    // Read the file as a text string
+                    reader.readAsText(file);
+                  }
                 });
                 saveBtn.addEventListener('click', () => {
-                    // Get the content of the editor
-                    const content = editorArea.textContent;
-                    
-                    // Create a Blob from the content
-                    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-                    
-                    // Create a URL for the Blob
-                    const url = URL.createObjectURL(blob);
-                    
-                    // Create a temporary link element
-                    const a = document.createElement('a');
-                    a.href = url;
-                    
-                    // Set the file name using the current date and time
-                    const now = new Date();
-                    const fileName = `document-${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}-${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}.txt`;
-                    a.download = fileName;
-                    a.click();
-                    
-                    // Clean up by revoking the URL
-                    URL.revokeObjectURL(url);
+                  // Get the content of the editor
+                  const content = editorArea.textContent;
+
+                  // Create a Blob from the content
+                  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+
+                  // Create a URL for the Blob
+                  const url = URL.createObjectURL(blob);
+
+                  // Create a temporary link element
+                  const a = document.createElement('a');
+                  a.href = url;
+
+                  // Set the file name using the current date and time
+                  const now = new Date();
+                  const fileName = `document-${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}-${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}.txt`;
+                  a.download = fileName;
+                  a.click();
+
+                  // Clean up by revoking the URL
+                  URL.revokeObjectURL(url);
                 });
                 updateCounts();
                 updateLineNumbers();
               </script>
             </div>
-            
+
           </div>
 
           <div class="col-lg-2">
@@ -298,7 +304,9 @@
 
     <div class="container">
       <div class="copyright text-center ">
-        <a href="https://tools.dufl.web.id"><p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights Reserved</span></p></a>
+        <a href="/">
+          <p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights Reserved</span></p>
+        </a>
       </div>
       <div class="credits">
         Designed by <a href="https://widifirmaan.web.id/">Widi Firmans</a>
@@ -308,7 +316,8 @@
   </footer>
 
   <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>
