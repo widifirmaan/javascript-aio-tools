@@ -1,69 +1,104 @@
-# DUFL Tools - Lightweight JavaScript AIO Tools
+# 🛠️ DUFL Tools - Lightweight JavaScript AIO Tools
 
-![DUFL Tools Preview](assets/img/preview.png)
+**DUFL Tools** is a comprehensive collection of free, lightweight online tools built for speed and efficiency. By leveraging client-side technology like **WebAssembly** and optimized server-side components in **Docker**, it provides a powerful suite of utilities with minimal infrastructure requirements.
 
-A collection of free, lightweight online tools built with HTML, CSS, JavaScript, and PHP. This project is designed to be highly efficient, running primarily on client-side technology to minimize server load, wrapped in an optimized Docker container.
+![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
+![Docker](https://img.shields.io/badge/Docker-Enabled-blue?style=for-the-badge&logo=docker)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?style=for-the-badge&logo=javascript)
+![PHP](https://img.shields.io/badge/PHP-8.2-8892BF?style=for-the-badge&logo=php)
 
-## 🚀 Features
+---
 
+## 📸 Application Showcase
+
+Explore the lightweight tools available in **DUFL Tools**.
+
+| | |
+|:---:|:---:|
+| ![Preview](assets/img/preview.png)<br>**Main Dashboard** | |
+
+---
+
+## 🚀 Features Overview
+
+### 🖼️ Image & Media Tools
 *   **Image Compressor**: Fast and efficient client-side image compression.
+*   **Image Converter**: Convert images between various formats (PNG, JPG, WebP, etc.).
+*   **Background Remover**: Removes image backgrounds instantly using **Edge AI** (Client-side WebAssembly), requiring **zero server GPU/CPU processing**.
+
+### 📄 Document & Text Tools
 *   **PDF to Word Converter**: Converts PDF documents to DOCX using **AbiWord** (Server-side, lightweight alternative to LibreOffice).
-*   **Background Remover**: Removes image backgrounds instantly using **Edge AI** (Client-side WebAssembly via `@imgly/background-removal`), requiring **zero server GPU/CPU processing**.
+*   **Text Editor**: A simple, real-time text editor for quick notes and formatting.
+
+### 🔢 Utilities
 *   **Scientific Calculator**: A fully functional web-based scientific calculator.
-*   **Image Converter**: Convert images between various formats easily.
-*   **Text Editor**: A simple, real-time text editor.
+
+---
+
+## 🛠 Tech Stack
+
+### Client-Side
+*   **Logic**: Vanilla JavaScript (ES6+), WebAssembly (Edge AI).
+*   **Styling**: HTML5, CSS3, Bootstrap (Shared assets).
+*   **Libraries**: `@imgly/background-removal`.
+
+### Server-Side
+*   **Backend**: PHP 8.2 (Apache).
+*   **PDF Engine**: **AbiWord** (Extremely lightweight).
+*   **Environment**: Docker (Debian-based).
+
+---
 
 ## 🐳 Docker Deployment (Recommended)
 
-This project has been fully dockerized for easy deployment. It uses a custom `php:8.2-apache` image optimized for size and performance.
+This project is fully dockerized for instant deployment on any VPS or local machine.
 
 ### Prerequisites
 *   Docker installed on your system.
 
 ### Quick Start
 
-1.  **Build the Image**
-    ```bash
-    docker build -t dufl-tools .
-    ```
+1. **Build the Image**
+   ```bash
+   docker build -t dufl-tools .
+   ```
 
-2.  **Run the Container**
-    Run the application on port **8083** (or any port you prefer):
-    ```bash
-    docker run -d -p 8083:80 --name dufl-app dufl-tools
-    ```
+2. **Run the Container**
+   ```bash
+   docker run -d -p 8083:80 --name dufl-app dufl-tools
+   ```
 
-3.  **Access the Tools**
-    Open your browser and navigate to:
-    `http://localhost:8083`
+3. **Access the Application**
+   Open `http://localhost:8083` in your browser.
 
-## 🛠 Technical Architecture regarding Efficiency
+---
 
-To ensure the application remains strictly "lightweight" suitable for low-spec VPS/Servers:
+## 📂 Project Structure
 
-1.  **Client-Side AI**: The **Remove Background** tool runs entirely in the user's browser using WebAssembly. No Python, TensorFlow, or PyTorch is installed on the server, saving ~1.5GB of image size and massive CPU resources.
-2.  **Lightweight PDF Engine**: Instead of the massive LibreOffice suite (~600MB), we utilize **AbiWord** (~20MB) for command-line PDF conversion.
-3.  **Universal Host**: The application uses relative paths, making it capable of running on any domain, IP, or subpath without configuration changes.
-
-## 📁 Project Structure
-
-```
+```bash
 /
-├── assets/          # Shared CSS, JS, and Vendor libraries (Bootstrap, etc.)
-├── tools/           # Individual tool pages (PHP/HTML)
+├── assets/          # Shared CSS, JS, and Vendor libraries
+├── tools/           # Individual tool implementations (PHP/HTML)
 │   ├── image-compressor.html
 │   ├── pdf-word.php
 │   ├── remove-bg.php
 │   └── ...
-├── Dockerfile       # Docker configuration
-├── index.html       # Landing page
-└── README.md        # This file
+├── Dockerfile       # Container configuration
+├── index.html       # Entry landing page
+└── README.md        # Documentation
 ```
 
-## 🤝 Contributing
+---
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+## 🛠 Technical Efficiency
 
-## 📜 Credits
+To ensure suitability for low-spec servers:
+1. **Edge AI Processing**: Background removal happens in the user's browser, saving ~1.5GB of server image size and massive CPU/GPU resources.
+2. **Minimalist Dependencies**: AbiWord (~20MB) replaces LibreOffice (~600MB) for document processing.
+3. **Stateless Design**: Uses relative paths for universal hosting without configuration.
 
-Designed & Developed by **Widi Firmansyah**.
+---
+
+## 👥 Authors
+
+Developed & Maintained by **Widi Firmansyah**.
