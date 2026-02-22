@@ -15,7 +15,9 @@ Explore the lightweight tools available in **DUFL Tools**.
 
 | | |
 |:---:|:---:|
-| ![Preview](assets/img/preview.png)<br>**Main Dashboard** | |
+| ![Dashboard](screenshots/dashboard.png)<br>**Main Dashboard** | ![Image Compressor](screenshots/image_compressor.png)<br>**Image Compressor** |
+| ![Image Converter](screenshots/image_converter.png)<br>**Image Converter** | ![Text Editor](screenshots/text_editor.png)<br>**Text Editor** |
+| ![Scientific Calculator](screenshots/calculator.png)<br>**Scientific Calculator** | ![Tire Comparison](screenshots/tire_comparison.png)<br>**Tire Comparison** |
 
 ---
 
@@ -32,6 +34,7 @@ Explore the lightweight tools available in **DUFL Tools**.
 
 ### 🔢 Utilities
 *   **Scientific Calculator**: A fully functional web-based scientific calculator.
+*   **Tire Comparison**: Compare tire sizes and visualize differences.
 
 ---
 
@@ -39,8 +42,8 @@ Explore the lightweight tools available in **DUFL Tools**.
 
 ### Client-Side
 *   **Logic**: Vanilla JavaScript (ES6+), WebAssembly (Edge AI).
-*   **Styling**: HTML5, CSS3, Bootstrap (Shared assets).
-*   **Libraries**: `@imgly/background-removal`.
+*   **Styling**: HTML5, CSS3, Bootstrap (Shared assets), Neo-Brutalist inspired UI.
+*   **Libraries**: `@imgly/background-removal`, Lucide Icons (via CDN).
 
 ### Server-Side
 *   **Backend**: PHP 8.2 (Apache).
@@ -54,7 +57,7 @@ Explore the lightweight tools available in **DUFL Tools**.
 This project is fully dockerized for instant deployment on any VPS or local machine.
 
 ### Prerequisites
-*   Docker installed on your system.
+*   **Docker** installed on your system.
 
 ### Quick Start
 
@@ -83,6 +86,7 @@ This project is fully dockerized for instant deployment on any VPS or local mach
 │   ├── pdf-word.php
 │   ├── remove-bg.php
 │   └── ...
+├── screenshots/     # Showcase images for README
 ├── Dockerfile       # Container configuration
 ├── index.html       # Entry landing page
 └── README.md        # Documentation
