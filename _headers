@@ -1,0 +1,5 @@
+/*
+  Access-Control-Allow-Origin: *
+
+/tools/*.php
+  Content-Type: text/html; charset=utf-8

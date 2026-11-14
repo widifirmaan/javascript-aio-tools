@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>PDF Studio (Merge & Images to PDF) - DUFL</title>
+  <meta name="description" content="Merge multiple PDF files into one and convert images to PDF documents 100% client-side in your browser.">
+  <meta name="keywords" content="merge pdf, combine pdf, images to pdf, jpg to pdf, client side pdf">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+
+  <style>
+    .dropzone-box {
+      border: 2px dashed #0d6efd;
+      border-radius: 14px;
+      padding: 35px 20px;
+      text-align: center;
+      background: #f8faff;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+    .dropzone-box:hover {
+      background: #eef4ff;
+      border-color: #0b5ed7;
+    }
+    .file-item-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      background: #fff;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .image-preview-thumb {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+
+<body class="service-details-page">
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+      <a href="../index.html" class="logo d-flex align-items-center">
+        <h1 class="sitename">Widi Firmansyah</h1>
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="../index.html#hero">Home</a></li>
+          <li><a href="../index.html#services" class="active">All Tools</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main" style="padding-top: 100px;">
+    <div class="page-title dark-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0"><a href="../index.html"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../index.html#services">Tools</a></li>
+            <li class="current">PDF Studio</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <section id="service-details" class="service-details section">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4">
+          <div class="col-lg-8">
+            <div class="content">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                <h3 class="mb-0">PDF Studio (Merge & Images to PDF)</h3>
+                <span class="badge bg-success-subtle text-success border border-success px-3 py-2 rounded-pill">
+                  <i class="bi bi-shield-check me-1"></i> 100% Client-Side Safe
+                </span>
+              </div>
+              <p class="text-muted">
+                Gabungkan beberapa dokumen PDF menjadi 1 file rapi atau susun gambar (JPG/PNG/WebP) menjadi dokumen PDF siap cetak langsung di peramban Anda.
+              </p>
+
+              <!-- Tabs -->
+              <ul class="nav nav-pills mb-4" id="pdfTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active px-4" id="merge-tab" data-bs-toggle="pill" data-bs-target="#merge-pane" type="button" role="tab">
+                    <i class="bi bi-files me-1"></i> Gabung PDF (Merge)
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link px-4" id="img2pdf-tab" data-bs-toggle="pill" data-bs-target="#img2pdf-pane" type="button" role="tab">
+                    <i class="bi bi-file-earmark-image me-1"></i> Gambar ke PDF
+                  </button>
+                </li>
+              </ul>
+
+              <div class="tab-content" id="pdfTabsContent">
+                <!-- TAB 1: MERGE PDF -->
+                <div class="tab-pane fade show active" id="merge-pane" role="tabpanel">
+                  <div class="dropzone-box mb-4" onclick="document.getElementById('mergeFileInput').click()">
+                    <i class="bi bi-file-earmark-pdf fs-1 text-danger"></i>
+                    <h5 class="mt-2 mb-1">Pilih Beberapa File PDF untuk Digabungkan</h5>
+                    <p class="text-muted small mb-0">Klik untuk memilih beberapa file PDF (dapat dipilih sekaligus)</p>
+                    <input type="file" id="mergeFileInput" accept="application/pdf" multiple class="d-none">
+                  </div>
+
+                  <div id="mergeFileListSection" class="d-none mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <h6 class="fw-bold mb-0">Daftar File PDF (<span id="mergeFileCount">0</span> file)</h6>
+                      <button type="button" class="btn btn-sm btn-outline-danger" id="btnClearMerge">Hapus Semua</button>
+                    </div>
+                    <div id="mergeFileList" class="mb-3"></div>
+
+                    <button type="button" id="btnMergePdf" class="btn btn-danger w-100 py-2 fw-semibold">
+                      <i class="bi bi-intersect me-1"></i> Gabungkan Semua PDF Menjadi 1 File
+                    </button>
+                  </div>
+
+                  <div id="mergeResultBox" class="p-3 bg-light border border-success rounded d-none">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                      <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-check-circle-fill text-success fs-3"></i>
+                        <div>
+                          <h6 class="mb-0 text-success fw-bold">PDF Berhasil Digabungkan!</h6>
+                          <small class="text-muted" id="mergeResultInfo">merged.pdf</small>
+                        </div>
+                      </div>
+                      <a id="btnDownloadMerged" href="#" class="btn btn-success fw-semibold px-4 py-2">
+                        <i class="bi bi-download me-1"></i> Download PDF Hasil Gabung
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- TAB 2: IMAGES TO PDF -->
+                <div class="tab-pane fade" id="img2pdf-pane" role="tabpanel">
+                  <div class="dropzone-box mb-4" onclick="document.getElementById('img2pdfInput').click()">
+                    <i class="bi bi-images fs-1 text-primary"></i>
+                    <h5 class="mt-2 mb-1">Pilih Gambar untuk Dikonversi ke PDF</h5>
+                    <p class="text-muted small mb-0">Mendukung format JPG, PNG, dan WebP (Bisa pilih banyak gambar)</p>
+                    <input type="file" id="img2pdfInput" accept="image/jpeg,image/png,image/webp" multiple class="d-none">
+                  </div>
+
+                  <div id="imgListSection" class="d-none mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <h6 class="fw-bold mb-0">Daftar Gambar (<span id="imgFileCount">0</span> gambar)</h6>
+                      <button type="button" class="btn btn-sm btn-outline-danger" id="btnClearImgs">Hapus Semua</button>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                      <div class="col-md-6">
+                        <label class="form-label small fw-semibold">Ukuran Halaman:</label>
+                        <select id="imgPageSize" class="form-select form-select-sm">
+                          <option value="a4" selected>Standar A4 (Fit to Page)</option>
+                          <option value="original">Sesuai Resolusi Gambar Asli</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label small fw-semibold">Orientasi Halaman:</label>
+                        <select id="imgOrientation" class="form-select form-select-sm">
+                          <option value="auto" selected>Otomatis (Tergantung Gambar)</option>
+                          <option value="portrait">Portrait</option>
+                          <option value="landscape">Landscape</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div id="imgFileList" class="mb-3"></div>
+
+                    <button type="button" id="btnConvertImg2Pdf" class="btn btn-primary w-100 py-2 fw-semibold">
+                      <i class="bi bi-file-earmark-pdf me-1"></i> Konversi Gambar ke PDF Sekarang
+                    </button>
+                  </div>
+
+                  <div id="imgResultBox" class="p-3 bg-light border border-success rounded d-none">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                      <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-check-circle-fill text-success fs-3"></i>
+                        <div>
+                          <h6 class="mb-0 text-success fw-bold">PDF Berhasil Dibuat!</h6>
+                          <small class="text-muted" id="imgResultInfo">images.pdf</small>
+                        </div>
+                      </div>
+                      <a id="btnDownloadImgPdf" href="#" class="btn btn-success fw-semibold px-4 py-2">
+                        <i class="bi bi-download me-1"></i> Download File PDF
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="service-info p-4 rounded bg-white border">
+              <h4>Informasi Layanan</h4>
+              <div class="info-item mb-3">
+                <i class="bi bi-person-check text-primary fs-4"></i>
+                <h6 class="mb-0 mt-1">Pengembang</h6>
+                <p class="text-muted small">Widi Firmansyah</p>
+              </div>
+              <div class="info-item mb-3">
+                <i class="bi bi-shield-check text-primary fs-4"></i>
+                <h6 class="mb-0 mt-1">Privasi Dokumen</h6>
+                <p class="text-muted small">Proses penggabungan PDF dan kompilasi gambar berjalan 100% di memori browser. Dokumen rahasia Anda tetap privat.</p>
+              </div>
+              <div class="info-item">
+                <i class="bi bi-cpu text-primary fs-4"></i>
+                <h6 class="mb-0 mt-1">Teknologi</h6>
+                <p class="text-muted small">PDF-Lib.js (Client-side Open Source PDF Engine)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative">
+    <div class="container text-center">
+      <div class="copyright">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+      </div>
+      <div class="credits">
+        Designed by <a href="https://widifirmaan.web.id/">Widi Firmansyah</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+
+  <script>
+    const { PDFDocument, rgb } = PDFLib;
+
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // ==========================================
+    // 1. MERGE PDF LOGIC
+    // ==========================================
+    let mergeFiles = [];
+    let mergedBlobUrl = null;
+
+    const mergeFileInput = document.getElementById('mergeFileInput');
+    const mergeFileListSection = document.getElementById('mergeFileListSection');
+    const mergeFileList = document.getElementById('mergeFileList');
+    const mergeFileCount = document.getElementById('mergeFileCount');
+    const btnClearMerge = document.getElementById('btnClearMerge');
+    const btnMergePdf = document.getElementById('btnMergePdf');
+    const mergeResultBox = document.getElementById('mergeResultBox');
+    const mergeResultInfo = document.getElementById('mergeResultInfo');
+    const btnDownloadMerged = document.getElementById('btnDownloadMerged');
+
+    function renderMergeList() {
+      mergeFileList.innerHTML = '';
+      mergeFileCount.textContent = mergeFiles.length;
+
+      if (mergeFiles.length === 0) {
+        mergeFileListSection.classList.add('d-none');
+        return;
+      }
+      mergeFileListSection.classList.remove('d-none');
+
+      mergeFiles.forEach((file, index) => {
+        const item = document.createElement('div');
+        item.className = 'file-item-card';
+        item.innerHTML = `
+          <div class="d-flex align-items-center gap-2 text-truncate">
+            <span class="badge bg-secondary">${index + 1}</span>
+            <i class="bi bi-file-earmark-pdf text-danger fs-5"></i>
+            <span class="text-truncate fw-semibold">${file.name}</span>
+            <small class="text-muted">(${formatBytes(file.size)})</small>
+          </div>
+          <div class="d-flex gap-1">
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="moveMergeFile(${index}, -1)" ${index === 0 ? 'disabled' : ''}><i class="bi bi-arrow-up"></i></button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="moveMergeFile(${index}, 1)" ${index === mergeFiles.length - 1 ? 'disabled' : ''}><i class="bi bi-arrow-down"></i></button>
+            <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeMergeFile(${index})"><i class="bi bi-trash"></i></button>
+          </div>
+        `;
+        mergeFileList.appendChild(item);
+      });
+    }
+
+    window.moveMergeFile = function(index, dir) {
+      const newIdx = index + dir;
+      if (newIdx < 0 || newIdx >= mergeFiles.length) return;
+      const temp = mergeFiles[index];
+      mergeFiles[index] = mergeFiles[newIdx];
+      mergeFiles[newIdx] = temp;
+      renderMergeList();
+    };
+
+    window.removeMergeFile = function(index) {
+      mergeFiles.splice(index, 1);
+      renderMergeList();
+    };
+
+    mergeFileInput.addEventListener('change', (e) => {
+      if (e.target.files) {
+        for (const file of e.target.files) {
+          if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+            mergeFiles.push(file);
+          }
+        }
+        renderMergeList();
+      }
+    });
+
+    btnClearMerge.addEventListener('click', () => {
+      mergeFiles = [];
+      renderMergeList();
+      mergeResultBox.classList.add('d-none');
+    });
+
+    btnMergePdf.addEventListener('click', async () => {
+      if (mergeFiles.length < 2) {
+        alert('Harap pilih minimal 2 file PDF untuk digabungkan!');
+        return;
+      }
+
+      btnMergePdf.disabled = true;
+      btnMergePdf.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Menggabungkan PDF...';
+
+      try {
+        const mergedPdf = await PDFDocument.create();
+
+        for (const file of mergeFiles) {
+          const arrayBuffer = await file.arrayBuffer();
+          const pdf = await PDFDocument.load(arrayBuffer);
+          const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+          copiedPages.forEach((page) => mergedPdf.addPage(page));
+        }
+
+        const mergedPdfBytes = await mergedPdf.save();
+        const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+
+        if (mergedBlobUrl) URL.revokeObjectURL(mergedBlobUrl);
+        mergedBlobUrl = URL.createObjectURL(blob);
+
+        mergeResultInfo.textContent = `merged_document_${Date.now()}.pdf (${formatBytes(blob.size)})`;
+        btnDownloadMerged.href = mergedBlobUrl;
+        btnDownloadMerged.download = `merged_${Date.now()}.pdf`;
+        mergeResultBox.classList.remove('d-none');
+
+        // Auto trigger download
+        const a = document.createElement('a');
+        a.href = mergedBlobUrl;
+        a.download = `merged_${Date.now()}.pdf`;
+        a.click();
+      } catch (err) {
+        console.error(err);
+        alert('Gagal menggabungkan PDF: ' + err.message);
+      } finally {
+        btnMergePdf.disabled = false;
+        btnMergePdf.innerHTML = '<i class="bi bi-intersect me-1"></i> Gabungkan Semua PDF Menjadi 1 File';
+      }
+    });
+
+    // ==========================================
+    // 2. IMAGES TO PDF LOGIC
+    // ==========================================
+    let imageFiles = [];
+    let imgBlobUrl = null;
+
+    const img2pdfInput = document.getElementById('img2pdfInput');
+    const imgListSection = document.getElementById('imgListSection');
+    const imgFileList = document.getElementById('imgFileList');
+    const imgFileCount = document.getElementById('imgFileCount');
+    const btnClearImgs = document.getElementById('btnClearImgs');
+    const btnConvertImg2Pdf = document.getElementById('btnConvertImg2Pdf');
+    const imgResultBox = document.getElementById('imgResultBox');
+    const imgResultInfo = document.getElementById('imgResultInfo');
+    const btnDownloadImgPdf = document.getElementById('btnDownloadImgPdf');
+
+    function renderImgList() {
+      imgFileList.innerHTML = '';
+      imgFileCount.textContent = imageFiles.length;
+
+      if (imageFiles.length === 0) {
+        imgListSection.classList.add('d-none');
+        return;
+      }
+      imgListSection.classList.remove('d-none');
+
+      imageFiles.forEach((itemObj, index) => {
+        const item = document.createElement('div');
+        item.className = 'file-item-card';
+        item.innerHTML = `
+          <div class="d-flex align-items-center gap-3 text-truncate">
+            <span class="badge bg-secondary">${index + 1}</span>
+            <img src="${itemObj.previewUrl}" class="image-preview-thumb" alt="thumb">
+            <div class="text-truncate">
+              <div class="fw-semibold text-truncate">${itemObj.file.name}</div>
+              <small class="text-muted">${formatBytes(itemObj.file.size)}</small>
+            </div>
+          </div>
+          <div class="d-flex gap-1">
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="moveImgFile(${index}, -1)" ${index === 0 ? 'disabled' : ''}><i class="bi bi-arrow-up"></i></button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="moveImgFile(${index}, 1)" ${index === imageFiles.length - 1 ? 'disabled' : ''}><i class="bi bi-arrow-down"></i></button>
+            <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeImgFile(${index})"><i class="bi bi-trash"></i></button>
+          </div>
+        `;
+        imgFileList.appendChild(item);
+      });
+    }
+
+    window.moveImgFile = function(index, dir) {
+      const newIdx = index + dir;
+      if (newIdx < 0 || newIdx >= imageFiles.length) return;
+      const temp = imageFiles[index];
+      imageFiles[index] = imageFiles[newIdx];
+      imageFiles[newIdx] = temp;
+      renderImgList();
+    };
+
+    window.removeImgFile = function(index) {
+      URL.revokeObjectURL(imageFiles[index].previewUrl);
+      imageFiles.splice(index, 1);
+      renderImgList();
+    };
+
+    img2pdfInput.addEventListener('change', (e) => {
+      if (e.target.files) {
+        for (const file of e.target.files) {
+          if (file.type.startsWith('image/')) {
+            imageFiles.push({
+              file: file,
+              previewUrl: URL.createObjectURL(file)
+            });
+          }
+        }
+        renderImgList();
+      }
+    });
+
+    btnClearImgs.addEventListener('click', () => {
+      imageFiles.forEach(f => URL.revokeObjectURL(f.previewUrl));
+      imageFiles = [];
+      renderImgList();
+      imgResultBox.classList.add('d-none');
+    });
+
+    btnConvertImg2Pdf.addEventListener('click', async () => {
+      if (imageFiles.length === 0) {
+        alert('Harap pilih minimal 1 gambar!');
+        return;
+      }
+
+      btnConvertImg2Pdf.disabled = true;
+      btnConvertImg2Pdf.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Menyusun PDF...';
+
+      try {
+        const pdfDoc = await PDFDocument.create();
+        const pageSizeOption = document.getElementById('imgPageSize').value;
+        const orientationOption = document.getElementById('imgOrientation').value;
+
+        // A4 points in 72 dpi: 595.28 x 841.89
+        const A4_WIDTH = 595.28;
+        const A4_HEIGHT = 841.89;
+
+        for (const item of imageFiles) {
+          const file = item.file;
+          const arrayBuffer = await file.arrayBuffer();
+
+          let pdfImage;
+          if (file.type === 'image/jpeg' || file.name.toLowerCase().endsWith('.jpg') || file.name.toLowerCase().endsWith('.jpeg')) {
+            pdfImage = await pdfDoc.embedJpg(arrayBuffer);
+          } else if (file.type === 'image/png' || file.name.toLowerCase().endsWith('.png')) {
+            pdfImage = await pdfDoc.embedPng(arrayBuffer);
+          } else {
+            // Convert WebP / others using canvas to PNG
+            const imgBitmap = await createImageBitmap(file);
+            const canvas = document.createElement('canvas');
+            canvas.width = imgBitmap.width;
+            canvas.height = imgBitmap.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(imgBitmap, 0, 0);
+            const pngBlob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+            const pngBuffer = await pngBlob.arrayBuffer();
+            pdfImage = await pdfDoc.embedPng(pngBuffer);
+          }
+
+          const imgWidth = pdfImage.width;
+          const imgHeight = pdfImage.height;
+
+          let pageWidth, pageHeight;
+          if (pageSizeOption === 'original') {
+            pageWidth = imgWidth;
+            pageHeight = imgHeight;
+          } else {
+            // A4
+            let isLandscape = false;
+            if (orientationOption === 'landscape') isLandscape = true;
+            else if (orientationOption === 'portrait') isLandscape = false;
+            else isLandscape = imgWidth > imgHeight;
+
+            pageWidth = isLandscape ? A4_HEIGHT : A4_WIDTH;
+            pageHeight = isLandscape ? A4_WIDTH : A4_HEIGHT;
+          }
+
+          const page = pdfDoc.addPage([pageWidth, pageHeight]);
+
+          // Scale image to fit page with margin
+          const margin = pageSizeOption === 'original' ? 0 : 20;
+          const maxWidth = pageWidth - (margin * 2);
+          const maxHeight = pageHeight - (margin * 2);
+
+          const scale = Math.min(maxWidth / imgWidth, maxHeight / imgHeight, 1);
+          const drawWidth = imgWidth * scale;
+          const drawHeight = imgHeight * scale;
+
+          const posX = (pageWidth - drawWidth) / 2;
+          const posY = (pageHeight - drawHeight) / 2;
+
+          page.drawImage(pdfImage, {
+            x: posX,
+            y: posY,
+            width: drawWidth,
+            height: drawHeight
+          });
+        }
+
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+
+        if (imgBlobUrl) URL.revokeObjectURL(imgBlobUrl);
+        imgBlobUrl = URL.createObjectURL(blob);
+
+        imgResultInfo.textContent = `images_${Date.now()}.pdf (${formatBytes(blob.size)})`;
+        btnDownloadImgPdf.href = imgBlobUrl;
+        btnDownloadImgPdf.download = `images_${Date.now()}.pdf`;
+        imgResultBox.classList.remove('d-none');
+
+        // Auto download
+        const a = document.createElement('a');
+        a.href = imgBlobUrl;
+        a.download = `images_${Date.now()}.pdf`;
+        a.click();
+      } catch (err) {
+        console.error(err);
+        alert('Gagal membuat PDF: ' + err.message);
+      } finally {
+        btnConvertImg2Pdf.disabled = false;
+        btnConvertImg2Pdf.innerHTML = '<i class="bi bi-file-earmark-pdf me-1"></i> Konversi Gambar ke PDF Sekarang';
+      }
+    });
+  </script>
+</body>
+
+</html>

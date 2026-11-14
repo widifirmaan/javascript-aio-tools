@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>PDF to Word (.docx) Converter - DUFL</title>
+  <meta name="description" content="Convert PDF documents to editable Microsoft Word (.docx) files 100% inside your browser. Fast, private, and secure.">
+  <meta name="keywords" content="pdf to word, pdf to docx, convert pdf, client side pdf converter">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+
+  <style>
+    .dropzone {
+      border: 2px dashed #0d6efd;
+      border-radius: 16px;
+      padding: 40px 20px;
+      text-align: center;
+      background: #f8faff;
+      cursor: pointer;
+      transition: all 0.25s ease-in-out;
+    }
+    .dropzone:hover, .dropzone.dragover {
+      background: #eef4ff;
+      border-color: #0b5ed7;
+      transform: scale(1.01);
+    }
+    .feature-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .preview-box {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background: #fff;
+      padding: 20px;
+    }
+  </style>
+</head>
+
+<body class="service-details-page">
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+      <a href="../index.html" class="logo d-flex align-items-center">
+        <h1 class="sitename">Widi Firmansyah</h1>
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="../index.html#hero">Home</a></li>
+          <li><a href="../index.html#services" class="active">All Tools</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main" style="padding-top: 100px;">
+    <div class="page-title dark-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0"><a href="../index.html"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../index.html#services">Tools</a></li>
+            <li class="current">PDF to Word</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <section id="service-details" class="service-details section">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4">
+          <div class="col-lg-8">
+            <div class="content">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                <h3 class="mb-0">PDF to Word Converter (.docx)</h3>
+                <span class="feature-badge">
+                  <i class="bi bi-shield-check"></i> 100% Client-Side Private
+                </span>
+              </div>
+              <p class="text-muted">
+                Konversikan dokumen PDF Anda menjadi file Microsoft Word (<strong>.docx</strong>) yang dapat diedit langsung. 
+                Pemrosesan berjalan 100% di browser Anda menggunakan WebAssembly & JavaScript—dokumen Anda tidak pernah diunggah ke server mana pun!
+              </p>
+
+              <!-- Upload Dropzone -->
+              <div id="dropzone" class="dropzone mb-4">
+                <i class="bi bi-file-earmark-word text-primary" style="font-size: 3rem;"></i>
+                <h5 class="mt-3 mb-1">Drag & drop file PDF Anda di sini</h5>
+                <p class="text-muted small mb-3">atau klik untuk memilih file dari perangkat Anda</p>
+                <input type="file" id="pdfFileInput" accept="application/pdf" class="d-none">
+                <button type="button" class="btn btn-primary px-4 py-2" onclick="document.getElementById('pdfFileInput').click()">
+                  <i class="bi bi-folder2-open me-1"></i> Pilih File PDF
+                </button>
+              </div>
+
+              <!-- Options & File Details Box (Hidden initially) -->
+              <div id="fileDetailsBox" class="preview-box mb-4 d-none">
+                <div class="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom flex-wrap gap-2">
+                  <div>
+                    <h6 class="mb-1 text-primary fw-bold" id="infoFileName">-</h6>
+                    <span class="badge bg-light text-dark me-2" id="infoFileSize">-</span>
+                    <span class="badge bg-info text-white" id="infoPageCount">- Halaman</span>
+                  </div>
+                  <button type="button" class="btn btn-sm btn-outline-danger" id="btnCancel">
+                    <i class="bi bi-x-circle me-1"></i> Ganti File
+                  </button>
+                </div>
+
+                <div class="row g-3 mb-3">
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold small">Mode Konversi:</label>
+                    <select id="convertMode" class="form-select">
+                      <option value="quality" selected>Format Rapi & Heading (Quality)</option>
+                      <option value="clean">Paragraf Bersih (Fast Text)</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold small">Rentang Halaman:</label>
+                    <select id="pageRangeOption" class="form-select">
+                      <option value="all" selected>Semua Halaman</option>
+                      <option value="custom">Halaman Tertentu (misal: 1-5)</option>
+                    </select>
+                  </div>
+                  <div class="col-12 d-none" id="customRangeGroup">
+                    <label class="form-label small">Tentukan Rentang Halaman (Contoh: 1-3 atau 1,2,5):</label>
+                    <input type="text" id="customRangeInput" class="form-control" placeholder="1-5">
+                  </div>
+                </div>
+
+                <button type="button" id="btnConvert" class="btn btn-primary w-100 py-2 fw-semibold">
+                  <i class="bi bi-gear-fill me-1"></i> Konversi ke .docx Sekarang
+                </button>
+
+                <!-- Progress Bar -->
+                <div id="progressContainer" class="mt-3 d-none">
+                  <div class="d-flex justify-content-between small text-muted mb-1">
+                    <span id="progressStatus">Memproses dokumen...</span>
+                    <span id="progressPercent">0%</span>
+                  </div>
+                  <div class="progress" style="height: 10px;">
+                    <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width: 0%"></div>
+                  </div>
+                </div>
+
+                <!-- Result Box -->
+                <div id="resultBox" class="mt-4 p-3 rounded bg-light border border-success d-none">
+                  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                      <i class="bi bi-check-circle-fill text-success fs-3"></i>
+                      <div>
+                        <h6 class="mb-0 text-success fw-bold">Konversi Berhasil!</h6>
+                        <small class="text-muted" id="resultFileName">document.docx</small>
+                      </div>
+                    </div>
+                    <a id="downloadBtn" href="#" class="btn btn-success fw-semibold px-4 py-2">
+                      <i class="bi bi-download me-1"></i> Download File Word (.docx)
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Information cards -->
+              <div class="row g-3 mt-2">
+                <div class="col-md-4">
+                  <div class="card h-100 border-0 bg-light p-3">
+                    <h6 class="fw-bold"><i class="bi bi-shield-lock text-primary me-2"></i>100% Aman & Privat</h6>
+                    <p class="small text-muted mb-0">File diproses langsung di RAM browser pengguna. Tidak ada data yang dikirim ke server luar.</p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card h-100 border-0 bg-light p-3">
+                    <h6 class="fw-bold"><i class="bi bi-lightning-charge text-warning me-2"></i>Cepat & Ringan</h6>
+                    <p class="small text-muted mb-0">Tanpa antrian server. Konversi teks, tata letak, dan paragraf instan hanya dalam hitungan detik.</p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card h-100 border-0 bg-light p-3">
+                    <h6 class="fw-bold"><i class="bi bi-infinity text-success me-2"></i>Gratis Tanpa Batas</h6>
+                    <p class="small text-muted mb-0">Bebas konversi dokumen sebanyak apa pun tanpa batasan kuota harian atau watermark.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="service-info p-4 rounded bg-white border">
+              <h4>Informasi Layanan</h4>
+              <div class="info-item mb-3">
+                <i class="bi bi-person-check text-primary fs-4"></i>
+                <h6 class="mb-0 mt-1">Pengembang</h6>
+                <p class="text-muted small">Widi Firmansyah</p>
+              </div>
+              <div class="info-item mb-3">
+                <i class="bi bi-filetype-docx text-primary fs-4"></i>
+                <h6 class="mb-0 mt-1">Format Output</h6>
+                <p class="text-muted small">Microsoft Word (.docx) OpenXML standar</p>
+              </div>
+              <div class="info-item">
+                <i class="bi bi-cpu text-primary fs-4"></i>
+                <h6 class="mb-0 mt-1">Teknologi</h6>
+                <p class="text-muted small">Mozilla PDF.js & DOCX.js (Pure Client-side JS)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative">
+    <div class="container text-center">
+      <div class="copyright">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+      </div>
+      <div class="credits">
+        Designed by <a href="https://widifirmaan.web.id/">Widi Firmansyah</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+
+  <script>
+    // Initialize PDF.js worker
+    if (typeof pdfjsLib !== 'undefined') {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+
+    let selectedFile = null;
+    let loadedPdf = null;
+    let generatedBlobUrl = null;
+
+    const dropzone = document.getElementById('dropzone');
+    const pdfFileInput = document.getElementById('pdfFileInput');
+    const fileDetailsBox = document.getElementById('fileDetailsBox');
+    const infoFileName = document.getElementById('infoFileName');
+    const infoFileSize = document.getElementById('infoFileSize');
+    const infoPageCount = document.getElementById('infoPageCount');
+    const btnCancel = document.getElementById('btnCancel');
+    const pageRangeOption = document.getElementById('pageRangeOption');
+    const customRangeGroup = document.getElementById('customRangeGroup');
+    const customRangeInput = document.getElementById('customRangeInput');
+    const btnConvert = document.getElementById('btnConvert');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressStatus = document.getElementById('progressStatus');
+    const progressPercent = document.getElementById('progressPercent');
+    const resultBox = document.getElementById('resultBox');
+    const resultFileName = document.getElementById('resultFileName');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    // Drag and drop handlers
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+      }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+      }, false);
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      if (dt.files && dt.files.length > 0) {
+        handleFileSelect(dt.files[0]);
+      }
+    });
+
+    pdfFileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        handleFileSelect(e.target.files[0]);
+      }
+    });
+
+    pageRangeOption.addEventListener('change', () => {
+      if (pageRangeOption.value === 'custom') {
+        customRangeGroup.classList.remove('d-none');
+      } else {
+        customRangeGroup.classList.add('d-none');
+      }
+    });
+
+    btnCancel.addEventListener('click', () => {
+      resetState();
+    });
+
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    async function handleFileSelect(file) {
+      if (!file || file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+        alert('Harap pilih file dengan format PDF (.pdf)!');
+        return;
+      }
+
+      selectedFile = file;
+      infoFileName.textContent = file.name;
+      infoFileSize.textContent = formatBytes(file.size);
+      infoPageCount.textContent = 'Membaca PDF...';
+      fileDetailsBox.classList.remove('d-none');
+      dropzone.classList.add('d-none');
+      resultBox.classList.add('d-none');
+
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        loadedPdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        infoPageCount.textContent = loadedPdf.numPages + ' Halaman';
+        customRangeInput.placeholder = '1-' + loadedPdf.numPages;
+      } catch (err) {
+        console.error('Error loading PDF:', err);
+        alert('Gagal membaca PDF. Pastikan file tidak rusak atau terkunci password.');
+        resetState();
+      }
+    }
+
+    function resetState() {
+      selectedFile = null;
+      loadedPdf = null;
+      if (generatedBlobUrl) {
+        URL.revokeObjectURL(generatedBlobUrl);
+        generatedBlobUrl = null;
+      }
+      pdfFileInput.value = '';
+      fileDetailsBox.classList.add('d-none');
+      dropzone.classList.remove('d-none');
+      resultBox.classList.add('d-none');
+      progressContainer.classList.add('d-none');
+      progressBar.style.width = '0%';
+    }
+
+    function parsePageRange(rangeStr, maxPages) {
+      const pages = new Set();
+      const parts = rangeStr.split(',');
+      for (const part of parts) {
+        const trimmed = part.trim();
+        if (trimmed.includes('-')) {
+          const [startStr, endStr] = trimmed.split('-');
+          const start = parseInt(startStr, 10);
+          const end = parseInt(endStr, 10);
+          if (!isNaN(start) && !isNaN(end)) {
+            for (let i = Math.max(1, start); i <= Math.min(maxPages, end); i++) {
+              pages.add(i);
+            }
+          }
+        } else {
+          const p = parseInt(trimmed, 10);
+          if (!isNaN(p) && p >= 1 && p <= maxPages) {
+            pages.add(p);
+          }
+        }
+      }
+      return Array.from(pages).sort((a, b) => a - b);
+    }
+
+    btnConvert.addEventListener('click', async () => {
+      if (!loadedPdf || !selectedFile) return;
+
+      btnConvert.disabled = true;
+      progressContainer.classList.remove('d-none');
+      resultBox.classList.add('d-none');
+      progressBar.style.width = '5%';
+      progressPercent.textContent = '5%';
+      progressStatus.textContent = 'Mempersiapkan dokumen...';
+
+      try {
+        const totalPdfPages = loadedPdf.numPages;
+        let targetPages = [];
+
+        if (pageRangeOption.value === 'custom' && customRangeInput.value.trim()) {
+          targetPages = parsePageRange(customRangeInput.value.trim(), totalPdfPages);
+          if (targetPages.length === 0) {
+            alert('Rentang halaman tidak valid! Menggunakan semua halaman.');
+            targetPages = Array.from({ length: totalPdfPages }, (_, i) => i + 1);
+          }
+        } else {
+          targetPages = Array.from({ length: totalPdfPages }, (_, i) => i + 1);
+        }
+
+        const mode = document.getElementById('convertMode').value;
+        const docChildren = [];
+        const lineThreshold = 4; // pixel threshold for same line
+
+        for (let idx = 0; idx < targetPages.length; idx++) {
+          const pageNum = targetPages[idx];
+          const progressVal = Math.round(10 + (idx / targetPages.length) * 75);
+          progressBar.style.width = progressVal + '%';
+          progressPercent.textContent = progressVal + '%';
+          progressStatus.textContent = `Mengekstrak halaman ${pageNum} dari ${totalPdfPages}...`;
+
+          const page = await loadedPdf.getPage(pageNum);
+          const textContent = await page.getTextContent();
+          const items = textContent.items.filter(it => it.str && it.str.trim().length > 0);
+
+          if (items.length > 0) {
+            // Sort by vertical position (descending Y in PDF coordinates)
+            const sortedItems = [...items].sort((a, b) => {
+              const yDiff = b.transform[5] - a.transform[5];
+              if (Math.abs(yDiff) > lineThreshold) return yDiff;
+              return a.transform[4] - b.transform[4]; // X ascending
+            });
+
+            const lines = [];
+            let currentLine = [];
+            let currentY = null;
+
+            for (const item of sortedItems) {
+              const y = item.transform[5];
+              if (currentY === null || Math.abs(currentY - y) <= lineThreshold) {
+                currentLine.push(item);
+                if (currentY === null) currentY = y;
+              } else {
+                currentLine.sort((a, b) => a.transform[4] - b.transform[4]);
+                lines.push(currentLine);
+                currentLine = [item];
+                currentY = y;
+              }
+            }
+            if (currentLine.length > 0) {
+              currentLine.sort((a, b) => a.transform[4] - b.transform[4]);
+              lines.push(currentLine);
+            }
+
+            for (const line of lines) {
+              const lineText = line.map(it => it.str).join(' ').trim();
+              if (!lineText) continue;
+
+              const avgHeight = line.reduce((acc, it) => acc + (it.height || 10), 0) / line.length;
+              const isHeading = mode === 'quality' && avgHeight > 14;
+              const isSubheading = mode === 'quality' && avgHeight > 12 && avgHeight <= 14;
+
+              docChildren.push(
+                new docx.Paragraph({
+                  children: [
+                    new docx.TextRun({
+                      text: lineText,
+                      bold: isHeading || isSubheading,
+                      size: isHeading ? 28 : (isSubheading ? 24 : 22),
+                      font: "Calibri"
+                    })
+                  ],
+                  spacing: {
+                    after: isHeading ? 200 : (isSubheading ? 140 : 80),
+                    before: isHeading ? 240 : 0
+                  }
+                })
+              );
+            }
+          }
+
+          // Add page break between pages
+          if (idx < targetPages.length - 1) {
+            docChildren.push(
+              new docx.Paragraph({
+                children: [new docx.PageBreak()]
+              })
+            );
+          }
+        }
+
+        progressBar.style.width = '90%';
+        progressPercent.textContent = '90%';
+        progressStatus.textContent = 'Menyusun file Word (.docx)...';
+
+        const doc = new docx.Document({
+          creator: "JavaScript AIO Tools - Widi Firmansyah",
+          title: selectedFile.name,
+          sections: [
+            {
+              properties: {
+                page: {
+                  margin: {
+                    top: 1440,
+                    right: 1440,
+                    bottom: 1440,
+                    left: 1440
+                  }
+                }
+              },
+              children: docChildren.length > 0 ? docChildren : [
+                new docx.Paragraph({ children: [new docx.TextRun("Tidak ada teks yang dapat diekstrak dari dokumen ini.")] })
+              ]
+            }
+          ]
+        });
+
+        const docxBlob = await docx.Packer.toBlob(doc);
+        progressBar.style.width = '100%';
+        progressPercent.textContent = '100%';
+        progressStatus.textContent = 'Selesai!';
+
+        const outName = selectedFile.name.replace(/\.[^/.]+$/, "") + ".docx";
+        resultFileName.textContent = outName + ` (${formatBytes(docxBlob.size)})`;
+
+        if (generatedBlobUrl) URL.revokeObjectURL(generatedBlobUrl);
+        generatedBlobUrl = URL.createObjectURL(docxBlob);
+        downloadBtn.href = generatedBlobUrl;
+        downloadBtn.download = outName;
+
+        resultBox.classList.remove('d-none');
+
+        // Automatically trigger download
+        const autoLink = document.createElement('a');
+        autoLink.href = generatedBlobUrl;
+        autoLink.download = outName;
+        document.body.appendChild(autoLink);
+        autoLink.click();
+        document.body.removeChild(autoLink);
+
+      } catch (err) {
+        console.error('Conversion error:', err);
+        alert('Terjadi kesalahan saat mengonversi dokumen: ' + err.message);
+      } finally {
+        btnConvert.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
