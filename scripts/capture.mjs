@@ -30,33 +30,18 @@ const tasks = [
 ];
 
 async function preparePage(page, task, isMobile) {
-  // Inject style to kill preloader and force AOS visible immediately
-  await page.addStyleTag({
-    content: `
-      #preloader { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
-      [data-aos] { opacity: 1 !important; transform: none !important; visibility: visible !important; }
-    `
-  });
+  // Wait for natural preloader removal (handled by fixed main.js / services.js)
+  await page.waitForFunction(() => !document.getElementById('preloader'), { timeout: 4000 }).catch(() => {});
 
-  await page.evaluate((task) => {
-    const p = document.getElementById('preloader');
-    if (p) p.remove();
-    document.querySelectorAll('[data-aos]').forEach(el => {
-      el.classList.add('aos-animate');
-      el.style.opacity = '1';
-      el.style.transform = 'none';
-      el.style.visibility = 'visible';
-    });
-    if (task.scrollY) {
-      window.scrollTo(0, task.scrollY);
-    }
-  }, task);
+  if (task.scrollY) {
+    await page.evaluate((y) => window.scrollTo(0, y), task.scrollY);
+  }
 
   if (task.action) {
     await task.action(page);
   }
 
-  await sleep(600);
+  await sleep(400);
 }
 
 async function run() {
