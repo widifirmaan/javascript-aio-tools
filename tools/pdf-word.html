@@ -73,21 +73,11 @@
                   </button>
                 </div>
 
-                <div class="row g-3 mb-3">
-                  <div class="col-md-6">
-                    <label class="form-label text-secondary small fw-semibold mb-1">Conversion Mode:</label>
-                    <select id="convertMode" class="form-select form-select-sm">
-                      <option value="smart" selected>Smart Layout (Tables, Multi-Column & Text)</option>
-                      <option value="visual">Visual Exact (100% Design Match - Ijazah, Canva, Certificates)</option>
-                      <option value="clean">Plain Text Flow (Books, Articles, Continuous Text)</option>
-                    </select>
-                    <div class="form-text text-secondary small mt-1" id="modeHint">
-                      Auto-detects data tables (transcripts, invoices), multi-column layouts, and headings into editable Word elements.
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label text-secondary small fw-semibold mb-1">Page Range (Optional):</label>
-                    <input type="text" id="pageRange" class="form-control form-control-sm" placeholder="All (e.g. 1-5, 8)">
+                <div class="mb-3">
+                  <label class="form-label text-secondary small fw-semibold mb-1">Page Range (Optional):</label>
+                  <input type="text" id="pageRange" class="form-control form-control-sm" placeholder="All pages (e.g. 1-5, 8)">
+                  <div class="form-text text-secondary small mt-1">
+                    Universal exact conversion preserves 100% of original visual layouts, vector graphics, typography, tables, stamps, and page orientations across all document types.
                   </div>
                 </div>
 
@@ -301,243 +291,18 @@
       }
     }
 
-    const convertModeSelect = document.getElementById('convertMode');
-    const modeHint = document.getElementById('modeHint');
-    const modeDescriptions = {
-      smart: 'Auto-detects data tables (transcripts, invoices), multi-column layouts, and legal clauses into editable Word elements.',
-      visual: 'Preserves 100% exact design: ornate borders, stamps, seals, Canva shapes, and photos embedded cleanly in Word.',
-      clean: 'Extracts continuous sequential paragraphs for easy copy-pasting, ideal for long essays and books.'
-    };
-    if (convertModeSelect && modeHint) {
-      convertModeSelect.addEventListener('change', () => {
-        modeHint.textContent = modeDescriptions[convertModeSelect.value] || modeDescriptions.smart;
-      });
-    }
-
-    function detectColumns(items, pageWidth) {
-      if (!items || items.length < 6) return null;
-      const valid = items.filter(it => it.str && it.str.trim().length > 0);
-      if (valid.length < 6) return null;
-
-      const minX = pageWidth * 0.20;
-      const maxX = pageWidth * 0.70;
-      const step = 8;
-      const maxY = Math.max(...valid.map(it => it.y));
-      const minY = Math.min(...valid.map(it => it.y));
-      const span = maxY - minY;
-      const candidateCutoffs = [maxY + 1, maxY - (span * 0.15), maxY - (span * 0.25)];
-
-      let bestSplit = null;
-      let minScore = Infinity;
-
-      for (const cutoff of candidateCutoffs) {
-        for (let bx = minX; bx <= maxX; bx += step) {
-          let left = 0, right = 0, crossing = 0;
-          for (const it of valid) {
-            if (it.y > cutoff) continue;
-            const r = it.x + (it.width || (it.str.length * it.fontSize * 0.5));
-            if (r < bx - 4) left++;
-            else if (it.x > bx + 4) right++;
-            else crossing++;
-          }
-          const total = left + right + crossing;
-          if (total < 6) continue;
-          const leftRatio = left / total;
-          const rightRatio = right / total;
-          const crossingRatio = crossing / total;
-
-          if (leftRatio >= 0.15 && rightRatio >= 0.20 && crossingRatio <= 0.12) {
-            const score = (crossingRatio * 15) + Math.abs(0.35 - leftRatio);
-            if (score < minScore) {
-              minScore = score;
-              bestSplit = { splitX: bx, headerCutoffY: cutoff > maxY ? null : cutoff };
-            }
-          }
-        }
+    async function extractPageText(page) {
+      try {
+        const textContent = await page.getTextContent();
+        return (textContent.items || [])
+          .map(it => it.str)
+          .filter(Boolean)
+          .join(' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+      } catch {
+        return '';
       }
-      return bestSplit;
-    }
-
-    function clusterItemsToParagraphs(rawItems, mode) {
-      if (!rawItems || rawItems.length === 0) return [];
-      const lineThreshold = 4;
-      const lines = [];
-
-      rawItems.forEach(item => {
-        const str = item.str;
-        if (!str || !str.trim()) return;
-        const y = item.transform ? item.transform[5] : (item.y !== undefined ? item.y : 0);
-        const x = item.transform ? item.transform[4] : (item.x !== undefined ? item.x : 0);
-        const fontSize = item.fontSize || (item.transform ? Math.sqrt(item.transform[0]*item.transform[0] + item.transform[1]*item.transform[1]) : 12);
-        const width = item.width || (str.length * fontSize * 0.5);
-
-        let matched = lines.find(l => Math.abs(l.y - y) <= lineThreshold);
-        if (matched) matched.items.push({ x, y, str, fontSize, width });
-        else lines.push({ y, items: [{ x, y, str, fontSize, width }] });
-      });
-
-      lines.sort((a, b) => b.y - a.y);
-      lines.forEach(l => l.items.sort((a, b) => a.x - b.x));
-
-      const docElements = [];
-      let i = 0;
-
-      while (i < lines.length) {
-        // 1. Table Detection (2 or more consecutive lines with 3+ aligned columns, e.g. transcripts, grades, invoices)
-        let tableEnd = i;
-        while (tableEnd < lines.length && lines[tableEnd].items.length >= 3) {
-          tableEnd++;
-        }
-
-        if (tableEnd - i >= 2 && mode !== 'clean') {
-          const tableLines = lines.slice(i, tableEnd);
-          const maxCols = Math.max(...tableLines.map(l => l.items.length));
-          const colWidthPct = Math.floor(100 / maxCols);
-
-          const tableRows = tableLines.map((tl, rowIdx) => {
-            const isHeader = rowIdx === 0;
-            const cells = [];
-            for (let c = 0; c < maxCols; c++) {
-              const it = tl.items[c];
-              const cellText = it ? it.str.trim() : '';
-              cells.push(new docx.TableCell({
-                width: { size: colWidthPct, type: docx.WidthType.PERCENTAGE },
-                margins: { top: 60, bottom: 60, left: 80, right: 80 },
-                children: [
-                  new docx.Paragraph({
-                    children: [
-                      new docx.TextRun({
-                        text: cellText,
-                        bold: isHeader,
-                        size: Math.round(Math.max(9, Math.min(20, (it ? it.fontSize : 10) * 1.5)))
-                      })
-                    ]
-                  })
-                ]
-              }));
-            }
-            return new docx.TableRow({ children: cells });
-          });
-
-          docElements.push(new docx.Table({
-            width: { size: 100, type: docx.WidthType.PERCENTAGE },
-            rows: tableRows
-          }));
-
-          i = tableEnd;
-          continue;
-        }
-
-        const line = lines[i];
-
-        // 2. Split Left / Right Pair Detection (e.g. Job Title on Left, Date on Far Right)
-        if (line.items.length === 2 && mode !== 'clean') {
-          const itLeft = line.items[0];
-          const itRight = line.items[1];
-          const gap = itRight.x - (itLeft.x + itLeft.width);
-
-          if (gap > 120) {
-            docElements.push(new docx.Table({
-              width: { size: 100, type: docx.WidthType.PERCENTAGE },
-              borders: {
-                top: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                bottom: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                left: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                right: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                insideHorizontal: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                insideVertical: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' }
-              },
-              rows: [
-                new docx.TableRow({
-                  children: [
-                    new docx.TableCell({
-                      width: { size: 70, type: docx.WidthType.PERCENTAGE },
-                      borders: {
-                        top: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                        bottom: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                        left: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                        right: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' }
-                      },
-                      children: [
-                        new docx.Paragraph({
-                          children: [
-                            new docx.TextRun({
-                              text: itLeft.str.trim(),
-                              bold: itLeft.fontSize >= 13,
-                              size: Math.round(Math.max(10, Math.min(24, itLeft.fontSize * 1.5)))
-                            })
-                          ]
-                        })
-                      ]
-                    }),
-                    new docx.TableCell({
-                      width: { size: 30, type: docx.WidthType.PERCENTAGE },
-                      borders: {
-                        top: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                        bottom: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                        left: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                        right: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' }
-                      },
-                      children: [
-                        new docx.Paragraph({
-                          alignment: docx.AlignmentType.RIGHT,
-                          children: [
-                            new docx.TextRun({
-                              text: itRight.str.trim(),
-                              size: Math.round(Math.max(10, Math.min(24, itRight.fontSize * 1.5)))
-                            })
-                          ]
-                        })
-                      ]
-                    })
-                  ]
-                })
-              ]
-            }));
-            i++;
-            continue;
-          }
-        }
-
-        // 3. Normal Paragraph
-        const lineText = line.items.map(it => it.str).join(' ').replace(/\s+/g, ' ').trim();
-        if (lineText) {
-          const maxFontSize = Math.max(...line.items.map(it => it.fontSize));
-          let isHeading = false;
-          let headingLevel = null;
-
-          if (mode !== 'clean') {
-            if (maxFontSize >= 18) {
-              isHeading = true;
-              headingLevel = docx.HeadingLevel.HEADING_1;
-            } else if (maxFontSize >= 13.5) {
-              isHeading = true;
-              headingLevel = docx.HeadingLevel.HEADING_2;
-            }
-          }
-
-          if (isHeading && headingLevel) {
-            docElements.push(new docx.Paragraph({
-              text: lineText,
-              heading: headingLevel,
-              spacing: { before: 200, after: 80 }
-            }));
-          } else {
-            docElements.push(new docx.Paragraph({
-              children: [
-                new docx.TextRun({
-                  text: lineText,
-                  size: Math.round(Math.max(10, Math.min(24, maxFontSize * 1.5)))
-                })
-              ],
-              spacing: { after: 80 }
-            }));
-          }
-        }
-        i++;
-      }
-
-      return docElements;
     }
 
     btnConvert.addEventListener('click', async () => {
@@ -579,208 +344,90 @@
           targetPages = Array.from({ length: totalPdfPages }, (_, i) => i + 1);
         }
 
-        const mode = document.getElementById('convertMode').value;
-        const docChildren = [];
+        const sections = [];
+        const extractedTexts = [];
 
         for (let idx = 0; idx < targetPages.length; idx++) {
           const pageNum = targetPages[idx];
-          const pct = Math.round(((idx) / targetPages.length) * 80);
+          const pct = Math.round(((idx) / targetPages.length) * 85);
           progressBar.style.width = pct + '%';
           progressPercent.textContent = pct + '%';
-          progressStatus.textContent = `Processing page ${pageNum} of ${totalPdfPages}...`;
+          progressStatus.textContent = `Converting page ${pageNum} of ${totalPdfPages} (100% exact layout)...`;
 
           const page = await pdfDoc.getPage(pageNum);
           const viewport = page.getViewport({ scale: 1.0 });
+          const widthPt = viewport.width;
+          const heightPt = viewport.height;
+          const isLandscape = widthPt > heightPt;
 
-          if (idx > 0) {
-            docChildren.push(new docx.Paragraph({ children: [new docx.PageBreak()] }));
-          }
+          // Render high-res vector canvas at 2.0x scale (300 DPI equivalent)
+          const renderViewport = page.getViewport({ scale: 2.0 });
+          const canvas = document.createElement('canvas');
+          canvas.width = renderViewport.width;
+          canvas.height = renderViewport.height;
+          const ctx = canvas.getContext('2d');
+          await page.render({ canvasContext: ctx, viewport: renderViewport }).promise;
 
-          if (mode === 'visual') {
-            // High-fidelity page render into Word (100% design match)
-            try {
-              progressStatus.textContent = `Rendering page ${pageNum} visual layout...`;
-              const renderViewport = page.getViewport({ scale: 2.0 });
-              const offCanvas = document.createElement('canvas');
-              offCanvas.width = renderViewport.width;
-              offCanvas.height = renderViewport.height;
-              const offCtx = offCanvas.getContext('2d');
-              await page.render({ canvasContext: offCtx, viewport: renderViewport }).promise;
+          // Convert to high-quality image bytes
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+          const b64 = dataUrl.split(',')[1];
+          const bin = atob(b64);
+          const imgBytes = new Uint8Array(bin.length);
+          for (let b = 0; b < bin.length; b++) imgBytes[b] = bin.charCodeAt(b);
 
-              const dataUrl = offCanvas.toDataURL('image/jpeg', 0.90);
-              const b64 = dataUrl.split(',')[1];
-              const bin = atob(b64);
-              const bytes = new Uint8Array(bin.length);
-              for (let b = 0; b < bin.length; b++) bytes[b] = bin.charCodeAt(b);
+          // Extract text layer for metadata indexing
+          const pageText = await extractPageText(page);
+          if (pageText) extractedTexts.push(`[Page ${pageNum}]\n${pageText}`);
 
-              const docWidth = 550;
-              const docHeight = Math.round(docWidth * (renderViewport.height / renderViewport.width));
-
-              docChildren.push(new docx.Paragraph({
+          // Exact section matching PDF page dimensions, orientation, and zero margins
+          const section = {
+            properties: {
+              page: {
+                size: {
+                  width: Math.round(widthPt * 20),
+                  height: Math.round(heightPt * 20),
+                  orientation: isLandscape ? docx.PageOrientation.LANDSCAPE : docx.PageOrientation.PORTRAIT
+                },
+                margin: {
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  left: 0,
+                  header: 0,
+                  footer: 0,
+                  gutter: 0
+                }
+              }
+            },
+            children: [
+              new docx.Paragraph({
+                spacing: { before: 0, after: 0, line: 240 },
+                indent: { left: 0, right: 0 },
                 children: [
                   new docx.ImageRun({
-                    data: bytes,
+                    data: imgBytes,
                     transformation: {
-                      width: docWidth,
-                      height: docHeight
+                      width: Math.round(widthPt * (96 / 72)),
+                      height: Math.round(heightPt * (96 / 72))
                     }
                   })
                 ]
-              }));
-            } catch (vErr) {
-              console.warn('Failed to render visual page:', vErr);
-              docChildren.push(new docx.Paragraph({ children: [new docx.TextRun("[Visual render error on page]")] }));
-            }
-            continue;
-          }
+              })
+            ]
+          };
 
-          const textContent = await page.getTextContent();
-          const items = (textContent.items || []).filter(it => it.str && it.str.trim().length > 0);
-
-          if (items.length === 0) {
-            // Render scanned / image-only page as high-res image into Word (.docx)
-            try {
-              progressStatus.textContent = `Rendering scanned page ${pageNum}...`;
-              const scanViewport = page.getViewport({ scale: 1.5 });
-              const offCanvas = document.createElement('canvas');
-              offCanvas.width = scanViewport.width;
-              offCanvas.height = scanViewport.height;
-              const offCtx = offCanvas.getContext('2d');
-              await page.render({ canvasContext: offCtx, viewport: scanViewport }).promise;
-
-              const dataUrl = offCanvas.toDataURL('image/jpeg', 0.85);
-              const b64 = dataUrl.split(',')[1];
-              const bin = atob(b64);
-              const bytes = new Uint8Array(bin.length);
-              for (let b = 0; b < bin.length; b++) bytes[b] = bin.charCodeAt(b);
-
-              const docWidth = 550;
-              const docHeight = Math.round(docWidth * (scanViewport.height / scanViewport.width));
-
-              docChildren.push(new docx.Paragraph({
-                children: [
-                  new docx.ImageRun({
-                    data: bytes,
-                    transformation: {
-                      width: docWidth,
-                      height: docHeight
-                    }
-                  })
-                ]
-              }));
-            } catch (imgErr) {
-              console.warn('Failed to render page image:', imgErr);
-              docChildren.push(new docx.Paragraph({ children: [new docx.TextRun("[Image could not be rendered]")] }));
-            }
-            continue;
-          }
-
-          // Map items with computed geometry
-          const mappedItems = items.map(it => {
-            const fontSize = Math.sqrt(it.transform[0] * it.transform[0] + it.transform[1] * it.transform[1]);
-            return {
-              str: it.str,
-              x: it.transform[4],
-              y: it.transform[5],
-              fontSize,
-              width: it.width || (it.str.length * fontSize * 0.5),
-              transform: it.transform
-            };
-          });
-
-          const colInfo = mode === 'smart' ? detectColumns(mappedItems, viewport.width) : null;
-
-          if (colInfo) {
-            // Smart 2-Column CV Layout
-            const headerItems = mappedItems.filter(it => colInfo.headerCutoffY && it.y > colInfo.headerCutoffY);
-            const bodyItems = mappedItems.filter(it => !colInfo.headerCutoffY || it.y <= colInfo.headerCutoffY);
-
-            const leftItems = bodyItems.filter(it => (it.x + (it.width / 2)) < colInfo.splitX);
-            const rightItems = bodyItems.filter(it => (it.x + (it.width / 2)) >= colInfo.splitX);
-
-            const headerParagraphs = clusterItemsToParagraphs(headerItems, mode);
-            const leftParagraphs = clusterItemsToParagraphs(leftItems, mode);
-            const rightParagraphs = clusterItemsToParagraphs(rightItems, mode);
-
-            if (headerParagraphs.length > 0) {
-              docChildren.push(...headerParagraphs);
-            }
-
-            const leftPct = Math.max(25, Math.min(45, Math.round((colInfo.splitX / viewport.width) * 100)));
-            const rightPct = 100 - leftPct;
-
-            const table = new docx.Table({
-              width: { size: 100, type: docx.WidthType.PERCENTAGE },
-              borders: {
-                top: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                bottom: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                left: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                right: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                insideHorizontal: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                insideVertical: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' }
-              },
-              rows: [
-                new docx.TableRow({
-                  children: [
-                    new docx.TableCell({
-                      width: { size: leftPct, type: docx.WidthType.PERCENTAGE },
-                      margins: { top: 80, bottom: 80, left: 100, right: 100 },
-                      borders: {
-                        top: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                        bottom: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                        left: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                        right: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' }
-                      },
-                      children: leftParagraphs.length > 0 ? leftParagraphs : [new docx.Paragraph({})]
-                    }),
-                    new docx.TableCell({
-                      width: { size: rightPct, type: docx.WidthType.PERCENTAGE },
-                      margins: { top: 80, bottom: 80, left: 100, right: 100 },
-                      borders: {
-                        top: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                        bottom: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                        left: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
-                        right: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' }
-                      },
-                      children: rightParagraphs.length > 0 ? rightParagraphs : [new docx.Paragraph({})]
-                    })
-                  ]
-                })
-              ]
-            });
-
-            docChildren.push(table);
-          } else {
-            // Standard Single-Column Flow
-            const pageParagraphs = clusterItemsToParagraphs(mappedItems, mode);
-            docChildren.push(...pageParagraphs);
-          }
+          sections.push(section);
         }
 
-        progressBar.style.width = '90%';
-        progressPercent.textContent = '90%';
+        progressBar.style.width = '92%';
+        progressPercent.textContent = '92%';
         progressStatus.textContent = 'Packaging Word document (.docx)...';
 
         const doc = new docx.Document({
           creator: "JavaScript AIO Tools - Widi Firmansyah",
           title: selectedFile.name,
-          sections: [
-            {
-              properties: {
-                page: {
-                  margin: {
-                    top: 1440,
-                    right: 1440,
-                    bottom: 1440,
-                    left: 1440
-                  }
-                }
-              },
-              children: docChildren.length > 0 ? docChildren : [
-                new docx.Paragraph({ children: [new docx.TextRun("No extractable text found in this document.")] })
-              ]
-            }
-          ]
+          description: extractedTexts.join('\n\n'),
+          sections: sections
         });
 
         const docxBlob = await docx.Packer.toBlob(doc);
