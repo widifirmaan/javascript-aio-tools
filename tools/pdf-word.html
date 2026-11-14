@@ -77,12 +77,12 @@
                   <div class="col-md-6">
                     <label class="form-label text-secondary small fw-semibold mb-1">Conversion Mode:</label>
                     <select id="convertMode" class="form-select form-select-sm">
-                      <option value="smart" selected>Smart Layout (Auto-Detect CV & Columns)</option>
-                      <option value="visual">Visual Exact (100% Design & Graphics Preserved)</option>
-                      <option value="clean">Plain Text Flow (Sequential Paragraphs)</option>
+                      <option value="smart" selected>Smart Layout (Tables, Multi-Column & Text)</option>
+                      <option value="visual">Visual Exact (100% Design Match - Ijazah, Canva, Certificates)</option>
+                      <option value="clean">Plain Text Flow (Books, Articles, Continuous Text)</option>
                     </select>
                     <div class="form-text text-secondary small mt-1" id="modeHint">
-                      Auto-detects 2-column CV / Resumes and places sections into clean side-by-side editable columns.
+                      Auto-detects data tables (transcripts, invoices), multi-column layouts, and headings into editable Word elements.
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -304,9 +304,9 @@
     const convertModeSelect = document.getElementById('convertMode');
     const modeHint = document.getElementById('modeHint');
     const modeDescriptions = {
-      smart: 'Auto-detects 2-column CV / Resumes and places sections into clean side-by-side editable columns.',
-      visual: 'Renders high-fidelity 1:1 visual match with exact graphics, badges, and styling embedded in Word.',
-      clean: 'Extracts all content into simple continuous paragraphs for easy copy-pasting.'
+      smart: 'Auto-detects data tables (transcripts, invoices), multi-column layouts, and legal clauses into editable Word elements.',
+      visual: 'Preserves 100% exact design: ornate borders, stamps, seals, Canva shapes, and photos embedded cleanly in Word.',
+      clean: 'Extracts continuous sequential paragraphs for easy copy-pasting, ideal for long essays and books.'
     };
     if (convertModeSelect && modeHint) {
       convertModeSelect.addEventListener('change', () => {
