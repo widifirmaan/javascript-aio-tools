@@ -8,9 +8,6 @@
   <meta name="description" content="Free client-side background remover using on-device WebAssembly AI. Zero server GPU or image uploads required.">
   <link href="../assets/img/favicon.png" rel="icon">
   <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
@@ -189,7 +186,7 @@
   <script src="../assets/js/services.js"></script>
 
   <script type="module">
-    import { removeBackground } from 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm';
+    import { removeBackground } from '../assets/vendor/imgly/bundle.js';
 
     const fileInput = document.getElementById('imageInput');
     const processBtn = document.getElementById('processBtn');
@@ -264,7 +261,9 @@
       let isComputing = false;
 
       try {
+        const pubPath = new URL('../assets/vendor/imgly/data/', window.location.href).href;
         const blob = await removeBackground(file, {
+          publicPath: pubPath,
           model: 'isnet_quint8',
           progress: (key, current, total) => {
             if (typeof key === 'string' && key.startsWith('compute')) {

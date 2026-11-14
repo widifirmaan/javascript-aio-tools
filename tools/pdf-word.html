@@ -8,17 +8,14 @@
   <meta name="description" content="100% private, client-side PDF to Word (.docx) converter powered by Mozilla PDF.js and DOCX.js. Zero server upload.">
   <link href="../assets/img/favicon.png" rel="icon">
   <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
 
-  <!-- PDF.js & DOCX.js Engines -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
+  <!-- PDF.js & DOCX.js Engines (100% Self-Hosted & Fully Offline) -->
+  <script src="../assets/vendor/pdfjs/pdf.min.js"></script>
+  <script src="../assets/vendor/docx/docx.umd.js"></script>
 </head>
 
 <body class="service-details-page">
@@ -80,9 +77,13 @@
                   <div class="col-md-6">
                     <label class="form-label text-secondary small fw-semibold mb-1">Conversion Mode:</label>
                     <select id="convertMode" class="form-select form-select-sm">
-                      <option value="quality" selected>Formatted with Headings (Quality)</option>
-                      <option value="clean">Clean Paragraphs (Fast Text)</option>
+                      <option value="smart" selected>Smart Layout (Auto-Detect CV & Columns)</option>
+                      <option value="visual">Visual Exact (100% Design & Graphics Preserved)</option>
+                      <option value="clean">Plain Text Flow (Sequential Paragraphs)</option>
                     </select>
+                    <div class="form-text text-secondary small mt-1" id="modeHint">
+                      Auto-detects 2-column CV / Resumes and places sections into clean side-by-side editable columns.
+                    </div>
                   </div>
                   <div class="col-md-6">
                     <label class="form-label text-secondary small fw-semibold mb-1">Page Range (Optional):</label>
@@ -198,7 +199,7 @@
 
   <script>
     if (typeof pdfjsLib !== 'undefined') {
-      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      pdfjsLib.GlobalWorkerOptions.workerSrc = '../assets/vendor/pdfjs/pdf.worker.min.js';
     }
 
     const dropzone = document.getElementById('dropzone');
@@ -300,6 +301,124 @@
       }
     }
 
+    const convertModeSelect = document.getElementById('convertMode');
+    const modeHint = document.getElementById('modeHint');
+    const modeDescriptions = {
+      smart: 'Auto-detects 2-column CV / Resumes and places sections into clean side-by-side editable columns.',
+      visual: 'Renders high-fidelity 1:1 visual match with exact graphics, badges, and styling embedded in Word.',
+      clean: 'Extracts all content into simple continuous paragraphs for easy copy-pasting.'
+    };
+    if (convertModeSelect && modeHint) {
+      convertModeSelect.addEventListener('change', () => {
+        modeHint.textContent = modeDescriptions[convertModeSelect.value] || modeDescriptions.smart;
+      });
+    }
+
+    function detectColumns(items, pageWidth) {
+      if (!items || items.length < 6) return null;
+      const valid = items.filter(it => it.str && it.str.trim().length > 0);
+      if (valid.length < 6) return null;
+
+      const minX = pageWidth * 0.20;
+      const maxX = pageWidth * 0.70;
+      const step = 8;
+      const maxY = Math.max(...valid.map(it => it.y));
+      const minY = Math.min(...valid.map(it => it.y));
+      const span = maxY - minY;
+      const candidateCutoffs = [maxY + 1, maxY - (span * 0.15), maxY - (span * 0.25)];
+
+      let bestSplit = null;
+      let minScore = Infinity;
+
+      for (const cutoff of candidateCutoffs) {
+        for (let bx = minX; bx <= maxX; bx += step) {
+          let left = 0, right = 0, crossing = 0;
+          for (const it of valid) {
+            if (it.y > cutoff) continue;
+            const r = it.x + (it.width || (it.str.length * it.fontSize * 0.5));
+            if (r < bx - 4) left++;
+            else if (it.x > bx + 4) right++;
+            else crossing++;
+          }
+          const total = left + right + crossing;
+          if (total < 6) continue;
+          const leftRatio = left / total;
+          const rightRatio = right / total;
+          const crossingRatio = crossing / total;
+
+          if (leftRatio >= 0.15 && rightRatio >= 0.20 && crossingRatio <= 0.12) {
+            const score = (crossingRatio * 15) + Math.abs(0.35 - leftRatio);
+            if (score < minScore) {
+              minScore = score;
+              bestSplit = { splitX: bx, headerCutoffY: cutoff > maxY ? null : cutoff };
+            }
+          }
+        }
+      }
+      return bestSplit;
+    }
+
+    function clusterItemsToParagraphs(rawItems, mode) {
+      if (!rawItems || rawItems.length === 0) return [];
+      const lineThreshold = 4;
+      const lines = [];
+
+      rawItems.forEach(item => {
+        const str = item.str;
+        if (!str || !str.trim()) return;
+        const y = item.transform ? item.transform[5] : (item.y !== undefined ? item.y : 0);
+        const x = item.transform ? item.transform[4] : (item.x !== undefined ? item.x : 0);
+        const fontSize = item.fontSize || (item.transform ? Math.sqrt(item.transform[0]*item.transform[0] + item.transform[1]*item.transform[1]) : 12);
+
+        let matched = lines.find(l => Math.abs(l.y - y) <= lineThreshold);
+        if (matched) matched.items.push({ x, str, fontSize });
+        else lines.push({ y, items: [{ x, str, fontSize }] });
+      });
+
+      lines.sort((a, b) => b.y - a.y);
+
+      const paragraphs = [];
+      for (const line of lines) {
+        line.items.sort((a, b) => a.x - b.x);
+        const lineText = line.items.map(it => it.str).join(' ').replace(/\s+/g, ' ').trim();
+        if (!lineText) continue;
+
+        const maxFontSize = Math.max(...line.items.map(it => it.fontSize));
+        let isHeading = false;
+        let headingLevel = null;
+
+        if (mode !== 'clean') {
+          if (maxFontSize >= 18) {
+            isHeading = true;
+            headingLevel = docx.HeadingLevel.HEADING_1;
+          } else if (maxFontSize >= 13.5) {
+            isHeading = true;
+            headingLevel = docx.HeadingLevel.HEADING_2;
+          }
+        }
+
+        if (isHeading && headingLevel) {
+          paragraphs.push(new docx.Paragraph({
+            text: lineText,
+            heading: headingLevel,
+            spacing: { before: 200, after: 80 }
+          }));
+        } else {
+          paragraphs.push(new docx.Paragraph({
+            children: [
+              new docx.TextRun({
+                text: lineText,
+                size: Math.round(Math.max(10, Math.min(24, maxFontSize * 1.5)))
+              })
+            ],
+            spacing: { after: 80 }
+          }));
+        }
+      }
+
+      return paragraphs;
+    }
+
     btnConvert.addEventListener('click', async () => {
       if (!pdfDoc) {
         alert('Please choose a PDF document first.');
@@ -341,33 +460,72 @@
 
         const mode = document.getElementById('convertMode').value;
         const docChildren = [];
-        const lineThreshold = 4;
 
         for (let idx = 0; idx < targetPages.length; idx++) {
           const pageNum = targetPages[idx];
           const pct = Math.round(((idx) / targetPages.length) * 80);
           progressBar.style.width = pct + '%';
           progressPercent.textContent = pct + '%';
-          progressStatus.textContent = `Extracting text from page ${pageNum} of ${totalPdfPages}...`;
+          progressStatus.textContent = `Processing page ${pageNum} of ${totalPdfPages}...`;
 
           const page = await pdfDoc.getPage(pageNum);
-          const textContent = await page.getTextContent();
-          const items = textContent.items;
+          const viewport = page.getViewport({ scale: 1.0 });
 
           if (idx > 0) {
             docChildren.push(new docx.Paragraph({ children: [new docx.PageBreak()] }));
           }
 
-          if (!items || items.length === 0) {
+          if (mode === 'visual') {
+            // High-fidelity page render into Word (100% design match)
+            try {
+              progressStatus.textContent = `Rendering page ${pageNum} visual layout...`;
+              const renderViewport = page.getViewport({ scale: 2.0 });
+              const offCanvas = document.createElement('canvas');
+              offCanvas.width = renderViewport.width;
+              offCanvas.height = renderViewport.height;
+              const offCtx = offCanvas.getContext('2d');
+              await page.render({ canvasContext: offCtx, viewport: renderViewport }).promise;
+
+              const dataUrl = offCanvas.toDataURL('image/jpeg', 0.90);
+              const b64 = dataUrl.split(',')[1];
+              const bin = atob(b64);
+              const bytes = new Uint8Array(bin.length);
+              for (let b = 0; b < bin.length; b++) bytes[b] = bin.charCodeAt(b);
+
+              const docWidth = 550;
+              const docHeight = Math.round(docWidth * (renderViewport.height / renderViewport.width));
+
+              docChildren.push(new docx.Paragraph({
+                children: [
+                  new docx.ImageRun({
+                    data: bytes,
+                    transformation: {
+                      width: docWidth,
+                      height: docHeight
+                    }
+                  })
+                ]
+              }));
+            } catch (vErr) {
+              console.warn('Failed to render visual page:', vErr);
+              docChildren.push(new docx.Paragraph({ children: [new docx.TextRun("[Visual render error on page]")] }));
+            }
+            continue;
+          }
+
+          const textContent = await page.getTextContent();
+          const items = (textContent.items || []).filter(it => it.str && it.str.trim().length > 0);
+
+          if (items.length === 0) {
             // Render scanned / image-only page as high-res image into Word (.docx)
             try {
-              progressStatus.textContent = `Rendering page ${pageNum} image...`;
-              const viewport = page.getViewport({ scale: 1.5 });
+              progressStatus.textContent = `Rendering scanned page ${pageNum}...`;
+              const scanViewport = page.getViewport({ scale: 1.5 });
               const offCanvas = document.createElement('canvas');
-              offCanvas.width = viewport.width;
-              offCanvas.height = viewport.height;
+              offCanvas.width = scanViewport.width;
+              offCanvas.height = scanViewport.height;
               const offCtx = offCanvas.getContext('2d');
-              await page.render({ canvasContext: offCtx, viewport }).promise;
+              await page.render({ canvasContext: offCtx, viewport: scanViewport }).promise;
 
               const dataUrl = offCanvas.toDataURL('image/jpeg', 0.85);
               const b64 = dataUrl.split(',')[1];
@@ -376,7 +534,7 @@
               for (let b = 0; b < bin.length; b++) bytes[b] = bin.charCodeAt(b);
 
               const docWidth = 550;
-              const docHeight = Math.round(docWidth * (viewport.height / viewport.width));
+              const docHeight = Math.round(docWidth * (scanViewport.height / scanViewport.width));
 
               docChildren.push(new docx.Paragraph({
                 children: [
@@ -396,60 +554,85 @@
             continue;
           }
 
-          const lines = [];
-          items.forEach(item => {
-            const str = item.str;
-            if (!str) return;
-            const y = item.transform[5];
-            const x = item.transform[4];
-            const fontSize = Math.sqrt(item.transform[0] * item.transform[0] + item.transform[1] * item.transform[1]);
-
-            let matchedLine = lines.find(l => Math.abs(l.y - y) <= lineThreshold);
-            if (matchedLine) {
-              matchedLine.items.push({ x, str, fontSize });
-            } else {
-              lines.push({ y, items: [{ x, str, fontSize }] });
-            }
+          // Map items with computed geometry
+          const mappedItems = items.map(it => {
+            const fontSize = Math.sqrt(it.transform[0] * it.transform[0] + it.transform[1] * it.transform[1]);
+            return {
+              str: it.str,
+              x: it.transform[4],
+              y: it.transform[5],
+              fontSize,
+              width: it.width || (it.str.length * fontSize * 0.5),
+              transform: it.transform
+            };
           });
 
-          lines.sort((a, b) => b.y - a.y);
+          const colInfo = mode === 'smart' ? detectColumns(mappedItems, viewport.width) : null;
 
-          for (const line of lines) {
-            line.items.sort((a, b) => a.x - b.x);
-            const lineText = line.items.map(it => it.str).join(' ').trim();
-            if (!lineText) continue;
+          if (colInfo) {
+            // Smart 2-Column CV Layout
+            const headerItems = mappedItems.filter(it => colInfo.headerCutoffY && it.y > colInfo.headerCutoffY);
+            const bodyItems = mappedItems.filter(it => !colInfo.headerCutoffY || it.y <= colInfo.headerCutoffY);
 
-            const maxFontSize = Math.max(...line.items.map(it => it.fontSize));
-            let isHeading = false;
-            let headingLevel = null;
+            const leftItems = bodyItems.filter(it => (it.x + (it.width / 2)) < colInfo.splitX);
+            const rightItems = bodyItems.filter(it => (it.x + (it.width / 2)) >= colInfo.splitX);
 
-            if (mode === 'quality') {
-              if (maxFontSize >= 18) {
-                isHeading = true;
-                headingLevel = docx.HeadingLevel.HEADING_1;
-              } else if (maxFontSize >= 14) {
-                isHeading = true;
-                headingLevel = docx.HeadingLevel.HEADING_2;
-              }
+            const headerParagraphs = clusterItemsToParagraphs(headerItems, mode);
+            const leftParagraphs = clusterItemsToParagraphs(leftItems, mode);
+            const rightParagraphs = clusterItemsToParagraphs(rightItems, mode);
+
+            if (headerParagraphs.length > 0) {
+              docChildren.push(...headerParagraphs);
             }
 
-            if (isHeading && headingLevel) {
-              docChildren.push(new docx.Paragraph({
-                text: lineText,
-                heading: headingLevel,
-                spacing: { before: 240, after: 120 }
-              }));
-            } else {
-              docChildren.push(new docx.Paragraph({
-                children: [
-                  new docx.TextRun({
-                    text: lineText,
-                    size: Math.round(Math.max(10, Math.min(24, maxFontSize * 1.5)))
-                  })
-                ],
-                spacing: { after: 100 }
-              }));
-            }
+            const leftPct = Math.max(25, Math.min(45, Math.round((colInfo.splitX / viewport.width) * 100)));
+            const rightPct = 100 - leftPct;
+
+            const table = new docx.Table({
+              width: { size: 100, type: docx.WidthType.PERCENTAGE },
+              borders: {
+                top: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                bottom: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                left: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                right: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                insideHorizontal: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                insideVertical: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' }
+              },
+              rows: [
+                new docx.TableRow({
+                  children: [
+                    new docx.TableCell({
+                      width: { size: leftPct, type: docx.WidthType.PERCENTAGE },
+                      margins: { top: 80, bottom: 80, left: 100, right: 100 },
+                      borders: {
+                        top: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                        bottom: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                        left: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                        right: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' }
+                      },
+                      children: leftParagraphs.length > 0 ? leftParagraphs : [new docx.Paragraph({})]
+                    }),
+                    new docx.TableCell({
+                      width: { size: rightPct, type: docx.WidthType.PERCENTAGE },
+                      margins: { top: 80, bottom: 80, left: 100, right: 100 },
+                      borders: {
+                        top: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                        bottom: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                        left: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                        right: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' }
+                      },
+                      children: rightParagraphs.length > 0 ? rightParagraphs : [new docx.Paragraph({})]
+                    })
+                  ]
+                })
+              ]
+            });
+
+            docChildren.push(table);
+          } else {
+            // Standard Single-Column Flow
+            const pageParagraphs = clusterItemsToParagraphs(mappedItems, mode);
+            docChildren.push(...pageParagraphs);
           }
         }
 

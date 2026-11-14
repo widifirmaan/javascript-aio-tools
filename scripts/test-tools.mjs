@@ -33,7 +33,7 @@ async function runTestSuite() {
 
   const browser = await puppeteer.launch({
     executablePath: '/usr/bin/google-chrome',
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu']
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--allow-file-access-from-files']
   });
 
   let totalErrors = 0;
