@@ -162,14 +162,6 @@ npx wrangler pages deploy . --project-name javascript-aio-tools --branch master
 
 ---
 
-## 🔒 Privacy & Security Guarantee
-
-- **Zero Server Uploads**: Your files, documents, photos, and JWT tokens never leave your local machine.
-- **RAM-Only Processing**: Files are processed in volatile memory via JavaScript Blobs and ArrayBuffers, automatically garbage-collected upon closing the tab.
-- **Zero Analytics Tracking**: No third-party trackers or user data collection.
-
----
-
 ## Author
 
 Developed by **[Widi Firmansyah](https://widifirmaan.web.id)**.

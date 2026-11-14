@@ -18,8 +18,8 @@
 
   <style>
     .tire-container {
-      width: 140px;
-      height: 140px;
+      width: 130px;
+      height: 130px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -29,9 +29,8 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background: radial-gradient(circle, #333 40%, #111 70%, #000 100%);
-      border: 8px solid #222;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+      background: rgba(255, 255, 255, 0.03);
+      border: 4px solid rgba(255, 255, 255, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -42,14 +41,15 @@
       width: 55%;
       height: 55%;
       border-radius: 50%;
-      background: radial-gradient(circle, #777 0%, #444 80%, #222 100%);
-      border: 2px solid #888;
+      background: rgba(255, 255, 255, 0.06);
+      border: 2px dashed rgba(255, 255, 255, 0.4);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #aaa;
-      font-size: 0.75rem;
-      font-weight: bold;
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: 'Fira Code', monospace;
     }
   </style>
 </head>
@@ -89,10 +89,9 @@
               <div class="row g-3 mb-4">
                 <!-- Tire 1 (Original) -->
                 <div class="col-md-6">
-                  <div class="p-3 rounded border border-secondary border-opacity-25" style="background: #18181b;">
+                  <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                      <h6 class="text-primary fw-bold mb-0"><i class="bi bi-disc me-1"></i> Ban 1 (Standar / OEM)</h6>
-                      <span class="text-secondary small fw-semibold">Standar</span>
+                      <h6 class="text-white fw-bold mb-0"><i class="bi bi-disc me-2 text-secondary"></i>Tire 1 (OEM / Standar)</h6>
                     </div>
 
                     <div class="mb-2">
@@ -112,10 +111,9 @@
 
                 <!-- Tire 2 (New) -->
                 <div class="col-md-6">
-                  <div class="p-3 rounded border border-secondary border-opacity-25" style="background: #18181b;">
+                  <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                      <h6 class="text-success fw-bold mb-0"><i class="bi bi-disc-fill me-1"></i> Ban 2 (Baru / Pengganti)</h6>
-                      <span class="text-success small fw-semibold">Baru</span>
+                      <h6 class="text-white fw-bold mb-0"><i class="bi bi-disc me-2 text-secondary"></i>Tire 2 (Pengganti / Baru)</h6>
                     </div>
 
                     <div class="mb-2">
@@ -135,53 +133,53 @@
               </div>
 
               <div class="d-flex justify-content-center mb-4">
-                <button type="button" id="calculateBtn" class="btn btn-primary rounded-pill px-5 py-2 fw-semibold">
+                <button type="button" id="calculateBtn" class="btn btn-primary px-4 py-2 fw-semibold">
                   <i class="bi bi-calculator me-1"></i> Hitung Perbandingan Ban
                 </button>
               </div>
 
               <!-- Results Area -->
-              <div id="results" class="p-3 rounded border border-secondary border-opacity-25" style="background: #18181b;">
+              <div id="results" class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
                 <h5 class="fw-bold text-white mb-3 pb-2 border-bottom border-secondary border-opacity-25">
-                  <i class="bi bi-bar-chart-fill text-info me-2"></i>Hasil Analisis Perbandingan
+                  <i class="bi bi-sliders me-2 text-secondary"></i>Hasil Analisis Perbandingan
                 </h5>
 
                 <div class="row g-3 text-center mb-4">
                   <div class="col-sm-4">
-                    <div class="p-2 rounded bg-black bg-opacity-25 border border-secondary border-opacity-10">
-                      <span class="text-secondary small d-block mb-1">Diameter Total</span>
+                    <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                      <span class="text-secondary small d-block mb-1">Diameter Ban 1</span>
                       <strong class="text-white fs-5 d-block" id="diameter1Result">24.88" (631.9 mm)</strong>
-                      <span class="text-muted small">Ban 1</span>
+                      <span class="text-secondary small">OEM</span>
                     </div>
                   </div>
                   <div class="col-sm-4">
-                    <div class="p-2 rounded bg-black bg-opacity-25 border border-secondary border-opacity-10">
-                      <span class="text-secondary small d-block mb-1">Diameter Total</span>
-                      <strong class="text-success fs-5 d-block" id="diameter2Result">25.86" (656.8 mm)</strong>
-                      <span class="text-muted small">Ban 2</span>
+                    <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                      <span class="text-secondary small d-block mb-1">Diameter Ban 2</span>
+                      <strong class="text-white fs-5 d-block" id="diameter2Result">25.86" (656.8 mm)</strong>
+                      <span class="text-secondary small">Baru</span>
                     </div>
                   </div>
                   <div class="col-sm-4">
-                    <div class="p-2 rounded bg-black bg-opacity-25 border border-secondary border-opacity-10">
+                    <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
                       <span class="text-secondary small d-block mb-1">Selisih Diameter</span>
-                      <strong class="text-warning fs-5 d-block" id="diameterDiffResult">+0.98" (+3.94%)</strong>
-                      <span class="text-muted small" id="fitmentNotice">Toleransi Wajar</span>
+                      <strong class="text-white fs-5 d-block" id="diameterDiffResult">+0.98" (+3.94%)</strong>
+                      <span class="text-secondary small" id="fitmentNotice">Toleransi Wajar</span>
                     </div>
                   </div>
                 </div>
 
                 <!-- Speedometer Offset & Circumference -->
-                <div class="row g-3 text-center mb-3">
+                <div class="row g-3 text-center mb-4">
                   <div class="col-sm-6">
-                    <div class="p-2 rounded bg-black bg-opacity-25 border border-secondary border-opacity-10">
+                    <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
                       <span class="text-secondary small d-block mb-1">Keliling Roda (Circumference)</span>
                       <span class="text-white d-block" id="circumferenceDiffResult">Ban 1: 78.16" | Ban 2: 81.24"</span>
                     </div>
                   </div>
                   <div class="col-sm-6">
-                    <div class="p-2 rounded bg-black bg-opacity-25 border border-secondary border-opacity-10">
+                    <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
                       <span class="text-secondary small d-block mb-1">Speedometer pada 100 km/jam</span>
-                      <span class="text-info fw-bold d-block" id="speedoResult">Kecepatan Nyata: ~103.9 km/jam</span>
+                      <span class="text-white fw-bold d-block" id="speedoResult">Kecepatan Nyata: ~103.9 km/jam</span>
                     </div>
                   </div>
                 </div>
@@ -202,7 +200,7 @@
                         <div class="rim-circle" id="rimVisual2">R17</div>
                       </div>
                     </div>
-                    <span class="text-success small fw-semibold">Ban Baru</span>
+                    <span class="text-secondary small fw-semibold">Ban Baru</span>
                   </div>
                 </div>
               </div>

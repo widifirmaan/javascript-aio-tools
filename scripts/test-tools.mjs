@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer-core';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -9,6 +10,7 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 const SAMPLE_PDF = path.join(REPO_ROOT, 'test-assets/sample.pdf');
 const SAMPLE_JPG = path.join(REPO_ROOT, 'test-assets/sample.jpg');
 const SAMPLE_PNG = path.join(REPO_ROOT, 'test-assets/sample.png');
+const SCANNED_PDF = path.join(REPO_ROOT, 'test-assets/scanned-sample.pdf');
 
 const pages = [
   'index.html',
@@ -242,21 +244,65 @@ async function runTestSuite() {
   await pdfToolsPage.click('#btnConvertImg2Pdf');
   await pdfToolsPage.waitForSelector('#imgResultBox:not(.d-none)', { timeout: 10000 });
 
-  const pdfResult = await pdfToolsPage.evaluate(() => {
+  const pdfResult = await pdfToolsPage.evaluate(async () => {
     const btn = document.getElementById('btnDownloadImgPdf');
+    if (!btn || !btn.href.startsWith('blob:')) return { hasBlob: false };
+    const res = await fetch(btn.href);
+    const blob = await res.blob();
+    const reader = new FileReader();
+    const base64 = await new Promise((resolve) => {
+      reader.onloadend = () => resolve(reader.result.split(',')[1]);
+      reader.readAsDataURL(blob);
+    });
     return {
-      hasBlob: btn && btn.href.startsWith('blob:'),
-      download: btn ? btn.download : ''
+      hasBlob: true,
+      download: btn.download,
+      base64
     };
   });
 
   if (pdfResult.hasBlob && pdfResult.download.endsWith('.pdf')) {
     console.log(`  ✓ Real PNG converted to PDF: ${pdfResult.download}`);
+    if (pdfResult.base64) {
+      fs.writeFileSync(SCANNED_PDF, Buffer.from(pdfResult.base64, 'base64'));
+    }
   } else {
     console.error('  ❌ PDF Studio image-to-pdf conversion failed:', pdfResult);
     totalErrors++;
   }
   await pdfToolsPage.close();
+
+  // Test 4b: PDF to Word on Image-Only / Scanned PDF
+  if (fs.existsSync(SCANNED_PDF)) {
+    console.log('\n[4b/10] Testing PDF to Word on Image/Scanned PDF (Image -> DOCX ImageRun)...');
+    const scannedWordPage = await browser.newPage();
+    await scannedWordPage.goto(`file://${path.join(REPO_ROOT, 'tools/pdf-word.html')}`);
+    await new Promise(r => setTimeout(r, 600));
+
+    const sInput = await scannedWordPage.$('#pdfFileInput');
+    await sInput.uploadFile(SCANNED_PDF);
+    await new Promise(r => setTimeout(r, 600));
+
+    await scannedWordPage.click('#btnConvert');
+    await scannedWordPage.waitForSelector('#resultBox:not(.d-none)', { timeout: 15000 });
+
+    const scanWordResult = await scannedWordPage.evaluate(() => {
+      const btn = document.getElementById('downloadBtn');
+      const info = document.getElementById('resultFileName');
+      return {
+        hasBlob: btn && btn.href.startsWith('blob:'),
+        infoText: info ? info.textContent : ''
+      };
+    });
+
+    if (scanWordResult.hasBlob && scanWordResult.infoText.includes('.docx')) {
+      console.log(`  ✓ Image-only scanned PDF converted to Word with ImageRun: ${scanWordResult.infoText}`);
+    } else {
+      console.error('  ❌ Failed to convert image-only PDF to Word:', scanWordResult);
+      totalErrors++;
+    }
+    await scannedWordPage.close();
+  }
 
   // Test 5: QR Code Studio (Real QR generation with canvas rendering)
   console.log('\n[5/10] Testing QR Code Studio (Real QR generation)...');
@@ -317,6 +363,23 @@ async function runTestSuite() {
     console.log(`  ✓ Calculator math verified: 125 * 8 = ${calcTests.res1}, 72 + 28 = ${calcTests.res2}`);
   } else {
     console.error('  ❌ Calculator returned unexpected result:', calcTests);
+    totalErrors++;
+  }
+
+  // Verify '=' button is on row 7, not on a new line
+  const equalBtnLayout = await calcPage.evaluate(() => {
+    const equalBtn = document.querySelector('.calc-btn-equal');
+    const factBtn = document.querySelector('.calc-btn-sci[onclick="factorial()"]');
+    if (!equalBtn || !factBtn) return false;
+    const equalRect = equalBtn.getBoundingClientRect();
+    const factRect = factBtn.getBoundingClientRect();
+    return Math.abs(equalRect.top - factRect.top) < 10;
+  });
+
+  if (equalBtnLayout) {
+    console.log('  ✓ Calculator "=" button fits seamlessly in row 7 (no extra newline)');
+  } else {
+    console.error('  ❌ Calculator "=" button is dropped to an extra newline!');
     totalErrors++;
   }
   await calcPage.close();

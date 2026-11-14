@@ -260,17 +260,34 @@
       const statusTitle = document.getElementById('statusTitle');
       const statusDesc = document.getElementById('statusDesc');
 
+      let maxDownloadPct = 0;
+      let isComputing = false;
+
       try {
         const blob = await removeBackground(file, {
           model: 'isnet_quint8',
           progress: (key, current, total) => {
-            if (total > 0) {
-              const pct = Math.min(100, Math.round((current / total) * 100));
-              if (statusTitle) statusTitle.textContent = `Loading AI Model (${pct}%)...`;
-              if (statusDesc) statusDesc.textContent = `${(current / (1024 * 1024)).toFixed(1)} MB of ${(total / (1024 * 1024)).toFixed(1)} MB downloaded`;
-            } else {
+            if (typeof key === 'string' && key.startsWith('compute')) {
+              isComputing = true;
               if (statusTitle) statusTitle.textContent = 'Removing background...';
-              if (statusDesc) statusDesc.textContent = 'Segmenting foreground subject locally.';
+              if (key.includes('inference')) {
+                if (statusDesc) statusDesc.textContent = 'Running AI subject segmentation...';
+              } else if (key.includes('mask') || key.includes('encode')) {
+                if (statusDesc) statusDesc.textContent = 'Refining transparent edges and saving...';
+              } else {
+                if (statusDesc) statusDesc.textContent = 'Processing image in browser memory...';
+              }
+              return;
+            }
+
+            if (!isComputing && typeof key === 'string' && key.includes('models') && total > 0) {
+              const pct = Math.min(100, Math.round((current / total) * 100));
+              if (pct > maxDownloadPct) maxDownloadPct = pct;
+              if (statusTitle) statusTitle.textContent = `Loading AI Model (${maxDownloadPct}%)...`;
+              if (statusDesc) statusDesc.textContent = `${(current / (1024 * 1024)).toFixed(1)} MB of ${(total / (1024 * 1024)).toFixed(1)} MB downloaded`;
+            } else if (!isComputing) {
+              if (statusTitle) statusTitle.textContent = 'Initializing AI engine...';
+              if (statusDesc) statusDesc.textContent = 'Setting up WebAssembly runtime.';
             }
           }
         });

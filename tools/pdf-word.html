@@ -109,9 +109,9 @@
               </div>
 
               <!-- Success & Download Box (Hidden initially) -->
-              <div id="resultBox" class="p-4 rounded border border-success border-opacity-50 text-center d-none" style="background: rgba(34, 197, 94, 0.06);">
-                <i class="bi bi-check-circle-fill text-success fs-1"></i>
-                <h5 class="mt-2 mb-1 text-white fw-bold">Conversion Complete!</h5>
+              <div id="resultBox" class="p-4 rounded border border-secondary border-opacity-25 text-center d-none" style="background: rgba(255, 255, 255, 0.02);">
+                <i class="bi bi-file-earmark-word text-white fs-1 mb-2 d-inline-block"></i>
+                <h5 class="mt-2 mb-1 text-white fw-bold">Document Ready</h5>
                 <p class="text-secondary small mb-3" id="resultFileName">Your Word document is ready.</p>
                 <div class="d-flex justify-content-center gap-2">
                   <a id="downloadBtn" href="#" class="btn btn-primary px-4 py-2">
@@ -359,7 +359,40 @@
           }
 
           if (!items || items.length === 0) {
-            docChildren.push(new docx.Paragraph({ children: [new docx.TextRun("[This page is an image or contains no extractable text]")] }));
+            // Render scanned / image-only page as high-res image into Word (.docx)
+            try {
+              progressStatus.textContent = `Rendering page ${pageNum} image...`;
+              const viewport = page.getViewport({ scale: 1.5 });
+              const offCanvas = document.createElement('canvas');
+              offCanvas.width = viewport.width;
+              offCanvas.height = viewport.height;
+              const offCtx = offCanvas.getContext('2d');
+              await page.render({ canvasContext: offCtx, viewport }).promise;
+
+              const dataUrl = offCanvas.toDataURL('image/jpeg', 0.85);
+              const b64 = dataUrl.split(',')[1];
+              const bin = atob(b64);
+              const bytes = new Uint8Array(bin.length);
+              for (let b = 0; b < bin.length; b++) bytes[b] = bin.charCodeAt(b);
+
+              const docWidth = 550;
+              const docHeight = Math.round(docWidth * (viewport.height / viewport.width));
+
+              docChildren.push(new docx.Paragraph({
+                children: [
+                  new docx.ImageRun({
+                    data: bytes,
+                    transformation: {
+                      width: docWidth,
+                      height: docHeight
+                    }
+                  })
+                ]
+              }));
+            } catch (imgErr) {
+              console.warn('Failed to render page image:', imgErr);
+              docChildren.push(new docx.Paragraph({ children: [new docx.TextRun("[Image could not be rendered]")] }));
+            }
             continue;
           }
 
