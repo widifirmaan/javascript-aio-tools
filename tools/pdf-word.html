@@ -369,54 +369,175 @@
         const y = item.transform ? item.transform[5] : (item.y !== undefined ? item.y : 0);
         const x = item.transform ? item.transform[4] : (item.x !== undefined ? item.x : 0);
         const fontSize = item.fontSize || (item.transform ? Math.sqrt(item.transform[0]*item.transform[0] + item.transform[1]*item.transform[1]) : 12);
+        const width = item.width || (str.length * fontSize * 0.5);
 
         let matched = lines.find(l => Math.abs(l.y - y) <= lineThreshold);
-        if (matched) matched.items.push({ x, str, fontSize });
-        else lines.push({ y, items: [{ x, str, fontSize }] });
+        if (matched) matched.items.push({ x, y, str, fontSize, width });
+        else lines.push({ y, items: [{ x, y, str, fontSize, width }] });
       });
 
       lines.sort((a, b) => b.y - a.y);
+      lines.forEach(l => l.items.sort((a, b) => a.x - b.x));
 
-      const paragraphs = [];
-      for (const line of lines) {
-        line.items.sort((a, b) => a.x - b.x);
-        const lineText = line.items.map(it => it.str).join(' ').replace(/\s+/g, ' ').trim();
-        if (!lineText) continue;
+      const docElements = [];
+      let i = 0;
 
-        const maxFontSize = Math.max(...line.items.map(it => it.fontSize));
-        let isHeading = false;
-        let headingLevel = null;
+      while (i < lines.length) {
+        // 1. Table Detection (2 or more consecutive lines with 3+ aligned columns, e.g. transcripts, grades, invoices)
+        let tableEnd = i;
+        while (tableEnd < lines.length && lines[tableEnd].items.length >= 3) {
+          tableEnd++;
+        }
 
-        if (mode !== 'clean') {
-          if (maxFontSize >= 18) {
-            isHeading = true;
-            headingLevel = docx.HeadingLevel.HEADING_1;
-          } else if (maxFontSize >= 13.5) {
-            isHeading = true;
-            headingLevel = docx.HeadingLevel.HEADING_2;
+        if (tableEnd - i >= 2 && mode !== 'clean') {
+          const tableLines = lines.slice(i, tableEnd);
+          const maxCols = Math.max(...tableLines.map(l => l.items.length));
+          const colWidthPct = Math.floor(100 / maxCols);
+
+          const tableRows = tableLines.map((tl, rowIdx) => {
+            const isHeader = rowIdx === 0;
+            const cells = [];
+            for (let c = 0; c < maxCols; c++) {
+              const it = tl.items[c];
+              const cellText = it ? it.str.trim() : '';
+              cells.push(new docx.TableCell({
+                width: { size: colWidthPct, type: docx.WidthType.PERCENTAGE },
+                margins: { top: 60, bottom: 60, left: 80, right: 80 },
+                children: [
+                  new docx.Paragraph({
+                    children: [
+                      new docx.TextRun({
+                        text: cellText,
+                        bold: isHeader,
+                        size: Math.round(Math.max(9, Math.min(20, (it ? it.fontSize : 10) * 1.5)))
+                      })
+                    ]
+                  })
+                ]
+              }));
+            }
+            return new docx.TableRow({ children: cells });
+          });
+
+          docElements.push(new docx.Table({
+            width: { size: 100, type: docx.WidthType.PERCENTAGE },
+            rows: tableRows
+          }));
+
+          i = tableEnd;
+          continue;
+        }
+
+        const line = lines[i];
+
+        // 2. Split Left / Right Pair Detection (e.g. Job Title on Left, Date on Far Right)
+        if (line.items.length === 2 && mode !== 'clean') {
+          const itLeft = line.items[0];
+          const itRight = line.items[1];
+          const gap = itRight.x - (itLeft.x + itLeft.width);
+
+          if (gap > 120) {
+            docElements.push(new docx.Table({
+              width: { size: 100, type: docx.WidthType.PERCENTAGE },
+              borders: {
+                top: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                bottom: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                left: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                right: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                insideHorizontal: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                insideVertical: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' }
+              },
+              rows: [
+                new docx.TableRow({
+                  children: [
+                    new docx.TableCell({
+                      width: { size: 70, type: docx.WidthType.PERCENTAGE },
+                      borders: {
+                        top: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                        bottom: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                        left: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                        right: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' }
+                      },
+                      children: [
+                        new docx.Paragraph({
+                          children: [
+                            new docx.TextRun({
+                              text: itLeft.str.trim(),
+                              bold: itLeft.fontSize >= 13,
+                              size: Math.round(Math.max(10, Math.min(24, itLeft.fontSize * 1.5)))
+                            })
+                          ]
+                        })
+                      ]
+                    }),
+                    new docx.TableCell({
+                      width: { size: 30, type: docx.WidthType.PERCENTAGE },
+                      borders: {
+                        top: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                        bottom: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                        left: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' },
+                        right: { style: docx.BorderStyle.NONE, size: 0, color: 'auto' }
+                      },
+                      children: [
+                        new docx.Paragraph({
+                          alignment: docx.AlignmentType.RIGHT,
+                          children: [
+                            new docx.TextRun({
+                              text: itRight.str.trim(),
+                              size: Math.round(Math.max(10, Math.min(24, itRight.fontSize * 1.5)))
+                            })
+                          ]
+                        })
+                      ]
+                    })
+                  ]
+                })
+              ]
+            }));
+            i++;
+            continue;
           }
         }
 
-        if (isHeading && headingLevel) {
-          paragraphs.push(new docx.Paragraph({
-            text: lineText,
-            heading: headingLevel,
-            spacing: { before: 200, after: 80 }
-          }));
-        } else {
-          paragraphs.push(new docx.Paragraph({
-            children: [
-              new docx.TextRun({
-                text: lineText,
-                size: Math.round(Math.max(10, Math.min(24, maxFontSize * 1.5)))
-              })
-            ],
-            spacing: { after: 80 }
-          }));
+        // 3. Normal Paragraph
+        const lineText = line.items.map(it => it.str).join(' ').replace(/\s+/g, ' ').trim();
+        if (lineText) {
+          const maxFontSize = Math.max(...line.items.map(it => it.fontSize));
+          let isHeading = false;
+          let headingLevel = null;
+
+          if (mode !== 'clean') {
+            if (maxFontSize >= 18) {
+              isHeading = true;
+              headingLevel = docx.HeadingLevel.HEADING_1;
+            } else if (maxFontSize >= 13.5) {
+              isHeading = true;
+              headingLevel = docx.HeadingLevel.HEADING_2;
+            }
+          }
+
+          if (isHeading && headingLevel) {
+            docElements.push(new docx.Paragraph({
+              text: lineText,
+              heading: headingLevel,
+              spacing: { before: 200, after: 80 }
+            }));
+          } else {
+            docElements.push(new docx.Paragraph({
+              children: [
+                new docx.TextRun({
+                  text: lineText,
+                  size: Math.round(Math.max(10, Math.min(24, maxFontSize * 1.5)))
+                })
+              ],
+              spacing: { after: 80 }
+            }));
+          }
         }
+        i++;
       }
 
-      return paragraphs;
+      return docElements;
     }
 
     btnConvert.addEventListener('click', async () => {
