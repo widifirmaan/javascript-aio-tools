@@ -21,17 +21,17 @@
   <main class="main">
     <!-- Single Page Title Bar (Consistent with Homepage) -->
     <div class="page-title">
-      <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
-        <h1 class="mb-0 fs-4 fw-bold">
+      <div class="container d-flex align-items-center gap-2">
+        <h1 class="mb-0 fs-5 fw-bold text-nowrap">
           <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
             <i class="bi bi-arrow-left"></i>
-            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-5">| Free Stuff</span></span>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-6 d-none d-sm-inline">| Free Stuff</span></span>
           </a>
         </h1>
-        <nav class="breadcrumbs">
+        <span class="text-secondary opacity-50">/</span>
+        <nav class="breadcrumbs text-nowrap text-truncate" aria-label="breadcrumb">
           <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
-            <li class="breadcrumb-item active text-white" aria-current="page">Image Compressor</li>
+            <li class="breadcrumb-item active text-white text-truncate" aria-current="page">Image Compressor</li>
           </ol>
         </nav>
       </div>
@@ -108,12 +108,12 @@
                 </div>
 
                 <!-- Action Bar & Savings -->
-                <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-25">
-                  <div class="d-flex align-items-center gap-2">
+                <div class="d-flex flex-column flex-md-row justify-content-center justify-content-md-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 text-center text-md-start">
+                  <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
                     <span class="text-secondary small">Space Saved:</span>
                     <span id="savings" class="text-white fw-bold">0 Bytes (0%)</span>
                   </div>
-                  <div class="d-flex gap-2">
+                  <div class="d-flex justify-content-center gap-2">
                     <button type="button" class="btn btn-outline-secondary px-3" onclick="resetCompressor()">
                       <i class="bi bi-arrow-counterclockwise me-1"></i> Change Image
                     </button>

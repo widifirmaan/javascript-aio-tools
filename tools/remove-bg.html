@@ -21,17 +21,17 @@
   <main class="main">
     <!-- Single Page Title Bar (Consistent with Homepage) -->
     <div class="page-title">
-      <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
-        <h1 class="mb-0 fs-4 fw-bold">
+      <div class="container d-flex align-items-center gap-2">
+        <h1 class="mb-0 fs-5 fw-bold text-nowrap">
           <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
             <i class="bi bi-arrow-left"></i>
-            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-5">| Free Stuff</span></span>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-6 d-none d-sm-inline">| Free Stuff</span></span>
           </a>
         </h1>
-        <nav class="breadcrumbs">
+        <span class="text-secondary opacity-50">/</span>
+        <nav class="breadcrumbs text-nowrap text-truncate" aria-label="breadcrumb">
           <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
-            <li class="breadcrumb-item active text-white" aria-current="page">Background Remover</li>
+            <li class="breadcrumb-item active text-white text-truncate" aria-current="page">Background Remover</li>
           </ol>
         </nav>
       </div>
@@ -62,10 +62,10 @@
               <!-- Processing / Status Box -->
               <div id="status" class="alert alert-dark py-3 mb-4 d-none border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.04); color: #ffffff;">
                 <div class="d-flex align-items-center">
-                  <div class="spinner-border spinner-border-sm me-3" role="status"></div>
+                  <div class="spinner-border spinner-border-sm me-3 text-primary" role="status"></div>
                   <div>
-                    <strong class="d-block">Processing image...</strong>
-                    <span class="small text-secondary">The on-device model is segmenting the foreground subject.</span>
+                    <strong class="d-block" id="statusTitle">Processing image...</strong>
+                    <span class="small text-secondary" id="statusDesc">The on-device model is segmenting the foreground subject.</span>
                   </div>
                 </div>
               </div>
@@ -100,11 +100,11 @@
                   </div>
                 </div>
 
-                <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-25">
+                <div class="d-flex flex-column flex-md-row justify-content-center justify-content-md-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 text-center text-md-start">
                   <button type="button" class="btn btn-outline-secondary px-3" onclick="resetTool()">
                     <i class="bi bi-arrow-counterclockwise me-1"></i> Change Photo
                   </button>
-                  <div class="d-flex gap-2">
+                  <div class="d-flex justify-content-center gap-2">
                     <button id="processBtn" class="btn btn-primary px-4">
                       <i class="bi bi-magic me-1"></i> Remove Background
                     </button>
@@ -257,9 +257,23 @@
 
       processBtn.disabled = true;
       statusDiv.classList.remove('d-none');
+      const statusTitle = document.getElementById('statusTitle');
+      const statusDesc = document.getElementById('statusDesc');
 
       try {
-        const blob = await removeBackground(file);
+        const blob = await removeBackground(file, {
+          model: 'isnet_quint8',
+          progress: (key, current, total) => {
+            if (total > 0) {
+              const pct = Math.min(100, Math.round((current / total) * 100));
+              if (statusTitle) statusTitle.textContent = `Loading AI Model (${pct}%)...`;
+              if (statusDesc) statusDesc.textContent = `${(current / (1024 * 1024)).toFixed(1)} MB of ${(total / (1024 * 1024)).toFixed(1)} MB downloaded`;
+            } else {
+              if (statusTitle) statusTitle.textContent = 'Removing background...';
+              if (statusDesc) statusDesc.textContent = 'Segmenting foreground subject locally.';
+            }
+          }
+        });
         const url = URL.createObjectURL(blob);
 
         resultImage.src = url;
