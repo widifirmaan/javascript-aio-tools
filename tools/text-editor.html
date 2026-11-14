@@ -61,26 +61,19 @@
 </head>
 
 <body class="service-details-page">
-  <header class="app-header py-3">
-    <div class="container d-flex align-items-center justify-content-between">
-      <a href="../index.html" class="logo d-flex align-items-center text-decoration-none">
-        <span class="sitename text-white mb-0 fs-4 fw-bold">WIDIFIRMAAN <span class="text-primary">Tools</span></span>
-      </a>
-      <a href="../index.html" class="btn btn-sm btn-outline-light rounded-pill px-3"><i class="bi bi-grid-fill me-1"></i> Semua Tools</a>
-    </div>
-  </header>
-
   <main class="main">
-    <div class="page-title dark-background py-3 py-md-4 border-bottom border-secondary border-opacity-25">
-      <div class="container d-md-flex justify-content-between align-items-center">
-        <h2 class="mb-2 mb-md-0 fw-bold fs-4 text-white d-flex align-items-center">
-          <a href="../index.html" class="text-secondary text-decoration-none me-2" title="Kembali ke Dashboard"><i class="bi bi-arrow-left"></i></a>
-          <span>Distraction-Free Text Editor</span>
-        </h2>
+    <!-- Single Page Title Bar (Consistent with Homepage) -->
+    <div class="page-title">
+      <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <h1 class="mb-0 fs-4 fw-bold">
+          <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
+            <i class="bi bi-arrow-left"></i>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-5">| Free Stuff</span></span>
+          </a>
+        </h1>
         <nav class="breadcrumbs">
-          <ol class="breadcrumb mb-0 small">
-            <li class="breadcrumb-item"><a href="../index.html" class="text-secondary text-decoration-none">Home</a></li>
-            <li class="breadcrumb-item"><a href="../index.html#tool-grid" class="text-secondary text-decoration-none">Tools</a></li>
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
             <li class="breadcrumb-item active text-white" aria-current="page">Text Editor</li>
           </ol>
         </nav>
@@ -88,19 +81,14 @@
     </div>
 
     <section id="service-details" class="service-details section py-4 py-lg-5">
-      <div class="container">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
         <div class="row g-4">
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
-            <div class="tool-card mb-0">
-              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-                <h3 class="mb-0 text-white fw-bold">Editor Teks & Penghitung Kata</h3>
-                <span class="feature-badge">
-                  <i class="bi bi-pen-fill"></i> Real-time Word Counter
-                </span>
-              </div>
-              <p class="text-secondary mb-3">
-                Editor teks bebas gangguan dengan statistik kata dan karakter langsung. Tulis draf, catatan, atau salin teks tanpa khawatir data tersimpan di server luar.
+            <div class="tool-card">
+              <h2 class="fs-4 fw-bold text-white mb-2">Editor Teks & Penghitung Kata</h2>
+              <p class="text-secondary mb-4">
+                Editor teks bebas gangguan dengan statistik kata dan karakter langsung. Tulis draf, catatan, atau salin teks secara aman di memori lokal peramban Anda.
               </p>
 
               <!-- Editor Toolbar -->
@@ -150,13 +138,15 @@
               </div>
 
               <!-- Bottom Statistics Bar -->
-              <div class="p-3 rounded border border-secondary border-opacity-25 d-flex flex-wrap align-items-center justify-content-between gap-3" style="background: #18181b;">
-                <div class="d-flex flex-wrap align-items-center gap-3">
-                  <span class="badge bg-primary px-3 py-2" id="word-count">Words: 0</span>
-                  <span class="badge bg-secondary px-3 py-2" id="char-count">Characters: 0</span>
-                  <span class="badge bg-dark border border-secondary px-3 py-2" id="reading-time">Reading: &lt; 1 min</span>
+              <div class="p-3 rounded border border-secondary border-opacity-25 d-flex flex-wrap align-items-center justify-content-between gap-3" style="background: rgba(255, 255, 255, 0.02);">
+                <div class="d-flex flex-wrap align-items-center gap-3 text-secondary small">
+                  <span class="text-white fw-bold" id="word-count">Words: 0</span>
+                  <span>•</span>
+                  <span class="text-white fw-bold" id="char-count">Characters: 0</span>
+                  <span>•</span>
+                  <span id="reading-time">Reading: &lt; 1 min</span>
                 </div>
-                <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="clearEditor()">
+                <button type="button" class="btn btn-sm btn-outline-danger px-3" onclick="clearEditor()">
                   <i class="bi bi-trash3 me-1"></i> Bersihkan Teks
                 </button>
               </div>
@@ -167,68 +157,51 @@
           <!-- Sidebar Column (Col 4) -->
           <div class="col-lg-4">
             <div class="d-flex flex-column gap-4">
-              <div class="tool-sidebar-card mb-0">
-              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
-                <i class="bi bi-shield-check text-success me-2"></i>Privacy & Execution
-              </h5>
-              <div class="d-flex align-items-start mb-3">
-                <div class="feature-icon-badge me-3">
-                  <i class="bi bi-cpu fs-5 text-primary"></i>
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-grid me-2 text-secondary"></i>Other Tools
+                </h5>
+                <div class="d-flex flex-column gap-1">
+                  <a href="calculator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-calculator me-2"></i>Scientific Calculator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="image-compressor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-image me-2"></i>Image Compressor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="pdf-word.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-earmark-word me-2"></i>PDF to Word</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="qr-code.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-qr-code me-2"></i>QR Code Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="pdf-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-pdf me-2"></i>PDF Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="dev-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-code-slash me-2"></i>Developer Toolbox</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="remove-bg.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-person-bounding-box me-2"></i>Background Remover</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="image-converter.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-arrow-repeat me-2"></i>Image Converter</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="tire-comp.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-circle me-2"></i>Tire Comparison</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
                 </div>
-                <div>
-                  <h6 class="mb-1 text-white">Bebas Gangguan & Offline</h6>
-                  <p class="text-secondary small mb-0">Semua catatan tersimpan di memori browser Anda dan dapat diekspor langsung sebagai file .txt lokal.</p>
-                </div>
-              </div>
-              <div class="d-flex align-items-start mb-3">
-                <div class="feature-icon-badge me-3">
-                  <i class="bi bi-shield-lock fs-5 text-success"></i>
-                </div>
-                <div>
-                  <h6 class="mb-1 text-white">Nol Pengiriman Data</h6>
-                  <p class="text-secondary small mb-0">Tulisan rahasia, draf artikel, atau password Anda tidak pernah dikirim ke internet.</p>
-                </div>
-              </div>
-              <div class="d-flex align-items-start">
-                <div class="feature-icon-badge me-3">
-                  <i class="bi bi-person-check fs-5 text-info"></i>
-                </div>
-                <div>
-                  <h6 class="mb-1 text-white">Pengembang</h6>
-                  <p class="text-secondary small mb-0"><a href="https://widifirmaan.web.id" target="_blank" class="text-primary text-decoration-none">Widi Firmansyah</a></p>
-                </div>
-              </div>
-            </div>
-
-            <div class="tool-sidebar-card">
-              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
-                <i class="bi bi-grid-fill text-primary me-2"></i>Quick Tool Switcher
-              </h5>
-              <div class="list-group list-group-flush bg-transparent">
-                <a href="pdf-word.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-file-earmark-word text-primary me-2"></i>PDF to Word</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="dev-tools.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-code-slash text-danger me-2"></i>Developer Toolbox</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="qr-code.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-qr-code text-warning me-2"></i>QR Code Studio</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="calculator.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-calculator text-info me-2"></i>Scientific Calculator</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="image-compressor.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-0">
-                  <span><i class="bi bi-image text-success me-2"></i>Image Compressor</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
               </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
     </section>

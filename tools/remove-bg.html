@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>AI Background Remover - WIDIFIRMAAN Tools</title>
-  <meta name="description" content="Free client-side AI image background remover. Remove photo backgrounds in your browser using on-device WebAssembly AI.">
+  <meta name="description" content="Free client-side background remover using on-device WebAssembly AI. Zero server GPU or image uploads required.">
   <link href="../assets/img/favicon.png" rel="icon">
   <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
   <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -18,26 +18,19 @@
 </head>
 
 <body class="service-details-page">
-  <header class="app-header py-3">
-    <div class="container d-flex align-items-center justify-content-between">
-      <a href="../index.html" class="logo d-flex align-items-center text-decoration-none">
-        <span class="sitename text-white mb-0 fs-4 fw-bold">WIDIFIRMAAN <span class="text-primary">Tools</span></span>
-      </a>
-      <a href="../index.html" class="btn btn-sm btn-outline-light rounded-pill px-3"><i class="bi bi-grid-fill me-1"></i> Semua Tools</a>
-    </div>
-  </header>
-
   <main class="main">
-    <div class="page-title dark-background py-3 py-md-4 border-bottom border-secondary border-opacity-25">
-      <div class="container d-md-flex justify-content-between align-items-center">
-        <h2 class="mb-2 mb-md-0 fw-bold fs-4 text-white d-flex align-items-center">
-          <a href="../index.html" class="text-secondary text-decoration-none me-2" title="Kembali ke Dashboard"><i class="bi bi-arrow-left"></i></a>
-          <span>AI Background Remover</span>
-        </h2>
+    <!-- Single Page Title Bar (Consistent with Homepage) -->
+    <div class="page-title">
+      <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <h1 class="mb-0 fs-4 fw-bold">
+          <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
+            <i class="bi bi-arrow-left"></i>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-5">| Free Stuff</span></span>
+          </a>
+        </h1>
         <nav class="breadcrumbs">
-          <ol class="breadcrumb mb-0 small">
-            <li class="breadcrumb-item"><a href="../index.html" class="text-secondary text-decoration-none">Home</a></li>
-            <li class="breadcrumb-item"><a href="../index.html#tool-grid" class="text-secondary text-decoration-none">Tools</a></li>
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
             <li class="breadcrumb-item active text-white" aria-current="page">Background Remover</li>
           </ol>
         </nav>
@@ -45,39 +38,34 @@
     </div>
 
     <section id="service-details" class="service-details section py-4 py-lg-5">
-      <div class="container">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
         <div class="row g-4">
-          <!-- Main Content (Col 8) -->
+          <!-- Main Content Column -->
           <div class="col-lg-8">
-            <div class="tool-card mb-0">
-              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-                <h3 class="mb-0 text-white fw-bold">Penghapus Background AI</h3>
-                <span class="feature-badge">
-                  <i class="bi bi-cpu-fill"></i> On-Device WebAssembly AI
-                </span>
-              </div>
+            <div class="tool-card">
+              <h2 class="fs-4 fw-bold text-white mb-2">AI Background Remover</h2>
               <p class="text-secondary mb-4">
-                Hapus background foto secara instan menggunakan model AI pintar yang berjalan 100% di browser Anda. Foto pribadi Anda tidak pernah dikirim ke cloud atau server mana pun.
+                Remove photo backgrounds automatically using an on-device machine learning model running directly in your browser.
               </p>
 
               <!-- Upload Dropzone -->
               <div id="dropzone" class="tool-dropzone mb-4" onclick="document.getElementById('imageInput').click()">
-                <i class="bi bi-cloud-arrow-up text-primary" style="font-size: 3rem;"></i>
-                <h5 class="mt-3 mb-1 text-white fw-semibold">Pilih atau Tarik Foto ke Sini</h5>
-                <p class="text-secondary small mb-3">Mendukung format JPG, PNG, WEBP hingga resolusi tinggi</p>
+                <i class="bi bi-person-bounding-box fs-1 text-secondary mb-2"></i>
+                <h5 class="mt-2 mb-1 text-white fw-semibold">Choose or drop a photo here</h5>
+                <p class="text-secondary small mb-3">Supports JPG, PNG, and WebP images</p>
                 <input type="file" id="imageInput" accept="image/*" class="d-none">
-                <button type="button" class="btn btn-primary px-4 py-2 rounded-pill">
-                  <i class="bi bi-folder2-open me-1"></i> Pilih Foto dari Perangkat
+                <button type="button" class="btn btn-secondary px-4 py-2">
+                  <i class="bi bi-folder2-open me-1"></i> Browse Photos
                 </button>
               </div>
 
               <!-- Processing / Status Box -->
-              <div id="status" class="alert alert-info py-3 mb-4 d-none border-0" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">
+              <div id="status" class="alert alert-dark py-3 mb-4 d-none border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.04); color: #ffffff;">
                 <div class="d-flex align-items-center">
                   <div class="spinner-border spinner-border-sm me-3" role="status"></div>
                   <div>
-                    <strong class="d-block">Sedang Memproses AI...</strong>
-                    <span class="small opacity-75">Model AI sedang melakukan segmentasi objek pada perangkat Anda.</span>
+                    <strong class="d-block">Processing image...</strong>
+                    <span class="small text-secondary">The on-device model is segmenting the foreground subject.</span>
                   </div>
                 </div>
               </div>
@@ -87,12 +75,12 @@
                 <div class="row g-3 mb-4">
                   <!-- Original Preview -->
                   <div class="col-md-6">
-                    <div class="p-3 rounded border border-secondary border-opacity-25" style="background: #18181b;">
+                    <div class="p-3 rounded border border-secondary border-opacity-25 h-100 d-flex flex-column" style="background: rgba(255, 255, 255, 0.02);">
                       <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="small fw-semibold text-secondary">Foto Asli</span>
-                        <span class="badge bg-secondary" id="origInfo">-</span>
+                        <span class="small fw-semibold text-secondary">Original Photo</span>
+                        <span class="text-secondary small fw-semibold" id="origInfo">-</span>
                       </div>
-                      <div class="text-center rounded overflow-hidden" style="max-height: 320px; min-height: 200px; display: flex; align-items: center; justify-content: center; background: #111;">
+                      <div class="text-center rounded overflow-hidden flex-grow-1 d-flex align-items-center justify-content-center" style="max-height: 320px; min-height: 200px;">
                         <img id="origImagePreview" src="" alt="Original" class="img-fluid" style="max-height: 320px; object-fit: contain;">
                       </div>
                     </div>
@@ -100,28 +88,28 @@
 
                   <!-- Result Preview -->
                   <div class="col-md-6">
-                    <div class="p-3 rounded border border-secondary border-opacity-25" style="background: #18181b;">
+                    <div class="p-3 rounded border border-secondary border-opacity-25 h-100 d-flex flex-column" style="background: rgba(255, 255, 255, 0.02);">
                       <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="small fw-semibold text-success"><i class="bi bi-check2-circle me-1"></i>Hasil Transparan</span>
-                        <span class="badge bg-success" id="resultStatus">Siap</span>
+                        <span class="small fw-semibold text-white"><i class="bi bi-check2 me-1 text-success"></i>Transparent Output</span>
+                        <span class="text-secondary small fw-semibold" id="resultStatus">Ready</span>
                       </div>
-                      <div class="text-center rounded overflow-hidden checkerboard-bg" style="max-height: 320px; min-height: 200px; display: flex; align-items: center; justify-content: center;">
-                        <img id="resultImage" src="" alt="Hasil" class="img-fluid" style="max-height: 320px; object-fit: contain;">
+                      <div class="text-center rounded overflow-hidden flex-grow-1 d-flex align-items-center justify-content-center checkerboard-bg" style="max-height: 320px; min-height: 200px;">
+                        <img id="resultImage" src="" alt="Result" class="img-fluid" style="max-height: 320px; object-fit: contain;">
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center pt-2 border-top border-secondary border-opacity-25">
-                  <button type="button" class="btn btn-outline-secondary rounded-pill px-3" onclick="resetTool()">
-                    <i class="bi bi-arrow-counterclockwise me-1"></i> Ganti Foto
+                <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-25">
+                  <button type="button" class="btn btn-outline-secondary px-3" onclick="resetTool()">
+                    <i class="bi bi-arrow-counterclockwise me-1"></i> Change Photo
                   </button>
                   <div class="d-flex gap-2">
-                    <button id="processBtn" class="btn btn-primary rounded-pill px-4">
-                      <i class="bi bi-magic me-1"></i> Hapus Background
+                    <button id="processBtn" class="btn btn-primary px-4">
+                      <i class="bi bi-magic me-1"></i> Remove Background
                     </button>
-                    <a id="downloadLink" href="#" class="btn btn-success rounded-pill px-4 d-none" download="removed_bg.png">
-                      <i class="bi bi-download me-1"></i> Unduh Foto HD
+                    <a id="downloadLink" href="#" class="btn btn-primary px-4 d-none" download="removed_bg.png">
+                      <i class="bi bi-download me-1"></i> Download PNG
                     </a>
                   </div>
                 </div>
@@ -130,83 +118,66 @@
             </div>
           </div>
 
-          <!-- Sidebar Column (Col 4) -->
+          <!-- Sidebar Column -->
           <div class="col-lg-4">
             <div class="d-flex flex-column gap-4">
-              <div class="tool-sidebar-card mb-0">
-              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
-                <i class="bi bi-shield-check text-success me-2"></i>Privacy & Execution
-              </h5>
-              <div class="d-flex align-items-start mb-3">
-                <div class="feature-icon-badge me-3">
-                  <i class="bi bi-cpu fs-5 text-primary"></i>
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-grid me-2 text-secondary"></i>Other Tools
+                </h5>
+                <div class="d-flex flex-column gap-1">
+                  <a href="image-compressor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-image me-2"></i>Image Compressor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="image-converter.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-arrow-repeat me-2"></i>Image Converter</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="pdf-word.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-earmark-word me-2"></i>PDF to Word</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="qr-code.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-qr-code me-2"></i>QR Code Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="pdf-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-pdf me-2"></i>PDF Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="dev-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-code-slash me-2"></i>Developer Toolbox</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="calculator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-calculator me-2"></i>Scientific Calculator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="text-editor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-pencil-square me-2"></i>Text Editor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="tire-comp.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-circle me-2"></i>Tire Comparison</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
                 </div>
-                <div>
-                  <h6 class="mb-1 text-white">100% Client-Side AI</h6>
-                  <p class="text-secondary small mb-0">Model segmentasi neural network diproses langsung oleh WebAssembly di browser tanpa upload.</p>
-                </div>
-              </div>
-              <div class="d-flex align-items-start mb-3">
-                <div class="feature-icon-badge me-3">
-                  <i class="bi bi-shield-lock fs-5 text-warning"></i>
-                </div>
-                <div>
-                  <h6 class="mb-1 text-white">Privasi Mutlak</h6>
-                  <p class="text-secondary small mb-0">Foto keluarga, tanda tangan, atau produk rahasia Anda tidak akan pernah tersimpan di database mana pun.</p>
-                </div>
-              </div>
-              <div class="d-flex align-items-start">
-                <div class="feature-icon-badge me-3">
-                  <i class="bi bi-person-check fs-5 text-info"></i>
-                </div>
-                <div>
-                  <h6 class="mb-1 text-white">Pengembang</h6>
-                  <p class="text-secondary small mb-0"><a href="https://widifirmaan.web.id" target="_blank" class="text-primary text-decoration-none">Widi Firmansyah</a></p>
-                </div>
-              </div>
-            </div>
-
-            <div class="tool-sidebar-card">
-              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
-                <i class="bi bi-grid-fill text-primary me-2"></i>Quick Tool Switcher
-              </h5>
-              <div class="list-group list-group-flush bg-transparent">
-                <a href="image-compressor.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-image text-success me-2"></i>Image Compressor</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="image-converter.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-filetype-png text-info me-2"></i>Image Converter</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="pdf-word.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-file-earmark-word text-primary me-2"></i>PDF to Word</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="qr-code.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-qr-code text-warning me-2"></i>QR Code Studio</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="dev-tools.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-0">
-                  <span><i class="bi bi-code-slash text-danger me-2"></i>Developer Toolbox</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
               </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
-    <div class="container text-center">
-      <div class="copyright text-secondary">
-        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+  <footer id="footer" class="footer position-relative">
+    <div class="container">
+      <div class="copyright text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
       </div>
-      <div class="credits text-secondary small">
-        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      <div class="credits">
+        Designed by <a href="https://widifirmaan.web.id/">Widi Firmansyah</a>
       </div>
     </div>
   </footer>
@@ -252,12 +223,11 @@
       dropzone.classList.add('d-none');
       previewSection.classList.remove('d-none');
       resultImage.src = url;
-      resultStatus.textContent = 'Menunggu';
+      resultStatus.textContent = 'Ready';
       downloadLink.classList.add('d-none');
       processBtn.classList.remove('d-none');
     });
 
-    // Drag and drop handlers
     ['dragenter', 'dragover'].forEach(name => {
       dropzone.addEventListener(name, (e) => {
         e.preventDefault();
@@ -281,7 +251,7 @@
     processBtn.addEventListener('click', async () => {
       const file = fileInput.files[0];
       if (!file) {
-        alert('Pilih gambar terlebih dahulu.');
+        alert('Please choose an image first.');
         return;
       }
 
@@ -296,11 +266,11 @@
         downloadLink.href = url;
         downloadLink.classList.remove('d-none');
         processBtn.classList.add('d-none');
-        resultStatus.textContent = 'Selesai';
-        resultStatus.className = 'badge bg-success';
+        resultStatus.textContent = 'Completed';
+        resultStatus.className = 'text-success small fw-bold';
       } catch (error) {
         console.error(error);
-        alert('Gagal memproses gambar: ' + error.message);
+        alert('Error processing image: ' + error.message);
       } finally {
         statusDiv.classList.add('d-none');
         processBtn.disabled = false;

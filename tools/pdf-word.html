@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>PDF to Word (.docx) Converter - WIDIFIRMAAN Tools</title>
-  <meta name="description" content="Convert PDF documents to editable Microsoft Word DOCX files 100% in your browser. Client-side, private, zero server upload.">
+  <title>PDF to Word Converter - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="100% private, client-side PDF to Word (.docx) converter powered by Mozilla PDF.js and DOCX.js. Zero server upload.">
   <link href="../assets/img/favicon.png" rel="icon">
   <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
   <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -16,31 +16,25 @@
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
 
+  <!-- PDF.js & DOCX.js Engines -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+  <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
 </head>
 
 <body class="service-details-page">
-  <header class="app-header py-3">
-    <div class="container d-flex align-items-center justify-content-between">
-      <a href="../index.html" class="logo d-flex align-items-center text-decoration-none">
-        <span class="sitename text-white mb-0 fs-4 fw-bold">WIDIFIRMAAN <span class="text-primary">Tools</span></span>
-      </a>
-      <a href="../index.html" class="btn btn-sm btn-outline-light rounded-pill px-3"><i class="bi bi-grid-fill me-1"></i> Semua Tools</a>
-    </div>
-  </header>
-
   <main class="main">
-    <div class="page-title dark-background py-3 py-md-4 border-bottom border-secondary border-opacity-25">
-      <div class="container d-md-flex justify-content-between align-items-center">
-        <h2 class="mb-2 mb-md-0 fw-bold fs-4 text-white d-flex align-items-center">
-          <a href="../index.html" class="text-secondary text-decoration-none me-2" title="Kembali ke Dashboard"><i class="bi bi-arrow-left"></i></a>
-          <span>PDF to Word Converter</span>
-        </h2>
+    <!-- Single Page Title Bar (Consistent with Homepage) -->
+    <div class="page-title">
+      <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <h1 class="mb-0 fs-4 fw-bold">
+          <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
+            <i class="bi bi-arrow-left"></i>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-5">| Free Stuff</span></span>
+          </a>
+        </h1>
         <nav class="breadcrumbs">
-          <ol class="breadcrumb mb-0 small">
-            <li class="breadcrumb-item"><a href="../index.html" class="text-secondary text-decoration-none">Home</a></li>
-            <li class="breadcrumb-item"><a href="../index.html#tool-grid" class="text-secondary text-decoration-none">Tools</a></li>
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
             <li class="breadcrumb-item active text-white" aria-current="page">PDF to Word</li>
           </ol>
         </nav>
@@ -48,195 +42,150 @@
     </div>
 
     <section id="service-details" class="service-details section py-4 py-lg-5">
-      <div class="container">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
         <div class="row g-4">
-          <!-- Main Content (Col 8) -->
+          <!-- Main Content Column -->
           <div class="col-lg-8">
-            <div class="tool-card mb-0">
-              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-                <h3 class="mb-0 text-white fw-bold">Konverter PDF ke Word (.docx)</h3>
-                <span class="feature-badge">
-                  <i class="bi bi-shield-check"></i> 100% Client-Side Private
-                </span>
-              </div>
+            <div class="tool-card">
+              <h2 class="fs-4 fw-bold text-white mb-2">PDF to Word Converter</h2>
               <p class="text-secondary mb-4">
-                Ubah dokumen PDF Anda menjadi file Microsoft Word (<strong>.docx</strong>) yang dapat diedit langsung. 
-                Pemrosesan berjalan 100% di browser Anda menggunakan WebAssembly & JavaScript—dokumen Anda tidak pernah diunggah ke server mana pun!
+                Convert PDF documents into editable Microsoft Word (.docx) files locally in your browser memory.
               </p>
 
               <!-- Upload Dropzone -->
               <div id="dropzone" class="tool-dropzone mb-4" onclick="document.getElementById('pdfFileInput').click()">
-                <i class="bi bi-file-earmark-word text-primary" style="font-size: 3rem;"></i>
-                <h5 class="mt-3 mb-1 text-white fw-semibold">Drag & Drop File PDF Anda di Sini</h5>
-                <p class="text-secondary small mb-3">atau klik tombol di bawah untuk memilih file dari komputer</p>
+                <i class="bi bi-file-earmark-word fs-1 text-secondary mb-2"></i>
+                <h5 class="mt-2 mb-1 text-white fw-semibold">Choose or drop a PDF file here</h5>
+                <p class="text-secondary small mb-3">All processing runs locally. No documents are uploaded to external servers.</p>
                 <input type="file" id="pdfFileInput" accept="application/pdf" class="d-none">
-                <button type="button" class="btn btn-primary px-4 py-2 rounded-pill">
-                  <i class="bi bi-folder2-open me-1"></i> Pilih File PDF
+                <button type="button" class="btn btn-secondary px-4 py-2">
+                  <i class="bi bi-folder2-open me-1"></i> Browse Files
                 </button>
               </div>
 
               <!-- Options & File Details Box (Hidden initially) -->
-              <div id="fileDetailsBox" class="p-3 rounded mb-4 border border-secondary border-opacity-25 d-none" style="background: #18181b;">
+              <div id="fileDetailsBox" class="p-3 rounded mb-4 border border-secondary border-opacity-25 d-none" style="background: rgba(255, 255, 255, 0.02);">
                 <div class="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom border-secondary border-opacity-25 flex-wrap gap-2">
                   <div>
-                    <h6 class="mb-1 text-primary fw-bold" id="infoFileName">-</h6>
-                    <span class="badge bg-secondary me-2" id="infoFileSize">-</span>
-                    <span class="badge bg-info text-dark" id="infoPageCount">- Halaman</span>
+                    <h6 class="mb-1 text-white fw-bold" id="infoFileName">-</h6>
+                    <span class="text-secondary small me-2" id="infoFileSize">-</span>
+                    <span class="text-secondary small" id="infoPageCount">- Pages</span>
                   </div>
-                  <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3" id="btnCancel">
-                    <i class="bi bi-x-circle me-1"></i> Ganti File
+                  <button type="button" class="btn btn-sm btn-outline-secondary px-3" id="btnCancel">
+                    <i class="bi bi-x-circle me-1"></i> Change File
                   </button>
                 </div>
 
                 <div class="row g-3 mb-3">
                   <div class="col-md-6">
-                    <label class="form-label text-secondary small fw-semibold mb-1">Mode Konversi:</label>
+                    <label class="form-label text-secondary small fw-semibold mb-1">Conversion Mode:</label>
                     <select id="convertMode" class="form-select form-select-sm">
-                      <option value="quality" selected>Format Rapi & Heading (Quality)</option>
-                      <option value="clean">Paragraf Bersih (Fast Text)</option>
+                      <option value="quality" selected>Formatted with Headings (Quality)</option>
+                      <option value="clean">Clean Paragraphs (Fast Text)</option>
                     </select>
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label text-secondary small fw-semibold mb-1">Rentang Halaman (Opsional):</label>
-                    <input type="text" id="pageRange" class="form-control form-control-sm" placeholder="Semua (atau misal: 1-5, 8)">
+                    <label class="form-label text-secondary small fw-semibold mb-1">Page Range (Optional):</label>
+                    <input type="text" id="pageRange" class="form-control form-control-sm" placeholder="All (e.g. 1-5, 8)">
                   </div>
                 </div>
 
                 <div class="d-grid mt-4">
-                  <button type="button" class="btn btn-primary rounded-pill py-2 fw-semibold" id="btnConvert">
-                    <i class="bi bi-arrow-repeat me-1"></i> Mulai Konversi ke Word (.docx)
+                  <button type="button" class="btn btn-primary py-2 fw-semibold" id="btnConvert">
+                    <i class="bi bi-arrow-repeat me-1"></i> Start Conversion to Word (.docx)
                   </button>
                 </div>
               </div>
 
               <!-- Conversion Progress Box (Hidden initially) -->
-              <div id="progressBox" class="p-3 rounded mb-4 border border-secondary border-opacity-25 d-none" style="background: #18181b;">
+              <div id="progressBox" class="p-3 rounded mb-4 border border-secondary border-opacity-25 d-none" style="background: rgba(255, 255, 255, 0.02);">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span class="small fw-semibold text-white" id="progressStatus">Mengekstrak teks PDF...</span>
-                  <span class="small fw-bold text-primary" id="progressPercent">0%</span>
+                  <span class="small fw-semibold text-white" id="progressStatus">Extracting PDF text...</span>
+                  <span class="small fw-bold text-white" id="progressPercent">0%</span>
                 </div>
-                <div class="progress" style="height: 10px; background: rgba(255,255,255,0.08);">
+                <div class="progress" style="height: 8px; background: rgba(255,255,255,0.08);">
                   <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 0%"></div>
                 </div>
               </div>
 
               <!-- Success & Download Box (Hidden initially) -->
-              <div id="resultBox" class="p-4 rounded border border-success border-opacity-50 text-center d-none" style="background: rgba(34, 197, 94, 0.08);">
-                <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
-                <h5 class="mt-2 mb-1 text-white fw-bold">Konversi Berhasil!</h5>
-                <p class="text-secondary small mb-3" id="resultFileName">Dokumen Word Anda telah siap.</p>
+              <div id="resultBox" class="p-4 rounded border border-success border-opacity-50 text-center d-none" style="background: rgba(34, 197, 94, 0.06);">
+                <i class="bi bi-check-circle-fill text-success fs-1"></i>
+                <h5 class="mt-2 mb-1 text-white fw-bold">Conversion Complete!</h5>
+                <p class="text-secondary small mb-3" id="resultFileName">Your Word document is ready.</p>
                 <div class="d-flex justify-content-center gap-2">
-                  <a id="downloadBtn" href="#" class="btn btn-success rounded-pill px-4 py-2">
-                    <i class="bi bi-download me-1"></i> Unduh File Word (.docx)
+                  <a id="downloadBtn" href="#" class="btn btn-primary px-4 py-2">
+                    <i class="bi bi-download me-1"></i> Download Word (.docx)
                   </a>
-                  <button type="button" class="btn btn-outline-secondary rounded-pill px-3" onclick="resetPdfWord()">
-                    <i class="bi bi-arrow-repeat me-1"></i> Konversi Lagi
+                  <button type="button" class="btn btn-outline-secondary px-3" onclick="resetPdfWord()">
+                    <i class="bi bi-arrow-repeat me-1"></i> Convert Another
                   </button>
                 </div>
               </div>
 
-              <!-- Three Feature highlights -->
-              <div class="row g-3 mt-4">
-                <div class="col-md-4">
-                  <div class="p-3 rounded border border-secondary border-opacity-25 h-100" style="background: #18181b;">
-                    <h6 class="fw-bold text-white mb-1"><i class="bi bi-shield-check text-success me-2"></i>Privasi Mutlak</h6>
-                    <p class="small text-secondary mb-0">100% diproses di browser. Dokumen rahasia tidak pernah diupload ke server mana pun.</p>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="p-3 rounded border border-secondary border-opacity-25 h-100" style="background: #18181b;">
-                    <h6 class="fw-bold text-white mb-1"><i class="bi bi-lightning-charge text-warning me-2"></i>Cepat & Ringan</h6>
-                    <p class="small text-secondary mb-0">Tanpa antrian server. Konversi teks, tata letak, dan paragraf instan hanya dalam hitungan detik.</p>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="p-3 rounded border border-secondary border-opacity-25 h-100" style="background: #18181b;">
-                    <h6 class="fw-bold text-white mb-1"><i class="bi bi-infinity text-info me-2"></i>Gratis Tanpa Batas</h6>
-                    <p class="small text-secondary mb-0">Bebas konversi dokumen sebanyak apa pun tanpa batasan kuota harian atau watermark.</p>
-                  </div>
-                </div>
-              </div>
-
             </div>
           </div>
 
-          <!-- Sidebar Column (Col 4) -->
+          <!-- Sidebar Column -->
           <div class="col-lg-4">
             <div class="d-flex flex-column gap-4">
-              <div class="tool-sidebar-card mb-0">
-              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
-                <i class="bi bi-shield-check text-success me-2"></i>Privacy & Execution
-              </h5>
-              <div class="d-flex align-items-start mb-3">
-                <div class="feature-icon-badge me-3">
-                  <i class="bi bi-filetype-docx fs-5 text-primary"></i>
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-grid me-2 text-secondary"></i>Other Tools
+                </h5>
+                <div class="d-flex flex-column gap-1">
+                  <a href="pdf-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-pdf me-2"></i>PDF Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="image-compressor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-image me-2"></i>Image Compressor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="remove-bg.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-person-bounding-box me-2"></i>Background Remover</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="qr-code.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-qr-code me-2"></i>QR Code Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="dev-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-code-slash me-2"></i>Developer Toolbox</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="calculator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-calculator me-2"></i>Scientific Calculator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="image-converter.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-arrow-repeat me-2"></i>Image Converter</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="text-editor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-pencil-square me-2"></i>Text Editor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="tire-comp.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-circle me-2"></i>Tire Comparison</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
                 </div>
-                <div>
-                  <h6 class="mb-1 text-white">Format Standar OpenXML</h6>
-                  <p class="text-secondary small mb-0">Menghasilkan file .docx valid yang dapat diedit langsung di Microsoft Word, Google Docs, dan LibreOffice.</p>
-                </div>
-              </div>
-              <div class="d-flex align-items-start mb-3">
-                <div class="feature-icon-badge me-3">
-                  <i class="bi bi-cpu fs-5 text-warning"></i>
-                </div>
-                <div>
-                  <h6 class="mb-1 text-white">Mozilla PDF.js & DOCX.js</h6>
-                  <p class="text-secondary small mb-0">Didukung engine open-source teruji untuk ekstraksi teks dan perakitan struktur dokumen.</p>
-                </div>
-              </div>
-              <div class="d-flex align-items-start">
-                <div class="feature-icon-badge me-3">
-                  <i class="bi bi-person-check fs-5 text-info"></i>
-                </div>
-                <div>
-                  <h6 class="mb-1 text-white">Pengembang</h6>
-                  <p class="text-secondary small mb-0"><a href="https://widifirmaan.web.id" target="_blank" class="text-primary text-decoration-none">Widi Firmansyah</a></p>
-                </div>
-              </div>
-            </div>
-
-            <div class="tool-sidebar-card">
-              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
-                <i class="bi bi-grid-fill text-primary me-2"></i>Quick Tool Switcher
-              </h5>
-              <div class="list-group list-group-flush bg-transparent">
-                <a href="pdf-tools.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-files text-primary me-2"></i>PDF Studio (Merge)</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="image-compressor.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-image text-success me-2"></i>Image Compressor</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="remove-bg.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-magic text-info me-2"></i>Background Remover</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="qr-code.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-qr-code text-warning me-2"></i>QR Code Studio</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="dev-tools.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-0">
-                  <span><i class="bi bi-code-slash text-danger me-2"></i>Developer Toolbox</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
               </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
-    <div class="container text-center">
-      <div class="copyright text-secondary">
-        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+  <footer id="footer" class="footer position-relative">
+    <div class="container">
+      <div class="copyright text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
       </div>
-      <div class="credits text-secondary small">
-        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      <div class="credits">
+        Designed by <a href="https://widifirmaan.web.id/">Widi Firmansyah</a>
       </div>
     </div>
   </footer>
@@ -297,7 +246,6 @@
 
     btnCancel.addEventListener('click', resetPdfWord);
 
-    // Drag and drop handlers
     ['dragenter', 'dragover'].forEach(name => {
       dropzone.addEventListener(name, (e) => {
         e.preventDefault();
@@ -315,7 +263,7 @@
       if (files.length > 0 && files[0].type === 'application/pdf') {
         handleFileSelect(files[0]);
       } else {
-        alert('Silakan pilih file berformat PDF.');
+        alert('Please select a valid PDF file.');
       }
     });
 
@@ -327,13 +275,13 @@
 
     async function handleFileSelect(file) {
       if (!file || file.type !== 'application/pdf') {
-        alert('File yang dipilih bukan file PDF valid.');
+        alert('Selected file is not a valid PDF.');
         return;
       }
       selectedFile = file;
       infoFileName.textContent = file.name;
       infoFileSize.textContent = formatBytes(file.size);
-      infoPageCount.textContent = 'Memuat halaman...';
+      infoPageCount.textContent = 'Loading pages...';
 
       dropzone.classList.add('d-none');
       fileDetailsBox.classList.remove('d-none');
@@ -344,17 +292,17 @@
         const arrayBuffer = await file.arrayBuffer();
         pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
         totalPdfPages = pdfDoc.numPages;
-        infoPageCount.textContent = `${totalPdfPages} Halaman`;
+        infoPageCount.textContent = `${totalPdfPages} Pages`;
       } catch (err) {
         console.error('Error reading PDF:', err);
-        alert('Gagal membaca PDF: ' + err.message);
+        alert('Failed to read PDF: ' + err.message);
         resetPdfWord();
       }
     }
 
     btnConvert.addEventListener('click', async () => {
       if (!pdfDoc) {
-        alert('Pilih dokumen PDF terlebih dahulu.');
+        alert('Please choose a PDF document first.');
         return;
       }
 
@@ -363,7 +311,7 @@
       resultBox.classList.add('d-none');
       progressBar.style.width = '0%';
       progressPercent.textContent = '0%';
-      progressStatus.textContent = 'Menyiapkan halaman...';
+      progressStatus.textContent = 'Preparing pages...';
 
       try {
         let targetPages = [];
@@ -400,7 +348,7 @@
           const pct = Math.round(((idx) / targetPages.length) * 80);
           progressBar.style.width = pct + '%';
           progressPercent.textContent = pct + '%';
-          progressStatus.textContent = `Mengekstrak teks halaman ${pageNum} dari ${totalPdfPages}...`;
+          progressStatus.textContent = `Extracting text from page ${pageNum} of ${totalPdfPages}...`;
 
           const page = await pdfDoc.getPage(pageNum);
           const textContent = await page.getTextContent();
@@ -411,7 +359,7 @@
           }
 
           if (!items || items.length === 0) {
-            docChildren.push(new docx.Paragraph({ children: [new docx.TextRun("[Halaman ini berupa gambar atau tidak memiliki teks yang dapat diekstrak]")] }));
+            docChildren.push(new docx.Paragraph({ children: [new docx.TextRun("[This page is an image or contains no extractable text]")] }));
             continue;
           }
 
@@ -474,7 +422,7 @@
 
         progressBar.style.width = '90%';
         progressPercent.textContent = '90%';
-        progressStatus.textContent = 'Menyusun file Word (.docx)...';
+        progressStatus.textContent = 'Packaging Word document (.docx)...';
 
         const doc = new docx.Document({
           creator: "JavaScript AIO Tools - Widi Firmansyah",
@@ -492,7 +440,7 @@
                 }
               },
               children: docChildren.length > 0 ? docChildren : [
-                new docx.Paragraph({ children: [new docx.TextRun("Tidak ada teks yang dapat diekstrak dari dokumen ini.")] })
+                new docx.Paragraph({ children: [new docx.TextRun("No extractable text found in this document.")] })
               ]
             }
           ]
@@ -501,7 +449,7 @@
         const docxBlob = await docx.Packer.toBlob(doc);
         progressBar.style.width = '100%';
         progressPercent.textContent = '100%';
-        progressStatus.textContent = 'Selesai!';
+        progressStatus.textContent = 'Complete!';
 
         const outName = selectedFile.name.replace(/\.[^/.]+$/, "") + ".docx";
         resultFileName.textContent = outName + ` (${formatBytes(docxBlob.size)})`;
@@ -513,7 +461,6 @@
 
         resultBox.classList.remove('d-none');
 
-        // Automatically trigger download
         const autoLink = document.createElement('a');
         autoLink.href = generatedBlobUrl;
         autoLink.download = outName;
@@ -523,7 +470,7 @@
 
       } catch (err) {
         console.error('Conversion error:', err);
-        alert('Terjadi kesalahan saat mengonversi dokumen: ' + err.message);
+        alert('An error occurred during conversion: ' + err.message);
       } finally {
         btnConvert.disabled = false;
       }

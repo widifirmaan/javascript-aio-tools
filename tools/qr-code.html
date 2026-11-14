@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>QR Code Studio (Generator & Scanner) - WIDIFIRMAAN Tools</title>
-  <meta name="description" content="Free QR Code Generator & Scanner. Create custom QR codes for URL, Wi-Fi, WhatsApp, and scan via image or camera 100% in browser.">
+  <title>QR Code Studio - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="Generate and scan QR codes locally in your browser. Supports Wi-Fi, URLs, WhatsApp, vCard, and direct camera scanning.">
   <link href="../assets/img/favicon.png" rel="icon">
   <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
   <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -21,9 +21,9 @@
 
   <style>
     .qr-preview-wrapper {
-      background: #18181c;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
       padding: 24px;
       display: flex;
       flex-direction: column;
@@ -34,11 +34,10 @@
     .qr-white-frame {
       background: #ffffff;
       padding: 16px;
-      border-radius: 12px;
+      border-radius: 8px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
     #qrcodeContainer img, #qrcodeContainer canvas {
       max-width: 100%;
@@ -49,26 +48,19 @@
 </head>
 
 <body class="service-details-page">
-  <header class="app-header py-3">
-    <div class="container d-flex align-items-center justify-content-between">
-      <a href="../index.html" class="logo d-flex align-items-center text-decoration-none">
-        <span class="sitename text-white mb-0 fs-4 fw-bold">WIDIFIRMAAN <span class="text-primary">Tools</span></span>
-      </a>
-      <a href="../index.html" class="btn btn-sm btn-outline-light rounded-pill px-3"><i class="bi bi-grid-fill me-1"></i> Semua Tools</a>
-    </div>
-  </header>
-
   <main class="main">
-    <div class="page-title dark-background py-3 py-md-4 border-bottom border-secondary border-opacity-25">
-      <div class="container d-md-flex justify-content-between align-items-center">
-        <h2 class="mb-2 mb-md-0 fw-bold fs-4 text-white d-flex align-items-center">
-          <a href="../index.html" class="text-secondary text-decoration-none me-2" title="Kembali ke Dashboard"><i class="bi bi-arrow-left"></i></a>
-          <span>QR Code Studio</span>
-        </h2>
+    <!-- Single Page Title Bar (Consistent with Homepage) -->
+    <div class="page-title">
+      <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <h1 class="mb-0 fs-4 fw-bold">
+          <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
+            <i class="bi bi-arrow-left"></i>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-5">| Free Stuff</span></span>
+          </a>
+        </h1>
         <nav class="breadcrumbs">
-          <ol class="breadcrumb mb-0 small">
-            <li class="breadcrumb-item"><a href="../index.html" class="text-secondary text-decoration-none">Home</a></li>
-            <li class="breadcrumb-item"><a href="../index.html#tool-grid" class="text-secondary text-decoration-none">Tools</a></li>
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
             <li class="breadcrumb-item active text-white" aria-current="page">QR Code Studio</li>
           </ol>
         </nav>
@@ -76,31 +68,26 @@
     </div>
 
     <section id="service-details" class="service-details section py-4 py-lg-5">
-      <div class="container">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
         <div class="row g-4">
-          <!-- Main Content (Col 8) -->
+          <!-- Main Content Column -->
           <div class="col-lg-8">
-            <div class="tool-card mb-0">
-              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-                <h3 class="mb-0 text-white fw-bold">QR Code Generator & Scanner</h3>
-                <span class="feature-badge">
-                  <i class="bi bi-qr-code-scan"></i> 100% Client-Side
-                </span>
-              </div>
+            <div class="tool-card">
+              <h2 class="fs-4 fw-bold text-white mb-2">QR Code Studio</h2>
               <p class="text-secondary mb-4">
-                Buat kode QR kustom untuk URL, jaringan Wi-Fi, teks, WhatsApp, atau kontak vCard, serta scan kode QR dari file gambar maupun kamera langsung.
+                Generate custom QR codes for URLs, Wi-Fi, WhatsApp, and vCards, or scan codes from images and live webcam video.
               </p>
 
               <!-- Tabs Navigation -->
               <ul class="nav nav-pills mb-4" id="qrTabs" role="tablist">
                 <li class="nav-item" role="presentation">
                   <button class="nav-link active px-4" id="generate-tab" data-bs-toggle="pill" data-bs-target="#generate-pane" type="button" role="tab">
-                    <i class="bi bi-qr-code me-1"></i> QR Generator
+                    <i class="bi bi-qr-code me-1"></i> Generator
                   </button>
                 </li>
                 <li class="nav-item" role="presentation">
                   <button class="nav-link px-4" id="scan-tab" data-bs-toggle="pill" data-bs-target="#scan-pane" type="button" role="tab">
-                    <i class="bi bi-camera me-1"></i> QR Scanner
+                    <i class="bi bi-camera me-1"></i> Scanner
                   </button>
                 </li>
               </ul>
@@ -111,67 +98,67 @@
                 <div class="tab-pane fade show active" id="generate-pane" role="tabpanel">
                   <div class="row g-4">
                     <div class="col-md-7">
-                      <div class="p-3 rounded border border-secondary border-opacity-25" style="background: #18181b;">
+                      <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
                         <div class="mb-3">
-                          <label class="form-label text-secondary small fw-semibold mb-1">Tipe Konten QR:</label>
+                          <label class="form-label text-secondary small fw-semibold mb-1">Content Type:</label>
                           <select id="qrType" class="form-select form-select-sm">
-                            <option value="url" selected>URL / Tautan Website</option>
-                            <option value="text">Teks Bebas</option>
-                            <option value="wifi">Jaringan Wi-Fi</option>
+                            <option value="url" selected>Website URL</option>
+                            <option value="text">Plain Text</option>
+                            <option value="wifi">Wi-Fi Network</option>
                             <option value="whatsapp">WhatsApp Direct Chat</option>
-                            <option value="email">Kirim Email</option>
-                            <option value="vcard">Kontak (vCard)</option>
+                            <option value="email">Send Email</option>
+                            <option value="vcard">Contact Card (vCard)</option>
                           </select>
                         </div>
 
                         <!-- Dynamic Inputs -->
                         <div id="groupUrl" class="qr-input-group mb-3">
-                          <label class="form-label text-secondary small mb-1">Tautan Website (URL):</label>
+                          <label class="form-label text-secondary small mb-1">Website URL:</label>
                           <input type="url" id="inputUrl" class="form-control form-control-sm" value="https://widifirmaan.web.id" placeholder="https://example.com">
                         </div>
 
                         <div id="groupText" class="qr-input-group mb-3 d-none">
-                          <label class="form-label text-secondary small mb-1">Teks:</label>
-                          <textarea id="inputText" class="form-control form-control-sm" rows="3" placeholder="Tuliskan teks apa saja..."></textarea>
+                          <label class="form-label text-secondary small mb-1">Plain Text:</label>
+                          <textarea id="inputText" class="form-control form-control-sm" rows="3" placeholder="Enter any text..."></textarea>
                         </div>
 
                         <div id="groupWifi" class="qr-input-group mb-3 d-none">
-                          <label class="form-label text-secondary small mb-1">Nama WiFi (SSID):</label>
-                          <input type="text" id="wifiSsid" class="form-control form-control-sm mb-2" placeholder="Nama WiFi">
-                          <label class="form-label text-secondary small mb-1">Kata Sandi (Password):</label>
-                          <input type="text" id="wifiPassword" class="form-control form-control-sm mb-2" placeholder="Password WiFi">
-                          <label class="form-label text-secondary small mb-1">Tipe Enkripsi:</label>
+                          <label class="form-label text-secondary small mb-1">Network Name (SSID):</label>
+                          <input type="text" id="wifiSsid" class="form-control form-control-sm mb-2" placeholder="Network SSID">
+                          <label class="form-label text-secondary small mb-1">Password:</label>
+                          <input type="text" id="wifiPassword" class="form-control form-control-sm mb-2" placeholder="Network Password">
+                          <label class="form-label text-secondary small mb-1">Encryption:</label>
                           <select id="wifiAuth" class="form-select form-select-sm">
-                            <option value="WPA">WPA/WPA2/WPA3</option>
+                            <option value="WPA">WPA / WPA2 / WPA3</option>
                             <option value="WEP">WEP</option>
-                            <option value="nopass">Tanpa Password (Open)</option>
+                            <option value="nopass">None (Open Network)</option>
                           </select>
                         </div>
 
                         <div id="groupWhatsapp" class="qr-input-group mb-3 d-none">
-                          <label class="form-label text-secondary small mb-1">Nomor WhatsApp (dengan kode negara):</label>
+                          <label class="form-label text-secondary small mb-1">Phone Number (with Country Code):</label>
                           <input type="tel" id="waPhone" class="form-control form-control-sm mb-2" placeholder="62812345678">
-                          <label class="form-label text-secondary small mb-1">Pesan Awal (Opsional):</label>
-                          <input type="text" id="waMessage" class="form-control form-control-sm" placeholder="Halo, saya ingin bertanya...">
+                          <label class="form-label text-secondary small mb-1">Prefilled Message (Optional):</label>
+                          <input type="text" id="waMessage" class="form-control form-control-sm" placeholder="Hello, I have an inquiry...">
                         </div>
 
                         <div id="groupEmail" class="qr-input-group mb-3 d-none">
-                          <label class="form-label text-secondary small mb-1">Alamat Email Penerima:</label>
-                          <input type="email" id="emailTo" class="form-control form-control-sm mb-2" placeholder="nama@email.com">
-                          <label class="form-label text-secondary small mb-1">Subjek:</label>
-                          <input type="text" id="emailSubject" class="form-control form-control-sm mb-2" placeholder="Subjek email">
-                          <label class="form-label text-secondary small mb-1">Isi Pesan:</label>
-                          <textarea id="emailBody" class="form-control form-control-sm" rows="2" placeholder="Pesan email..."></textarea>
+                          <label class="form-label text-secondary small mb-1">Recipient Email:</label>
+                          <input type="email" id="emailTo" class="form-control form-control-sm mb-2" placeholder="name@domain.com">
+                          <label class="form-label text-secondary small mb-1">Subject:</label>
+                          <input type="text" id="emailSubject" class="form-control form-control-sm mb-2" placeholder="Email subject">
+                          <label class="form-label text-secondary small mb-1">Body:</label>
+                          <textarea id="emailBody" class="form-control form-control-sm" rows="2" placeholder="Email message..."></textarea>
                         </div>
 
                         <div id="groupVcard" class="qr-input-group mb-3 d-none">
-                          <label class="form-label text-secondary small mb-1">Nama Lengkap:</label>
+                          <label class="form-label text-secondary small mb-1">Full Name:</label>
                           <input type="text" id="vcardName" class="form-control form-control-sm mb-2" placeholder="Widi Firmansyah">
-                          <label class="form-label text-secondary small mb-1">Nomor Telepon:</label>
+                          <label class="form-label text-secondary small mb-1">Phone Number:</label>
                           <input type="tel" id="vcardPhone" class="form-control form-control-sm mb-2" placeholder="+62811...">
-                          <label class="form-label text-secondary small mb-1">Email:</label>
+                          <label class="form-label text-secondary small mb-1">Email Address:</label>
                           <input type="email" id="vcardEmail" class="form-control form-control-sm mb-2" placeholder="w@widifirmaan.web.id">
-                          <label class="form-label text-secondary small mb-1">Organisasi / Perusahaan:</label>
+                          <label class="form-label text-secondary small mb-1">Organization / Title:</label>
                           <input type="text" id="vcardOrg" class="form-control form-control-sm" placeholder="Software Engineer">
                         </div>
 
@@ -180,19 +167,19 @@
                         <!-- Style Customization -->
                         <div class="row g-2 mb-2">
                           <div class="col-6">
-                            <label class="form-label text-secondary small mb-1">Warna QR:</label>
+                            <label class="form-label text-secondary small mb-1">QR Color:</label>
                             <input type="color" id="qrColorDark" class="form-control form-control-color w-100" value="#000000">
                           </div>
                           <div class="col-6">
-                            <label class="form-label text-secondary small mb-1">Warna Background:</label>
+                            <label class="form-label text-secondary small mb-1">Background:</label>
                             <input type="color" id="qrColorLight" class="form-control form-control-color w-100" value="#ffffff">
                           </div>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-2">
                           <label class="form-label text-secondary small d-flex justify-content-between mb-1">
-                            <span>Ukuran Resolusi:</span>
-                            <span id="lblSize" class="text-primary fw-semibold">256 x 256 px</span>
+                            <span>Resolution:</span>
+                            <span id="lblSize" class="text-white fw-semibold">256 x 256 px</span>
                           </label>
                           <input type="range" id="qrSize" class="form-range" min="160" max="600" step="20" value="256">
                         </div>
@@ -206,11 +193,11 @@
                           <div id="qrcodeContainer"></div>
                         </div>
                         <div class="w-100 text-center">
-                          <button type="button" id="btnDownloadPng" class="btn btn-primary rounded-pill w-100 mb-2 py-2">
-                            <i class="bi bi-download me-1"></i> Unduh Gambar (.PNG)
+                          <button type="button" id="btnDownloadPng" class="btn btn-primary w-100 mb-2 py-2">
+                            <i class="bi bi-download me-1"></i> Download PNG
                           </button>
-                          <button type="button" id="btnCopyQr" class="btn btn-outline-secondary rounded-pill btn-sm w-100 text-white">
-                            <i class="bi bi-clipboard me-1"></i> Salin ke Clipboard
+                          <button type="button" id="btnCopyQr" class="btn btn-outline-secondary btn-sm w-100 text-white">
+                            <i class="bi bi-clipboard me-1"></i> Copy to Clipboard
                           </button>
                         </div>
                       </div>
@@ -222,24 +209,24 @@
                 <div class="tab-pane fade" id="scan-pane" role="tabpanel">
                   <div class="row g-4">
                     <div class="col-md-6">
-                      <div class="p-3 rounded border border-secondary border-opacity-25 h-100" style="background: #18181b;">
-                        <h6 class="fw-bold text-white mb-3">Metode Scan QR</h6>
+                      <div class="p-3 rounded border border-secondary border-opacity-25 h-100" style="background: rgba(255, 255, 255, 0.02);">
+                        <h6 class="fw-bold text-white mb-3">Scan Source</h6>
 
                         <div id="scannerDropzone" class="tool-dropzone mb-3" onclick="document.getElementById('fileQrScan').click()">
-                          <i class="bi bi-file-earmark-image text-primary" style="font-size: 2.5rem;"></i>
-                          <h6 class="mt-2 mb-1 text-white fw-semibold">Pilih File Gambar QR</h6>
-                          <p class="text-secondary small mb-0">Klik atau drag foto QR ke sini</p>
+                          <i class="bi bi-file-earmark-image fs-1 text-secondary mb-2"></i>
+                          <h6 class="mt-1 mb-1 text-white fw-semibold">Choose an image file</h6>
+                          <p class="text-secondary small mb-0">Drag or click to browse a QR image</p>
                           <input type="file" id="fileQrScan" accept="image/*" class="d-none">
                         </div>
 
-                        <div class="text-center my-2 text-secondary small">- ATAU -</div>
+                        <div class="text-center my-2 text-secondary small">- OR -</div>
 
                         <div class="text-center">
-                          <button type="button" id="btnStartCamera" class="btn btn-outline-primary rounded-pill w-100 py-2">
-                            <i class="bi bi-camera me-1"></i> Buka Kamera Live
+                          <button type="button" id="btnStartCamera" class="btn btn-outline-secondary w-100 py-2">
+                            <i class="bi bi-camera me-1"></i> Open Live Camera
                           </button>
-                          <button type="button" id="btnStopCamera" class="btn btn-danger rounded-pill w-100 py-2 d-none">
-                            <i class="bi bi-camera-video-off me-1"></i> Hentikan Kamera
+                          <button type="button" id="btnStopCamera" class="btn btn-danger w-100 py-2 d-none">
+                            <i class="bi bi-camera-video-off me-1"></i> Stop Camera
                           </button>
                         </div>
 
@@ -248,27 +235,27 @@
                     </div>
 
                     <div class="col-md-6">
-                      <div class="p-3 rounded border border-secondary border-opacity-25 h-100" style="background: #18181b;">
-                        <h6 class="fw-bold text-white mb-3">Hasil Pemindaian</h6>
+                      <div class="p-3 rounded border border-secondary border-opacity-25 h-100" style="background: rgba(255, 255, 255, 0.02);">
+                        <h6 class="fw-bold text-white mb-3">Decoded Result</h6>
                         <div id="scanEmptyNotice" class="text-center text-secondary py-5">
                           <i class="bi bi-qr-code-scan fs-1 d-block mb-2 text-muted"></i>
-                          Belum ada QR Code yang di-scan.<br>Pilih file gambar atau nyalakan kamera.
+                          No QR Code scanned yet.<br>Upload an image or start camera.
                         </div>
                         <div id="scanResultBox" class="d-none">
-                          <div class="alert alert-success d-flex align-items-center mb-3 py-2">
-                            <i class="bi bi-check-circle-fill me-2 fs-5"></i>
-                            <div><strong>Kode QR Berhasil Dibaca!</strong></div>
+                          <div class="alert alert-dark d-flex align-items-center mb-3 py-2 border border-secondary border-opacity-25">
+                            <i class="bi bi-check-circle-fill me-2 fs-5 text-success"></i>
+                            <div><strong>QR Code Decoded Successfully</strong></div>
                           </div>
                           <div class="mb-3">
-                            <label class="form-label text-secondary small fw-semibold mb-1">Konten QR:</label>
+                            <label class="form-label text-secondary small fw-semibold mb-1">Payload:</label>
                             <textarea id="scanResultText" class="form-control" rows="5" readonly></textarea>
                           </div>
                           <div class="d-flex gap-2">
-                            <button type="button" id="btnCopyScan" class="btn btn-primary rounded-pill flex-grow-1">
-                              <i class="bi bi-clipboard me-1"></i> Salin Teks
+                            <button type="button" id="btnCopyScan" class="btn btn-secondary flex-grow-1">
+                              <i class="bi bi-clipboard me-1"></i> Copy Content
                             </button>
-                            <a id="btnOpenScanLink" href="#" target="_blank" class="btn btn-outline-primary rounded-pill d-none">
-                              <i class="bi bi-box-arrow-up-right me-1"></i> Buka Link
+                            <a id="btnOpenScanLink" href="#" target="_blank" class="btn btn-outline-secondary d-none">
+                              <i class="bi bi-box-arrow-up-right me-1"></i> Open Link
                             </a>
                           </div>
                         </div>
@@ -281,83 +268,66 @@
             </div>
           </div>
 
-          <!-- Sidebar Column (Col 4) -->
+          <!-- Sidebar Column -->
           <div class="col-lg-4">
             <div class="d-flex flex-column gap-4">
-              <div class="tool-sidebar-card mb-0">
-              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
-                <i class="bi bi-shield-check text-success me-2"></i>Privacy & Execution
-              </h5>
-              <div class="d-flex align-items-start mb-3">
-                <div class="feature-icon-badge me-3">
-                  <i class="bi bi-shield-lock fs-5 text-primary"></i>
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-grid me-2 text-secondary"></i>Other Tools
+                </h5>
+                <div class="d-flex flex-column gap-1">
+                  <a href="dev-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-code-slash me-2"></i>Developer Toolbox</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="pdf-word.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-earmark-word me-2"></i>PDF to Word</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="image-compressor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-image me-2"></i>Image Compressor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="remove-bg.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-person-bounding-box me-2"></i>Background Remover</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="calculator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-calculator me-2"></i>Scientific Calculator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="pdf-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-pdf me-2"></i>PDF Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="image-converter.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-arrow-repeat me-2"></i>Image Converter</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="text-editor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-pencil-square me-2"></i>Text Editor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="tire-comp.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-circle me-2"></i>Tire Comparison</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
                 </div>
-                <div>
-                  <h6 class="mb-1 text-white">Privasi Penuh</h6>
-                  <p class="text-secondary small mb-0">Password WiFi, nomor kontak, dan teks tidak pernah dikirim ke pihak ketiga.</p>
-                </div>
-              </div>
-              <div class="d-flex align-items-start mb-3">
-                <div class="feature-icon-badge me-3">
-                  <i class="bi bi-camera-video fs-5 text-warning"></i>
-                </div>
-                <div>
-                  <h6 class="mb-1 text-white">Scanner Kamera Realtime</h6>
-                  <p class="text-secondary small mb-0">Didukung Html5-QRCode untuk decoding barcode dan QR otomatis lewat browser.</p>
-                </div>
-              </div>
-              <div class="d-flex align-items-start">
-                <div class="feature-icon-badge me-3">
-                  <i class="bi bi-person-check fs-5 text-info"></i>
-                </div>
-                <div>
-                  <h6 class="mb-1 text-white">Pengembang</h6>
-                  <p class="text-secondary small mb-0"><a href="https://widifirmaan.web.id" target="_blank" class="text-primary text-decoration-none">Widi Firmansyah</a></p>
-                </div>
-              </div>
-            </div>
-
-            <div class="tool-sidebar-card">
-              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
-                <i class="bi bi-grid-fill text-primary me-2"></i>Quick Tool Switcher
-              </h5>
-              <div class="list-group list-group-flush bg-transparent">
-                <a href="dev-tools.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-code-slash text-danger me-2"></i>Developer Toolbox</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="pdf-word.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-file-earmark-word text-primary me-2"></i>PDF to Word</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="image-compressor.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-image text-success me-2"></i>Image Compressor</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="remove-bg.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-magic text-info me-2"></i>Background Remover</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="calculator.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-0">
-                  <span><i class="bi bi-calculator text-warning me-2"></i>Scientific Calculator</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
               </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
-    <div class="container text-center">
-      <div class="copyright text-secondary">
-        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+  <footer id="footer" class="footer position-relative">
+    <div class="container">
+      <div class="copyright text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
       </div>
-      <div class="credits text-secondary small">
-        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      <div class="credits">
+        Designed by <a href="https://widifirmaan.web.id/">Widi Firmansyah</a>
       </div>
     </div>
   </footer>
@@ -488,17 +458,16 @@
         canvas.toBlob(async (blob) => {
           try {
             await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-            alert('Gambar QR Code berhasil disalin ke clipboard!');
+            alert('QR Code image copied to clipboard!');
           } catch (e) {
-            alert('Tidak dapat menyalin gambar: ' + e.message);
+            alert('Unable to copy image: ' + e.message);
           }
         });
       } else {
-        alert('Browser Anda tidak mendukung salin gambar langsung ke clipboard.');
+        alert('Direct image copy is not supported in this browser.');
       }
     });
 
-    // Scanner functions
     function displayScanResult(text) {
       scanEmptyNotice.classList.add('d-none');
       scanResultBox.classList.remove('d-none');
@@ -520,7 +489,7 @@
           const result = await html5QrCode.scanFile(file, true);
           displayScanResult(result);
         } catch (err) {
-          alert('Tidak dapat mendeteksi kode QR pada gambar yang diunggah.');
+          alert('Unable to detect a QR code in the uploaded image.');
         }
       }
     });
@@ -542,7 +511,7 @@
           () => {}
         );
       } catch (err) {
-        alert('Gagal mengakses kamera: ' + err);
+        alert('Unable to access camera: ' + err);
         stopCamera();
       }
     });
@@ -564,11 +533,10 @@
     btnCopyScan.addEventListener('click', () => {
       if (scanResultText.value) {
         navigator.clipboard.writeText(scanResultText.value);
-        alert('Hasil scan berhasil disalin ke clipboard!');
+        alert('Result copied to clipboard!');
       }
     });
 
-    // Initial render
     renderQr();
   </script>
 </body>

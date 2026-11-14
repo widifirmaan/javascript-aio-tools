@@ -4,13 +4,13 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Developer Toolbox (JSON, Base64 & JWT) - WIDIFIRMAAN Tools</title>
-  <meta name="description" content="All-in-one developer toolbox: JSON Formatter, Base64/URL encoder-decoder, and JWT debugger 100% client-side.">
+  <title>Developer Toolbox - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="Client-side developer tools: JSON Formatter & Validator, Base64 & URL Encoder/Decoder, and JWT Token Inspector.">
   <link href="../assets/img/favicon.png" rel="icon">
   <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Roboto:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
@@ -21,42 +21,35 @@
       font-family: 'Fira Code', 'Courier New', monospace;
       font-size: 0.88rem;
       line-height: 1.5;
-      background: #141418 !important;
-      color: #cdd6f4 !important;
-      border-radius: 10px;
-      padding: 14px;
+      background: #191919 !important;
+      color: #e5e5e5 !important;
+      border-radius: 8px;
+      padding: 12px;
       border: 1px solid rgba(255, 255, 255, 0.1) !important;
       tab-size: 2;
     }
     .code-editor:focus {
-      background: #111114 !important;
-      border-color: #3b82f6 !important;
-      box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25) !important;
+      background: #191919 !important;
+      border-color: rgba(255, 255, 255, 0.35) !important;
+      box-shadow: none !important;
     }
   </style>
 </head>
 
 <body class="service-details-page">
-  <header class="app-header py-3">
-    <div class="container d-flex align-items-center justify-content-between">
-      <a href="../index.html" class="logo d-flex align-items-center text-decoration-none">
-        <span class="sitename text-white mb-0 fs-4 fw-bold">WIDIFIRMAAN <span class="text-primary">Tools</span></span>
-      </a>
-      <a href="../index.html" class="btn btn-sm btn-outline-light rounded-pill px-3"><i class="bi bi-grid-fill me-1"></i> Semua Tools</a>
-    </div>
-  </header>
-
   <main class="main">
-    <div class="page-title dark-background py-3 py-md-4 border-bottom border-secondary border-opacity-25">
-      <div class="container d-md-flex justify-content-between align-items-center">
-        <h2 class="mb-2 mb-md-0 fw-bold fs-4 text-white d-flex align-items-center">
-          <a href="../index.html" class="text-secondary text-decoration-none me-2" title="Kembali ke Dashboard"><i class="bi bi-arrow-left"></i></a>
-          <span>Developer Toolbox</span>
-        </h2>
+    <!-- Single Page Title Bar (Consistent with Homepage) -->
+    <div class="page-title">
+      <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <h1 class="mb-0 fs-4 fw-bold">
+          <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
+            <i class="bi bi-arrow-left"></i>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-5">| Free Stuff</span></span>
+          </a>
+        </h1>
         <nav class="breadcrumbs">
-          <ol class="breadcrumb mb-0 small">
-            <li class="breadcrumb-item"><a href="../index.html" class="text-secondary text-decoration-none">Home</a></li>
-            <li class="breadcrumb-item"><a href="../index.html#tool-grid" class="text-secondary text-decoration-none">Tools</a></li>
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
             <li class="breadcrumb-item active text-white" aria-current="page">Developer Toolbox</li>
           </ol>
         </nav>
@@ -64,19 +57,14 @@
     </div>
 
     <section id="service-details" class="service-details section py-4 py-lg-5">
-      <div class="container">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
         <div class="row g-4">
-          <!-- Main Content (Col 8) -->
+          <!-- Main Content Column -->
           <div class="col-lg-8">
-            <div class="tool-card mb-0">
-              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-                <h3 class="mb-0 text-white fw-bold">Developer & Data Toolbox</h3>
-                <span class="feature-badge">
-                  <i class="bi bi-shield-check"></i> 100% Client-Side Safe
-                </span>
-              </div>
+            <div class="tool-card">
+              <h2 class="fs-4 fw-bold text-white mb-2">Developer Toolbox</h2>
               <p class="text-secondary mb-4">
-                Perkakas software engineer: Formatter & Validator JSON, Encoder/Decoder Base64 & URL, serta JWT Token Inspector tanpa risiko membocorkan data sensitif ke server luar.
+                Client-side developer utilities: JSON Formatter & Validator, Base64 & URL Encoder/Decoder, and JWT Token Inspector without transmitting sensitive data.
               </p>
 
               <!-- Tabs Navigation -->
@@ -104,66 +92,66 @@
                 <div class="tab-pane fade show active" id="json-pane" role="tabpanel">
                   <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
                     <div class="btn-group btn-group-sm">
-                      <button type="button" class="btn btn-primary rounded-start-pill" id="btnBeautify2">Beautify (2 Spasi)</button>
-                      <button type="button" class="btn btn-outline-primary" id="btnBeautify4">Beautify (4 Spasi)</button>
-                      <button type="button" class="btn btn-outline-secondary rounded-end-pill" id="btnMinifyJson">Minify</button>
+                      <button type="button" class="btn btn-secondary" id="btnBeautify2">Beautify (2 Spaces)</button>
+                      <button type="button" class="btn btn-outline-secondary" id="btnBeautify4">Beautify (4 Spaces)</button>
+                      <button type="button" class="btn btn-outline-secondary" id="btnMinifyJson">Minify</button>
                     </div>
                     <div class="d-flex gap-2">
-                      <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" id="btnSampleJson">Load Contoh</button>
-                      <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3" id="btnClearJson">Clear</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary px-3" id="btnSampleJson">Load Sample</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary px-3" id="btnClearJson">Clear</button>
                     </div>
                   </div>
 
                   <div class="mb-2">
-                    <textarea id="jsonInput" class="form-control code-editor" rows="12" placeholder='Paste JSON Anda di sini... misal: {"name": "WIDIFIRMAAN", "tools": 10}'></textarea>
+                    <textarea id="jsonInput" class="form-control code-editor" rows="12" placeholder='Paste your JSON here... e.g. {"name": "WIDIFIRMAAN", "tools": 10}'></textarea>
                   </div>
 
-                  <div id="jsonStatusAlert" class="alert alert-secondary py-2 small mb-3 border-0" style="background: rgba(255,255,255,0.06); color: #cbd5e1;">
-                    <i class="bi bi-info-circle me-1"></i> Siap memproses JSON.
+                  <div id="jsonStatusAlert" class="alert alert-dark py-2 small mb-3 border border-secondary border-opacity-25" style="background: rgba(255,255,255,0.03); color: #cbd5e1;">
+                    <i class="bi bi-info-circle me-1"></i> Ready to process JSON.
                   </div>
 
                   <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <button type="button" class="btn btn-success rounded-pill btn-sm px-3" id="btnCopyJson">
-                      <i class="bi bi-clipboard me-1"></i> Salin JSON ke Clipboard
+                    <button type="button" class="btn btn-primary btn-sm px-3" id="btnCopyJson">
+                      <i class="bi bi-clipboard me-1"></i> Copy JSON
                     </button>
-                    <button type="button" class="btn btn-outline-primary rounded-pill btn-sm px-3" id="btnDownloadJson">
-                      <i class="bi bi-download me-1"></i> Unduh File .json
+                    <button type="button" class="btn btn-outline-secondary btn-sm px-3" id="btnDownloadJson">
+                      <i class="bi bi-download me-1"></i> Download .json
                     </button>
                   </div>
                 </div>
 
                 <!-- TAB 2: BASE64 & URL ENCODER/DECODER -->
                 <div class="tab-pane fade" id="base64-pane" role="tabpanel">
-                  <div class="p-3 rounded mb-4 border border-secondary border-opacity-25" style="background: #18181b;">
+                  <div class="p-3 rounded mb-4 border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
                     <div class="row g-3">
                       <div class="col-md-6">
-                        <label class="form-label text-secondary small fw-semibold mb-1">Input Teks:</label>
-                        <textarea id="b64Input" class="form-control code-editor" rows="6" placeholder="Ketik atau paste teks di sini..."></textarea>
+                        <label class="form-label text-secondary small fw-semibold mb-1">Input Text:</label>
+                        <textarea id="b64Input" class="form-control code-editor" rows="6" placeholder="Enter text here..."></textarea>
                       </div>
                       <div class="col-md-6">
-                        <label class="form-label text-secondary small fw-semibold mb-1">Hasil Output:</label>
-                        <textarea id="b64Output" class="form-control code-editor" rows="6" readonly placeholder="Hasil akan muncul di sini..."></textarea>
+                        <label class="form-label text-secondary small fw-semibold mb-1">Output Result:</label>
+                        <textarea id="b64Output" class="form-control code-editor" rows="6" readonly placeholder="Result will appear here..."></textarea>
                       </div>
                     </div>
 
                     <div class="d-flex flex-wrap gap-2 mt-3 pt-2 border-top border-secondary border-opacity-25">
-                      <button type="button" class="btn btn-sm btn-primary rounded-pill px-3" id="btnB64Encode">Encode Base64</button>
-                      <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3" id="btnB64Decode">Decode Base64</button>
-                      <button type="button" class="btn btn-sm btn-outline-light rounded-pill px-3" id="btnUrlEncode">Encode URL</button>
-                      <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" id="btnUrlDecode">Decode URL</button>
-                      <button type="button" class="btn btn-sm btn-success rounded-pill px-3 ms-auto" id="btnCopyB64">
-                        <i class="bi bi-clipboard me-1"></i> Salin Output
+                      <button type="button" class="btn btn-sm btn-secondary px-3" id="btnB64Encode">Encode Base64</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary px-3" id="btnB64Decode">Decode Base64</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary px-3" id="btnUrlEncode">Encode URL</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary px-3" id="btnUrlDecode">Decode URL</button>
+                      <button type="button" class="btn btn-sm btn-primary px-3 ms-auto" id="btnCopyB64">
+                        <i class="bi bi-clipboard me-1"></i> Copy Output
                       </button>
                     </div>
                   </div>
 
                   <!-- File to Base64 -->
-                  <div class="p-3 rounded border border-secondary border-opacity-25" style="background: #18181b;">
-                    <h6 class="fw-bold text-white mb-2"><i class="bi bi-file-earmark-arrow-up text-primary me-2"></i>Konversi File ke Base64 Data URL</h6>
+                  <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                    <h6 class="fw-bold text-white mb-2"><i class="bi bi-file-earmark-arrow-up text-secondary me-2"></i>File to Base64 Data URL</h6>
                     <input type="file" id="file2B64Input" class="form-control form-control-sm mb-2">
-                    <textarea id="fileB64Output" class="form-control code-editor mb-2" rows="3" readonly placeholder="Data URL base64 file akan muncul di sini..."></textarea>
-                    <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3" id="btnCopyFileB64">
-                      <i class="bi bi-clipboard me-1"></i> Salin Data URL
+                    <textarea id="fileB64Output" class="form-control code-editor mb-2" rows="3" readonly placeholder="Base64 Data URL will appear here..."></textarea>
+                    <button type="button" class="btn btn-sm btn-outline-secondary px-3" id="btnCopyFileB64">
+                      <i class="bi bi-clipboard me-1"></i> Copy Data URL
                     </button>
                   </div>
                 </div>
@@ -171,19 +159,19 @@
                 <!-- TAB 3: JWT INSPECTOR -->
                 <div class="tab-pane fade" id="jwt-pane" role="tabpanel">
                   <div class="mb-3">
-                    <label class="form-label text-secondary small fw-semibold mb-1">Paste Encoded JWT Token:</label>
+                    <label class="form-label text-secondary small fw-semibold mb-1">Encoded JWT Token:</label>
                     <textarea id="jwtInput" class="form-control code-editor" rows="4" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IldpZGkiLCJpYXQiOjE1MTYyMzkwMjJ9..."></textarea>
                   </div>
 
-                  <div id="jwtExpAlert" class="alert alert-secondary py-2 small mb-3 border-0 d-none"></div>
+                  <div id="jwtExpAlert" class="alert alert-dark py-2 small mb-3 border border-secondary border-opacity-25 d-none"></div>
 
                   <div class="row g-3">
                     <div class="col-md-6">
-                      <label class="form-label small fw-semibold text-danger"><i class="bi bi-code-square me-1"></i>Header (Algorithm & Type):</label>
+                      <label class="form-label small fw-semibold text-secondary"><i class="bi bi-code-square me-1"></i>Header (Algorithm & Type):</label>
                       <textarea id="jwtHeaderOutput" class="form-control code-editor" rows="8" readonly placeholder="Header JSON..."></textarea>
                     </div>
                     <div class="col-md-6">
-                      <label class="form-label small fw-semibold text-success"><i class="bi bi-file-earmark-person me-1"></i>Payload (Data & Claims):</label>
+                      <label class="form-label small fw-semibold text-secondary"><i class="bi bi-file-earmark-person me-1"></i>Payload (Data & Claims):</label>
                       <textarea id="jwtPayloadOutput" class="form-control code-editor" rows="8" readonly placeholder="Payload JSON..."></textarea>
                     </div>
                   </div>
@@ -193,83 +181,66 @@
             </div>
           </div>
 
-          <!-- Sidebar Column (Col 4) -->
+          <!-- Sidebar Column -->
           <div class="col-lg-4">
             <div class="d-flex flex-column gap-4">
-              <div class="tool-sidebar-card mb-0">
-              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
-                <i class="bi bi-shield-check text-success me-2"></i>Privacy & Execution
-              </h5>
-              <div class="d-flex align-items-start mb-3">
-                <div class="feature-icon-badge me-3">
-                  <i class="bi bi-shield-shaded fs-5 text-primary"></i>
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-grid me-2 text-secondary"></i>Other Tools
+                </h5>
+                <div class="d-flex flex-column gap-1">
+                  <a href="qr-code.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-qr-code me-2"></i>QR Code Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="pdf-word.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-earmark-word me-2"></i>PDF to Word</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="calculator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-calculator me-2"></i>Scientific Calculator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="image-compressor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-image me-2"></i>Image Compressor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="remove-bg.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-person-bounding-box me-2"></i>Background Remover</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="pdf-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-pdf me-2"></i>PDF Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="image-converter.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-arrow-repeat me-2"></i>Image Converter</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="text-editor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-pencil-square me-2"></i>Text Editor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="tire-comp.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-circle me-2"></i>Tire Comparison</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
                 </div>
-                <div>
-                  <h6 class="mb-1 text-white">Jaminan Kerahasiaan</h6>
-                  <p class="text-secondary small mb-0">JWT token, API keys, dan payload sensitif Anda tidak pernah keluar dari RAM komputer Anda.</p>
-                </div>
-              </div>
-              <div class="d-flex align-items-start mb-3">
-                <div class="feature-icon-badge me-3">
-                  <i class="bi bi-lightning-charge fs-5 text-warning"></i>
-                </div>
-                <div>
-                  <h6 class="mb-1 text-white">Eksekusi Lokal Instan</h6>
-                  <p class="text-secondary small mb-0">Native JavaScript ES6+ engine dengan validasi JSON dan decoder token super cepat.</p>
-                </div>
-              </div>
-              <div class="d-flex align-items-start">
-                <div class="feature-icon-badge me-3">
-                  <i class="bi bi-person-check fs-5 text-info"></i>
-                </div>
-                <div>
-                  <h6 class="mb-1 text-white">Pengembang</h6>
-                  <p class="text-secondary small mb-0"><a href="https://widifirmaan.web.id" target="_blank" class="text-primary text-decoration-none">Widi Firmansyah</a></p>
-                </div>
-              </div>
-            </div>
-
-            <div class="tool-sidebar-card">
-              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
-                <i class="bi bi-grid-fill text-primary me-2"></i>Quick Tool Switcher
-              </h5>
-              <div class="list-group list-group-flush bg-transparent">
-                <a href="qr-code.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-qr-code text-warning me-2"></i>QR Code Studio</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="pdf-word.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-file-earmark-word text-primary me-2"></i>PDF to Word</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="calculator.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-calculator text-info me-2"></i>Scientific Calculator</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="image-compressor.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
-                  <span><i class="bi bi-image text-success me-2"></i>Image Compressor</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
-                <a href="text-editor.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-0">
-                  <span><i class="bi bi-pen text-danger me-2"></i>Text Editor</span>
-                  <i class="bi bi-chevron-right small text-muted"></i>
-                </a>
               </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
-    <div class="container text-center">
-      <div class="copyright text-secondary">
-        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+  <footer id="footer" class="footer position-relative">
+    <div class="container">
+      <div class="copyright text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
       </div>
-      <div class="credits text-secondary small">
-        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      <div class="credits">
+        Designed by <a href="https://widifirmaan.web.id/">Widi Firmansyah</a>
       </div>
     </div>
   </footer>
@@ -298,11 +269,11 @@
       try {
         const parsed = JSON.parse(raw);
         jsonInput.value = JSON.stringify(parsed, null, space);
-        jsonStatusAlert.className = 'alert alert-success py-2 small mb-3 border-0';
-        jsonStatusAlert.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i> JSON Valid & Berhasil Diformat.';
+        jsonStatusAlert.className = 'alert alert-dark py-2 small mb-3 border border-secondary border-opacity-25';
+        jsonStatusAlert.innerHTML = '<i class="bi bi-check-circle-fill text-success me-1"></i> Valid JSON formatted successfully.';
       } catch (e) {
         jsonStatusAlert.className = 'alert alert-danger py-2 small mb-3 border-0';
-        jsonStatusAlert.innerHTML = `<i class="bi bi-exclamation-triangle-fill me-1"></i> <strong>Error Syntax JSON:</strong> ${e.message}`;
+        jsonStatusAlert.innerHTML = `<i class="bi bi-exclamation-triangle-fill me-1"></i> <strong>JSON Syntax Error:</strong> ${e.message}`;
       }
     }
 
@@ -312,12 +283,12 @@
 
     btnSampleJson.addEventListener('click', () => {
       const sample = {
-        app: "JavaScript AIO Tools",
-        author: "Widi Firmansyah",
-        website: "https://tools.widifirmaan.web.id",
-        features: ["100% Client-Side", "Zero Server Upload", "Free Open Source"],
-        tools_count: 10,
-        active: true
+        name: "Sample Object",
+        version: "1.0",
+        items: [
+          { id: 1, label: "Item A", active: true },
+          { id: 2, label: "Item B", active: false }
+        ]
       };
       jsonInput.value = JSON.stringify(sample, null, 2);
       formatJson(2);
@@ -325,14 +296,14 @@
 
     btnClearJson.addEventListener('click', () => {
       jsonInput.value = '';
-      jsonStatusAlert.className = 'alert alert-secondary py-2 small mb-3 border-0';
-      jsonStatusAlert.innerHTML = '<i class="bi bi-info-circle me-1"></i> Siap memproses JSON.';
+      jsonStatusAlert.className = 'alert alert-dark py-2 small mb-3 border border-secondary border-opacity-25';
+      jsonStatusAlert.innerHTML = '<i class="bi bi-info-circle me-1"></i> Ready to process JSON.';
     });
 
     btnCopyJson.addEventListener('click', () => {
       if (jsonInput.value) {
         navigator.clipboard.writeText(jsonInput.value);
-        alert('JSON berhasil disalin ke clipboard!');
+        alert('JSON copied to clipboard!');
       }
     });
 
@@ -361,7 +332,7 @@
       try {
         b64Output.value = btoa(unescape(encodeURIComponent(b64Input.value)));
       } catch (e) {
-        alert('Gagal Encode Base64: ' + e.message);
+        alert('Base64 Encode failed: ' + e.message);
       }
     });
 
@@ -369,7 +340,7 @@
       try {
         b64Output.value = decodeURIComponent(escape(atob(b64Input.value.trim())));
       } catch (e) {
-        alert('Gagal Decode Base64 (Format string tidak valid): ' + e.message);
+        alert('Base64 Decode failed (Invalid string format): ' + e.message);
       }
     });
 
@@ -381,14 +352,14 @@
       try {
         b64Output.value = decodeURIComponent(b64Input.value);
       } catch (e) {
-        alert('Gagal Decode URL: ' + e.message);
+        alert('URL Decode failed: ' + e.message);
       }
     });
 
     btnCopyB64.addEventListener('click', () => {
       if (b64Output.value) {
         navigator.clipboard.writeText(b64Output.value);
-        alert('Hasil output berhasil disalin!');
+        alert('Output copied to clipboard!');
       }
     });
 
@@ -411,7 +382,7 @@
     btnCopyFileB64.addEventListener('click', () => {
       if (fileB64Output.value) {
         navigator.clipboard.writeText(fileB64Output.value);
-        alert('Data URL file berhasil disalin!');
+        alert('Data URL copied to clipboard!');
       }
     });
 
@@ -434,7 +405,7 @@
       if (parts.length < 2) {
         jwtExpAlert.classList.remove('d-none');
         jwtExpAlert.className = 'alert alert-danger py-2 small mb-3 border-0';
-        jwtExpAlert.innerHTML = '<i class="bi bi-x-circle-fill me-1"></i> Format token JWT tidak valid (harus terdiri dari minimal 2 bagian dipisah tanda titik).';
+        jwtExpAlert.innerHTML = '<i class="bi bi-x-circle-fill me-1"></i> Invalid JWT format (must have at least 2 parts separated by dots).';
         return;
       }
 
@@ -459,19 +430,19 @@
           const isExpired = Date.now() >= payloadObj.exp * 1000;
           if (isExpired) {
             jwtExpAlert.className = 'alert alert-danger py-2 small mb-3 border-0';
-            jwtExpAlert.innerHTML = `<i class="bi bi-x-circle-fill me-1"></i> <strong>Token Kedaluwarsa (Expired):</strong> ${expDate.toLocaleString()}`;
+            jwtExpAlert.innerHTML = `<i class="bi bi-x-circle-fill me-1"></i> <strong>Token Expired:</strong> ${expDate.toLocaleString()}`;
           } else {
-            jwtExpAlert.className = 'alert alert-success py-2 small mb-3 border-0';
-            jwtExpAlert.innerHTML = `<i class="bi bi-check-circle-fill me-1"></i> <strong>Token Masih Aktif (Valid):</strong> Berlaku hingga ${expDate.toLocaleString()}`;
+            jwtExpAlert.className = 'alert alert-dark py-2 small mb-3 border border-secondary border-opacity-25';
+            jwtExpAlert.innerHTML = `<i class="bi bi-check-circle-fill text-success me-1"></i> <strong>Token Valid:</strong> Active until ${expDate.toLocaleString()}`;
           }
         } else {
-          jwtExpAlert.className = 'alert alert-info py-2 small mb-3 border-0';
-          jwtExpAlert.innerHTML = '<i class="bi bi-info-circle me-1"></i> Token tidak memiliki field claim `exp` (waktu kedaluwarsa).';
+          jwtExpAlert.className = 'alert alert-dark py-2 small mb-3 border border-secondary border-opacity-25';
+          jwtExpAlert.innerHTML = '<i class="bi bi-info-circle me-1"></i> Token has no `exp` expiration claim.';
         }
       } catch (e) {
         jwtExpAlert.classList.remove('d-none');
         jwtExpAlert.className = 'alert alert-warning py-2 small mb-3 border-0';
-        jwtExpAlert.innerHTML = `<i class="bi bi-exclamation-triangle-fill me-1"></i> Gagal me-decode token JWT: ${e.message}`;
+        jwtExpAlert.innerHTML = `<i class="bi bi-exclamation-triangle-fill me-1"></i> Failed to decode JWT: ${e.message}`;
       }
     }
 

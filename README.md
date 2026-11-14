@@ -2,7 +2,7 @@
 
 > Free, fast, and 100% private browser utility suite powered by WebAssembly and client-side JavaScript.
 
-JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection of 10 essential browser utilities for documents, images, developer productivity, and calculations. All data is processed entirely in your browser's memory—zero server uploads, 100% private, and completely free.
+JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection of 10 essential browser utilities for documents, images, developer productivity, and calculations. All data is processed entirely in your browser's memory, zero server uploads, 100% private, and completely free.
 
 [![Live Demo](https://img.shields.io/badge/Demo-tools.widifirmaan.web.id-10B981?style=flat-square&logo=cloudflare&logoColor=white)](https://tools.widifirmaan.web.id)
 [![Architecture](https://img.shields.io/badge/Architecture-100%25_Client--Side-8B5CF6?style=flat-square)](#features)
@@ -18,9 +18,8 @@ JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection
 
 ## Live Production
 
-- **Primary Custom Domain:** [https://tools.widifirmaan.web.id](https://tools.widifirmaan.web.id)
-- **Cloudflare Pages Direct:** [https://javascript-aio-tools.pages.dev](https://javascript-aio-tools.pages.dev)
-- **Deployment Infrastructure:** Cloudflare Pages (Global Edge CDN distribution with instant static asset delivery)
+- **URL:** [https://tools.widifirmaan.web.id](https://tools.widifirmaan.web.id)
+- **Deployment:** Cloudflare Pages (Edge delivery with static assets)
 
 ---
 
@@ -59,7 +58,7 @@ All 10 tools are executed 100% locally in the browser without uploading document
 ### 2. 🖼️ Media & Image Processing
 - **AI Background Remover** (`tools/remove-bg.html`):
   - Automatic foreground detection and background removal using **Edge WebAssembly AI** (`@imgly/background-removal`).
-  - Zero server GPU/CPU required—runs directly on the user's hardware via WebAssembly.
+  - Zero server GPU or CPU required, runs directly on the user's hardware via WebAssembly.
 - **Image Compressor** (`tools/image-compressor.html`):
   - Fast client-side image compression reducing payload size by up to 80% while retaining visual fidelity.
 - **Image Converter** (`tools/image-converter.html`):
