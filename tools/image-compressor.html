@@ -4,288 +4,352 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Image Compressor - DUFL</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+  <title>Image Compressor - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="Free client-side image compressor. Shrink JPG, PNG, and WebP images without sacrificing quality right in your browser.">
   <link href="../assets/img/favicon.png" rel="icon">
   <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <style>
-    #file-input {
-      display: none;
-    }
-
-    .file-input-label {
-      cursor: pointer;
-      transition: transform 0.2s ease-in-out;
-    }
-
-    .file-input-label:hover {
-      transform: translateY(-2px);
-    }
-  </style>
 </head>
 
 <body class="service-details-page">
+  <header class="app-header py-3">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a href="../index.html" class="logo d-flex align-items-center text-decoration-none">
+        <span class="sitename text-white mb-0 fs-4 fw-bold">WIDIFIRMAAN <span class="text-primary">Tools</span></span>
+      </a>
+      <a href="../index.html" class="btn btn-sm btn-outline-light rounded-pill px-3"><i class="bi bi-grid-fill me-1"></i> Semua Tools</a>
+    </div>
+  </header>
+
   <main class="main">
-    <div class="page-title dark-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0"><a href="/"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
+    <div class="page-title dark-background py-3 py-md-4 border-bottom border-secondary border-opacity-25">
+      <div class="container d-md-flex justify-content-between align-items-center">
+        <h2 class="mb-2 mb-md-0 fw-bold fs-4 text-white d-flex align-items-center">
+          <a href="../index.html" class="text-secondary text-decoration-none me-2" title="Kembali ke Dashboard"><i class="bi bi-arrow-left"></i></a>
+          <span>Image Compressor</span>
+        </h2>
         <nav class="breadcrumbs">
-          <ol>
-            <li><a href="https://www.dufl.web.id">Premium Stuff</a></li>
-            <li><a href="/">Free Stuff</a></li>
+          <ol class="breadcrumb mb-0 small">
+            <li class="breadcrumb-item"><a href="../index.html" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item"><a href="../index.html#tool-grid" class="text-secondary text-decoration-none">Tools</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Compressor</li>
           </ol>
         </nav>
       </div>
     </div>
-    <section id="service-details" class="service-details section">
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="row gy-4">
-          <div class="col-lg-10">
-            <div class="content">
-              <h3>Image Compressor</h3>
-              <p>
-                A Simple, Fast and efficient solution for shrinking the size of your images.
+
+    <section id="service-details" class="service-details section py-4 py-lg-5">
+      <div class="container">
+        <div class="row g-4">
+          <!-- Main Compressor Column (Col 8) -->
+          <div class="col-lg-8">
+            <div class="tool-card mb-0">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                <h3 class="mb-0 text-white fw-bold">Kompresi Gambar Cepat</h3>
+                <span class="feature-badge">
+                  <i class="bi bi-lightning-charge-fill"></i> Client-Side Canvas Engine
+                </span>
+              </div>
+              <p class="text-secondary mb-4">
+                Kecilkan ukuran file foto JPG, PNG, atau WebP hingga 80% lebih hemat tanpa penurunan kualitas visual yang signifikan. 100% diproses di browser Anda.
               </p>
-              <div class="container mx-auto">
-                <section class="flex flex-col items-center justify-center">
-                  <input type="file" id="file-input" accept="image/*" class="sr-only">
-                  <label for="file-input" class="file-input-label btn btn-primary">
-                    Choose Image
-                  </label>
-                  <div class="w-full max-w-xl">
-                    <div class="flex items-center justify-between">
-                      <label for="quality-slider" class="text-lg font-medium text-gray-300">Compression Quality</label>
-                      <span id="quality-value" class="text-xl font-bold text-green-400">80%</span>
-                    </div>
-                    <input type="range" id="quality-slider" min="0" max="100" value="80"
-                      class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+
+              <!-- Upload Dropzone -->
+              <div id="dropzone" class="tool-dropzone mb-4" onclick="document.getElementById('file-input').click()">
+                <i class="bi bi-image text-primary" style="font-size: 3rem;"></i>
+                <h5 class="mt-3 mb-1 text-white fw-semibold">Pilih atau Tarik Gambar ke Sini</h5>
+                <p class="text-secondary small mb-3">Mendukung format JPG, PNG, dan WEBP</p>
+                <input type="file" id="file-input" accept="image/*" class="d-none">
+                <button type="button" class="btn btn-primary px-4 py-2 rounded-pill">
+                  <i class="bi bi-folder2-open me-1"></i> Pilih Gambar
+                </button>
+              </div>
+
+              <!-- Controls & Comparison Area (Initially Hidden) -->
+              <div id="compressorArea" class="d-none">
+                <!-- Quality Control Card -->
+                <div class="p-3 rounded mb-4 border border-secondary border-opacity-25" style="background: #1c1c20;">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label for="quality-slider" class="text-white fw-semibold small mb-0">
+                      Tingkat Kualitas Kompresi:
+                    </label>
+                    <span id="quality-value" class="badge bg-primary px-3 py-1 fs-6">80%</span>
                   </div>
-                </section>
-                <section id="image-comparison" class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-                  <div class="text-center">
-                    <b class="">Original Image</b>
-                    <div
-                      class="relative w-full overflow-hidden rounded-lg border-2 border-gray-700 shadow-xl aspect-video">
-                      <img id="original-image" src="https://placehold.co/600x400/1e293b/a1a1aa?text=Select+an+Image"
-                        alt="Original Image" class="w-full h-full object-contain transition-all duration-300">
+                  <input type="range" id="quality-slider" min="10" max="100" value="80" class="form-range mb-3">
+                  <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="setQuality(50)">50% (Hemat Ekstrem)</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="setQuality(70)">70% (Standar Web)</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3 active" onclick="setQuality(80)">80% (Rekomendasi)</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="setQuality(90)">90% (Kualitas Tinggi)</button>
+                  </div>
+                </div>
+
+                <!-- Side by Side Comparison -->
+                <div class="row g-3 mb-4">
+                  <!-- Original Image Card -->
+                  <div class="col-md-6">
+                    <div class="p-3 rounded border border-secondary border-opacity-25 h-100 d-flex flex-column" style="background: #18181b;">
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="small fw-semibold text-secondary">Foto Asli</span>
+                        <span class="badge bg-secondary" id="original-size">0 Bytes</span>
+                      </div>
+                      <div class="rounded overflow-hidden flex-grow-1 d-flex align-items-center justify-content-center" style="max-height: 280px; min-height: 200px; background: #111;">
+                        <img id="original-image" src="" alt="Original" class="img-fluid" style="max-height: 280px; object-fit: contain;">
+                      </div>
                     </div>
                   </div>
-                  <div class="text-center">
-                    <b class="">Compressed Image</b>
-                    <div
-                      class="relative w-full overflow-hidden rounded-lg border-2 border-gray-700 shadow-xl aspect-video">
-                      <img id="compressed-image" src="https://placehold.co/600x400/1e293b/a1a1aa?text=Compressed+Image"
-                        alt="Compressed Image" class="w-full h-full object-contain transition-all duration-300">
+
+                  <!-- Compressed Image Card -->
+                  <div class="col-md-6">
+                    <div class="p-3 rounded border border-secondary border-opacity-25 h-100 d-flex flex-column" style="background: #18181b;">
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="small fw-semibold text-success"><i class="bi bi-check2-circle me-1"></i>Hasil Kompresi</span>
+                        <span class="badge bg-success" id="compressed-size">0 Bytes</span>
+                      </div>
+                      <div class="rounded overflow-hidden flex-grow-1 d-flex align-items-center justify-content-center" style="max-height: 280px; min-height: 200px; background: #111;">
+                        <img id="compressed-image" src="" alt="Compressed" class="img-fluid" style="max-height: 280px; object-fit: contain;">
+                      </div>
                     </div>
-                    <div id="size-info" class="text-lg font-semibold mt-4 space-y-2">
-                      <p id="original-size">Original Size: -</p>
-                      <p id="compressed-size">Compressed Size: -</p>
-                      <p id="savings">Savings: -</p>
-                    </div>
-                    <button id="download-btn" class="btn btn-primary" disabled>
-                      Download Image
+                  </div>
+                </div>
+
+                <!-- Action Bar & Savings -->
+                <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-25">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="text-secondary small">Penghematan Ukuran:</span>
+                    <span id="savings" class="badge bg-success-subtle text-success border border-success px-3 py-2 fs-6 rounded-pill">0 Bytes (0%)</span>
+                  </div>
+                  <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-3" onclick="resetCompressor()">
+                      <i class="bi bi-arrow-counterclockwise me-1"></i> Ganti Gambar
+                    </button>
+                    <button id="download-btn" class="btn btn-success rounded-pill px-4" disabled>
+                      <i class="bi bi-download me-1"></i> Unduh Gambar
                     </button>
                   </div>
-                </section>
+                </div>
               </div>
-              <script>
-                const fileInput = document.getElementById('file-input');
-                const qualitySlider = document.getElementById('quality-slider');
-                const qualityValue = document.getElementById('quality-value');
-                const originalImageEl = document.getElementById('original-image');
-                const compressedImageEl = document.getElementById('compressed-image');
-                const originalSizeEl = document.getElementById('original-size');
-                const compressedSizeEl = document.getElementById('compressed-size');
-                const savingsEl = document.getElementById('savings');
-                const downloadBtn = document.getElementById('download-btn');
 
-                let originalImage = null;
-                let originalSize = 0;
-                const formatBytes = (bytes) => {
-                  if (bytes === 0) return '0 Bytes';
-                  const k = 1024;
-                  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-                  const i = Math.floor(Math.log(bytes) / Math.log(k));
-                  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-                };
-                const compressImage = () => {
-                  if (!originalImage) return;
-
-                  const quality = qualitySlider.value / 100;
-                  const imageType = 'image/jpeg';
-                  const canvas = document.createElement('canvas');
-                  const ctx = canvas.getContext('2d');
-
-                  canvas.width = originalImage.naturalWidth;
-                  canvas.height = originalImage.naturalHeight;
-
-                  ctx.drawImage(originalImage, 0, 0);
-                  const compressedDataUrl = canvas.toDataURL(imageType, quality);
-
-                  // Set the compressed image source
-                  compressedImageEl.src = compressedDataUrl;
-                  downloadBtn.disabled = false;
-
-                  // Calculate compressed size from the data URL
-                  const compressedSize = compressedDataUrl.length * 0.75; // Approximation for base64
-
-                  // Calculate savings
-                  const savings = originalSize - compressedSize;
-                  const savingsPercentage = (savings / originalSize) * 100;
-
-                  // Update the size information on the page
-                  originalSizeEl.textContent = `Original Size: ${formatBytes(originalSize)}`;
-                  compressedSizeEl.textContent = `Compressed Size: ${formatBytes(compressedSize)}`;
-                  savingsEl.textContent = `Savings: ${formatBytes(savings)} (${savingsPercentage.toFixed(2)}%)`;
-                };
-
-                // Event listener for the file input change
-                fileInput.addEventListener('change', (e) => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    // Read the file as a data URL
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                      const imageDataUrl = event.target.result;
-
-                      // Create a new Image object to get dimensions and perform compression later
-                      originalImage = new Image();
-                      originalImage.onload = () => {
-                        // Display the original image
-                        originalImageEl.src = imageDataUrl;
-                        originalImageEl.style.display = 'block';
-
-                        // Calculate original size
-                        originalSize = imageDataUrl.length * 0.75;
-
-                        // Start compression with the default quality
-                        compressImage();
-                      };
-                      originalImage.src = imageDataUrl;
-                    };
-                    reader.readAsDataURL(file);
-                  }
-                });
-
-                // Event listener for the slider input
-                qualitySlider.addEventListener('input', (e) => {
-                  // Update the displayed percentage value
-                  qualityValue.textContent = `${e.target.value}%`;
-
-                  // Re-compress the image with the new quality
-                  compressImage();
-                });
-
-                // Event listener for the download button
-                downloadBtn.addEventListener('click', () => {
-                  // Get the compressed image data URL
-                  const compressedDataUrl = compressedImageEl.src;
-                  // Create a temporary link element
-                  const link = document.createElement('a');
-                  link.href = compressedDataUrl;
-                  link.download = `compressed_image_${qualitySlider.value}.jpg`;
-
-                  // Programmatically click the link to trigger the download
-                  document.body.appendChild(link);
-                  link.click();
-                  document.body.removeChild(link);
-                });
-              </script>
             </div>
-
           </div>
 
-          <div class="col-lg-2">
-            <div class="service-info">
-              <h4>Service Information</h4>
-              <div class="info-item">
-                <i class="bi bi-person-check"></i>
-                <h5>Project By</h5>
-                <p>Widi Firmansyah</p>
+          <!-- Sidebar Column (Col 4) -->
+          <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4">
+              <div class="tool-sidebar-card mb-0">
+              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                <i class="bi bi-shield-check text-success me-2"></i>Privacy & Execution
+              </h5>
+              <div class="d-flex align-items-start mb-3">
+                <div class="feature-icon-badge me-3">
+                  <i class="bi bi-cpu fs-5 text-primary"></i>
+                </div>
+                <div>
+                  <h6 class="mb-1 text-white">100% Client-Side Safe</h6>
+                  <p class="text-secondary small mb-0">Kompresi dilakukan langsung oleh browser menggunakan HTML5 Canvas API tanpa upload ke server.</p>
+                </div>
               </div>
-              <div class="info-item">
-                <div class="service-details-slider swiper init-swiper">
-                  <script type="application/json" class="swiper-config">
-                    {
-                      "loop": true,
-                      "speed": 600,
-                      "autoplay": {
-                        "delay": 5000
-                      },
-                      "slidesPerView": 1,
-                      "pagination": {
-                        "el": ".swiper-pagination",
-                        "type": "bullets",
-                        "clickable": true
-                      }
-                    }
-                  </script>
-                  <div class="swiper-wrapper align-items-center">
-                    <div class="swiper-slide">
-                      <!-- <img src="../assets/img/services/img-comp.png" alt="" class="img-fluid" loading="lazy"> -->
-                    </div>
-                  </div>
-                  <div class="swiper-pagination"></div>
+              <div class="d-flex align-items-start mb-3">
+                <div class="feature-icon-badge me-3">
+                  <i class="bi bi-hdd-network fs-5 text-success"></i>
+                </div>
+                <div>
+                  <h6 class="mb-1 text-white">Hemat Kuota & Bandwidth</h6>
+                  <p class="text-secondary small mb-0">Sangat cocok untuk mempercepat loading website, upload dokumen lamaran, atau portfolio.</p>
+                </div>
+              </div>
+              <div class="d-flex align-items-start">
+                <div class="feature-icon-badge me-3">
+                  <i class="bi bi-person-check fs-5 text-info"></i>
+                </div>
+                <div>
+                  <h6 class="mb-1 text-white">Pengembang</h6>
+                  <p class="text-secondary small mb-0"><a href="https://widifirmaan.web.id" target="_blank" class="text-primary text-decoration-none">Widi Firmansyah</a></p>
                 </div>
               </div>
             </div>
+
+            <div class="tool-sidebar-card">
+              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                <i class="bi bi-grid-fill text-primary me-2"></i>Quick Tool Switcher
+              </h5>
+              <div class="list-group list-group-flush bg-transparent">
+                <a href="image-converter.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-filetype-png text-info me-2"></i>Image Converter</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="remove-bg.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-magic text-success me-2"></i>Background Remover</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="pdf-word.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-file-earmark-word text-primary me-2"></i>PDF to Word</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="qr-code.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-qr-code text-warning me-2"></i>QR Code Studio</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="dev-tools.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-0">
+                  <span><i class="bi bi-code-slash text-danger me-2"></i>Developer Toolbox</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+              </div>
+            </div>
           </div>
-
         </div>
-
+        </div>
       </div>
     </section>
   </main>
 
-  <footer id="footer" class="footer position-relative">
-
-    <div class="container">
-      <div class="copyright text-center ">
-        <a href="/">
-          <p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights Reserved</span></p>
-        </a>
+  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
+    <div class="container text-center">
+      <div class="copyright text-secondary">
+        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
       </div>
-      <div class="credits">
-        Designed by <a href="https://widifirmaan.web.id/">Widi Firmans</a>
+      <div class="credits text-secondary small">
+        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
       </div>
     </div>
-
   </footer>
 
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Preloader -->
   <div id="preloader"></div>
 
-  <!-- Vendor JS Files -->
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/vendor/aos/aos.js"></script>
-  <script src="../assets/vendor/typed.js/typed.umd.js"></script>
-  <script src="../assets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="../assets/vendor/waypoints/noframework.waypoints.js"></script>
-  <script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="../assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
-
-  <!-- Main JS File -->
   <script src="../assets/js/services.js"></script>
 
+  <script>
+    const fileInput = document.getElementById('file-input');
+    const qualitySlider = document.getElementById('quality-slider');
+    const qualityValue = document.getElementById('quality-value');
+    const originalImageEl = document.getElementById('original-image');
+    const compressedImageEl = document.getElementById('compressed-image');
+    const originalSizeEl = document.getElementById('original-size');
+    const compressedSizeEl = document.getElementById('compressed-size');
+    const savingsEl = document.getElementById('savings');
+    const downloadBtn = document.getElementById('download-btn');
+    const dropzone = document.getElementById('dropzone');
+    const compressorArea = document.getElementById('compressorArea');
+
+    let originalImage = null;
+    let originalSize = 0;
+    let originalFileName = 'compressed.jpg';
+
+    const formatBytes = (bytes) => {
+      if (!bytes || bytes <= 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    };
+
+    window.setQuality = function(val) {
+      qualitySlider.value = val;
+      qualityValue.textContent = val + '%';
+      compressImage();
+    };
+
+    window.resetCompressor = function() {
+      fileInput.value = '';
+      compressorArea.classList.add('d-none');
+      dropzone.classList.remove('d-none');
+      originalImage = null;
+    };
+
+    const compressImage = () => {
+      if (!originalImage) return;
+
+      const quality = qualitySlider.value / 100;
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+
+      canvas.width = originalImage.naturalWidth;
+      canvas.height = originalImage.naturalHeight;
+
+      ctx.drawImage(originalImage, 0, 0);
+      const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+
+      compressedImageEl.src = compressedDataUrl;
+      downloadBtn.disabled = false;
+
+      // Approximate size from base64
+      const head = 'data:image/jpeg;base64,';
+      const compressedSize = Math.round((compressedDataUrl.length - head.length) * 3 / 4);
+
+      const savings = originalSize - compressedSize;
+      const savingsPercentage = Math.max(0, (savings / originalSize) * 100);
+
+      originalSizeEl.textContent = formatBytes(originalSize);
+      compressedSizeEl.textContent = formatBytes(compressedSize);
+      savingsEl.textContent = `${formatBytes(savings > 0 ? savings : 0)} (${savingsPercentage.toFixed(1)}%)`;
+    };
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      originalFileName = file.name.replace(/\.[^/.]+$/, "") + '_compressed.jpg';
+      originalSize = file.size;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const imageDataUrl = event.target.result;
+        originalImage = new Image();
+        originalImage.onload = () => {
+          originalImageEl.src = imageDataUrl;
+          dropzone.classList.add('d-none');
+          compressorArea.classList.remove('d-none');
+          compressImage();
+        };
+        originalImage.src = imageDataUrl;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    qualitySlider.addEventListener('input', () => {
+      qualityValue.textContent = qualitySlider.value + '%';
+      compressImage();
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      if (!compressedImageEl.src) return;
+      const a = document.createElement('a');
+      a.href = compressedImageEl.src;
+      a.download = originalFileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+
+    // Drag and drop handlers
+    ['dragenter', 'dragover'].forEach(name => {
+      dropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+      });
+    });
+    ['dragleave', 'drop'].forEach(name => {
+      dropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+      });
+    });
+    dropzone.addEventListener('drop', (e) => {
+      const files = e.dataTransfer.files;
+      if (files.length > 0 && files[0].type.startsWith('image/')) {
+        fileInput.files = files;
+        fileInput.dispatchEvent(new Event('change'));
+      }
+    });
+  </script>
 </body>
 
 </html>

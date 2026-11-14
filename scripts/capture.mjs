@@ -16,14 +16,23 @@ if (!fs.existsSync(outputDir)) {
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const tasks = [
-  { name: 'Dashboard', file: 'index.html', scrollY: 60 },
+  { name: 'Dashboard', file: 'index.html', scrollY: 0, mobileScrollY: 80 },
   { name: 'PDF to Word', file: 'tools/pdf-word.html' },
   { name: 'QR Code Studio', file: 'tools/qr-code.html' },
   { name: 'PDF Studio', file: 'tools/pdf-tools.html' },
   { name: 'Developer Toolbox', file: 'tools/dev-tools.html', action: (page) => page.click('#btnSampleJson').catch(() => {}) },
   { name: 'Background Remover', file: 'tools/remove-bg.html' },
   { name: 'Image Compressor', file: 'tools/image-compressor.html' },
-  { name: 'Scientific Calculator', file: 'tools/calculator.html' },
+  {
+    name: 'Scientific Calculator',
+    file: 'tools/calculator.html',
+    action: (page) => page.evaluate(() => {
+      const h = document.getElementById('history');
+      const e = document.getElementById('expression1');
+      if (h) h.value = 'sin(30°) × 25 + 4 = 16.5';
+      if (e) e.value = '16.5';
+    }).catch(() => {})
+  },
   { name: 'Image Converter', file: 'tools/image-converter.html' },
   { name: 'Text Editor', file: 'tools/text-editor.html' },
   { name: 'Tire Comparison', file: 'tools/tire-comp.html' },
@@ -33,8 +42,18 @@ async function preparePage(page, task, isMobile) {
   // Wait for natural preloader removal (handled by fixed main.js / services.js)
   await page.waitForFunction(() => !document.getElementById('preloader'), { timeout: 4000 }).catch(() => {});
 
-  if (task.scrollY) {
-    await page.evaluate((y) => window.scrollTo(0, y), task.scrollY);
+  // Ensure AOS elements are fully visible and active
+  await page.evaluate(() => {
+    document.querySelectorAll('[data-aos]').forEach(el => {
+      el.classList.add('aos-animate');
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+  });
+
+  const scrollY = isMobile && task.mobileScrollY !== undefined ? task.mobileScrollY : (task.scrollY || 0);
+  if (scrollY > 0) {
+    await page.evaluate((y) => window.scrollTo(0, y), scrollY);
   }
 
   if (task.action) {

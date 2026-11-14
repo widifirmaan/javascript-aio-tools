@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Image Background Removal - DUFL</title>
+  <title>Image Background Removal - WIDIFIRMAAN</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
   <link href="../assets/img/favicon.png" rel="icon">
@@ -37,10 +37,10 @@
   <main class="main">
     <div class="page-title dark-background">
       <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0"><a href="/"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
+        <h1 class="mb-2 mb-lg-0"><a href="/"><i class="bi bi-arrow-left-short"></i> Free Stuff by WIDIFIRMAAN</a></h1>
         <nav class="breadcrumbs">
           <ol>
-            <li><a href="https://www.dufl.web.id">Premium Stuff</a></li>
+            <li><a href="https://www.widifirmaan.web.id">Premium Stuff</a></li>
             <li><a href="/">Free Stuff</a></li>
           </ol>
         </nav>
@@ -177,7 +177,7 @@
 
     <div class="container">
       <div class="copyright text-center ">
-        <a href="/"><p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights Reserved</span></p></a>
+        <a href="/"><p>© <span>Copyright</span><strong class="px-1 sitename">WIDIFIRMAAN</strong><span>All Rights Reserved</span></p></a>
       </div>
       <div class="credits">
         Designed by <a href="https://widifirmaan.web.id/">Widi Firmans</a>

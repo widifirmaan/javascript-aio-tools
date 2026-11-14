@@ -1680,8 +1680,12 @@ section,
 /*--------------------------------------------------------------
 # Services Section
 --------------------------------------------------------------*/
+.services.section {
+  padding: 40px 0 60px;
+}
+
 .services .service-header {
-  margin-bottom: 60px;
+  margin-bottom: 36px;
 }
 
 .services .service-header .service-intro .service-heading {
@@ -1752,10 +1756,19 @@ section,
 }
 
 .services .service-card {
-  padding: 40px 40px 40px 40px;
-  margin-bottom: 30px;
-  border: 2px solid color-mix(in srgb, var(--accent-color), transparent 90%);
+  padding: 32px 28px;
+  margin-bottom: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-color);
   transition: all 0.3s ease;
+}
+
+.services .service-card p {
+  flex-grow: 1;
 }
 
 .services .service-card .service-icon {
@@ -1875,17 +1888,24 @@ section,
 
 @media (max-width: 768px) {
   .services .service-card {
-    padding: 150px 25px 25px;
+    padding: 28px 24px 24px;
+    margin-bottom: 20px;
   }
 
   .services .service-card h3 {
-    font-size: 24px;
+    font-size: 20px;
+    margin-bottom: 8px;
   }
 
   .services .service-card .service-icon {
-    position: absolute;
-    top: 40px;
-    left: 25px;
+    position: static;
+    margin-bottom: 16px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .services .service-card .service-icon i {
+    font-size: 24px;
   }
 }
 
@@ -2547,4 +2567,264 @@ section,
 --------------------------------------------------------------*/
 .starter-section {
   /* Add your styles here */
+}
+
+/*--------------------------------------------------------------
+# Unified Dark UI System for Tools
+--------------------------------------------------------------*/
+.tool-card {
+  background: #252529;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .tool-card {
+    padding: 20px 16px;
+  }
+}
+
+.tool-sidebar-card {
+  background: #252529;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  margin-bottom: 24px;
+}
+
+.tool-dropzone {
+  border: 2px dashed rgba(59, 130, 246, 0.45);
+  border-radius: 14px;
+  background: rgba(59, 130, 246, 0.04);
+  padding: 36px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+}
+
+.tool-dropzone:hover,
+.tool-dropzone.dragover {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: #3b82f6;
+  transform: translateY(-2px);
+}
+
+.feature-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  background: rgba(34, 197, 94, 0.12);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.feature-icon-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Dark mode form elements */
+.service-details input.form-control,
+.service-details textarea.form-control,
+.service-details select.form-select,
+.service-details select.form-control {
+  background-color: #1a1a1e !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #f1f5f9 !important;
+  border-radius: 10px;
+}
+
+.service-details input.form-control:focus,
+.service-details textarea.form-control:focus,
+.service-details select.form-select:focus,
+.service-details select.form-control:focus {
+  background-color: #16161a !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25) !important;
+  color: #ffffff !important;
+}
+
+.service-details .nav-pills .nav-link {
+  color: #94a3b8;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.04);
+  margin-right: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.service-details .nav-pills .nav-link:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.service-details .nav-pills .nav-link.active {
+  background: #3b82f6;
+  color: #ffffff;
+  border-color: #3b82f6;
+}
+
+/* Calculator specific styles */
+.calc-container {
+  max-width: 480px;
+  margin: 0 auto;
+  background: #18181b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.calc-screen {
+  background: #111113;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+
+.calc-history {
+  min-height: 24px;
+  font-size: 0.95rem;
+  color: #a1a1aa;
+  text-align: right;
+  word-break: break-all;
+  font-family: 'Fira Code', monospace;
+}
+
+.calc-expression {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: right;
+  word-break: break-all;
+  font-family: 'Fira Code', monospace;
+  margin-top: 6px;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.calc-btn {
+  height: 52px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 1.1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.calc-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.2);
+}
+
+.calc-btn:active {
+  transform: translateY(0);
+}
+
+.calc-btn-num {
+  background: #27272a;
+  color: #f4f4f5;
+}
+
+.calc-btn-op {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.calc-btn-sci {
+  background: #202024;
+  color: #c4b5fd;
+  font-size: 0.92rem;
+}
+
+.calc-btn-clear {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.calc-btn-equal {
+  background: #3b82f6;
+  color: #ffffff;
+  font-weight: 700;
+  grid-column: span 2;
+}
+
+/* Checkerboard background for transparent image preview */
+.checkerboard-bg {
+  background-image: linear-gradient(45deg, #1c1c22 25%, transparent 25%),
+                    linear-gradient(-45deg, #1c1c22 25%, transparent 25%),
+                    linear-gradient(45deg, transparent 75%, #1c1c22 75%),
+                    linear-gradient(-45deg, transparent 75%, #1c1c22 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  background-color: #121215;
+}
+
+/* Ensure data-aos elements are visible if JS animation is skipped */
+[data-aos] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Responsive layout & navbar fix for tools */
+.service-details-page .header~main,
+.service-details-page .header~#footer,
+.service-details-page main,
+.service-details-page #footer {
+  margin-left: 0 !important;
+  width: 100% !important;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(24, 24, 28, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 576px) {
+  .calc-container {
+    padding: 16px;
+    border-radius: 14px;
+  }
+  .calc-btn {
+    height: 44px;
+    font-size: 0.95rem;
+  }
+  .calc-expression {
+    font-size: 1.5rem;
+  }
+  .tool-card {
+    padding: 16px 12px;
+  }
 }

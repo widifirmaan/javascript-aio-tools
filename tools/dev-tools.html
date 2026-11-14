@@ -4,21 +4,16 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Developer Toolbox (JSON, Base64 & JWT) - DUFL</title>
+  <title>Developer Toolbox (JSON, Base64 & JWT) - WIDIFIRMAAN Tools</title>
   <meta name="description" content="All-in-one developer toolbox: JSON Formatter, Base64/URL encoder-decoder, and JWT debugger 100% client-side.">
-  <meta name="keywords" content="json formatter, jwt debugger, base64 encoder, url encoder, dev tools">
   <link href="../assets/img/favicon.png" rel="icon">
   <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Fira+Code:wght@400;500;600&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Roboto:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
 
   <style>
@@ -26,71 +21,62 @@
       font-family: 'Fira Code', 'Courier New', monospace;
       font-size: 0.88rem;
       line-height: 1.5;
-      background: #1e1e2e;
-      color: #cdd6f4;
-      border-radius: 8px;
-      padding: 12px;
-      border: 1px solid #313244;
+      background: #141418 !important;
+      color: #cdd6f4 !important;
+      border-radius: 10px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
       tab-size: 2;
     }
     .code-editor:focus {
-      background: #181825;
-      color: #cdd6f4;
-      border-color: #89b4fa;
-      box-shadow: 0 0 0 0.2rem rgba(137, 180, 250, 0.25);
-    }
-    .jwt-header { color: #f38ba8; }
-    .jwt-payload { color: #a6e3a1; }
-    .jwt-signature { color: #89b4fa; }
-    .nav-pills .nav-link.active {
-      background-color: #0d6efd;
+      background: #111114 !important;
+      border-color: #3b82f6 !important;
+      box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25) !important;
     }
   </style>
 </head>
 
 <body class="service-details-page">
-  <header id="header" class="header d-flex align-items-center fixed-top">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-      <a href="../index.html" class="logo d-flex align-items-center">
-        <h1 class="sitename">Widi Firmansyah</h1>
+  <header class="app-header py-3">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a href="../index.html" class="logo d-flex align-items-center text-decoration-none">
+        <span class="sitename text-white mb-0 fs-4 fw-bold">WIDIFIRMAAN <span class="text-primary">Tools</span></span>
       </a>
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="../index.html#hero">Home</a></li>
-          <li><a href="../index.html#services" class="active">All Tools</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
+      <a href="../index.html" class="btn btn-sm btn-outline-light rounded-pill px-3"><i class="bi bi-grid-fill me-1"></i> Semua Tools</a>
     </div>
   </header>
 
-  <main class="main" style="padding-top: 100px;">
-    <div class="page-title dark-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0"><a href="../index.html"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
+  <main class="main">
+    <div class="page-title dark-background py-3 py-md-4 border-bottom border-secondary border-opacity-25">
+      <div class="container d-md-flex justify-content-between align-items-center">
+        <h2 class="mb-2 mb-md-0 fw-bold fs-4 text-white d-flex align-items-center">
+          <a href="../index.html" class="text-secondary text-decoration-none me-2" title="Kembali ke Dashboard"><i class="bi bi-arrow-left"></i></a>
+          <span>Developer Toolbox</span>
+        </h2>
         <nav class="breadcrumbs">
-          <ol>
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="../index.html#services">Tools</a></li>
-            <li class="current">Developer Toolbox</li>
+          <ol class="breadcrumb mb-0 small">
+            <li class="breadcrumb-item"><a href="../index.html" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item"><a href="../index.html#tool-grid" class="text-secondary text-decoration-none">Tools</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Developer Toolbox</li>
           </ol>
         </nav>
       </div>
     </div>
 
-    <section id="service-details" class="service-details section">
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="row gy-4">
+    <section id="service-details" class="service-details section py-4 py-lg-5">
+      <div class="container">
+        <div class="row g-4">
+          <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
-            <div class="content">
+            <div class="tool-card mb-0">
               <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-                <h3 class="mb-0">Developer & Data Toolbox</h3>
-                <span class="badge bg-success-subtle text-success border border-success px-3 py-2 rounded-pill">
-                  <i class="bi bi-shield-check me-1"></i> 100% Client-Side Safe
+                <h3 class="mb-0 text-white fw-bold">Developer & Data Toolbox</h3>
+                <span class="feature-badge">
+                  <i class="bi bi-shield-check"></i> 100% Client-Side Safe
                 </span>
               </div>
-              <p class="text-muted">
-                Perkakas serbaguna untuk software engineer: Formatter & Validator JSON, Encoder/Decoder Base64 & URL, serta JWT Token Inspector tanpa risiko membocorkan data sensitif ke server luar.
+              <p class="text-secondary mb-4">
+                Perkakas software engineer: Formatter & Validator JSON, Encoder/Decoder Base64 & URL, serta JWT Token Inspector tanpa risiko membocorkan data sensitif ke server luar.
               </p>
 
               <!-- Tabs Navigation -->
@@ -118,65 +104,65 @@
                 <div class="tab-pane fade show active" id="json-pane" role="tabpanel">
                   <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
                     <div class="btn-group btn-group-sm">
-                      <button type="button" class="btn btn-primary" id="btnBeautify2">Beautify (2 Spaces)</button>
-                      <button type="button" class="btn btn-outline-primary" id="btnBeautify4">Beautify (4 Spaces)</button>
-                      <button type="button" class="btn btn-outline-secondary" id="btnMinifyJson">Minify</button>
+                      <button type="button" class="btn btn-primary rounded-start-pill" id="btnBeautify2">Beautify (2 Spasi)</button>
+                      <button type="button" class="btn btn-outline-primary" id="btnBeautify4">Beautify (4 Spasi)</button>
+                      <button type="button" class="btn btn-outline-secondary rounded-end-pill" id="btnMinifyJson">Minify</button>
                     </div>
                     <div class="d-flex gap-2">
-                      <button type="button" class="btn btn-sm btn-outline-secondary" id="btnSampleJson">Load Sample</button>
-                      <button type="button" class="btn btn-sm btn-outline-danger" id="btnClearJson">Clear</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" id="btnSampleJson">Load Contoh</button>
+                      <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3" id="btnClearJson">Clear</button>
                     </div>
                   </div>
 
                   <div class="mb-2">
-                    <textarea id="jsonInput" class="form-control code-editor" rows="14" placeholder='Paste JSON Anda di sini... misal: {"name": "DUFL", "tools": 10}'></textarea>
+                    <textarea id="jsonInput" class="form-control code-editor" rows="12" placeholder='Paste JSON Anda di sini... misal: {"name": "WIDIFIRMAAN", "tools": 10}'></textarea>
                   </div>
 
-                  <div id="jsonStatusAlert" class="alert alert-secondary py-2 small mb-3">
+                  <div id="jsonStatusAlert" class="alert alert-secondary py-2 small mb-3 border-0" style="background: rgba(255,255,255,0.06); color: #cbd5e1;">
                     <i class="bi bi-info-circle me-1"></i> Siap memproses JSON.
                   </div>
 
                   <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <button type="button" class="btn btn-success btn-sm px-3" id="btnCopyJson">
+                    <button type="button" class="btn btn-success rounded-pill btn-sm px-3" id="btnCopyJson">
                       <i class="bi bi-clipboard me-1"></i> Salin JSON ke Clipboard
                     </button>
-                    <button type="button" class="btn btn-outline-primary btn-sm px-3" id="btnDownloadJson">
-                      <i class="bi bi-download me-1"></i> Download .json
+                    <button type="button" class="btn btn-outline-primary rounded-pill btn-sm px-3" id="btnDownloadJson">
+                      <i class="bi bi-download me-1"></i> Unduh File .json
                     </button>
                   </div>
                 </div>
 
                 <!-- TAB 2: BASE64 & URL ENCODER/DECODER -->
                 <div class="tab-pane fade" id="base64-pane" role="tabpanel">
-                  <div class="card border-0 shadow-sm p-3 mb-3">
+                  <div class="p-3 rounded mb-4 border border-secondary border-opacity-25" style="background: #18181b;">
                     <div class="row g-3">
                       <div class="col-md-6">
-                        <label class="form-label small fw-semibold">Input Teks:</label>
+                        <label class="form-label text-secondary small fw-semibold mb-1">Input Teks:</label>
                         <textarea id="b64Input" class="form-control code-editor" rows="6" placeholder="Ketik atau paste teks di sini..."></textarea>
                       </div>
                       <div class="col-md-6">
-                        <label class="form-label small fw-semibold">Hasil Output:</label>
+                        <label class="form-label text-secondary small fw-semibold mb-1">Hasil Output:</label>
                         <textarea id="b64Output" class="form-control code-editor" rows="6" readonly placeholder="Hasil akan muncul di sini..."></textarea>
                       </div>
                     </div>
 
-                    <div class="d-flex flex-wrap gap-2 mt-3">
-                      <button type="button" class="btn btn-sm btn-primary" id="btnB64Encode">Encode Base64</button>
-                      <button type="button" class="btn btn-sm btn-outline-primary" id="btnB64Decode">Decode Base64</button>
-                      <button type="button" class="btn btn-sm btn-secondary" id="btnUrlEncode">Encode URL</button>
-                      <button type="button" class="btn btn-sm btn-outline-secondary" id="btnUrlDecode">Decode URL</button>
-                      <button type="button" class="btn btn-sm btn-success ms-auto" id="btnCopyB64">
+                    <div class="d-flex flex-wrap gap-2 mt-3 pt-2 border-top border-secondary border-opacity-25">
+                      <button type="button" class="btn btn-sm btn-primary rounded-pill px-3" id="btnB64Encode">Encode Base64</button>
+                      <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3" id="btnB64Decode">Decode Base64</button>
+                      <button type="button" class="btn btn-sm btn-outline-light rounded-pill px-3" id="btnUrlEncode">Encode URL</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" id="btnUrlDecode">Decode URL</button>
+                      <button type="button" class="btn btn-sm btn-success rounded-pill px-3 ms-auto" id="btnCopyB64">
                         <i class="bi bi-clipboard me-1"></i> Salin Output
                       </button>
                     </div>
                   </div>
 
                   <!-- File to Base64 -->
-                  <div class="card border-0 shadow-sm p-3">
-                    <h6 class="fw-bold mb-2"><i class="bi bi-file-earmark-arrow-up text-primary me-2"></i>Konversi File Apa Saja ke Base64 Data URL</h6>
-                    <input type="file" id="file2B64Input" class="form-control mb-2">
+                  <div class="p-3 rounded border border-secondary border-opacity-25" style="background: #18181b;">
+                    <h6 class="fw-bold text-white mb-2"><i class="bi bi-file-earmark-arrow-up text-primary me-2"></i>Konversi File ke Base64 Data URL</h6>
+                    <input type="file" id="file2B64Input" class="form-control form-control-sm mb-2">
                     <textarea id="fileB64Output" class="form-control code-editor mb-2" rows="3" readonly placeholder="Data URL base64 file akan muncul di sini..."></textarea>
-                    <button type="button" class="btn btn-sm btn-outline-success" id="btnCopyFileB64">
+                    <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3" id="btnCopyFileB64">
                       <i class="bi bi-clipboard me-1"></i> Salin Data URL
                     </button>
                   </div>
@@ -185,11 +171,11 @@
                 <!-- TAB 3: JWT INSPECTOR -->
                 <div class="tab-pane fade" id="jwt-pane" role="tabpanel">
                   <div class="mb-3">
-                    <label class="form-label small fw-semibold">Paste Encoded JWT Token:</label>
+                    <label class="form-label text-secondary small fw-semibold mb-1">Paste Encoded JWT Token:</label>
                     <textarea id="jwtInput" class="form-control code-editor" rows="4" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IldpZGkiLCJpYXQiOjE1MTYyMzkwMjJ9..."></textarea>
                   </div>
 
-                  <div id="jwtExpAlert" class="alert alert-secondary py-2 small mb-3 d-none"></div>
+                  <div id="jwtExpAlert" class="alert alert-secondary py-2 small mb-3 border-0 d-none"></div>
 
                   <div class="row g-3">
                     <div class="col-md-6">
@@ -207,49 +193,95 @@
             </div>
           </div>
 
+          <!-- Sidebar Column (Col 4) -->
           <div class="col-lg-4">
-            <div class="service-info p-4 rounded bg-white border">
-              <h4>Informasi Layanan</h4>
-              <div class="info-item mb-3">
-                <i class="bi bi-person-check text-primary fs-4"></i>
-                <h6 class="mb-0 mt-1">Pengembang</h6>
-                <p class="text-muted small">Widi Firmansyah</p>
+            <div class="d-flex flex-column gap-4">
+              <div class="tool-sidebar-card mb-0">
+              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                <i class="bi bi-shield-check text-success me-2"></i>Privacy & Execution
+              </h5>
+              <div class="d-flex align-items-start mb-3">
+                <div class="feature-icon-badge me-3">
+                  <i class="bi bi-shield-shaded fs-5 text-primary"></i>
+                </div>
+                <div>
+                  <h6 class="mb-1 text-white">Jaminan Kerahasiaan</h6>
+                  <p class="text-secondary small mb-0">JWT token, API keys, dan payload sensitif Anda tidak pernah keluar dari RAM komputer Anda.</p>
+                </div>
               </div>
-              <div class="info-item mb-3">
-                <i class="bi bi-shield-shaded text-primary fs-4"></i>
-                <h6 class="mb-0 mt-1">Jaminan Kerahasiaan</h6>
-                <p class="text-muted small">JWT token, API keys, dan payload sensitif Anda tidak pernah keluar dari RAM komputer Anda.</p>
+              <div class="d-flex align-items-start mb-3">
+                <div class="feature-icon-badge me-3">
+                  <i class="bi bi-lightning-charge fs-5 text-warning"></i>
+                </div>
+                <div>
+                  <h6 class="mb-1 text-white">Eksekusi Lokal Instan</h6>
+                  <p class="text-secondary small mb-0">Native JavaScript ES6+ engine dengan validasi JSON dan decoder token super cepat.</p>
+                </div>
               </div>
-              <div class="info-item">
-                <i class="bi bi-lightning-charge text-primary fs-4"></i>
-                <h6 class="mb-0 mt-1">Eksekusi Lokal</h6>
-                <p class="text-muted small">Native JavaScript ES6+ (Instant Execution)</p>
+              <div class="d-flex align-items-start">
+                <div class="feature-icon-badge me-3">
+                  <i class="bi bi-person-check fs-5 text-info"></i>
+                </div>
+                <div>
+                  <h6 class="mb-1 text-white">Pengembang</h6>
+                  <p class="text-secondary small mb-0"><a href="https://widifirmaan.web.id" target="_blank" class="text-primary text-decoration-none">Widi Firmansyah</a></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-sidebar-card">
+              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                <i class="bi bi-grid-fill text-primary me-2"></i>Quick Tool Switcher
+              </h5>
+              <div class="list-group list-group-flush bg-transparent">
+                <a href="qr-code.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-qr-code text-warning me-2"></i>QR Code Studio</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="pdf-word.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-file-earmark-word text-primary me-2"></i>PDF to Word</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="calculator.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-calculator text-info me-2"></i>Scientific Calculator</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="image-compressor.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-image text-success me-2"></i>Image Compressor</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="text-editor.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-0">
+                  <span><i class="bi bi-pen text-danger me-2"></i>Text Editor</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer id="footer" class="footer position-relative">
+  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
     <div class="container text-center">
-      <div class="copyright">
-        <p>© <span>Copyright</span> <strong class="px-1 sitename">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+      <div class="copyright text-secondary">
+        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
       </div>
-      <div class="credits">
-        Designed by <a href="https://widifirmaan.web.id/">Widi Firmansyah</a>
+      <div class="credits text-secondary small">
+        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
       </div>
     </div>
   </footer>
 
+  <div id="preloader"></div>
+
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/js/services.js"></script>
 
   <script>
-    // ==========================================
-    // 1. JSON FORMATTER LOGIC
-    // ==========================================
+    // JSON Formatter Logic
     const jsonInput = document.getElementById('jsonInput');
     const jsonStatusAlert = document.getElementById('jsonStatusAlert');
     const btnBeautify2 = document.getElementById('btnBeautify2');
@@ -260,21 +292,17 @@
     const btnCopyJson = document.getElementById('btnCopyJson');
     const btnDownloadJson = document.getElementById('btnDownloadJson');
 
-    function formatJson(spaces) {
+    function formatJson(space) {
       const raw = jsonInput.value.trim();
-      if (!raw) {
-        jsonStatusAlert.className = 'alert alert-secondary py-2 small mb-3';
-        jsonStatusAlert.innerHTML = '<i class="bi bi-info-circle me-1"></i> Silakan masukkan JSON.';
-        return;
-      }
+      if (!raw) return;
       try {
         const parsed = JSON.parse(raw);
-        jsonInput.value = spaces > 0 ? JSON.stringify(parsed, null, spaces) : JSON.stringify(parsed);
-        jsonStatusAlert.className = 'alert alert-success py-2 small mb-3';
-        jsonStatusAlert.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i> JSON Valid & Berhasil Diformat!';
+        jsonInput.value = JSON.stringify(parsed, null, space);
+        jsonStatusAlert.className = 'alert alert-success py-2 small mb-3 border-0';
+        jsonStatusAlert.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i> JSON Valid & Berhasil Diformat.';
       } catch (e) {
-        jsonStatusAlert.className = 'alert alert-danger py-2 small mb-3';
-        jsonStatusAlert.innerHTML = `<i class="bi bi-exclamation-triangle-fill me-1"></i> <strong>JSON Tidak Valid:</strong> ${e.message}`;
+        jsonStatusAlert.className = 'alert alert-danger py-2 small mb-3 border-0';
+        jsonStatusAlert.innerHTML = `<i class="bi bi-exclamation-triangle-fill me-1"></i> <strong>Error Syntax JSON:</strong> ${e.message}`;
       }
     }
 
@@ -284,12 +312,12 @@
 
     btnSampleJson.addEventListener('click', () => {
       const sample = {
-        name: "JavaScript AIO Tools",
-        developer: "Widi Firmansyah",
+        app: "JavaScript AIO Tools",
+        author: "Widi Firmansyah",
         website: "https://tools.widifirmaan.web.id",
-        toolsCount: 10,
-        features: ["100% Client-side", "Zero server bills", "Private & Secure"],
-        tags: ["JavaScript", "Cloudflare Pages", "WebAssembly"]
+        features: ["100% Client-Side", "Zero Server Upload", "Free Open Source"],
+        tools_count: 10,
+        active: true
       };
       jsonInput.value = JSON.stringify(sample, null, 2);
       formatJson(2);
@@ -297,7 +325,7 @@
 
     btnClearJson.addEventListener('click', () => {
       jsonInput.value = '';
-      jsonStatusAlert.className = 'alert alert-secondary py-2 small mb-3';
+      jsonStatusAlert.className = 'alert alert-secondary py-2 small mb-3 border-0';
       jsonStatusAlert.innerHTML = '<i class="bi bi-info-circle me-1"></i> Siap memproses JSON.';
     });
 
@@ -311,125 +339,138 @@
     btnDownloadJson.addEventListener('click', () => {
       if (!jsonInput.value) return;
       const blob = new Blob([jsonInput.value], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
+      a.href = url;
       a.download = `data_${Date.now()}.json`;
+      document.body.appendChild(a);
       a.click();
+      document.body.removeChild(a);
     });
 
-    // ==========================================
-    // 2. BASE64 & URL LOGIC
-    // ==========================================
+    // Base64 & URL Logic
     const b64Input = document.getElementById('b64Input');
     const b64Output = document.getElementById('b64Output');
+    const btnB64Encode = document.getElementById('btnB64Encode');
+    const btnB64Decode = document.getElementById('btnB64Decode');
+    const btnUrlEncode = document.getElementById('btnUrlEncode');
+    const btnUrlDecode = document.getElementById('btnUrlDecode');
+    const btnCopyB64 = document.getElementById('btnCopyB64');
 
-    document.getElementById('btnB64Encode').addEventListener('click', () => {
+    btnB64Encode.addEventListener('click', () => {
       try {
         b64Output.value = btoa(unescape(encodeURIComponent(b64Input.value)));
       } catch (e) {
-        alert('Gagal meng-encode: ' + e.message);
+        alert('Gagal Encode Base64: ' + e.message);
       }
     });
 
-    document.getElementById('btnB64Decode').addEventListener('click', () => {
+    btnB64Decode.addEventListener('click', () => {
       try {
-        b64Output.value = decodeURIComponent(escape(atob(b64Input.value)));
+        b64Output.value = decodeURIComponent(escape(atob(b64Input.value.trim())));
       } catch (e) {
-        alert('Gagal me-decode Base64: ' + e.message);
+        alert('Gagal Decode Base64 (Format string tidak valid): ' + e.message);
       }
     });
 
-    document.getElementById('btnUrlEncode').addEventListener('click', () => {
+    btnUrlEncode.addEventListener('click', () => {
       b64Output.value = encodeURIComponent(b64Input.value);
     });
 
-    document.getElementById('btnUrlDecode').addEventListener('click', () => {
+    btnUrlDecode.addEventListener('click', () => {
       try {
         b64Output.value = decodeURIComponent(b64Input.value);
       } catch (e) {
-        alert('Gagal me-decode URL: ' + e.message);
+        alert('Gagal Decode URL: ' + e.message);
       }
     });
 
-    document.getElementById('btnCopyB64').addEventListener('click', () => {
+    btnCopyB64.addEventListener('click', () => {
       if (b64Output.value) {
         navigator.clipboard.writeText(b64Output.value);
-        alert('Output berhasil disalin ke clipboard!');
+        alert('Hasil output berhasil disalin!');
       }
     });
 
     // File to Base64
     const file2B64Input = document.getElementById('file2B64Input');
     const fileB64Output = document.getElementById('fileB64Output');
+    const btnCopyFileB64 = document.getElementById('btnCopyFileB64');
+
     file2B64Input.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      if (file) {
         const reader = new FileReader();
         reader.onload = () => {
           fileB64Output.value = reader.result;
         };
-        reader.readAsDataURL(e.target.files[0]);
+        reader.readAsDataURL(file);
       }
     });
 
-    document.getElementById('btnCopyFileB64').addEventListener('click', () => {
+    btnCopyFileB64.addEventListener('click', () => {
       if (fileB64Output.value) {
         navigator.clipboard.writeText(fileB64Output.value);
-        alert('Data URL berhasil disalin!');
+        alert('Data URL file berhasil disalin!');
       }
     });
 
-    // ==========================================
-    // 3. JWT INSPECTOR LOGIC
-    // ==========================================
+    // JWT Inspector Logic
     const jwtInput = document.getElementById('jwtInput');
     const jwtHeaderOutput = document.getElementById('jwtHeaderOutput');
     const jwtPayloadOutput = document.getElementById('jwtPayloadOutput');
     const jwtExpAlert = document.getElementById('jwtExpAlert');
 
     function parseJwt(token) {
-      const parts = token.trim().split('.');
-      if (parts.length < 2) {
+      token = token.trim();
+      if (!token) {
         jwtHeaderOutput.value = '';
         jwtPayloadOutput.value = '';
         jwtExpAlert.classList.add('d-none');
         return;
       }
 
+      const parts = token.split('.');
+      if (parts.length < 2) {
+        jwtExpAlert.classList.remove('d-none');
+        jwtExpAlert.className = 'alert alert-danger py-2 small mb-3 border-0';
+        jwtExpAlert.innerHTML = '<i class="bi bi-x-circle-fill me-1"></i> Format token JWT tidak valid (harus terdiri dari minimal 2 bagian dipisah tanda titik).';
+        return;
+      }
+
       try {
-        const decodePart = (str) => {
-          const b64 = str.replace(/-/g, '+').replace(/_/g, '/');
-          const jsonPayload = decodeURIComponent(atob(b64).split('').map(c => {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-          }).join(''));
-          return JSON.parse(jsonPayload);
+        const base64UrlDecode = (str) => {
+          let base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+          while (base64.length % 4) {
+            base64 += '=';
+          }
+          return decodeURIComponent(escape(atob(base64)));
         };
 
-        const header = decodePart(parts[0]);
-        const payload = decodePart(parts[1]);
+        const headerObj = JSON.parse(base64UrlDecode(parts[0]));
+        const payloadObj = JSON.parse(base64UrlDecode(parts[1]));
 
-        jwtHeaderOutput.value = JSON.stringify(header, null, 2);
-        jwtPayloadOutput.value = JSON.stringify(payload, null, 2);
+        jwtHeaderOutput.value = JSON.stringify(headerObj, null, 2);
+        jwtPayloadOutput.value = JSON.stringify(payloadObj, null, 2);
 
-        // Check expiration
         jwtExpAlert.classList.remove('d-none');
-        if (payload.exp) {
-          const expDate = new Date(payload.exp * 1000);
-          const now = new Date();
-          const isExpired = now > expDate;
+        if (payloadObj.exp) {
+          const expDate = new Date(payloadObj.exp * 1000);
+          const isExpired = Date.now() >= payloadObj.exp * 1000;
           if (isExpired) {
-            jwtExpAlert.className = 'alert alert-danger py-2 small mb-3';
+            jwtExpAlert.className = 'alert alert-danger py-2 small mb-3 border-0';
             jwtExpAlert.innerHTML = `<i class="bi bi-x-circle-fill me-1"></i> <strong>Token Kedaluwarsa (Expired):</strong> ${expDate.toLocaleString()}`;
           } else {
-            jwtExpAlert.className = 'alert alert-success py-2 small mb-3';
+            jwtExpAlert.className = 'alert alert-success py-2 small mb-3 border-0';
             jwtExpAlert.innerHTML = `<i class="bi bi-check-circle-fill me-1"></i> <strong>Token Masih Aktif (Valid):</strong> Berlaku hingga ${expDate.toLocaleString()}`;
           }
         } else {
-          jwtExpAlert.className = 'alert alert-info py-2 small mb-3';
+          jwtExpAlert.className = 'alert alert-info py-2 small mb-3 border-0';
           jwtExpAlert.innerHTML = '<i class="bi bi-info-circle me-1"></i> Token tidak memiliki field claim `exp` (waktu kedaluwarsa).';
         }
       } catch (e) {
         jwtExpAlert.classList.remove('d-none');
-        jwtExpAlert.className = 'alert alert-warning py-2 small mb-3';
+        jwtExpAlert.className = 'alert alert-warning py-2 small mb-3 border-0';
         jwtExpAlert.innerHTML = `<i class="bi bi-exclamation-triangle-fill me-1"></i> Gagal me-decode token JWT: ${e.message}`;
       }
     }

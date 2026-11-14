@@ -4,338 +4,354 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Text Editor - DUFL</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+  <title>Distraction-Free Text Editor - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="Online distraction-free text editor with real-time word counter, character statistics, and TXT import/export.">
   <link href="../assets/img/favicon.png" rel="icon">
   <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+
   <style>
-    #editor-container {
+    .editor-wrapper {
       display: flex;
-    }
-
-    #line-numbers {
-      width: 3.5rem;
-      text-align: right;
-      user-select: none;
-      /* Prevent the user from selecting the line numbers */
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
       overflow: hidden;
-      /* Hide scrollbar */
+      background: #18181c;
+      min-height: 380px;
     }
-
-    /* Styles for the main editing area */
+    #line-numbers {
+      width: 48px;
+      padding: 16px 8px;
+      text-align: right;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #64748b;
+      background: #131316;
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+      user-select: none;
+      overflow: hidden;
+    }
     #editor-area {
-      width: 100%;
-      height: 24rem;
-      overflow-y: auto;
+      flex: 1;
+      padding: 16px 20px;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #e2e8f0;
       outline: none;
-      line-height: 1.51;
+      overflow-y: auto;
+      max-height: 520px;
+      min-height: 380px;
     }
-
-    #editor-area::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    /* Hide the file input element visually */
-    #file-import {
-      display: none;
+    .editor-toolbar {
+      background: #1c1c20;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
     }
   </style>
 </head>
 
 <body class="service-details-page">
+  <header class="app-header py-3">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a href="../index.html" class="logo d-flex align-items-center text-decoration-none">
+        <span class="sitename text-white mb-0 fs-4 fw-bold">WIDIFIRMAAN <span class="text-primary">Tools</span></span>
+      </a>
+      <a href="../index.html" class="btn btn-sm btn-outline-light rounded-pill px-3"><i class="bi bi-grid-fill me-1"></i> Semua Tools</a>
+    </div>
+  </header>
+
   <main class="main">
-    <div class="page-title dark-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0"><a href="/"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
+    <div class="page-title dark-background py-3 py-md-4 border-bottom border-secondary border-opacity-25">
+      <div class="container d-md-flex justify-content-between align-items-center">
+        <h2 class="mb-2 mb-md-0 fw-bold fs-4 text-white d-flex align-items-center">
+          <a href="../index.html" class="text-secondary text-decoration-none me-2" title="Kembali ke Dashboard"><i class="bi bi-arrow-left"></i></a>
+          <span>Distraction-Free Text Editor</span>
+        </h2>
         <nav class="breadcrumbs">
-          <ol>
-            <li><a href="https://www.dufl.web.id">Premium Stuff</a></li>
-            <li><a href="/">Free Stuff</a></li>
+          <ol class="breadcrumb mb-0 small">
+            <li class="breadcrumb-item"><a href="../index.html" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item"><a href="../index.html#tool-grid" class="text-secondary text-decoration-none">Tools</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Text Editor</li>
           </ol>
         </nav>
       </div>
     </div>
-    <section id="service-details" class="service-details section">
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="row gy-4">
-          <div class="col-lg-10">
-            <div class="content">
-              <h3>Text Edittor</h3>
-              <p>
-                Start writing below. Your progress will be counted in real-time.
+
+    <section id="service-details" class="service-details section py-4 py-lg-5">
+      <div class="container">
+        <div class="row g-4">
+          <!-- Main Content (Col 8) -->
+          <div class="col-lg-8">
+            <div class="tool-card mb-0">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                <h3 class="mb-0 text-white fw-bold">Editor Teks & Penghitung Kata</h3>
+                <span class="feature-badge">
+                  <i class="bi bi-pen-fill"></i> Real-time Word Counter
+                </span>
+              </div>
+              <p class="text-secondary mb-3">
+                Editor teks bebas gangguan dengan statistik kata dan karakter langsung. Tulis draf, catatan, atau salin teks tanpa khawatir data tersimpan di server luar.
               </p>
-              <div class="container mx-auto">
-                <div id="toolbar" class="flex flex-wrap items-center row p-2">
-                  <select id="font-family" class="form-control col p-2">
-                    <option value="Inter">Inter</option>
+
+              <!-- Editor Toolbar -->
+              <div class="editor-toolbar d-flex flex-wrap align-items-center justify-content-between gap-2">
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                  <!-- Font Select -->
+                  <select id="font-family" class="form-select form-select-sm" style="width: auto;">
+                    <option value="Inter">Inter (Sans-serif)</option>
                     <option value="Arial">Arial</option>
-                    <option value="Verdana">Verdana</option>
-                    <option value="Georgia">Georgia</option>
-                    <option value="Times New Roman">Times New Roman</option>
-                    <option value="Courier New">Courier New</option>
+                    <option value="Georgia">Georgia (Serif)</option>
+                    <option value="Courier New">Courier (Monospace)</option>
+                    <option value="Fira Code">Fira Code</option>
                   </select>
-                  <select id="font-size" class="form-control col p-2">
-                    <option value="1">Small</option>
+
+                  <!-- Size Select -->
+                  <select id="font-size" class="form-select form-select-sm" style="width: auto;">
+                    <option value="2">Kecil</option>
                     <option value="3" selected>Normal</option>
-                    <option value="5">Large</option>
-                    <option value="7">Extra Large</option>
+                    <option value="5">Besar</option>
+                    <option value="6">Judul</option>
                   </select>
-                  <button id="bold-btn" class="form-control col p-2">
-                    <span class="font-bold">B</span>
-                  </button>
-                  <button id="italic-btn" class="form-control col p-2">
-                    <span class="italic">I</span>
-                  </button>
-                  <button id="underline-btn" class="form-control col p-2">
-                    <span class="underline ">U</span>
-                  </button>
-                  <button id="import-btn" class="form-control col p-2">
-                    Import Text
-                  </button>
-                  <input type="file" id="file-import" accept=".txt">
-                  <button id="save-btn" class="form-control col p-2">
-                    Save
-                  </button>
-                </div>
-                <div id="editor-container" class="border rounded">
-                  <div id="line-numbers" class="mt-3">1<br></div>
-                  <div id="editor-area" contenteditable="true"
-                    class="w-full h-auto p-2 m-1 overflow-y-auto border rounded focus:outline-none ">
+
+                  <!-- Style Buttons -->
+                  <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" id="bold-btn" class="btn btn-outline-secondary text-white" title="Tebal (Ctrl+B)"><i class="bi bi-type-bold"></i></button>
+                    <button type="button" id="italic-btn" class="btn btn-outline-secondary text-white" title="Miring (Ctrl+I)"><i class="bi bi-type-italic"></i></button>
+                    <button type="button" id="underline-btn" class="btn btn-outline-secondary text-white" title="Garis Bawah (Ctrl+U)"><i class="bi bi-type-underline"></i></button>
                   </div>
-                </div><br />
-                <div class="rounded flex justify-between items-center form-control p-2">
-                  <span id="word-count">Words: 0</span>
-                  <span id="char-count">Characters: 0</span>
+                </div>
+
+                <!-- File Actions -->
+                <div class="d-flex align-items-center gap-2">
+                  <input type="file" id="file-import" accept=".txt,.md" class="d-none">
+                  <button type="button" id="import-btn" class="btn btn-sm btn-outline-light rounded-pill px-3">
+                    <i class="bi bi-file-earmark-arrow-up me-1"></i> Buka TXT
+                  </button>
+                  <button type="button" id="save-btn" class="btn btn-sm btn-primary rounded-pill px-3">
+                    <i class="bi bi-download me-1"></i> Simpan File
+                  </button>
                 </div>
               </div>
-              <script>
-                const editorArea = document.getElementById('editor-area');
-                const lineNumbers = document.getElementById('line-numbers');
-                const fontFamilySelect = document.getElementById('font-family');
-                const fontSizeSelect = document.getElementById('font-size');
-                const boldBtn = document.getElementById('bold-btn');
-                const italicBtn = document.getElementById('italic-btn');
-                const underlineBtn = document.getElementById('underline-btn');
-                const importBtn = document.getElementById('import-btn');
-                const saveBtn = document.getElementById('save-btn');
-                const fileImportInput = document.getElementById('file-import');
-                const wordCountSpan = document.getElementById('word-count');
-                const charCountSpan = document.getElementById('char-count');
 
-                /**
-                 * Updates the line numbers display based on the content of the editor.
-                 */
-                const updateLineNumbers = () => {
-                  // Count the number of lines. Since the editor inserts <div> tags on new lines,
-                  // we can count the children to get the number of lines.
-                  // If the editor is empty, it's one line.
-                  let lineCount = editorArea.children.length === 0 && editorArea.textContent.trim() === '' ? 1 : editorArea.children.length;
-
-                  // Check if the initial line has content
-                  if (editorArea.textContent.trim() !== '' && editorArea.children.length === 0 && editorArea.children.length === null) {
-                    lineCount = editorArea.textContent.split('\n').length;
-                  } else if (editorArea.children.length > 0) {
-                    lineCount = editorArea.children.length;
-                  }
-
-                  // Generate the line number text
-                  let numbersHtml = '';
-                  for (let i = 1; i <= lineCount; i++) {
-                    numbersHtml += i + '<br>';
-                  }
-                  lineNumbers.innerHTML = numbersHtml;
-                };
-
-                /**
-                 * Updates the word and character counts in the status bar.
-                 */
-                const updateCounts = () => {
-                  // Get the plain text content from the editor
-                  const text = editorArea.textContent;
-
-                  // Calculate character count (including spaces)
-                  charCountSpan.textContent = `Characters: ${text.length}`;
-
-                  // Calculate word count
-                  // Split the text by any whitespace and filter out empty strings
-                  const words = text.split(/\s+/).filter(word => word.length > 0);
-                  wordCountSpan.textContent = `Words: ${words.length}`;
-                };
-
-                // Add event listeners for real-time updates
-                editorArea.addEventListener('input', () => {
-                  updateCounts();
-                  updateLineNumbers();
-                });
-
-                // Sync the scroll position of the line numbers with the editor area
-                editorArea.addEventListener('scroll', () => {
-                  lineNumbers.scrollTop = editorArea.scrollTop;
-                });
-
-                // Add event listeners for the formatting buttons
-                // document.execCommand() is a simple, built-in method for text formatting
-                boldBtn.addEventListener('click', () => {
-                  document.execCommand('bold', false, null);
-                });
-                italicBtn.addEventListener('click', () => {
-                  document.execCommand('italic', false, null);
-                });
-                underlineBtn.addEventListener('click', () => {
-                  document.execCommand('underline', false, null);
-                });
-
-                // Add event listeners for the font selectors
-                fontFamilySelect.addEventListener('change', (e) => {
-                  document.execCommand('fontName', false, e.target.value);
-                });
-                fontSizeSelect.addEventListener('change', (e) => {
-                  document.execCommand('fontSize', false, e.target.value);
-                });
-
-                // Event listener for the new "Import" button
-                importBtn.addEventListener('click', () => {
-                  fileImportInput.click(); // Programmatically click the hidden file input
-                });
-
-                // Event listener to handle the file when it is selected
-                fileImportInput.addEventListener('change', (event) => {
-                  const file = event.target.files[0];
-                  if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                      // Set the editor's content to the text from the file
-                      editorArea.textContent = e.target.result;
-                      // Update counts and line numbers after loading the content
-                      updateCounts();
-                      updateLineNumbers();
-                    };
-                    // Read the file as a text string
-                    reader.readAsText(file);
-                  }
-                });
-                saveBtn.addEventListener('click', () => {
-                  // Get the content of the editor
-                  const content = editorArea.textContent;
-
-                  // Create a Blob from the content
-                  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-
-                  // Create a URL for the Blob
-                  const url = URL.createObjectURL(blob);
-
-                  // Create a temporary link element
-                  const a = document.createElement('a');
-                  a.href = url;
-
-                  // Set the file name using the current date and time
-                  const now = new Date();
-                  const fileName = `document-${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}-${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}.txt`;
-                  a.download = fileName;
-                  a.click();
-
-                  // Clean up by revoking the URL
-                  URL.revokeObjectURL(url);
-                });
-                updateCounts();
-                updateLineNumbers();
-              </script>
-            </div>
-
-          </div>
-
-          <div class="col-lg-2">
-            <div class="service-info">
-              <h4>Service Information</h4>
-              <div class="info-item">
-                <i class="bi bi-person-check"></i>
-                <h5>Project By</h5>
-                <p>Widi Firmansyah</p>
+              <!-- Main Canvas Area -->
+              <div class="editor-wrapper mb-3">
+                <div id="line-numbers">1<br></div>
+                <div id="editor-area" contenteditable="true" spellcheck="false" placeholder="Mulai mengetik tulisan Anda di sini...">Mulai mengetik tulisan atau draf dokumen Anda di sini. Penghitung kata dan karakter akan berjalan secara real-time di bawah.</div>
               </div>
-              <div class="info-item">
-                <div class="service-details-slider swiper init-swiper">
-                  <script type="application/json" class="swiper-config">
-                    {
-                      "loop": true,
-                      "speed": 600,
-                      "autoplay": {
-                        "delay": 5000
-                      },
-                      "slidesPerView": 1,
-                      "pagination": {
-                        "el": ".swiper-pagination",
-                        "type": "bullets",
-                        "clickable": true
-                      }
-                    }
-                  </script>
-                  <div class="swiper-wrapper align-items-center">
-                    <div class="swiper-slide">
-                      <!-- <img src="../assets/img/services/img-comp.png" alt="" class="img-fluid" loading="lazy"> -->
-                    </div>
-                  </div>
-                  <div class="swiper-pagination"></div>
+
+              <!-- Bottom Statistics Bar -->
+              <div class="p-3 rounded border border-secondary border-opacity-25 d-flex flex-wrap align-items-center justify-content-between gap-3" style="background: #18181b;">
+                <div class="d-flex flex-wrap align-items-center gap-3">
+                  <span class="badge bg-primary px-3 py-2" id="word-count">Words: 0</span>
+                  <span class="badge bg-secondary px-3 py-2" id="char-count">Characters: 0</span>
+                  <span class="badge bg-dark border border-secondary px-3 py-2" id="reading-time">Reading: &lt; 1 min</span>
                 </div>
+                <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="clearEditor()">
+                  <i class="bi bi-trash3 me-1"></i> Bersihkan Teks
+                </button>
               </div>
+
             </div>
           </div>
 
+          <!-- Sidebar Column (Col 4) -->
+          <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4">
+              <div class="tool-sidebar-card mb-0">
+              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                <i class="bi bi-shield-check text-success me-2"></i>Privacy & Execution
+              </h5>
+              <div class="d-flex align-items-start mb-3">
+                <div class="feature-icon-badge me-3">
+                  <i class="bi bi-cpu fs-5 text-primary"></i>
+                </div>
+                <div>
+                  <h6 class="mb-1 text-white">Bebas Gangguan & Offline</h6>
+                  <p class="text-secondary small mb-0">Semua catatan tersimpan di memori browser Anda dan dapat diekspor langsung sebagai file .txt lokal.</p>
+                </div>
+              </div>
+              <div class="d-flex align-items-start mb-3">
+                <div class="feature-icon-badge me-3">
+                  <i class="bi bi-shield-lock fs-5 text-success"></i>
+                </div>
+                <div>
+                  <h6 class="mb-1 text-white">Nol Pengiriman Data</h6>
+                  <p class="text-secondary small mb-0">Tulisan rahasia, draf artikel, atau password Anda tidak pernah dikirim ke internet.</p>
+                </div>
+              </div>
+              <div class="d-flex align-items-start">
+                <div class="feature-icon-badge me-3">
+                  <i class="bi bi-person-check fs-5 text-info"></i>
+                </div>
+                <div>
+                  <h6 class="mb-1 text-white">Pengembang</h6>
+                  <p class="text-secondary small mb-0"><a href="https://widifirmaan.web.id" target="_blank" class="text-primary text-decoration-none">Widi Firmansyah</a></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-sidebar-card">
+              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                <i class="bi bi-grid-fill text-primary me-2"></i>Quick Tool Switcher
+              </h5>
+              <div class="list-group list-group-flush bg-transparent">
+                <a href="pdf-word.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-file-earmark-word text-primary me-2"></i>PDF to Word</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="dev-tools.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-code-slash text-danger me-2"></i>Developer Toolbox</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="qr-code.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-qr-code text-warning me-2"></i>QR Code Studio</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="calculator.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-calculator text-info me-2"></i>Scientific Calculator</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="image-compressor.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-0">
+                  <span><i class="bi bi-image text-success me-2"></i>Image Compressor</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-
+        </div>
       </div>
     </section>
   </main>
 
-  <footer id="footer" class="footer position-relative">
-
-    <div class="container">
-      <div class="copyright text-center ">
-        <a href="/">
-          <p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights Reserved</span></p>
-        </a>
+  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
+    <div class="container text-center">
+      <div class="copyright text-secondary">
+        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
       </div>
-      <div class="credits">
-        Designed by <a href="https://widifirmaan.web.id/">Widi Firmans</a>
+      <div class="credits text-secondary small">
+        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
       </div>
     </div>
-
   </footer>
 
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Preloader -->
   <div id="preloader"></div>
 
-  <!-- Vendor JS Files -->
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/vendor/aos/aos.js"></script>
-  <script src="../assets/vendor/typed.js/typed.umd.js"></script>
-  <script src="../assets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="../assets/vendor/waypoints/noframework.waypoints.js"></script>
-  <script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="../assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
-
-  <!-- Main JS File -->
   <script src="../assets/js/services.js"></script>
 
+  <script>
+    const editorArea = document.getElementById('editor-area');
+    const lineNumbers = document.getElementById('line-numbers');
+    const wordCountSpan = document.getElementById('word-count');
+    const charCountSpan = document.getElementById('char-count');
+    const readingTimeSpan = document.getElementById('reading-time');
+    const boldBtn = document.getElementById('bold-btn');
+    const italicBtn = document.getElementById('italic-btn');
+    const underlineBtn = document.getElementById('underline-btn');
+    const fontFamilySelect = document.getElementById('font-family');
+    const fontSizeSelect = document.getElementById('font-size');
+    const importBtn = document.getElementById('import-btn');
+    const fileImportInput = document.getElementById('file-import');
+    const saveBtn = document.getElementById('save-btn');
+
+    window.clearEditor = function() {
+      if (confirm('Yakin ingin mengosongkan seluruh teks di editor?')) {
+        editorArea.textContent = '';
+        updateCounts();
+        updateLineNumbers();
+      }
+    };
+
+    const updateLineNumbers = () => {
+      let lineCount = 1;
+      if (editorArea.textContent.includes('\n')) {
+        lineCount = editorArea.textContent.split('\n').length;
+      } else if (editorArea.children.length > 0) {
+        lineCount = editorArea.children.length;
+      }
+      lineCount = Math.max(1, lineCount);
+
+      let numbersHtml = '';
+      for (let i = 1; i <= lineCount; i++) {
+        numbersHtml += i + '<br>';
+      }
+      lineNumbers.innerHTML = numbersHtml;
+    };
+
+    const updateCounts = () => {
+      const text = editorArea.textContent || '';
+      charCountSpan.textContent = `Characters: ${text.length}`;
+
+      const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+      const wordCount = text.trim().length === 0 ? 0 : words.length;
+      wordCountSpan.textContent = `Words: ${wordCount}`;
+
+      const minutes = Math.ceil(wordCount / 200);
+      readingTimeSpan.textContent = `Reading: ~${minutes <= 1 ? '< 1' : minutes} min`;
+    };
+
+    editorArea.addEventListener('input', () => {
+      updateCounts();
+      updateLineNumbers();
+    });
+
+    editorArea.addEventListener('scroll', () => {
+      lineNumbers.scrollTop = editorArea.scrollTop;
+    });
+
+    boldBtn.addEventListener('click', () => document.execCommand('bold', false, null));
+    italicBtn.addEventListener('click', () => document.execCommand('italic', false, null));
+    underlineBtn.addEventListener('click', () => document.execCommand('underline', false, null));
+
+    fontFamilySelect.addEventListener('change', (e) => {
+      document.execCommand('fontName', false, e.target.value);
+    });
+    fontSizeSelect.addEventListener('change', (e) => {
+      document.execCommand('fontSize', false, e.target.value);
+    });
+
+    importBtn.addEventListener('click', () => fileImportInput.click());
+    fileImportInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          editorArea.textContent = e.target.result;
+          updateCounts();
+          updateLineNumbers();
+        };
+        reader.readAsText(file);
+      }
+    });
+
+    saveBtn.addEventListener('click', () => {
+      const content = editorArea.textContent;
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      const now = new Date();
+      const fileName = `document-${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}.txt`;
+      a.download = fileName;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    updateCounts();
+    updateLineNumbers();
+  </script>
 </body>
 
 </html>

@@ -4,405 +4,404 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Tire & Wheel Size Comparison - DUFL</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+  <title>Tire & Wheel Comparison Calculator - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="Free tire and wheel size comparison calculator. Compare tire diameter, sidewall height, circumference, and speedometer error.">
   <link href="../assets/img/favicon.png" rel="icon">
   <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
   <style>
-    #file-input {
-      display: none;
+    .tire-container {
+      width: 140px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
     }
-
-    .file-input-label {
-      cursor: pointer;
-      transition: transform 0.2s ease-in-out;
-    }
-
-    .file-input-label:hover {
-      transform: translateY(-2px);
-    }
-
-    .tire {
+    .tire-circle {
       width: 100%;
       height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(circle, #333 40%, #111 70%, #000 100%);
+      border: 8px solid #222;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.5s ease;
+      transition: all 0.3s ease;
     }
-
-    .tire-inner {
-      width: 100px;
-      height: 100px;
-      background-image: url(../assets/img/rims.png);
-      background-color: black;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+    .rim-circle {
+      width: 55%;
+      height: 55%;
       border-radius: 50%;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) translateZ(10px);
-      overflow: hidden;
-      /* Hide spokes that stick out */
-    }
-
-    .tire-outer {
-      background-image: url(../assets/img/tire.png);
-      /* background-position: center; */
-      background-size: cover;
-      background-position: center;
-      border-radius: 50%;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.5);
-      /* Black with 50% opacity */
-      background-blend-mode: darken;
-    }
-
-    .tire.spin {
-      animation: spin-3d 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-    }
-
-    @keyframes spin-3d {
-      from {
-        transform: rotateY(0deg);
-      }
-
-      to {
-        transform: rotateY(360deg);
-      }
-    }
-
-    .result-container.pop {
-      animation: pop-in 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-    }
-
-    @keyframes pop-in {
-      0% {
-        transform: scale(0.5);
-        opacity: 0;
-      }
-
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
+      background: radial-gradient(circle, #777 0%, #444 80%, #222 100%);
+      border: 2px solid #888;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-size: 0.75rem;
+      font-weight: bold;
     }
   </style>
 </head>
 
 <body class="service-details-page">
+  <header class="app-header py-3">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a href="../index.html" class="logo d-flex align-items-center text-decoration-none">
+        <span class="sitename text-white mb-0 fs-4 fw-bold">WIDIFIRMAAN <span class="text-primary">Tools</span></span>
+      </a>
+      <a href="../index.html" class="btn btn-sm btn-outline-light rounded-pill px-3"><i class="bi bi-grid-fill me-1"></i> Semua Tools</a>
+    </div>
+  </header>
+
   <main class="main">
-    <div class="page-title dark-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0"><a href="/"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
+    <div class="page-title dark-background py-3 py-md-4 border-bottom border-secondary border-opacity-25">
+      <div class="container d-md-flex justify-content-between align-items-center">
+        <h2 class="mb-2 mb-md-0 fw-bold fs-4 text-white d-flex align-items-center">
+          <a href="../index.html" class="text-secondary text-decoration-none me-2" title="Kembali ke Dashboard"><i class="bi bi-arrow-left"></i></a>
+          <span>Tire & Wheel Comparison</span>
+        </h2>
         <nav class="breadcrumbs">
-          <ol>
-            <li><a href="https://www.dufl.web.id">Premium Stuff</a></li>
-            <li><a href="/">Free Stuff</a></li>
+          <ol class="breadcrumb mb-0 small">
+            <li class="breadcrumb-item"><a href="../index.html" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item"><a href="../index.html#tool-grid" class="text-secondary text-decoration-none">Tools</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Tire Comparison</li>
           </ol>
         </nav>
       </div>
     </div>
-    <section id="service-details" class="service-details section">
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="row gy-4">
-          <div class="col-lg-10">
-            <div class="content">
-              <h3>Tire Size comparation</h3>
-              <p>A Simple, Fast and efficient solution for shrinking the size of your images.</p>
-              <div class="container mx-auto">
-                <div class="flex flex-col md:flex-row items-start justify-center">
-                  <div class="space-y-4 w-full">
-                    <h2 class="">Original Tire</h2>
-                    <div class="">
-                      <label for="width1" class="">Tire Width (mm)</label>
-                      <input type="number" id="width1" placeholder="205" class="form-control">
+
+    <section id="service-details" class="service-details section py-4 py-lg-5">
+      <div class="container">
+        <div class="row g-4">
+          <!-- Main Content (Col 8) -->
+          <div class="col-lg-8">
+            <div class="tool-card mb-0">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                <h3 class="mb-0 text-white fw-bold">Kalkulator Perbandingan Ukuran Ban</h3>
+                <span class="feature-badge">
+                  <i class="bi bi-speedometer2"></i> Speedometer & Fitment Check
+                </span>
+              </div>
+              <p class="text-secondary mb-4">
+                Bandingkan spesifikasi dua ukuran ban dan velg: diameter luar, tebal sidewall, keliling putaran roda, serta deviasi kecepatan speedometer kendaraan secara akurat.
+              </p>
+
+              <!-- Inputs: Side-by-side Tire A vs Tire B -->
+              <div class="row g-3 mb-4">
+                <!-- Tire 1 (Original) -->
+                <div class="col-md-6">
+                  <div class="p-3 rounded border border-secondary border-opacity-25" style="background: #18181b;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <h6 class="text-primary fw-bold mb-0"><i class="bi bi-disc me-1"></i> Ban 1 (Standar / OEM)</h6>
+                      <span class="badge bg-secondary">Ukuran Asli</span>
                     </div>
-                    <div class="">
-                      <label for="aspectRatio1" class="">Aspect Ratio (%)</label>
-                      <input type="number" id="aspectRatio1" placeholder="55" class="form-control">
+
+                    <div class="mb-2">
+                      <label for="width1" class="form-label text-secondary small mb-1">Lebar Ban (Width mm)</label>
+                      <input type="number" id="width1" value="205" placeholder="Contoh: 205" class="form-control form-control-sm">
                     </div>
-                    <div class="">
-                      <label for="diameter1" class="">Wheel Diameter (inches)</label>
-                      <input type="number" id="diameter1" placeholder="16" class="form-control">
+                    <div class="mb-2">
+                      <label for="aspectRatio1" class="form-label text-secondary small mb-1">Aspek Rasio (Profile %)</label>
+                      <input type="number" id="aspectRatio1" value="55" placeholder="Contoh: 55" class="form-control form-control-sm">
                     </div>
-                  </div>
-                  <div class="space-y-4 w-full">
-                    <h2 class="">New Tire</h2>
-                    <div class="">
-                      <label for="width2" class="">Tire Width (mm)</label>
-                      <input type="number" id="width2" placeholder="225" class="form-control">
-                    </div>
-                    <div class="">
-                      <label for="aspectRatio2" class="">Aspect Ratio (%)</label>
-                      <input type="number" id="aspectRatio2" placeholder="50" class="form-control">
-                    </div>
-                    <div class="">
-                      <label for="diameter2" class="">Wheel Diameter (inches)</label>
-                      <input type="number" id="diameter2" placeholder="17" class="form-control">
+                    <div class="mb-3">
+                      <label for="diameter1" class="form-label text-secondary small mb-1">Diameter Velg (Rim Inci)</label>
+                      <input type="number" id="diameter1" value="16" placeholder="Contoh: 16" class="form-control form-control-sm">
                     </div>
                   </div>
                 </div>
 
-                <button id="calculateBtn" class="btn btn-primary">
-                  Calculate Comparison
+                <!-- Tire 2 (New) -->
+                <div class="col-md-6">
+                  <div class="p-3 rounded border border-secondary border-opacity-25" style="background: #18181b;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <h6 class="text-success fw-bold mb-0"><i class="bi bi-disc-fill me-1"></i> Ban 2 (Baru / Pengganti)</h6>
+                      <span class="badge bg-success">Ukuran Baru</span>
+                    </div>
+
+                    <div class="mb-2">
+                      <label for="width2" class="form-label text-secondary small mb-1">Lebar Ban (Width mm)</label>
+                      <input type="number" id="width2" value="225" placeholder="Contoh: 225" class="form-control form-control-sm">
+                    </div>
+                    <div class="mb-2">
+                      <label for="aspectRatio2" class="form-label text-secondary small mb-1">Aspek Rasio (Profile %)</label>
+                      <input type="number" id="aspectRatio2" value="50" placeholder="Contoh: 50" class="form-control form-control-sm">
+                    </div>
+                    <div class="mb-3">
+                      <label for="diameter2" class="form-label text-secondary small mb-1">Diameter Velg (Rim Inci)</label>
+                      <input type="number" id="diameter2" value="17" placeholder="Contoh: 17" class="form-control form-control-sm">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-center mb-4">
+                <button type="button" id="calculateBtn" class="btn btn-primary rounded-pill px-5 py-2 fw-semibold">
+                  <i class="bi bi-calculator me-1"></i> Hitung Perbandingan Ban
                 </button>
+              </div>
 
-                <div id="results" class="result-container mt-8 hidden text-center">
-                  <h3 class="">Comparison Results</h3>
-                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
-                    <!-- Original Tire Results -->
-                    <div>
-                      <span class="block text-sm font-bold text-gray-400">Original Tire</span>
-                      <span class="block text-sm text-gray-400">Total Diameter:</span>
-                      <span id="diameter1Result" class="text-lg font-bold text-green-400"></span>
-                      <span class="block text-sm text-gray-400">Circumference:</span>
-                      <span id="circumference1Result" class="text-lg font-bold text-green-400"></span>
-                    </div>
-                    <!-- New Tire Results -->
-                    <div>
-                      <span class="block text-sm font-bold text-gray-400">New Tire</span>
-                      <span class="block text-sm text-gray-400">Total Diameter:</span>
-                      <span id="diameter2Result" class="text-lg font-bold text-green-400"></span>
-                      <span class="block text-sm text-gray-400">Circumference:</span>
-                      <span id="circumference2Result" class="text-lg font-bold text-green-400"></span>
-                    </div>
-                    <!-- Differences -->
-                    <div>
-                      <span class="block text-sm font-bold text-gray-400">Difference</span>
-                      <span class="block text-sm text-gray-400">Diameter Change:</span>
-                      <span id="diameterDiffResult" class="text-lg font-bold text-yellow-400"></span>
-                      <span class="block text-sm text-gray-400">Circumference Change:</span>
-                      <span id="circumferenceDiffResult" class="text-lg font-bold text-yellow-400"></span>
+              <!-- Results Area -->
+              <div id="results" class="p-3 rounded border border-secondary border-opacity-25" style="background: #18181b;">
+                <h5 class="fw-bold text-white mb-3 pb-2 border-bottom border-secondary border-opacity-25">
+                  <i class="bi bi-bar-chart-fill text-info me-2"></i>Hasil Analisis Perbandingan
+                </h5>
+
+                <div class="row g-3 text-center mb-4">
+                  <div class="col-sm-4">
+                    <div class="p-2 rounded bg-black bg-opacity-25 border border-secondary border-opacity-10">
+                      <span class="text-secondary small d-block mb-1">Diameter Total</span>
+                      <strong class="text-white fs-5 d-block" id="diameter1Result">24.88" (631.9 mm)</strong>
+                      <span class="text-muted small">Ban 1</span>
                     </div>
                   </div>
-
-                  <div class="flex flex-row items-center justify-center pt-8 gap-10">
-                    <div class="flex flex-col items-center">
-                      <div id="tireContainer1" class="tire-container">
-                        <div id="tireVisual1" class="tire">
-                          <div class="tire-outer"></div>
-                          <div class="tire-inner">
-                            <div class="hub"></div>
-                          </div>
-                        </div>
-                      </div>
-                      <span class="text-gray-400 mt-2">Original</span>
+                  <div class="col-sm-4">
+                    <div class="p-2 rounded bg-black bg-opacity-25 border border-secondary border-opacity-10">
+                      <span class="text-secondary small d-block mb-1">Diameter Total</span>
+                      <strong class="text-success fs-5 d-block" id="diameter2Result">25.86" (656.8 mm)</strong>
+                      <span class="text-muted small">Ban 2</span>
                     </div>
-
-                    <!-- New Tire Visual -->
-                    <div class="flex flex-col items-center">
-                      <div id="tireContainer2" class="tire-container">
-                        <div id="tireVisual2" class="tire">
-                          <div class="tire-outer"></div>
-                          <div class="tire-inner">
-                            <div class="hub"></div>
-                          </div>
-                        </div>
-                      </div>
-                      <span class="text-gray-400 mt-2">New</span>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="p-2 rounded bg-black bg-opacity-25 border border-secondary border-opacity-10">
+                      <span class="text-secondary small d-block mb-1">Selisih Diameter</span>
+                      <strong class="text-warning fs-5 d-block" id="diameterDiffResult">+0.98" (+3.94%)</strong>
+                      <span class="text-muted small" id="fitmentNotice">Toleransi Wajar</span>
                     </div>
                   </div>
                 </div>
-                <div id="messageBox"
-                  class="hidden mt-4 p-4 text-center rounded-lg bg-red-800 text-red-200 font-semibold"></div>
+
+                <!-- Speedometer Offset & Circumference -->
+                <div class="row g-3 text-center mb-3">
+                  <div class="col-sm-6">
+                    <div class="p-2 rounded bg-black bg-opacity-25 border border-secondary border-opacity-10">
+                      <span class="text-secondary small d-block mb-1">Keliling Roda (Circumference)</span>
+                      <span class="text-white d-block" id="circumferenceDiffResult">Ban 1: 78.16" | Ban 2: 81.24"</span>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="p-2 rounded bg-black bg-opacity-25 border border-secondary border-opacity-10">
+                      <span class="text-secondary small d-block mb-1">Speedometer pada 100 km/jam</span>
+                      <span class="text-info fw-bold d-block" id="speedoResult">Kecepatan Nyata: ~103.9 km/jam</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Visual Comparison -->
+                <div class="d-flex align-items-center justify-content-center gap-5 pt-3 border-top border-secondary border-opacity-25">
+                  <div class="text-center">
+                    <div class="tire-container mx-auto mb-2" id="tireContainer1">
+                      <div class="tire-circle" id="tireVisual1">
+                        <div class="rim-circle" id="rimVisual1">R16</div>
+                      </div>
+                    </div>
+                    <span class="text-secondary small fw-semibold">Ban Standar</span>
+                  </div>
+                  <div class="text-center">
+                    <div class="tire-container mx-auto mb-2" id="tireContainer2">
+                      <div class="tire-circle" id="tireVisual2">
+                        <div class="rim-circle" id="rimVisual2">R17</div>
+                      </div>
+                    </div>
+                    <span class="text-success small fw-semibold">Ban Baru</span>
+                  </div>
+                </div>
               </div>
-              <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                  const width1Input = document.getElementById('width1');
-                  const aspectRatio1Input = document.getElementById('aspectRatio1');
-                  const diameter1Input = document.getElementById('diameter1');
-                  const width2Input = document.getElementById('width2');
-                  const aspectRatio2Input = document.getElementById('aspectRatio2');
-                  const diameter2Input = document.getElementById('diameter2');
-                  const calculateBtn = document.getElementById('calculateBtn');
-                  const resultsDiv = document.getElementById('results');
-                  const diameter1ResultSpan = document.getElementById('diameter1Result');
-                  const circumference1ResultSpan = document.getElementById('circumference1Result');
-                  const diameter2ResultSpan = document.getElementById('diameter2Result');
-                  const circumference2ResultSpan = document.getElementById('circumference2Result');
-                  const diameterDiffResultSpan = document.getElementById('diameterDiffResult');
-                  const circumferenceDiffResultSpan = document.getElementById('circumferenceDiffResult');
-                  const messageBox = document.getElementById('messageBox');
-                  const tireVisual1 = document.getElementById('tireVisual1');
-                  const tireVisual2 = document.getElementById('tireVisual2');
-                  const tireContainer1 = document.getElementById('tireContainer1');
-                  const tireContainer2 = document.getElementById('tireContainer2');
 
-                  const BASE_DIAMETER = 25; // A reasonable base diameter in inches for scaling visuals
-                  const BASE_PIXEL_SIZE = 150; // The base pixel size for the visual
+              <div id="messageBox" class="alert alert-danger py-2 mt-3 d-none"></div>
 
-                  function calculateTireMetrics(width, aspectRatio, diameter) {
-                    if (isNaN(width) || isNaN(aspectRatio) || isNaN(diameter) || width <= 0 || aspectRatio <= 0 || diameter <= 0) {
-                      return null;
-                    }
-                    const sidewallHeight = width * (aspectRatio / 100);
-                    const totalDiameterMM = (sidewallHeight * 2) + (diameter * 25.4);
-                    const totalDiameterInches = totalDiameterMM / 25.4;
-                    const circumferenceInches = totalDiameterInches * Math.PI;
-                    return { diameter: totalDiameterInches, circumference: circumferenceInches };
-                  }
-
-                  function updateTireVisual(visualContainer, visualElement, calculatedDiameter) {
-                    const scaleFactor = calculatedDiameter / BASE_DIAMETER;
-                    const newSize = BASE_PIXEL_SIZE * scaleFactor;
-                    visualContainer.style.width = `${newSize}px`;
-                    visualContainer.style.height = `${newSize}px`;
-                    visualElement.classList.remove('spin');
-                    void visualElement.offsetWidth; // Trigger reflow
-                    visualElement.classList.add('spin');
-                  }
-
-                  calculateBtn.addEventListener('click', () => {
-                    // Clear previous results and messages
-                    resultsDiv.classList.add('hidden');
-                    messageBox.classList.add('hidden');
-                    messageBox.textContent = '';
-
-                    // Fetch values from inputs
-                    const width1 = parseFloat(width1Input.value);
-                    const aspectRatio1 = parseFloat(aspectRatio1Input.value);
-                    const diameter1 = parseFloat(diameter1Input.value);
-                    const width2 = parseFloat(width2Input.value);
-                    const aspectRatio2 = parseFloat(aspectRatio2Input.value);
-                    const diameter2 = parseFloat(diameter2Input.value);
-
-                    const originalMetrics = calculateTireMetrics(width1, aspectRatio1, diameter1);
-                    const newMetrics = calculateTireMetrics(width2, aspectRatio2, diameter2);
-
-                    if (!originalMetrics || !newMetrics) {
-                      messageBox.textContent = 'Please enter valid positive numbers for all fields.';
-                      messageBox.classList.remove('hidden');
-                      return;
-                    }
-
-                    // Display original tire results
-                    diameter1ResultSpan.textContent = `${originalMetrics.diameter.toFixed(2)} inches`;
-                    circumference1ResultSpan.textContent = `${originalMetrics.circumference.toFixed(2)} inches`;
-
-                    // Display new tire results
-                    diameter2ResultSpan.textContent = `${newMetrics.diameter.toFixed(2)} inches`;
-                    circumference2ResultSpan.textContent = `${newMetrics.circumference.toFixed(2)} inches`;
-
-                    // Calculate and display differences
-                    const diameterDiff = ((newMetrics.diameter - originalMetrics.diameter) / originalMetrics.diameter) * 100;
-                    const circumferenceDiff = ((newMetrics.circumference - originalMetrics.circumference) / originalMetrics.circumference) * 100;
-
-                    diameterDiffResultSpan.textContent = `${diameterDiff.toFixed(2)}%`;
-                    circumferenceDiffResultSpan.textContent = `${circumferenceDiff.toFixed(2)}%`;
-
-                    // Set color for difference
-                    diameterDiffResultSpan.style.color = diameterDiff > 0 ? '#86efac' : '#f87171'; // green or red
-                    circumferenceDiffResultSpan.style.color = circumferenceDiff > 0 ? '#86efac' : '#f87171';
-
-                    // Update tire visuals based on calculated diameters
-                    updateTireVisual(tireContainer1, tireVisual1, originalMetrics.diameter);
-                    updateTireVisual(tireContainer2, tireVisual2, newMetrics.diameter);
-
-                    // Show and animate results
-                    resultsDiv.classList.remove('hidden');
-                    setTimeout(() => {
-                      resultsDiv.classList.add('pop');
-                    }, 10);
-                  });
-                });
-              </script>
             </div>
           </div>
 
-          <div class="col-lg-2">
-            <div class="service-info">
-              <h4>Service Information</h4>
-              <div class="info-item">
-                <i class="bi bi-person-check"></i>
-                <h5>Project By</h5>
-                <p>Widi Firmansyah</p>
+          <!-- Sidebar Column (Col 4) -->
+          <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4">
+              <div class="tool-sidebar-card mb-0">
+              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                <i class="bi bi-shield-check text-success me-2"></i>Panduan Fitment
+              </h5>
+              <div class="d-flex align-items-start mb-3">
+                <div class="feature-icon-badge me-3">
+                  <i class="bi bi-info-circle fs-5 text-primary"></i>
+                </div>
+                <div>
+                  <h6 class="mb-1 text-white">Toleransi Aman ±3%</h6>
+                  <p class="text-secondary small mb-0">Perubahan diameter total ban di bawah 3% dianggap aman tanpa mengganggu akurasi speedometer dan ABS.</p>
+                </div>
               </div>
-              <div class="info-item">
-                <div class="service-details-slider swiper init-swiper">
-                  <script type="application/json" class="swiper-config">
-                    {
-                      "loop": true,
-                      "speed": 600,
-                      "autoplay": {
-                        "delay": 5000
-                      },
-                      "slidesPerView": 1,
-                      "pagination": {
-                        "el": ".swiper-pagination",
-                        "type": "bullets",
-                        "clickable": true
-                      }
-                    }
-                  </script>
-                  <div class="swiper-wrapper align-items-center">
-                    <div class="swiper-slide">
-                      <!-- <img src="../assets/img/services/img-comp.png" alt="" class="img-fluid" loading="lazy"> -->
-                    </div>
-                  </div>
-                  <div class="swiper-pagination"></div>
+              <div class="d-flex align-items-start mb-3">
+                <div class="feature-icon-badge me-3">
+                  <i class="bi bi-speedometer fs-5 text-warning"></i>
+                </div>
+                <div>
+                  <h6 class="mb-1 text-white">Dampak Speedometer</h6>
+                  <p class="text-secondary small mb-0">Ban lebih besar membuat roda berputar lebih lambat, sehingga kecepatan sebenarnya lebih tinggi dari jarum spidometer.</p>
+                </div>
+              </div>
+              <div class="d-flex align-items-start">
+                <div class="feature-icon-badge me-3">
+                  <i class="bi bi-person-check fs-5 text-info"></i>
+                </div>
+                <div>
+                  <h6 class="mb-1 text-white">Pengembang</h6>
+                  <p class="text-secondary small mb-0"><a href="https://widifirmaan.web.id" target="_blank" class="text-primary text-decoration-none">Widi Firmansyah</a></p>
                 </div>
               </div>
             </div>
+
+            <div class="tool-sidebar-card">
+              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                <i class="bi bi-grid-fill text-primary me-2"></i>Quick Tool Switcher
+              </h5>
+              <div class="list-group list-group-flush bg-transparent">
+                <a href="calculator.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-calculator text-primary me-2"></i>Scientific Calculator</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="dev-tools.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-code-slash text-danger me-2"></i>Developer Toolbox</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="pdf-word.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-file-earmark-word text-success me-2"></i>PDF to Word</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="qr-code.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-qr-code text-warning me-2"></i>QR Code Studio</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="image-compressor.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-0">
+                  <span><i class="bi bi-image text-info me-2"></i>Image Compressor</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+              </div>
+            </div>
           </div>
+        </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer id="footer" class="footer position-relative">
-
-    <div class="container">
-      <div class="copyright text-center ">
-        <a href="/">
-          <p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights Reserved</span></p>
-        </a>
+  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
+    <div class="container text-center">
+      <div class="copyright text-secondary">
+        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
       </div>
-      <div class="credits">
-        Designed by <a href="https://widifirmaan.web.id/">Widi Firmans</a>
+      <div class="credits text-secondary small">
+        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
       </div>
     </div>
-
   </footer>
 
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Preloader -->
   <div id="preloader"></div>
 
-  <!-- Vendor JS Files -->
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/vendor/aos/aos.js"></script>
-  <script src="../assets/vendor/typed.js/typed.umd.js"></script>
-  <script src="../assets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="../assets/vendor/waypoints/noframework.waypoints.js"></script>
-  <script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="../assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
-
-  <!-- Main JS File -->
   <script src="../assets/js/services.js"></script>
 
+  <script>
+    const width1Input = document.getElementById('width1');
+    const aspectRatio1Input = document.getElementById('aspectRatio1');
+    const diameter1Input = document.getElementById('diameter1');
+    const width2Input = document.getElementById('width2');
+    const aspectRatio2Input = document.getElementById('aspectRatio2');
+    const diameter2Input = document.getElementById('diameter2');
+    const calculateBtn = document.getElementById('calculateBtn');
+    const diameter1ResultSpan = document.getElementById('diameter1Result');
+    const circumferenceDiffResultSpan = document.getElementById('circumferenceDiffResult');
+    const diameter2ResultSpan = document.getElementById('diameter2Result');
+    const diameterDiffResultSpan = document.getElementById('diameterDiffResult');
+    const speedoResultSpan = document.getElementById('speedoResult');
+    const fitmentNotice = document.getElementById('fitmentNotice');
+    const messageBox = document.getElementById('messageBox');
+    const rimVisual1 = document.getElementById('rimVisual1');
+    const rimVisual2 = document.getElementById('rimVisual2');
+
+    function calculateTireMetrics(width, aspectRatio, diameter) {
+      if (isNaN(width) || isNaN(aspectRatio) || isNaN(diameter) || width <= 0 || aspectRatio <= 0 || diameter <= 0) {
+        return null;
+      }
+      const sidewallMM = width * (aspectRatio / 100);
+      const totalDiameterMM = (sidewallMM * 2) + (diameter * 25.4);
+      const totalDiameterInches = totalDiameterMM / 25.4;
+      const circumferenceInches = totalDiameterInches * Math.PI;
+      const circumferenceMM = totalDiameterMM * Math.PI;
+      return {
+        sidewallMM,
+        diameterInches: totalDiameterInches,
+        diameterMM: totalDiameterMM,
+        circumferenceInches,
+        circumferenceMM
+      };
+    }
+
+    function doCalculate() {
+      messageBox.classList.add('d-none');
+      messageBox.textContent = '';
+
+      const width1 = parseFloat(width1Input.value);
+      const aspectRatio1 = parseFloat(aspectRatio1Input.value);
+      const diameter1 = parseFloat(diameter1Input.value);
+      const width2 = parseFloat(width2Input.value);
+      const aspectRatio2 = parseFloat(aspectRatio2Input.value);
+      const diameter2 = parseFloat(diameter2Input.value);
+
+      const m1 = calculateTireMetrics(width1, aspectRatio1, diameter1);
+      const m2 = calculateTireMetrics(width2, aspectRatio2, diameter2);
+
+      if (!m1 || !m2) {
+        messageBox.textContent = 'Harap masukkan angka positif yang valid untuk semua kolom spesifikasi.';
+        messageBox.classList.remove('d-none');
+        return;
+      }
+
+      diameter1ResultSpan.textContent = `${m1.diameterInches.toFixed(2)}" (${m1.diameterMM.toFixed(1)} mm)`;
+      diameter2ResultSpan.textContent = `${m2.diameterInches.toFixed(2)}" (${m2.diameterMM.toFixed(1)} mm)`;
+
+      const diffInches = m2.diameterInches - m1.diameterInches;
+      const diffPercent = ((m2.diameterMM - m1.diameterMM) / m1.diameterMM) * 100;
+      const sign = diffPercent >= 0 ? '+' : '';
+
+      diameterDiffResultSpan.textContent = `${sign}${diffInches.toFixed(2)}" (${sign}${diffPercent.toFixed(2)}%)`;
+      diameterDiffResultSpan.className = Math.abs(diffPercent) <= 3 ? 'text-success fs-5 d-block' : 'text-danger fs-5 d-block';
+
+      if (Math.abs(diffPercent) <= 3) {
+        fitmentNotice.textContent = 'Aman (Di bawah batas ±3%)';
+        fitmentNotice.className = 'text-success small';
+      } else {
+        fitmentNotice.textContent = 'Peringatan: Selisih > 3%';
+        fitmentNotice.className = 'text-danger small fw-bold';
+      }
+
+      circumferenceDiffResultSpan.textContent = `Ban 1: ${m1.circumferenceMM.toFixed(0)} mm | Ban 2: ${m2.circumferenceMM.toFixed(0)} mm`;
+
+      const speedRatio = m2.diameterMM / m1.diameterMM;
+      const actualSpeedAt100 = 100 * speedRatio;
+      speedoResultSpan.textContent = `Kecepatan Sebenarnya: ~${actualSpeedAt100.toFixed(1)} km/jam`;
+
+      rimVisual1.textContent = `R${diameter1}`;
+      rimVisual2.textContent = `R${diameter2}`;
+    }
+
+    calculateBtn.addEventListener('click', doCalculate);
+    [width1Input, aspectRatio1Input, diameter1Input, width2Input, aspectRatio2Input, diameter2Input].forEach(inp => {
+      inp.addEventListener('input', doCalculate);
+    });
+
+    doCalculate();
+  </script>
 </body>
 
 </html>

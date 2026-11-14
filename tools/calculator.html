@@ -2,386 +2,214 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Scientific Calculator - DUFL</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <link href="../assets/img/favicon.png" rel="icon">
-    <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-    <link href="https://fonts.googleapis.com" rel="preconnect">
-    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
-    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-    <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-    <link href="../assets/css/main.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style>
-    </style>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Scientific Calculator - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="Online scientific calculator powered by client-side JavaScript. Trigonometry, logarithms, powers, and standard math.">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
 </head>
 
 <body class="service-details-page">
-    <main class="main">
-        <div class="page-title dark-background">
-            <div class="container d-lg-flex justify-content-between align-items-center">
-                <h1 class="mb-2 mb-lg-0"><a href="/"><i class="bi bi-arrow-left-short"></i> Free Stuff by DUFL</a></h1>
-                <nav class="breadcrumbs">
-                    <ol>
-                        <li><a href="https://www.dufl.web.id">Premium Stuff</a></li>
-                        <li><a href="/">Free Stuff</a></li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-        <section id="service-details" class="service-details section">
-            <div class="container" data-aos="fade-up" data-aos-delay="100">
-                <div class="row gy-4">
-                    <div class="col-lg-10">
-                        <div class="content">
-                            <h3>Scientific Calculator</h3>
-                            <p>
-                                A Simple, Fast online calculator powered by javascript.
-                            </p>
-                            <div class="container mx-auto">
-                                <div class="row pb-2">
-                                    <div class="col">
-                                        <textarea id="history" rows="4" style="text-align:right " readonly
-                                            class="form-control "></textarea>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="row pb-2">
-                                            <div class="col">
-                                                <input type="text" readonly class="form-control "
-                                                    style="text-align: right" id="expression1">
-                                            </div>
-                                        </div>
-                                        <div class="row pb-2">
-                                            <div class="col" id="content-desktop">
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="Ans" class="form-control"
-                                                            onclick="answer()" />
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="sin" class="form-control"
-                                                            onclick="sinfn()" />
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="cos" class="form-control"
-                                                            onclick="cosfn()" />
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="tan" class="form-control"
-                                                            onclick="tanfn()" />
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <input type="button" value="EXP" class="form-control"
-                                                            onclick="exp()" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col" id="content-desktop">
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="%" class="form-control"
-                                                            onclick="percentage()" />
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="π" class="form-control"
-                                                            onclick="pi()" />
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="e" class="form-control"
-                                                            onclick="e()" />
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="ln" class="form-control"
-                                                            onclick="lnfn()" />
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <input type="button" value="log" class="form-control"
-                                                            onclick="logfn()" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col" id="content-desktop">
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="!" class="form-control"
-                                                            onclick="factorial()" />
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="√" class="form-control"
-                                                            onclick="squareroot()" />
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="x&#8319" class="form-control"
-                                                            onclick="power()" />
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="x&#178" class="form-control"
-                                                            onclick="square()" />
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <input type="button" value="|x|" class="form-control"
-                                                            onclick="abs()" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div id="content-desktop">
-                                                    <div class="row pb-2">
-                                                        <div class="col">
-                                                            <input type="button" value="(" class="form-control"
-                                                                onclick="display1('(')" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="7" class="form-control"
-                                                            onclick="display1('7')" />
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="4" class="form-control"
-                                                            onclick="display1('4')" />
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="1" class="form-control"
-                                                            onclick="display1('1')" />
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <input type="button" value="0" class="form-control"
-                                                            onclick="display1('0')" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div id="content-desktop">
-                                                    <div class="row pb-2">
-                                                        <div class="col">
-                                                            <input type="button" value=")" class="form-control"
-                                                                onclick="display1(')')" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="8" class="form-control"
-                                                            onclick="display1('8')" />
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="5" class="form-control"
-                                                            onclick="display1('5')" />
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="2" class="form-control"
-                                                            onclick="display1('2')" />
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <input type="button" value="." class="form-control"
-                                                            onclick="display1('.')" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="C" class="form-control"
-                                                            onclick="allclr()" />
-                                                    </div>
-                                                </div>
+  <header class="app-header py-3">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a href="../index.html" class="logo d-flex align-items-center text-decoration-none">
+        <span class="sitename text-white mb-0 fs-4 fw-bold">WIDIFIRMAAN <span class="text-primary">Tools</span></span>
+      </a>
+      <a href="../index.html" class="btn btn-sm btn-outline-light rounded-pill px-3"><i class="bi bi-grid-fill me-1"></i> Semua Tools</a>
+    </div>
+  </header>
 
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="9" class="form-control"
-                                                            onclick="display1('9')" />
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="6" class="form-control"
-                                                            onclick="display1('6')" />
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="3" class="form-control"
-                                                            onclick="display1('3')" />
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <input type="button" value="=" class="form-control"
-                                                            onclick="runtwofunction()" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="⌫" class="form-control UpZIS"
-                                                            onclick="back()" />
-                                                    </div>
-                                                </div>
+  <main class="main">
+    <div class="page-title dark-background py-3 py-md-4 border-bottom border-secondary border-opacity-25">
+      <div class="container d-md-flex justify-content-between align-items-center">
+        <h2 class="mb-2 mb-md-0 fw-bold fs-4 text-white d-flex align-items-center">
+          <a href="../index.html" class="text-secondary text-decoration-none me-2" title="Kembali ke Dashboard"><i class="bi bi-arrow-left"></i></a>
+          <span>Scientific Calculator</span>
+        </h2>
+        <nav class="breadcrumbs">
+          <ol class="breadcrumb mb-0 small">
+            <li class="breadcrumb-item"><a href="../index.html" class="text-secondary text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item"><a href="../index.html#tool-grid" class="text-secondary text-decoration-none">Tools</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Calculator</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
 
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="÷" class="form-control mF5fo"
-                                                            onclick="display1('/')" />
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="×" class="form-control mF5fo"
-                                                            onclick="multiply()" />
-                                                    </div>
-                                                </div>
-                                                <div class="row pb-2">
-                                                    <div class="col">
-                                                        <input type="button" value="-" class="form-control mF5fo"
-                                                            onclick="display1('-')" />
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <input type="button" value="+" class="form-control mF5fo"
-                                                            onclick="display1('+')" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+    <section id="service-details" class="service-details section py-4 py-lg-5">
+      <div class="container">
+        <div class="row g-4">
+          <!-- Main Calculator Column (Col 8) -->
+          <div class="col-lg-8">
+            <div class="tool-card mb-0">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                <h3 class="mb-0 text-white fw-bold">Kalkulator Saintifik</h3>
+                <span class="feature-badge">
+                  <i class="bi bi-lightning-charge-fill"></i> Instant Math Engine
+                </span>
+              </div>
+              <p class="text-secondary mb-4">
+                Kalkulator saintifik presisi tinggi dengan dukungan fungsi trigonometri (sin, cos, tan), logaritma, faktorial, eksponen, akar, dan riwayat perhitungan otomatis.
+              </p>
 
-                        </div>
-
-                    </div>
-
-                    <div class="col-lg-2">
-                        <div class="service-info">
-                            <h4>Service Information</h4>
-                            <div class="info-item">
-                                <i class="bi bi-person-check"></i>
-                                <h5>Project By</h5>
-                                <p>Widi Firmansyah</p>
-                            </div>
-                            <div class="info-item">
-                                <div class="service-details-slider swiper init-swiper">
-                                    <script type="application/json" class="swiper-config">
-                    {
-                      "loop": true,
-                      "speed": 600,
-                      "autoplay": {
-                        "delay": 5000
-                      },
-                      "slidesPerView": 1,
-                      "pagination": {
-                        "el": ".swiper-pagination",
-                        "type": "bullets",
-                        "clickable": true
-                      }
-                    }
-                  </script>
-                                    <div class="swiper-wrapper align-items-center">
-                                        <div class="swiper-slide">
-                                            <!-- <img src="../assets/img/services/img-comp.png" alt="" class="img-fluid" loading="lazy"> -->
-                                        </div>
-                                    </div>
-                                    <div class="swiper-pagination"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+              <!-- Calculator Device Widget -->
+              <div class="calc-container">
+                <!-- Display Screen -->
+                <div class="calc-screen">
+                  <textarea id="history" rows="2" readonly class="form-control calc-history border-0 bg-transparent p-0 shadow-none text-muted" placeholder="Riwayat perhitungan..."></textarea>
+                  <input type="text" id="expression1" readonly class="form-control calc-expression border-0 bg-transparent p-0 shadow-none text-white text-end" value="0">
                 </div>
 
+                <!-- Calculator Button Grid -->
+                <div class="calc-grid">
+                  <!-- Row 1: Sci Functions -->
+                  <button type="button" class="calc-btn calc-btn-sci" onclick="sinfn()">sin</button>
+                  <button type="button" class="calc-btn calc-btn-sci" onclick="cosfn()">cos</button>
+                  <button type="button" class="calc-btn calc-btn-sci" onclick="tanfn()">tan</button>
+                  <button type="button" class="calc-btn calc-btn-clear" onclick="clr()">C</button>
+                  <button type="button" class="calc-btn calc-btn-clear" onclick="back()"><i class="bi bi-backspace"></i></button>
+
+                  <!-- Row 2: Sci Functions & Ops -->
+                  <button type="button" class="calc-btn calc-btn-sci" onclick="lnfn()">ln</button>
+                  <button type="button" class="calc-btn calc-btn-sci" onclick="logfn()">log</button>
+                  <button type="button" class="calc-btn calc-btn-sci" onclick="squareroot()">√</button>
+                  <button type="button" class="calc-btn calc-btn-op" onclick="display1('(')">(</button>
+                  <button type="button" class="calc-btn calc-btn-op" onclick="display1(')')">)</button>
+
+                  <!-- Row 3: Sci & Keypad 7, 8, 9, / -->
+                  <button type="button" class="calc-btn calc-btn-sci" onclick="power()">xʸ</button>
+                  <button type="button" class="calc-btn calc-btn-num" onclick="display1('7')">7</button>
+                  <button type="button" class="calc-btn calc-btn-num" onclick="display1('8')">8</button>
+                  <button type="button" class="calc-btn calc-btn-num" onclick="display1('9')">9</button>
+                  <button type="button" class="calc-btn calc-btn-op" onclick="display1('/')">÷</button>
+
+                  <!-- Row 4: Sci & Keypad 4, 5, 6, * -->
+                  <button type="button" class="calc-btn calc-btn-sci" onclick="square()">x²</button>
+                  <button type="button" class="calc-btn calc-btn-num" onclick="display1('4')">4</button>
+                  <button type="button" class="calc-btn calc-btn-num" onclick="display1('5')">5</button>
+                  <button type="button" class="calc-btn calc-btn-num" onclick="display1('6')">6</button>
+                  <button type="button" class="calc-btn calc-btn-op" onclick="multiply()">×</button>
+
+                  <!-- Row 5: Sci & Keypad 1, 2, 3, - -->
+                  <button type="button" class="calc-btn calc-btn-sci" onclick="pi()">π</button>
+                  <button type="button" class="calc-btn calc-btn-num" onclick="display1('1')">1</button>
+                  <button type="button" class="calc-btn calc-btn-num" onclick="display1('2')">2</button>
+                  <button type="button" class="calc-btn calc-btn-num" onclick="display1('3')">3</button>
+                  <button type="button" class="calc-btn calc-btn-op" onclick="display1('-')">−</button>
+
+                  <!-- Row 6: Sci & Keypad 0, ., +, = -->
+                  <button type="button" class="calc-btn calc-btn-sci" onclick="e()">e</button>
+                  <button type="button" class="calc-btn calc-btn-num" onclick="display1('0')">0</button>
+                  <button type="button" class="calc-btn calc-btn-num" onclick="display1('.')">.</button>
+                  <button type="button" class="calc-btn calc-btn-op" onclick="display1('+')">+</button>
+                  <button type="button" class="calc-btn calc-btn-sci" onclick="percentage()">%</button>
+
+                  <!-- Row 7: Ans, Exp, Abs, Factorial & Solve -->
+                  <button type="button" class="calc-btn calc-btn-sci" onclick="answer()">Ans</button>
+                  <button type="button" class="calc-btn calc-btn-sci" onclick="exp()">EXP</button>
+                  <button type="button" class="calc-btn calc-btn-sci" onclick="abs()">|x|</button>
+                  <button type="button" class="calc-btn calc-btn-sci" onclick="factorial()">!</button>
+                  <button type="button" class="calc-btn calc-btn-equal" onclick="runtwofunction()">=</button>
+                </div>
+              </div>
             </div>
-        </section>
-    </main>
+          </div>
 
-    <footer id="footer" class="footer position-relative">
+          <!-- Sidebar Column (Col 4) -->
+          <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4">
+              <div class="tool-sidebar-card mb-0">
+              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                <i class="bi bi-shield-check text-success me-2"></i>Privacy & Execution
+              </h5>
+              <div class="d-flex align-items-start mb-3">
+                <div class="feature-icon-badge me-3">
+                  <i class="bi bi-cpu fs-5 text-primary"></i>
+                </div>
+                <div>
+                  <h6 class="mb-1 text-white">100% Client-Side</h6>
+                  <p class="text-secondary small mb-0">Semua ekspresi matematika dieksekusi secara instan di CPU browser Anda.</p>
+                </div>
+              </div>
+              <div class="d-flex align-items-start mb-3">
+                <div class="feature-icon-badge me-3">
+                  <i class="bi bi-keyboard fs-5 text-warning"></i>
+                </div>
+                <div>
+                  <h6 class="mb-1 text-white">Keyboard Friendly</h6>
+                  <p class="text-secondary small mb-0">Mendukung input keyboard angka, operator (+, -, *, /), Enter (=), Backspace, dan tombol trigonometri (s, c, t).</p>
+                </div>
+              </div>
+              <div class="d-flex align-items-start">
+                <div class="feature-icon-badge me-3">
+                  <i class="bi bi-person-check fs-5 text-info"></i>
+                </div>
+                <div>
+                  <h6 class="mb-1 text-white">Pengembang</h6>
+                  <p class="text-secondary small mb-0"><a href="https://widifirmaan.web.id" target="_blank" class="text-primary text-decoration-none">Widi Firmansyah</a></p>
+                </div>
+              </div>
+            </div>
 
-        <div class="container">
-            <div class="copyright text-center ">
-                <a href="/">
-                    <p>© <span>Copyright</span><strong class="px-1 sitename">DUFL</strong><span>All Rights
-                            Reserved</span></p>
+            <div class="tool-sidebar-card">
+              <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                <i class="bi bi-grid-fill text-primary me-2"></i>Quick Tool Switcher
+              </h5>
+              <div class="list-group list-group-flush bg-transparent">
+                <a href="pdf-word.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-file-earmark-word text-primary me-2"></i>PDF to Word</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
                 </a>
+                <a href="remove-bg.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-magic text-info me-2"></i>Background Remover</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="image-compressor.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-image text-success me-2"></i>Image Compressor</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="qr-code.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-secondary border-opacity-25">
+                  <span><i class="bi bi-qr-code text-warning me-2"></i>QR Code Studio</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="dev-tools.html" class="list-group-item list-group-item-action bg-transparent text-secondary d-flex align-items-center justify-content-between px-0 py-2 border-0">
+                  <span><i class="bi bi-code-slash text-danger me-2"></i>Developer Toolbox</span>
+                  <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+              </div>
             </div>
-            <div class="credits">
-                Designed by <a href="https://widifirmaan.web.id/">Widi Firmans</a>
-            </div>
+          </div>
         </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-    </footer>
+  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
+    <div class="container text-center">
+      <div class="copyright text-secondary">
+        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+      </div>
+      <div class="credits text-secondary small">
+        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      </div>
+    </div>
+  </footer>
 
-    <!-- Scroll Top -->
-    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-            class="bi bi-arrow-up-short"></i></a>
+  <div id="preloader"></div>
 
-    <!-- Preloader -->
-    <div id="preloader"></div>
-
-    <!-- Vendor JS Files -->
-    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/vendor/aos/aos.js"></script>
-    <script src="../assets/vendor/typed.js/typed.umd.js"></script>
-    <script src="../assets/vendor/purecounter/purecounter_vanilla.js"></script>
-    <script src="../assets/vendor/waypoints/noframework.waypoints.js"></script>
-    <script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-    <script src="../assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-    <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
-    <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
-
-    <!-- Main JS File -->
-    <script src="../assets/js/services.js"></script>
-    <script src="../assets/js/calculator.js"></script>
-
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/js/services.js"></script>
+  <script src="../assets/js/calculator.js"></script>
 </body>
 
 </html>
