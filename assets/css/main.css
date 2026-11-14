@@ -2599,6 +2599,51 @@ section,
   color: #ffffff !important;
 }
 
+/* Form Placeholders - Highly legible contrast on dark background */
+::placeholder,
+input::placeholder,
+textarea::placeholder,
+.form-control::placeholder,
+.form-select::placeholder,
+.code-editor::placeholder,
+.calc-history::placeholder {
+  color: rgba(255, 255, 255, 0.55) !important;
+  opacity: 1 !important;
+}
+
+::-webkit-input-placeholder,
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder,
+.form-control::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.55) !important;
+  opacity: 1 !important;
+}
+
+::-moz-placeholder,
+input::-moz-placeholder,
+textarea::-moz-placeholder,
+.form-control::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.55) !important;
+  opacity: 1 !important;
+}
+
+:-ms-input-placeholder,
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder,
+.form-control:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.55) !important;
+  opacity: 1 !important;
+}
+
+/* Secondary & Muted Text Contrast */
+.text-secondary {
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.text-muted {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
 .service-details .nav-pills .nav-link {
   color: rgba(255, 255, 255, 0.7);
   border-radius: 8px;

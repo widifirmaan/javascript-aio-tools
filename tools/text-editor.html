@@ -50,6 +50,11 @@
       max-height: 520px;
       min-height: 380px;
     }
+    #editor-area:empty::before {
+      content: attr(placeholder);
+      color: rgba(255, 255, 255, 0.55);
+      pointer-events: none;
+    }
     .editor-toolbar {
       background: #1c1c20;
       border: 1px solid rgba(255, 255, 255, 0.08);
