@@ -483,17 +483,22 @@ async function runTestSuite() {
     const preview = document.getElementById('origImagePreview');
     const info = document.getElementById('origInfo');
     const status = document.getElementById('resultStatus');
+    const downloadBtn = document.getElementById('downloadLink');
+    const loading = document.getElementById('resultLoading');
     return {
       hasPreview: preview && preview.src.startsWith('blob:'),
       infoText: info ? info.textContent : '',
-      statusText: status ? status.textContent : ''
+      statusText: status ? status.textContent : '',
+      downloadVisible: downloadBtn && !downloadBtn.classList.contains('d-none'),
+      downloadDisabled: downloadBtn && downloadBtn.classList.contains('disabled'),
+      loadingActive: loading && !loading.classList.contains('d-none')
     };
   });
 
-  if (bgResult.hasPreview && bgResult.infoText.includes('KB')) {
-    console.log(`  ✓ Background Remover loaded real photo: ${bgResult.infoText} (Status: ${bgResult.statusText})`);
+  if (bgResult.hasPreview && bgResult.downloadVisible && bgResult.downloadDisabled) {
+    console.log(`  ✓ Background Remover auto-triggered: photo loaded (${bgResult.infoText}), download button ready & disabled while AI processes`);
   } else {
-    console.error('  ❌ Background remover failed to mount preview:', bgResult);
+    console.error('  ❌ Background remover failed auto-trigger state:', bgResult);
     totalErrors++;
   }
   await bgPage.close();

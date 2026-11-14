@@ -88,10 +88,16 @@
                     <div class="p-3 rounded border border-secondary border-opacity-25 h-100 d-flex flex-column" style="background: rgba(255, 255, 255, 0.02);">
                       <div class="d-flex justify-content-between align-items-center mb-2">
                         <span class="small fw-semibold text-white"><i class="bi bi-check2 me-1 text-success"></i>Transparent Output</span>
-                        <span class="text-secondary small fw-semibold" id="resultStatus">Ready</span>
+                        <span class="text-secondary small fw-semibold" id="resultStatus">Processing...</span>
                       </div>
-                      <div class="text-center rounded overflow-hidden flex-grow-1 d-flex align-items-center justify-content-center checkerboard-bg" style="max-height: 320px; min-height: 200px;">
-                        <img id="resultImage" src="" alt="Result" class="img-fluid" style="max-height: 320px; object-fit: contain;">
+                      <div class="text-center rounded overflow-hidden flex-grow-1 d-flex align-items-center justify-content-center checkerboard-bg" style="max-height: 320px; min-height: 200px; position: relative;">
+                        <!-- Loading State while Processing -->
+                        <div id="resultLoading" class="d-flex flex-column align-items-center justify-content-center p-4">
+                          <div class="spinner-border text-primary mb-2" role="status" style="width: 2rem; height: 2rem;"></div>
+                          <span class="text-secondary small" id="resultLoadingText">Extracting subject...</span>
+                        </div>
+                        <!-- Cutout Image (hidden while processing) -->
+                        <img id="resultImage" src="" alt="Result" class="img-fluid d-none" style="max-height: 320px; object-fit: contain;">
                       </div>
                     </div>
                   </div>
@@ -102,11 +108,9 @@
                     <i class="bi bi-arrow-counterclockwise me-1"></i> Change Photo
                   </button>
                   <div class="d-flex justify-content-center gap-2">
-                    <button id="processBtn" class="btn btn-primary px-4">
-                      <i class="bi bi-magic me-1"></i> Remove Background
-                    </button>
-                    <a id="downloadLink" href="#" class="btn btn-primary px-4 d-none" download="removed_bg.png">
-                      <i class="bi bi-download me-1"></i> Download PNG
+                    <a id="downloadLink" href="#" class="btn btn-primary px-4 disabled" download="removed_bg.png" aria-disabled="true">
+                      <span id="downloadSpinner" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                      <span id="downloadBtnText">Processing...</span>
                     </a>
                   </div>
                 </div>
@@ -189,40 +193,47 @@
     import { removeBackground } from '../assets/vendor/imgly/bundle.js';
 
     const fileInput = document.getElementById('imageInput');
-    const processBtn = document.getElementById('processBtn');
     const statusDiv = document.getElementById('status');
+    const statusTitle = document.getElementById('statusTitle');
+    const statusDesc = document.getElementById('statusDesc');
     const previewSection = document.getElementById('previewSection');
     const dropzone = document.getElementById('dropzone');
     const origImagePreview = document.getElementById('origImagePreview');
-    const resultImage = document.getElementById('resultImage');
-    const downloadLink = document.getElementById('downloadLink');
     const origInfo = document.getElementById('origInfo');
+    const resultImage = document.getElementById('resultImage');
+    const resultLoading = document.getElementById('resultLoading');
+    const resultLoadingText = document.getElementById('resultLoadingText');
     const resultStatus = document.getElementById('resultStatus');
+    const downloadLink = document.getElementById('downloadLink');
+    const downloadSpinner = document.getElementById('downloadSpinner');
+    const downloadBtnText = document.getElementById('downloadBtnText');
+
+    let currentResultBlobUrl = null;
+    let currentOrigBlobUrl = null;
+    let isProcessing = false;
 
     window.resetTool = function() {
+      if (currentResultBlobUrl) URL.revokeObjectURL(currentResultBlobUrl);
+      if (currentOrigBlobUrl) URL.revokeObjectURL(currentOrigBlobUrl);
+      currentResultBlobUrl = null;
+      currentOrigBlobUrl = null;
+      isProcessing = false;
+
       fileInput.value = '';
       previewSection.classList.add('d-none');
       dropzone.classList.remove('d-none');
-      downloadLink.classList.add('d-none');
-      processBtn.classList.remove('d-none');
+      statusDiv.classList.add('d-none');
+
       resultImage.src = '';
+      resultImage.classList.add('d-none');
+      resultLoading.classList.remove('d-none');
       origImagePreview.src = '';
     };
 
     fileInput.addEventListener('change', () => {
       const file = fileInput.files[0];
       if (!file) return;
-
-      const url = URL.createObjectURL(file);
-      origImagePreview.src = url;
-      origInfo.textContent = (file.size / 1024).toFixed(1) + ' KB';
-
-      dropzone.classList.add('d-none');
-      previewSection.classList.remove('d-none');
-      resultImage.src = url;
-      resultStatus.textContent = 'Ready';
-      downloadLink.classList.add('d-none');
-      processBtn.classList.remove('d-none');
+      processImage(file);
     });
 
     ['dragenter', 'dragover'].forEach(name => {
@@ -238,24 +249,54 @@
       });
     });
     dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
       const files = e.dataTransfer.files;
       if (files.length > 0 && files[0].type.startsWith('image/')) {
         fileInput.files = files;
-        fileInput.dispatchEvent(new Event('change'));
+        processImage(files[0]);
       }
     });
 
-    processBtn.addEventListener('click', async () => {
-      const file = fileInput.files[0];
-      if (!file) {
-        alert('Please choose an image first.');
-        return;
-      }
+    async function processImage(file) {
+      if (isProcessing) return;
+      isProcessing = true;
 
-      processBtn.disabled = true;
+      // Clean up previous URLs
+      if (currentResultBlobUrl) URL.revokeObjectURL(currentResultBlobUrl);
+      if (currentOrigBlobUrl) URL.revokeObjectURL(currentOrigBlobUrl);
+      currentResultBlobUrl = null;
+      currentOrigBlobUrl = null;
+
+      // Mount original preview immediately
+      currentOrigBlobUrl = URL.createObjectURL(file);
+      origImagePreview.src = currentOrigBlobUrl;
+      origInfo.textContent = (file.size / 1024).toFixed(1) + ' KB';
+
+      // Switch to preview view immediately
+      dropzone.classList.add('d-none');
+      previewSection.classList.remove('d-none');
+
+      // Right preview in loading state
+      resultImage.classList.add('d-none');
+      resultImage.src = '';
+      resultLoading.classList.remove('d-none');
+      resultLoadingText.textContent = 'Removing background...';
+      resultStatus.innerHTML = '<span class="spinner-border spinner-border-sm me-1 text-primary" role="status"></span>Processing...';
+      resultStatus.className = 'text-primary small fw-semibold';
+
+      // Download button in disabled state
+      downloadLink.classList.remove('d-none');
+      downloadLink.classList.add('disabled');
+      downloadLink.setAttribute('aria-disabled', 'true');
+      downloadLink.removeAttribute('href');
+      downloadSpinner.classList.remove('d-none');
+      downloadBtnText.textContent = 'Processing...';
+
+      // Status banner
       statusDiv.classList.remove('d-none');
-      const statusTitle = document.getElementById('statusTitle');
-      const statusDesc = document.getElementById('statusDesc');
+      statusTitle.textContent = 'Initializing AI engine...';
+      statusDesc.textContent = 'Setting up WebAssembly runtime.';
 
       let maxDownloadPct = 0;
       let isComputing = false;
@@ -268,13 +309,17 @@
           progress: (key, current, total) => {
             if (typeof key === 'string' && key.startsWith('compute')) {
               isComputing = true;
-              if (statusTitle) statusTitle.textContent = 'Removing background...';
               if (key.includes('inference')) {
-                if (statusDesc) statusDesc.textContent = 'Running AI subject segmentation...';
+                statusTitle.textContent = 'Removing background...';
+                statusDesc.textContent = 'Running AI subject segmentation...';
+                resultLoadingText.textContent = 'Analyzing subject edges...';
               } else if (key.includes('mask') || key.includes('encode')) {
-                if (statusDesc) statusDesc.textContent = 'Refining transparent edges and saving...';
+                statusTitle.textContent = 'Refining transparent edges...';
+                statusDesc.textContent = 'Encoding transparent PNG output.';
+                resultLoadingText.textContent = 'Generating transparent output...';
               } else {
-                if (statusDesc) statusDesc.textContent = 'Processing image in browser memory...';
+                statusTitle.textContent = 'Processing in memory...';
+                statusDesc.textContent = 'Transforming image buffer.';
               }
               return;
             }
@@ -282,30 +327,46 @@
             if (!isComputing && typeof key === 'string' && key.includes('models') && total > 0) {
               const pct = Math.min(100, Math.round((current / total) * 100));
               if (pct > maxDownloadPct) maxDownloadPct = pct;
-              if (statusTitle) statusTitle.textContent = `Loading AI Model (${maxDownloadPct}%)...`;
-              if (statusDesc) statusDesc.textContent = `${(current / (1024 * 1024)).toFixed(1)} MB of ${(total / (1024 * 1024)).toFixed(1)} MB downloaded`;
+              statusTitle.textContent = `Loading AI Model (${maxDownloadPct}%)...`;
+              statusDesc.textContent = `${(current / (1024 * 1024)).toFixed(1)} MB of ${(total / (1024 * 1024)).toFixed(1)} MB loaded`;
+              resultLoadingText.textContent = `Loading model (${maxDownloadPct}%)...`;
             } else if (!isComputing) {
-              if (statusTitle) statusTitle.textContent = 'Initializing AI engine...';
-              if (statusDesc) statusDesc.textContent = 'Setting up WebAssembly runtime.';
+              statusTitle.textContent = 'Initializing AI engine...';
+              statusDesc.textContent = 'Setting up WebAssembly runtime.';
             }
           }
         });
-        const url = URL.createObjectURL(blob);
 
-        resultImage.src = url;
-        downloadLink.href = url;
-        downloadLink.classList.remove('d-none');
-        processBtn.classList.add('d-none');
-        resultStatus.textContent = 'Completed';
+        currentResultBlobUrl = URL.createObjectURL(blob);
+        resultImage.src = currentResultBlobUrl;
+        resultImage.classList.remove('d-none');
+        resultLoading.classList.add('d-none');
+
+        resultStatus.innerHTML = '<i class="bi bi-check-circle me-1"></i>Completed';
         resultStatus.className = 'text-success small fw-bold';
+
+        const downloadName = (file.name.replace(/\.[^/.]+$/, '') || 'cutout') + '_transparent.png';
+        downloadLink.href = currentResultBlobUrl;
+        downloadLink.download = downloadName;
+        downloadLink.classList.remove('disabled');
+        downloadLink.removeAttribute('aria-disabled');
+        downloadSpinner.classList.add('d-none');
+        downloadBtnText.innerHTML = '<i class="bi bi-download me-1"></i> Download PNG';
+
+        statusDiv.classList.add('d-none');
       } catch (error) {
         console.error(error);
+        resultLoadingText.textContent = 'Failed to remove background';
+        resultStatus.textContent = 'Error';
+        resultStatus.className = 'text-danger small fw-bold';
+        downloadBtnText.textContent = 'Failed';
+        downloadSpinner.classList.add('d-none');
         alert('Error processing image: ' + error.message);
       } finally {
+        isProcessing = false;
         statusDiv.classList.add('d-none');
-        processBtn.disabled = false;
       }
-    });
+    }
   </script>
 </body>
 
