@@ -1,0 +1,25 @@
+{
+  "name": "javascript-aio-tools",
+  "version": "1.0.0",
+  "description": "100% client-side web utility suite powered by JavaScript, WebAssembly, and modern browser APIs.",
+  "type": "module",
+  "scripts": {
+    "dev": "npx wrangler pages dev . --port=3000",
+    "deploy": "wrangler pages deploy . --project-name javascript-aio-tools --commit-dirty=true",
+    "screenshots:capture": "node scripts/capture.mjs",
+    "screenshots:mockup": "node /home/widifirmaan/readme-project/scripts/generate-mockups.mjs --input raw_screenshots --output screenshots",
+    "screenshots:all": "npm run screenshots:capture && npm run screenshots:mockup"
+  },
+  "keywords": [
+    "javascript-tools",
+    "webassembly",
+    "client-side",
+    "pdf-to-word",
+    "image-compressor",
+    "background-remover",
+    "qr-code-studio",
+    "cloudflare-pages"
+  ],
+  "author": "Widi Firmansyah",
+  "license": "MIT"
+}
