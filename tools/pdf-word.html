@@ -292,64 +292,89 @@
     }
 
     function resolveFontInfo(rawFontName, fallback) {
-      let name = (rawFontName || '').replace(/^[A-Za-z0-9]{6}\+/, '').trim();
-      const lower = name.toLowerCase();
-
-      const isBold = lower.includes('bold') || lower.includes('-bd') || lower.includes('_bd') ||
-                     lower.includes('blk') || lower.includes('black') || lower.includes('heavy') ||
-                     lower.includes('demi') || lower.includes('semibold') || lower.includes('700') ||
-                     lower.includes('800') || lower.includes('900');
-
-      const isItalic = lower.includes('italic') || lower.includes('-it') || lower.includes('_it') ||
-                       lower.includes('oblique') || lower.includes('obl') || lower.includes('slanted');
-
-      let cleanFont = 'Calibri';
-      if (lower.includes('times')) {
-        cleanFont = 'Times New Roman';
-      } else if (lower.includes('georgia')) {
-        cleanFont = 'Georgia';
-      } else if (lower.includes('garamond')) {
-        cleanFont = 'Garamond';
-      } else if (lower.includes('cambria')) {
-        cleanFont = 'Cambria';
-      } else if (lower.includes('courier') || lower.includes('mono') || lower.includes('consolas')) {
-        cleanFont = 'Courier New';
-      } else if (lower.includes('segoe')) {
-        cleanFont = 'Segoe UI';
-      } else if (lower.includes('poppins')) {
-        cleanFont = 'Poppins';
-      } else if (lower.includes('roboto')) {
-        cleanFont = 'Roboto';
-      } else if (lower.includes('montserrat')) {
-        cleanFont = 'Montserrat';
-      } else if (lower.includes('open') && lower.includes('sans')) {
-        cleanFont = 'Open Sans';
-      } else if (lower.includes('lato')) {
-        cleanFont = 'Lato';
-      } else if (lower.includes('verdana')) {
-        cleanFont = 'Verdana';
-      } else if (lower.includes('tahoma')) {
-        cleanFont = 'Tahoma';
-      } else if (lower.includes('trebuchet')) {
-        cleanFont = 'Trebuchet MS';
-      } else if (lower.includes('franklin')) {
-        cleanFont = 'Franklin Gothic Medium';
-      } else if (lower.includes('arial') || lower.includes('helvetica') || lower.includes('avenir')) {
-        cleanFont = 'Arial';
-      } else if (lower.includes('calibri')) {
-        cleanFont = 'Calibri';
-      } else if (fallback === 'monospace') {
-        cleanFont = 'Courier New';
-      } else if (fallback === 'serif' && !lower.includes('sans')) {
-        cleanFont = 'Times New Roman';
-      } else if (lower.includes('sans')) {
-        cleanFont = 'Arial';
-      } else if (name && !name.toLowerCase().startsWith('type3') && !name.toLowerCase().startsWith('font')) {
-        const baseName = name.split('-')[0].replace(/(PSMT|MT|Std|LT|Pro|Regular|Roman)$/i, '').replace(/([a-z])([A-Z])/g, '$1 $2').trim();
-        cleanFont = baseName || 'Calibri';
+      let raw = (rawFontName || '').replace(/^[A-Za-z0-9]{6}\+/, '').trim();
+      if (!raw) {
+        return {
+          cleanFont: fallback === 'serif' ? 'Times New Roman' : (fallback === 'monospace' ? 'Courier New' : 'Arial'),
+          isBold: false,
+          isItalic: false
+        };
       }
 
-      return { cleanFont, isBold, isItalic };
+      const isBold = /(bold|black|heavy|demi|semibold|[\-_]bd\b|[\-_]b\b|700|800|900)/i.test(raw);
+      const isItalic = /(italic|oblique|slanted|[\-_]it\b|[\-_]obl\b)/i.test(raw);
+
+      // Clean compound style tokens and standard PostScript markers
+      let family = raw
+        .replace(/[\-_]?(bold|italic|oblique|regular|roman|light|medium|semibold|demi|black|heavy|thin|ultralight|extrabold|condensed|cn|bd|it|blk|ou|mt|psmt|std|lt|pro)\b/gi, '')
+        .replace(/[\-_]?(bold|italic|oblique|regular|roman|light|medium|semibold|demi|black|heavy|thin|ultralight|extrabold|condensed|cn|bd|it|blk|ou|mt|psmt|std|lt|pro)\b/gi, '')
+        .trim();
+
+      // Expand CamelCase into space-separated words (e.g. "PlayfairDisplay" -> "Playfair Display")
+      if (!/^[A-Z0-9]+$/.test(family) && !family.includes(' ')) {
+        family = family.replace(/([a-z])([A-Z])/g, '$1 $2');
+      }
+      family = family.replace(/[\-_+]+/g, ' ').replace(/\s+/g, ' ').trim();
+
+      // Resolve generic or undefined fonts from PDF fallback
+      if (!family || /^(type3|font|custom|g_d\d+)/i.test(family)) {
+        if (fallback === 'serif') family = 'Times New Roman';
+        else if (fallback === 'monospace') family = 'Courier New';
+        else family = 'Arial';
+      }
+
+      // Standard PostScript font family aliases
+      if (/^times/i.test(family)) family = 'Times New Roman';
+      else if (/^courier/i.test(family)) family = 'Courier New';
+      else if (/^helvetica/i.test(family)) family = 'Arial';
+
+      return { cleanFont: family, isBold, isItalic };
+    }
+
+    function extractItemColors(rawItems, opList) {
+      if (!opList || !opList.fnArray || !rawItems || rawItems.length === 0) return;
+
+      function toHex(n) {
+        const h = Math.round(Math.max(0, Math.min(255, n))).toString(16);
+        return h.length === 1 ? '0' + h : h;
+      }
+
+      let curColor = '000000';
+      const colorQueue = [];
+
+      for (let i = 0; i < opList.fnArray.length; i++) {
+        const fn = opList.fnArray[i];
+        const args = opList.argsArray[i];
+
+        if (fn === pdfjsLib.OPS.setFillRGBColor) {
+          curColor = toHex(args[0]) + toHex(args[1]) + toHex(args[2]);
+        } else if (fn === pdfjsLib.OPS.setFillGray) {
+          const v = toHex(args[0] * 255);
+          curColor = v + v + v;
+        } else if (fn === pdfjsLib.OPS.setFillCMYKColor) {
+          const c = args[0], m = args[1], y = args[2], k = args[3];
+          const r = 255 * (1 - c) * (1 - k);
+          const g = 255 * (1 - m) * (1 - k);
+          const b = 255 * (1 - y) * (1 - k);
+          curColor = toHex(r) + toHex(g) + toHex(b);
+        } else if (fn === pdfjsLib.OPS.showText || fn === pdfjsLib.OPS.showSpacedText) {
+          const glyphs = args[0];
+          let str = '';
+          if (Array.isArray(glyphs)) {
+            for (const g of glyphs) {
+              if (typeof g === 'string') str += g;
+              else if (g && typeof g.unicode === 'string') str += g.unicode;
+            }
+          }
+          if (str.trim().length > 0) {
+            colorQueue.push(curColor);
+          }
+        }
+      }
+
+      for (let i = 0; i < rawItems.length; i++) {
+        rawItems[i].color = i < colorQueue.length ? colorQueue[i] : '000000';
+      }
     }
 
     function getFontDetails(it, styles, fontMap) {
@@ -362,8 +387,9 @@
 
       const fontSize = it.fontSize || (it.transform ? Math.hypot(it.transform[0], it.transform[1]) : 11);
       const halfPoints = Math.round(fontSize * 2);
+      const color = it.color || '000000';
 
-      return { isBold, isItalic, cleanFont, fontSize, halfPoints };
+      return { isBold, isItalic, cleanFont, fontSize, halfPoints, color };
     }
 
     function buildRunsFromItems(items, styles, fontMap) {
@@ -375,32 +401,29 @@
         if (idx > 0) {
           const prev = items[idx - 1];
           const gap = it.x - (prev.x + prev.width);
-          if (gap > 2) {
+          const spaceGap = Math.max(1.0, it.fontSize * 0.18);
+          if (gap >= spaceGap) {
             runs.push(new docx.TextRun({ text: ' ' }));
           }
         }
 
-        runs.push(new docx.TextRun({
+        const runOptions = {
           text: it.str,
           font: fd.cleanFont,
           size: fd.halfPoints,
           bold: fd.isBold,
           italics: fd.isItalic
-        }));
+        };
+        if (fd.color && fd.color !== '000000') {
+          runOptions.color = fd.color.toUpperCase();
+          if (fd.color.toLowerCase() === 'ffffff') {
+            runOptions.shading = { fill: '2B3A42', color: 'auto' };
+          }
+        }
+
+        runs.push(new docx.TextRun(runOptions));
       }
       return runs;
-    }
-
-    function getLineAlignment(line, blockLeft, blockWidth) {
-      const lineMid = line.minX + (line.width / 2);
-      const blockMid = blockLeft + (blockWidth / 2);
-      if (Math.abs(lineMid - blockMid) < 20 && line.width < blockWidth * 0.85) {
-        return docx.AlignmentType.CENTER;
-      }
-      if (line.maxX > blockLeft + blockWidth - 25 && line.minX > blockLeft + (blockWidth * 0.35)) {
-        return docx.AlignmentType.RIGHT;
-      }
-      return docx.AlignmentType.LEFT;
     }
 
     function parsePageItems(rawItems, viewport) {
@@ -418,7 +441,8 @@
           y: y,
           topY: topY,
           fontSize: fontSize,
-          width: width
+          width: width,
+          color: it.color || '000000'
         };
       }).filter(it => it.str && it.str.trim().length > 0);
     }
@@ -427,12 +451,13 @@
       const items = parsePageItems(rawItems, viewport);
       if (items.length === 0) return [];
 
-      // 1. Group items into horizontal lines based on vertical baseline tolerance
+      // 1. Group items into horizontal lines based on adaptive font baseline tolerance
       const sorted = [...items].sort((a, b) => a.topY - b.topY);
       const rawLines = [];
 
       for (const it of sorted) {
-        let matched = rawLines.find(l => Math.abs(l.topY - it.topY) <= 3.5);
+        const tol = Math.max(1.5, it.fontSize * 0.30);
+        let matched = rawLines.find(l => Math.abs(l.topY - it.topY) <= tol);
         if (matched) {
           matched.items.push(it);
           matched.topY = matched.items.reduce((sum, item) => sum + item.topY, 0) / matched.items.length;
@@ -443,8 +468,7 @@
 
       rawLines.sort((a, b) => a.topY - b.topY);
 
-      // 2. Split each line into segments when a significant horizontal gap exists
-      // This separates multi-column texts, table cells, or side-by-side elements (e.g. date on right, address on left)
+      // 2. Split line into segments when a column gap or table cell separator exists
       const segments = [];
       for (const line of rawLines) {
         line.items.sort((a, b) => a.x - b.x);
@@ -462,8 +486,9 @@
           const prev = line.items[j - 1];
           const gap = it.x - (prev.x + prev.width);
           const avgFontSize = (prev.fontSize + it.fontSize) / 2;
+          const columnGap = avgFontSize * 1.6;
 
-          if (gap > Math.max(22, avgFontSize * 2.0)) {
+          if (gap > columnGap) {
             currentSeg.width = currentSeg.maxX - currentSeg.minX;
             segments.push(currentSeg);
             currentSeg = {
@@ -509,18 +534,19 @@
           const cand = segments[j];
           const vertDist = cand.topY - lastTopY;
 
-          // Stop checking if cand is far below current block
-          if (vertDist > lastFontSize * 2.4) {
-            if (cand.topY - lastTopY > 40) break;
+          // Vertical paragraph separation: proportional to line height
+          if (vertDist > lastFontSize * 1.85) {
+            if (cand.topY - lastTopY > lastFontSize * 2.5) break;
             continue;
           }
 
           // Check if horizontally aligned or substantially overlapping
           const overlapX = Math.min(block.maxX, cand.maxX) - Math.max(block.minX, cand.minX);
           const minW = Math.min(block.maxX - block.minX, cand.width);
-          const isLeftAligned = Math.abs(cand.minX - block.minX) <= 18;
-          const isOverlapping = minW > 0 && (overlapX / minW) >= 0.45;
-          const isFontCompatible = Math.abs(cand.maxFontSize - lastFontSize) <= 4;
+          const alignTol = Math.max(5, lastFontSize * 0.75);
+          const isLeftAligned = Math.abs(cand.minX - block.minX) <= alignTol;
+          const isOverlapping = minW > 0 && (overlapX / minW) >= 0.40;
+          const isFontCompatible = Math.abs(cand.maxFontSize - lastFontSize) <= Math.max(3, lastFontSize * 0.35);
 
           if ((isLeftAligned || isOverlapping) && isFontCompatible) {
             visited.add(j);
@@ -560,35 +586,46 @@
           if (iIdx > 0) {
             const prev = seg.items[iIdx - 1];
             const gap = it.x - (prev.x + prev.width);
-            if (gap > 2) {
+            const spaceGap = Math.max(1.0, it.fontSize * 0.18);
+            if (gap >= spaceGap) {
               runs.push(new docx.TextRun({ text: ' ' }));
             }
           }
 
-          runs.push(new docx.TextRun({
+          const runOptions = {
             text: it.str,
             font: fd.cleanFont,
             size: fd.halfPoints,
             bold: fd.isBold,
             italics: fd.isItalic
-          }));
+          };
+
+          if (fd.color && fd.color !== '000000') {
+            runOptions.color = fd.color.toUpperCase();
+            if (fd.color.toLowerCase() === 'ffffff') {
+              runOptions.shading = { fill: '2B3A42', color: 'auto' };
+            }
+          }
+
+          runs.push(new docx.TextRun(runOptions));
         }
       }
 
-      // Detect alignment
+      // Detect alignment adaptively relative to page dimensions
       const blockMid = block.minX + (block.width / 2);
       const pageMid = pageWidth / 2;
       let alignment = docx.AlignmentType.LEFT;
-      if (Math.abs(blockMid - pageMid) < 30 && block.width < pageWidth * 0.70) {
+      if (Math.abs(blockMid - pageMid) < (pageWidth * 0.04) && block.width < (pageWidth * 0.75)) {
         alignment = docx.AlignmentType.CENTER;
-      } else if (block.maxX > pageWidth - 50 && block.minX > pageWidth * 0.45) {
+      } else if (block.maxX > (pageWidth * 0.88) && block.minX > (pageWidth * 0.35)) {
         alignment = docx.AlignmentType.RIGHT;
       }
 
-      // Add safety padding to frame width to avoid premature line-wrapping in Word font rasterizers
+      // Adaptive safety padding to frame width relative to typography metrics
+      const safetyPadding = Math.max(6, block.maxFontSize * 0.6);
       const frameWidthTwips = Math.round(Math.min(
         (pageWidth - block.minX) * 20,
-        Math.max(block.width + Math.max(16, block.maxFontSize * 1.5), 50) * 20
+        (block.width + safetyPadding) * 20
       ));
       const frameXTwips = Math.round(Math.max(0, block.minX) * 20);
       const frameYTwips = Math.round(Math.max(0, block.minTopY) * 20);
@@ -658,7 +695,7 @@
 
           const page = await pdfDoc.getPage(pageNum);
           const viewport = page.getViewport({ scale: 1.0 });
-          const [textContent] = await Promise.all([
+          const [textContent, opList] = await Promise.all([
             page.getTextContent(),
             page.getOperatorList().catch(() => null)
           ]);
@@ -678,6 +715,7 @@
             }
           }
           const rawItems = (textContent.items || []).filter(it => it.str && it.str.trim().length > 0);
+          extractItemColors(rawItems, opList);
 
           const isLandscape = viewport.width > viewport.height;
           const sectionProperties = {
@@ -751,9 +789,17 @@
         progressPercent.textContent = '92%';
         progressStatus.textContent = 'Packaging editable Word document (.docx)...';
 
+        const pdfMetadata = await pdfDoc.getMetadata().catch(() => null);
+        const docTitle = (pdfMetadata && pdfMetadata.info && pdfMetadata.info.Title) ? pdfMetadata.info.Title : selectedFile.name;
+        const docAuthor = (pdfMetadata && pdfMetadata.info && pdfMetadata.info.Author) ? pdfMetadata.info.Author : ((pdfMetadata && pdfMetadata.info && pdfMetadata.info.Creator) || "PDF Document");
+        const docSubject = (pdfMetadata && pdfMetadata.info && pdfMetadata.info.Subject) || "";
+        const docKeywords = (pdfMetadata && pdfMetadata.info && pdfMetadata.info.Keywords) || "";
+
         const doc = new docx.Document({
-          creator: "JavaScript AIO Tools - Widi Firmansyah",
-          title: selectedFile.name,
+          creator: docAuthor,
+          title: docTitle,
+          description: docSubject,
+          keywords: docKeywords,
           sections: pageSections.length > 0 ? pageSections : [
             {
               properties: {
