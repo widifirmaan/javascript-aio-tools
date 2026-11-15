@@ -47,19 +47,19 @@
               </p>
 
               <!-- Tabs Navigation -->
-              <ul class="nav nav-pills mb-4" id="devTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link active px-3" id="json-tab" data-bs-toggle="pill" data-bs-target="#json-pane" type="button" role="tab">
+              <ul class="nav nav-tabs border-bottom border-secondary border-opacity-25 mb-4 flex-nowrap overflow-x-auto" id="devTabs" role="tablist">
+                <li class="nav-item text-nowrap" role="presentation">
+                  <button class="nav-link active px-3" id="json-tab" data-bs-toggle="tab" data-bs-target="#json-pane" type="button" role="tab">
                     <i class="bi bi-file-code me-1"></i> JSON Formatter
                   </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link px-3" id="base64-tab" data-bs-toggle="pill" data-bs-target="#base64-pane" type="button" role="tab">
+                <li class="nav-item text-nowrap" role="presentation">
+                  <button class="nav-link px-3" id="base64-tab" data-bs-toggle="tab" data-bs-target="#base64-pane" type="button" role="tab">
                     <i class="bi bi-arrow-left-right me-1"></i> Base64 & URL
                   </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link px-3" id="jwt-tab" data-bs-toggle="pill" data-bs-target="#jwt-pane" type="button" role="tab">
+                <li class="nav-item text-nowrap" role="presentation">
+                  <button class="nav-link px-3" id="jwt-tab" data-bs-toggle="tab" data-bs-target="#jwt-pane" type="button" role="tab">
                     <i class="bi bi-key me-1"></i> JWT Inspector
                   </button>
                 </li>
@@ -69,16 +69,19 @@
               <div class="tab-content" id="devTabsContent">
                 <!-- TAB 1: JSON FORMATTER -->
                 <div class="tab-pane fade show active" id="json-pane" role="tabpanel">
-                  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
-                    <div class="btn-group btn-group-sm">
-                      <button type="button" class="btn btn-secondary" id="btnBeautify2">Beautify (2 Spaces)</button>
-                      <button type="button" class="btn btn-outline-secondary" id="btnBeautify4">Beautify (4 Spaces)</button>
-                      <button type="button" class="btn btn-outline-secondary" id="btnMinifyJson">Minify</button>
-                    </div>
-                    <div class="d-flex gap-2">
-                      <button type="button" class="btn btn-sm btn-outline-secondary px-3" id="btnSampleJson">Load Sample</button>
-                      <button type="button" class="btn btn-sm btn-outline-secondary px-3" id="btnClearJson">Clear</button>
-                    </div>
+                  <div class="d-flex align-items-center flex-wrap gap-2 mb-2">
+                    <button type="button" class="btn btn-sm btn-secondary" id="btnBeautify2">
+                      <i class="bi bi-code-slash me-1"></i> Beautify
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="btnMinifyJson">
+                      <i class="bi bi-arrows-collapse me-1"></i> Minify
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="btnSampleJson">
+                      <i class="bi bi-stars me-1"></i> Load Sample
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="btnClearJson">
+                      <i class="bi bi-trash3 me-1"></i> Clear
+                    </button>
                   </div>
 
                   <div class="mb-2">
@@ -89,12 +92,12 @@
                     <i class="bi bi-info-circle me-1"></i> Ready to process JSON.
                   </div>
 
-                  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <button type="button" class="btn btn-primary btn-sm px-3" id="btnCopyJson">
-                      <i class="bi bi-clipboard me-1"></i> Copy JSON
+                  <div class="d-flex justify-content-end align-items-center gap-2">
+                    <button type="button" class="btn btn-primary btn-sm btn-icon" id="btnCopyJson" title="Copy JSON" aria-label="Copy JSON">
+                      <i class="bi bi-clipboard"></i>
                     </button>
-                    <button type="button" class="btn btn-outline-secondary btn-sm px-3" id="btnDownloadJson">
-                      <i class="bi bi-download me-1"></i> Download .json
+                    <button type="button" class="btn btn-outline-secondary btn-sm btn-icon" id="btnDownloadJson" title="Download .json" aria-label="Download .json">
+                      <i class="bi bi-download"></i>
                     </button>
                   </div>
                 </div>
@@ -113,25 +116,27 @@
                       </div>
                     </div>
 
-                    <div class="d-flex flex-wrap gap-2 mt-3 pt-2 border-top border-secondary border-opacity-25">
+                    <div class="d-flex align-items-center flex-wrap gap-2 mt-3 pt-2 border-top border-secondary border-opacity-25">
                       <button type="button" class="btn btn-sm btn-secondary px-3" id="btnB64Encode">Encode Base64</button>
                       <button type="button" class="btn btn-sm btn-outline-secondary px-3" id="btnB64Decode">Decode Base64</button>
                       <button type="button" class="btn btn-sm btn-outline-secondary px-3" id="btnUrlEncode">Encode URL</button>
                       <button type="button" class="btn btn-sm btn-outline-secondary px-3" id="btnUrlDecode">Decode URL</button>
-                      <button type="button" class="btn btn-sm btn-primary px-3 ms-auto" id="btnCopyB64">
-                        <i class="bi bi-clipboard me-1"></i> Copy Output
+                      <button type="button" class="btn btn-sm btn-primary btn-icon ms-auto" id="btnCopyB64" title="Copy Output" aria-label="Copy Output">
+                        <i class="bi bi-clipboard"></i>
                       </button>
                     </div>
                   </div>
 
                   <!-- File to Base64 -->
                   <div class="tool-panel">
-                    <h6 class="fw-bold text-white mb-2"><i class="bi bi-file-earmark-arrow-up text-secondary me-2"></i>File to Base64 Data URL</h6>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <h6 class="fw-bold text-white mb-0"><i class="bi bi-file-earmark-arrow-up text-secondary me-2"></i>File to Base64 Data URL</h6>
+                      <button type="button" class="btn btn-sm btn-outline-secondary btn-icon" id="btnCopyFileB64" title="Copy Data URL" aria-label="Copy Data URL">
+                        <i class="bi bi-clipboard"></i>
+                      </button>
+                    </div>
                     <input type="file" id="file2B64Input" class="form-control form-control-sm mb-2">
-                    <textarea id="fileB64Output" class="form-control code-editor mb-2" rows="3" readonly placeholder="Base64 Data URL will appear here..."></textarea>
-                    <button type="button" class="btn btn-sm btn-outline-secondary px-3" id="btnCopyFileB64">
-                      <i class="bi bi-clipboard me-1"></i> Copy Data URL
-                    </button>
+                    <textarea id="fileB64Output" class="form-control code-editor" rows="3" readonly placeholder="Base64 Data URL will appear here..."></textarea>
                   </div>
                 </div>
 
@@ -231,7 +236,6 @@
     const jsonInput = document.getElementById('jsonInput');
     const jsonStatusAlert = document.getElementById('jsonStatusAlert');
     const btnBeautify2 = document.getElementById('btnBeautify2');
-    const btnBeautify4 = document.getElementById('btnBeautify4');
     const btnMinifyJson = document.getElementById('btnMinifyJson');
     const btnSampleJson = document.getElementById('btnSampleJson');
     const btnClearJson = document.getElementById('btnClearJson');
@@ -253,7 +257,6 @@
     }
 
     btnBeautify2.addEventListener('click', () => formatJson(2));
-    btnBeautify4.addEventListener('click', () => formatJson(4));
     btnMinifyJson.addEventListener('click', () => formatJson(0));
 
     btnSampleJson.addEventListener('click', () => {

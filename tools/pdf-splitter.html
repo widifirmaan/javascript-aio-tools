@@ -121,12 +121,12 @@
                 <i class="bi bi-check-circle-fill text-success fs-1 mb-2 d-inline-block"></i>
                 <h5 class="mt-2 mb-1 text-white fw-bold">PDF Ready</h5>
                 <p class="text-secondary small mb-3" id="resultDetails">Your extracted PDF has been created.</p>
-                <div class="d-flex justify-content-center gap-2">
-                  <a id="btnDownload" href="#" class="btn btn-primary px-4 py-2">
-                    <i class="bi bi-download me-1"></i> Download Extracted PDF
+                <div class="d-flex justify-content-center align-items-center gap-2">
+                  <a id="btnDownload" href="#" class="btn btn-primary btn-icon" title="Download Extracted PDF" aria-label="Download Extracted PDF">
+                    <i class="bi bi-download"></i>
                   </a>
-                  <button type="button" class="btn btn-outline-secondary px-3" onclick="resetSplitter()">
-                    <i class="bi bi-arrow-repeat me-1"></i> Split Another
+                  <button type="button" class="btn btn-outline-secondary btn-icon" onclick="resetSplitter()" title="Split Another PDF" aria-label="Split Another PDF">
+                    <i class="bi bi-arrow-repeat"></i>
                   </button>
                 </div>
               </div>

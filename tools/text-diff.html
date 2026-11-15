@@ -97,11 +97,11 @@
                 </div>
 
                 <div class="d-flex align-items-center gap-2">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" id="btnCopyDiff">
-                    <i class="bi bi-clipboard me-1"></i> Copy Diff
+                  <button type="button" class="btn btn-sm btn-outline-secondary btn-icon" id="btnCopyDiff" title="Copy Diff" aria-label="Copy Diff">
+                    <i class="bi bi-clipboard"></i>
                   </button>
-                  <button type="button" class="btn btn-sm btn-primary" id="btnRunDiff">
-                    <i class="bi bi-play-fill me-1"></i> Compare Now
+                  <button type="button" class="btn btn-sm btn-primary btn-icon" id="btnRunDiff" title="Compare Now" aria-label="Compare Now">
+                    <i class="bi bi-play-fill"></i>
                   </button>
                 </div>
               </div>
@@ -457,8 +457,8 @@
         return sign + ' ' + d.text;
       });
       navigator.clipboard.writeText(lines.join('\n')).then(() => {
-        const origText = btnCopyDiff.innerHTML;
-        btnCopyDiff.innerHTML = '<i class="bi bi-check2 me-1 text-success"></i> Copied!';
+        const origText = '<i class="bi bi-clipboard"></i>';
+        btnCopyDiff.innerHTML = '<i class="bi bi-check2 text-success"></i>';
         setTimeout(() => { btnCopyDiff.innerHTML = origText; }, 2000);
       });
     });

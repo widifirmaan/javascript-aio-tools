@@ -56,17 +56,6 @@
                 </button>
               </div>
 
-              <!-- Processing / Status Box -->
-              <div id="status" class="alert alert-dark py-3 mb-4 d-none border border-secondary border-opacity-25">
-                <div class="d-flex align-items-center">
-                  <div class="spinner-border spinner-border-sm me-3 text-primary" role="status"></div>
-                  <div>
-                    <strong class="d-block" id="statusTitle">Processing image...</strong>
-                    <span class="small text-secondary" id="statusDesc">The on-device model is segmenting the foreground subject.</span>
-                  </div>
-                </div>
-              </div>
-
               <!-- Action & Preview Section -->
               <div id="previewSection" class="d-none">
                 <div class="row g-3 mb-4">
@@ -103,16 +92,14 @@
                   </div>
                 </div>
 
-                <div class="d-flex flex-column flex-md-row justify-content-center justify-content-md-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 text-center text-md-start">
-                  <button type="button" class="btn btn-outline-secondary px-3" onclick="resetTool()">
-                    <i class="bi bi-arrow-counterclockwise me-1"></i> Change Photo
+                <div class="d-flex justify-content-center align-items-center gap-2 pt-3 border-top border-secondary border-opacity-25">
+                  <button type="button" class="btn btn-outline-secondary btn-icon" onclick="resetTool()" title="Change Photo" aria-label="Change Photo">
+                    <i class="bi bi-arrow-counterclockwise"></i>
                   </button>
-                  <div class="d-flex justify-content-center gap-2">
-                    <a id="downloadLink" href="#" class="btn btn-primary px-4 disabled" download="removed_bg.png" aria-disabled="true">
-                      <span id="downloadSpinner" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-                      <span id="downloadBtnText">Processing...</span>
-                    </a>
-                  </div>
+                  <a id="downloadLink" href="#" class="btn btn-primary btn-icon disabled" download="removed_bg.png" aria-disabled="true" title="Download Transparent PNG" aria-label="Download Transparent PNG">
+                    <span id="downloadSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <i id="downloadIcon" class="bi bi-download d-none"></i>
+                  </a>
                 </div>
               </div>
 
@@ -189,9 +176,6 @@
     import { removeBackground } from '../assets/vendor/imgly/bundle.js';
 
     const fileInput = document.getElementById('imageInput');
-    const statusDiv = document.getElementById('status');
-    const statusTitle = document.getElementById('statusTitle');
-    const statusDesc = document.getElementById('statusDesc');
     const previewSection = document.getElementById('previewSection');
     const dropzone = document.getElementById('dropzone');
     const origImagePreview = document.getElementById('origImagePreview');
@@ -202,7 +186,7 @@
     const resultStatus = document.getElementById('resultStatus');
     const downloadLink = document.getElementById('downloadLink');
     const downloadSpinner = document.getElementById('downloadSpinner');
-    const downloadBtnText = document.getElementById('downloadBtnText');
+    const downloadIcon = document.getElementById('downloadIcon');
 
     let currentResultBlobUrl = null;
     let currentOrigBlobUrl = null;
@@ -218,7 +202,6 @@
       fileInput.value = '';
       previewSection.classList.add('d-none');
       dropzone.classList.remove('d-none');
-      statusDiv.classList.add('d-none');
 
       resultImage.src = '';
       resultImage.classList.add('d-none');
@@ -287,12 +270,7 @@
       downloadLink.setAttribute('aria-disabled', 'true');
       downloadLink.removeAttribute('href');
       downloadSpinner.classList.remove('d-none');
-      downloadBtnText.textContent = 'Processing...';
-
-      // Status banner
-      statusDiv.classList.remove('d-none');
-      statusTitle.textContent = 'Initializing AI engine...';
-      statusDesc.textContent = 'Setting up WebAssembly runtime.';
+      downloadIcon.classList.add('d-none');
 
       let maxDownloadPct = 0;
       let isComputing = false;
@@ -306,16 +284,11 @@
             if (typeof key === 'string' && key.startsWith('compute')) {
               isComputing = true;
               if (key.includes('inference')) {
-                statusTitle.textContent = 'Removing background...';
-                statusDesc.textContent = 'Running AI subject segmentation...';
                 resultLoadingText.textContent = 'Analyzing subject edges...';
               } else if (key.includes('mask') || key.includes('encode')) {
-                statusTitle.textContent = 'Refining transparent edges...';
-                statusDesc.textContent = 'Encoding transparent PNG output.';
                 resultLoadingText.textContent = 'Generating transparent output...';
               } else {
-                statusTitle.textContent = 'Processing in memory...';
-                statusDesc.textContent = 'Transforming image buffer.';
+                resultLoadingText.textContent = 'Processing in memory...';
               }
               return;
             }
@@ -323,12 +296,7 @@
             if (!isComputing && typeof key === 'string' && key.includes('models') && total > 0) {
               const pct = Math.min(100, Math.round((current / total) * 100));
               if (pct > maxDownloadPct) maxDownloadPct = pct;
-              statusTitle.textContent = `Loading AI Model (${maxDownloadPct}%)...`;
-              statusDesc.textContent = `${(current / (1024 * 1024)).toFixed(1)} MB of ${(total / (1024 * 1024)).toFixed(1)} MB loaded`;
               resultLoadingText.textContent = `Loading model (${maxDownloadPct}%)...`;
-            } else if (!isComputing) {
-              statusTitle.textContent = 'Initializing AI engine...';
-              statusDesc.textContent = 'Setting up WebAssembly runtime.';
             }
           }
         });
@@ -347,20 +315,17 @@
         downloadLink.classList.remove('disabled');
         downloadLink.removeAttribute('aria-disabled');
         downloadSpinner.classList.add('d-none');
-        downloadBtnText.innerHTML = '<i class="bi bi-download me-1"></i> Download PNG';
-
-        statusDiv.classList.add('d-none');
+        downloadIcon.classList.remove('d-none');
       } catch (error) {
         console.error(error);
         resultLoadingText.textContent = 'Failed to remove background';
         resultStatus.textContent = 'Error';
         resultStatus.className = 'text-danger small fw-bold';
-        downloadBtnText.textContent = 'Failed';
         downloadSpinner.classList.add('d-none');
+        downloadIcon.classList.remove('d-none');
         alert('Error processing image: ' + error.message);
       } finally {
         isProcessing = false;
-        statusDiv.classList.add('d-none');
       }
     }
   </script>
