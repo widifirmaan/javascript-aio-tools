@@ -41,43 +41,10 @@
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
             <div class="tool-card">
-              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
-                <div>
-                  <h2 class="fs-4 fw-bold text-white mb-2">Text Diff</h2>
+              <h2 class="fs-4 fw-bold text-white mb-2">Text Diff</h2>
               <p class="text-secondary mb-4">
                 Compare two text blocks or source code snippets side-by-side with line-by-line visual change tracking.
               </p>
-                </div>
-                <div class="d-flex gap-2">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" id="btnLoadSample">
-                    <i class="bi bi-file-earmark-code me-1"></i> Sample Code
-                  </button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary" id="btnSwap">
-                    <i class="bi bi-arrow-left-right me-1"></i> Swap
-                  </button>
-                  <button type="button" class="btn btn-sm btn-outline-danger" id="btnClearAll">
-                    <i class="bi bi-trash3 me-1"></i> Clear
-                  </button>
-                </div>
-              </div>
-
-              <!-- Input Panes -->
-              <div class="row g-3 mb-3">
-                <div class="col-md-6">
-                  <div class="d-flex justify-content-between align-items-center mb-1">
-                    <label class="form-label text-secondary small fw-bold mb-0">Original Text</label>
-                    <span class="text-secondary small" id="origStats">0 lines</span>
-                  </div>
-                  <textarea id="textOriginal" class="form-control diff-textarea" placeholder="Paste original text or code here..."></textarea>
-                </div>
-                <div class="col-md-6">
-                  <div class="d-flex justify-content-between align-items-center mb-1">
-                    <label class="form-label text-secondary small fw-bold mb-0">Modified Text</label>
-                    <span class="text-secondary small" id="modStats">0 lines</span>
-                  </div>
-                  <textarea id="textModified" class="form-control diff-textarea" placeholder="Paste modified text or code here..."></textarea>
-                </div>
-              </div>
 
               <!-- Diff Controls & Options -->
               <div class="p-3 rounded mb-4 border border-secondary border-opacity-25 d-flex justify-content-between align-items-center flex-wrap gap-3 tool-panel">
@@ -96,35 +63,62 @@
                   </div>
                 </div>
 
-                <div class="d-flex align-items-center gap-2">
-                  <button type="button" class="btn btn-sm btn-outline-secondary btn-icon" id="btnCopyDiff" title="Copy Diff" aria-label="Copy Diff">
-                    <i class="bi bi-clipboard"></i>
+                <div class="d-flex gap-2">
+                  <button type="button" class="btn btn-sm btn-outline-secondary" id="btnLoadSample">
+                    <i class="bi bi-file-earmark-code me-1"></i> Sample Code
                   </button>
-                  <button type="button" class="btn btn-sm btn-primary btn-icon" id="btnRunDiff" title="Compare Now" aria-label="Compare Now">
-                    <i class="bi bi-play-fill"></i>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" id="btnSwap">
+                    <i class="bi bi-arrow-left-right me-1"></i> Swap
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-danger" id="btnClearAll">
+                    <i class="bi bi-trash3 me-1"></i> Clear
                   </button>
                 </div>
               </div>
 
-              <!-- Diff Header & Summary Bar -->
-              <div class="d-flex align-items-center justify-content-between px-3 py-2 border border-secondary border-opacity-25 border-bottom-0 rounded-top text-secondary small flex-wrap gap-2 bg-dark bg-opacity-75">
-                <div class="d-flex align-items-center gap-2 font-monospace flex-wrap">
-                  <span class="text-white fw-semibold"><i class="bi bi-file-diff me-1"></i>Diff Output</span>
-                  <span class="text-secondary opacity-25">|</span>
-                  <span class="text-success"><strong id="badgeAdded">+0</strong> additions</span>
-                  <span class="text-danger"><strong id="badgeRemoved">-0</strong> deletions</span>
-                  <span class="text-secondary"><strong id="badgeUnchanged">0</strong> unchanged</span>
+              <!-- Input Panes -->
+              <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label text-secondary small fw-bold mb-0">Original Text</label>
+                    <span class="text-secondary small" id="origStats">0 lines</span>
+                  </div>
+                  <textarea id="textOriginal" class="form-control diff-textarea" placeholder="Paste original text or code here..."></textarea>
                 </div>
-                <div class="font-monospace text-secondary small">
-                  Match: <span class="text-white fw-bold" id="badgeSimilarity">100%</span>
+                <div class="col-md-6">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label text-secondary small fw-bold mb-0">Modified Text</label>
+                    <span class="text-secondary small" id="modStats">0 lines</span>
+                  </div>
+                  <textarea id="textModified" class="form-control diff-textarea" placeholder="Paste modified text or code here..."></textarea>
                 </div>
               </div>
 
               <!-- Visual Diff Output Box -->
-              <div id="diffOutput" class="diff-output-container p-0 rounded-bottom rounded-top-0 border-top-0">
+              <div id="diffOutput" class="diff-output-container p-0">
                 <div class="p-4 text-center text-secondary small">
                   <i class="bi bi-arrow-left-right fs-2 mb-2 d-block opacity-50"></i>
                   Enter text above and click <strong>Compare Now</strong> to view the visual difference.
+                </div>
+              </div>
+
+              <!-- Action Bar & Stats below line -->
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 mt-4 text-center text-md-start">
+                <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2 font-monospace flex-wrap">
+                  <span class="text-secondary small">Match:</span>
+                  <span class="text-white fw-bold" id="badgeSimilarity">100%</span>
+                  <span class="text-secondary opacity-25 ms-1">|</span>
+                  <span class="text-success small ms-1"><strong id="badgeAdded">+0</strong> additions</span>
+                  <span class="text-danger small ms-1"><strong id="badgeRemoved">-0</strong> deletions</span>
+                  <span class="text-secondary small ms-1 d-none"><strong id="badgeUnchanged">0</strong> unchanged</span>
+                </div>
+                <div class="d-flex justify-content-center align-items-center gap-2">
+                  <button type="button" class="btn btn-outline-secondary btn-icon" id="btnCopyDiff" title="Copy Diff" aria-label="Copy Diff">
+                    <i class="bi bi-clipboard"></i>
+                  </button>
+                  <button type="button" class="btn btn-primary btn-icon" id="btnRunDiff" title="Compare Now" aria-label="Compare Now">
+                    <i class="bi bi-play-fill"></i>
+                  </button>
                 </div>
               </div>
 

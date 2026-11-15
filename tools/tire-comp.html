@@ -50,7 +50,7 @@
               <div class="row g-3 mb-4">
                 <!-- Tire 1 (Original) -->
                 <div class="col-md-6">
-                  <div class="tool-panel">
+                  <div class="tool-panel h-100">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                       <h6 class="text-white fw-bold mb-0"><i class="bi bi-disc me-2 text-secondary"></i>Tire 1 (OEM / Standard)</h6>
                     </div>
@@ -72,7 +72,7 @@
 
                 <!-- Tire 2 (New) -->
                 <div class="col-md-6">
-                  <div class="tool-panel">
+                  <div class="tool-panel h-100">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                       <h6 class="text-white fw-bold mb-0"><i class="bi bi-disc me-2 text-secondary"></i>Tire 2 (New / Replacement)</h6>
                     </div>
@@ -91,12 +91,6 @@
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div class="d-flex justify-content-center mb-4">
-                <button type="button" id="calculateBtn" class="btn btn-primary px-4 py-2 fw-semibold">
-                  <i class="bi bi-calculator me-1"></i> Compare Tires
-                </button>
               </div>
 
               <!-- Results Area -->
@@ -167,6 +161,22 @@
               </div>
 
               <div id="messageBox" class="alert alert-danger py-2 mt-3 d-none"></div>
+
+              <!-- Action Bar below line -->
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 mt-4 text-center text-md-start">
+                <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                  <span class="text-secondary small">Fitment Offset:</span>
+                  <span class="text-white fw-bold" id="bottomFitmentNotice">Realtime Calculation</span>
+                </div>
+                <div class="d-flex justify-content-center align-items-center gap-2">
+                  <button type="button" class="btn btn-outline-secondary btn-icon" onclick="resetTires()" title="Reset to Defaults" aria-label="Reset to Defaults">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                  </button>
+                  <button type="button" id="calculateBtn" class="btn btn-primary btn-icon" title="Compare Tires" aria-label="Compare Tires">
+                    <i class="bi bi-calculator"></i>
+                  </button>
+                </div>
+              </div>
 
             </div>
           </div>
@@ -320,6 +330,16 @@
       rimVisual1.textContent = `R${diameter1}`;
       rimVisual2.textContent = `R${diameter2}`;
     }
+
+    window.resetTires = function() {
+      width1Input.value = 205;
+      aspectRatio1Input.value = 55;
+      diameter1Input.value = 16;
+      width2Input.value = 225;
+      aspectRatio2Input.value = 50;
+      diameter2Input.value = 17;
+      doCalculate();
+    };
 
     calculateBtn.addEventListener('click', doCalculate);
     [width1Input, aspectRatio1Input, diameter1Input, width2Input, aspectRatio2Input, diameter2Input].forEach(inp => {

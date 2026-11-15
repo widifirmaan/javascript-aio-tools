@@ -41,31 +41,29 @@
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
             <div class="tool-card">
-              <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
-                <div>
-                  <h2 class="fs-4 fw-bold text-white mb-2">Regex Visualizer</h2>
+              <h2 class="fs-4 fw-bold text-white mb-2">Regex Visualizer</h2>
               <p class="text-secondary mb-4">
                 Live pattern matching with syntax analysis, capture group inspection, and dynamic railroad SVG track diagrams.
               </p>
-                </div>
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-lightning-charge me-1"></i> Quick Presets
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow">
-                    <li><button class="dropdown-item small" type="button" onclick="loadPreset('email')">Email Address</button></li>
-                    <li><button class="dropdown-item small" type="button" onclick="loadPreset('url')">URL / Web Link</button></li>
-                    <li><button class="dropdown-item small" type="button" onclick="loadPreset('ipv4')">IPv4 Address</button></li>
-                    <li><button class="dropdown-item small" type="button" onclick="loadPreset('date')">Date (YYYY-MM-DD)</button></li>
-                    <li><button class="dropdown-item small" type="button" onclick="loadPreset('phone')">Phone Number</button></li>
-                    <li><button class="dropdown-item small" type="button" onclick="loadPreset('slug')">URL Slug</button></li>
-                  </ul>
-                </div>
-              </div>
 
               <!-- Regex Input Box -->
               <div class="mb-3">
-                <label class="form-label text-white small fw-bold">Regular Expression</label>
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label class="form-label text-white small fw-bold mb-0">Regular Expression</label>
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle py-0 px-2" type="button" data-bs-toggle="dropdown">
+                      <i class="bi bi-lightning-charge me-1"></i> Quick Presets
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow">
+                      <li><button class="dropdown-item small" type="button" onclick="loadPreset('email')">Email Address</button></li>
+                      <li><button class="dropdown-item small" type="button" onclick="loadPreset('url')">URL / Web Link</button></li>
+                      <li><button class="dropdown-item small" type="button" onclick="loadPreset('ipv4')">IPv4 Address</button></li>
+                      <li><button class="dropdown-item small" type="button" onclick="loadPreset('date')">Date (YYYY-MM-DD)</button></li>
+                      <li><button class="dropdown-item small" type="button" onclick="loadPreset('phone')">Phone Number</button></li>
+                      <li><button class="dropdown-item small" type="button" onclick="loadPreset('slug')">URL Slug</button></li>
+                    </ul>
+                  </div>
+                </div>
                 <div class="input-group">
                   <span class="input-group-text bg-dark text-secondary border-secondary border-opacity-25 font-monospace">/</span>
                   <input type="text" id="regexPattern" class="form-control font-monospace text-info" value="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" placeholder="Enter regex pattern...">
@@ -105,13 +103,10 @@
 
               <!-- Railroad Visualizer -->
               <div class="tool-panel mb-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="mb-3">
                   <span class="text-white small fw-bold">
                     <i class="bi bi-bezier2 me-1 text-primary"></i> Railroad Flow Diagram (SVG)
                   </span>
-                  <button type="button" class="btn btn-sm btn-outline-secondary btn-icon" id="btnDownloadSvg" title="Save SVG" aria-label="Save SVG">
-                    <i class="bi bi-download"></i>
-                  </button>
                 </div>
                 <div class="railroad-container" id="railroadContainer">
                   <!-- Dynamic SVG will be rendered here -->
@@ -120,10 +115,7 @@
 
               <!-- Test String Area -->
               <div class="mb-3">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                  <label class="form-label text-white small fw-bold mb-0">Test String</label>
-                  <span id="matchStatsBadge" class="badge bg-primary">Calculating...</span>
-                </div>
+                <label class="form-label text-white small fw-bold mb-1">Test String</label>
                 <textarea id="testStringInput" class="form-control font-monospace small" rows="4" placeholder="Enter text to match against regex...">Contact us at support@example.com or admin@widifirmaan.web.id for inquiries. Fake address: test@invalid.</textarea>
               </div>
 
@@ -149,6 +141,19 @@
                     <tbody id="groupTableBody">
                     </tbody>
                   </table>
+                </div>
+              </div>
+
+              <!-- Action Bar & Controls below line -->
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 mt-4 text-center text-md-start">
+                <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                  <span class="text-secondary small">Matches:</span>
+                  <span id="matchStatsBadge" class="badge bg-primary">Calculating...</span>
+                </div>
+                <div class="d-flex justify-content-center align-items-center gap-2 flex-nowrap">
+                  <button type="button" class="btn btn-primary btn-icon" id="btnDownloadSvg" title="Save Railroad SVG Diagram" aria-label="Save Railroad SVG Diagram">
+                    <i class="bi bi-download"></i>
+                  </button>
                 </div>
               </div>
 

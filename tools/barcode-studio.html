@@ -41,41 +41,26 @@
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
             <div class="tool-card">
-              <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
-                <div>
-                  <h2 class="fs-4 fw-bold text-white mb-2">Barcode Studio</h2>
+              <h2 class="fs-4 fw-bold text-white mb-2">Barcode Studio</h2>
               <p class="text-secondary mb-4">
                 Generate vector Code 128, EAN-13, UPC-A, Code 39, and ITF barcodes locally with automated checksum calculation.
               </p>
-                </div>
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-tag me-1"></i> Preset Samples
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow">
-                    <li><button class="dropdown-item small" type="button" onclick="loadBarcodePreset('ean13')">Retail Product (EAN-13)</button></li>
-                    <li><button class="dropdown-item small" type="button" onclick="loadBarcodePreset('code128')">Logistics Package (Code 128)</button></li>
-                    <li><button class="dropdown-item small" type="button" onclick="loadBarcodePreset('code39')">Warehouse Asset (Code 39)</button></li>
-                    <li><button class="dropdown-item small" type="button" onclick="loadBarcodePreset('upca')">US Supermarket (UPC-A)</button></li>
-                    <li><button class="dropdown-item small" type="button" onclick="loadBarcodePreset('itf')">Carton Shipping (ITF-14)</button></li>
-                  </ul>
-                </div>
-              </div>
 
               <!-- Barcode Display Container -->
-              <div class="mb-3">
-                <div class="d-flex justify-content-between align-items-center mb-1">
+              <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
                   <span class="text-secondary small fw-bold">Live Barcode Output:</span>
-                  <div class="btn-group btn-group-sm">
-                    <button type="button" class="btn btn-outline-secondary btn-icon" id="btnCopySvgXml" title="Copy SVG Code" aria-label="Copy SVG Code">
-                      <i class="bi bi-clipboard"></i>
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle py-0 px-2" type="button" data-bs-toggle="dropdown">
+                      <i class="bi bi-tag me-1"></i> Presets
                     </button>
-                    <button type="button" class="btn btn-outline-secondary btn-icon" id="btnDownloadSvg" title="Download Vector SVG" aria-label="Download Vector SVG">
-                      <i class="bi bi-filetype-svg"></i>
-                    </button>
-                    <button type="button" class="btn btn-primary btn-icon" id="btnDownloadPng" title="Download PNG" aria-label="Download PNG">
-                      <i class="bi bi-download"></i>
-                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow">
+                      <li><button class="dropdown-item small" type="button" onclick="loadBarcodePreset('ean13')">Retail Product (EAN-13)</button></li>
+                      <li><button class="dropdown-item small" type="button" onclick="loadBarcodePreset('code128')">Logistics Package (Code 128)</button></li>
+                      <li><button class="dropdown-item small" type="button" onclick="loadBarcodePreset('code39')">Warehouse Asset (Code 39)</button></li>
+                      <li><button class="dropdown-item small" type="button" onclick="loadBarcodePreset('upca')">US Supermarket (UPC-A)</button></li>
+                      <li><button class="dropdown-item small" type="button" onclick="loadBarcodePreset('itf')">Carton Shipping (ITF-14)</button></li>
+                    </ul>
                   </div>
                 </div>
                 <div id="barcodePreviewBox" class="barcode-preview-box">
@@ -133,6 +118,25 @@
                       <label class="form-check-label text-white small" for="checkTransparentBg">Transparent Background</label>
                     </div>
                   </div>
+                </div>
+              </div>
+
+              <!-- Action Bar & Controls below line -->
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 text-center text-md-start">
+                <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                  <span class="text-secondary small">Symbology:</span>
+                  <span id="barcodeActiveFormat" class="text-white fw-bold">EAN-13</span>
+                </div>
+                <div class="d-flex justify-content-center align-items-center gap-2 flex-nowrap">
+                  <button type="button" class="btn btn-outline-secondary btn-icon" id="btnCopySvgXml" title="Copy SVG Code" aria-label="Copy SVG Code">
+                    <i class="bi bi-clipboard"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary btn-icon" id="btnDownloadSvg" title="Download Vector SVG" aria-label="Download Vector SVG">
+                    <i class="bi bi-filetype-svg"></i>
+                  </button>
+                  <button type="button" class="btn btn-primary btn-icon" id="btnDownloadPng" title="Download PNG" aria-label="Download PNG">
+                    <i class="bi bi-download"></i>
+                  </button>
                 </div>
               </div>
 
@@ -271,6 +275,8 @@
 
     function updateHint() {
       const f = selectFormat.value;
+      const activeEl = document.getElementById('barcodeActiveFormat');
+      if (activeEl) activeEl.textContent = f;
       if (f === 'EAN13') formatHint.textContent = 'EAN-13 requires 12 or 13 numeric digits (13th check digit auto-calculated).';
       else if (f === 'UPCA') formatHint.textContent = 'UPC-A requires 11 or 12 numeric digits (12th check digit auto-calculated).';
       else if (f === 'CODE128') formatHint.textContent = 'Code 128 supports all ASCII characters (checksum modulo 103 auto-added).';

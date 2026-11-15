@@ -73,37 +73,35 @@
                     <button type="button" id="underline-btn" class="btn btn-outline-secondary text-white" title="Underline (Ctrl+U)"><i class="bi bi-type-underline"></i></button>
                   </div>
                 </div>
-
-                <!-- File Actions -->
-                <div class="d-flex align-items-center gap-2">
-                  <input type="file" id="file-import" accept=".txt,.md" class="d-none">
-                  <button type="button" id="import-btn" class="btn btn-sm btn-outline-secondary btn-icon" title="Open TXT Document" aria-label="Open TXT Document">
-                    <i class="bi bi-file-earmark-arrow-up"></i>
-                  </button>
-                  <button type="button" id="save-btn" class="btn btn-sm btn-primary btn-icon" title="Save Document" aria-label="Save Document">
-                    <i class="bi bi-download"></i>
-                  </button>
-                </div>
               </div>
 
               <!-- Main Canvas Area -->
-              <div class="editor-wrapper mb-3">
+              <div class="editor-wrapper mb-4">
                 <div id="line-numbers">1<br></div>
                 <div id="editor-area" contenteditable="true" spellcheck="false" placeholder="Start typing your text here...">Start typing your document or draft here. Word and character counts will update in real-time below.</div>
               </div>
 
-              <!-- Bottom Statistics Bar -->
-              <div class="tool-panel d-flex flex-wrap align-items-center justify-content-between gap-3">
-                <div class="d-flex flex-wrap align-items-center gap-3 text-secondary small">
+              <!-- Action Bar & Controls below line -->
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 mt-4 text-center text-md-start">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-start gap-3 text-secondary small">
                   <span class="text-white fw-bold" id="word-count">Words: 0</span>
                   <span>•</span>
                   <span class="text-white fw-bold" id="char-count">Characters: 0</span>
                   <span>•</span>
                   <span id="reading-time">Reading: &lt; 1 min</span>
                 </div>
-                <button type="button" class="btn btn-sm btn-outline-danger btn-icon" onclick="clearEditor()" title="Clear Text" aria-label="Clear Text">
-                  <i class="bi bi-trash3"></i>
-                </button>
+                <div class="d-flex justify-content-center align-items-center gap-2 flex-nowrap">
+                  <input type="file" id="file-import" accept=".txt,.md" class="d-none">
+                  <button type="button" class="btn btn-outline-danger btn-icon" onclick="clearEditor()" title="Clear Text" aria-label="Clear Text">
+                    <i class="bi bi-trash3"></i>
+                  </button>
+                  <button type="button" id="import-btn" class="btn btn-outline-secondary btn-icon" title="Open TXT Document" aria-label="Open TXT Document">
+                    <i class="bi bi-folder2-open"></i>
+                  </button>
+                  <button type="button" id="save-btn" class="btn btn-primary btn-icon" title="Save Document" aria-label="Save Document">
+                    <i class="bi bi-download"></i>
+                  </button>
+                </div>
               </div>
 
             </div>

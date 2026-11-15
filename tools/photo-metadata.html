@@ -41,52 +41,30 @@
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
             <div class="tool-card">
-              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
-                <div>
-                  <h2 class="fs-4 fw-bold text-white mb-2">Photo Metadata Editor</h2>
+              <h2 class="fs-4 fw-bold text-white mb-2">Photo Metadata Editor</h2>
               <p class="text-secondary mb-4">
                 Inspect camera settings, capture timestamps, and GPS coordinates hidden inside photos. Strip sensitive data in 1-click.
               </p>
-                </div>
-                <div class="d-flex gap-2">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" id="btnSamplePhoto">
-                    <i class="bi bi-image me-1"></i> Sample Photo
-                  </button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.getElementById('photoFileInput').click()">
-                    <i class="bi bi-upload me-1"></i> Open Photo
-                  </button>
-                  <input type="file" id="photoFileInput" accept="image/*" class="d-none">
-                </div>
-              </div>
 
               <!-- Upload Dropzone -->
               <div id="dropzone" class="tool-dropzone mb-4" onclick="document.getElementById('photoFileInput').click()">
                 <i class="bi bi-camera fs-1 text-secondary mb-2"></i>
                 <h5 class="mt-2 mb-1 text-white fw-semibold">Choose or drop a photo here</h5>
                 <p class="text-secondary small mb-3">Supports JPEG, PNG, TIFF, and WebP. 100% inspected locally.</p>
-                <button type="button" class="btn btn-secondary px-4 py-2">
-                  <i class="bi bi-folder2-open me-1"></i> Browse Photo
-                </button>
+                <input type="file" id="photoFileInput" accept="image/*" class="d-none">
+                <div class="d-flex justify-content-center align-items-center gap-2 mt-2">
+                  <button type="button" class="btn btn-secondary px-4 py-2">
+                    <i class="bi bi-folder2-open me-1"></i> Browse Photo
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary px-3 py-2" id="btnSamplePhoto" onclick="event.stopPropagation()">
+                    <i class="bi bi-image me-1"></i> Sample Photo
+                  </button>
+                </div>
               </div>
 
               <!-- Metadata Workspace (Hidden initially) -->
               <div id="workspaceArea" class="d-none">
                 <!-- Action Bar -->
-                <div class="p-3 rounded mb-4 border border-secondary border-opacity-25 d-flex justify-content-between align-items-center flex-wrap gap-2 tool-panel">
-                  <div>
-                    <h6 class="mb-0 text-white fw-bold" id="labelFileName">photo.jpg</h6>
-                    <span class="text-secondary small" id="labelFileSize">0 KB</span>
-                  </div>
-                  <div class="d-flex align-items-center gap-2">
-                    <button type="button" class="btn btn-sm btn-outline-secondary btn-icon" onclick="resetMetadataViewer()" title="Change Photo" aria-label="Change Photo">
-                      <i class="bi bi-arrow-repeat"></i>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-danger btn-icon" id="btnWipeExif" title="Strip All Metadata & Download" aria-label="Strip All Metadata & Download">
-                      <i class="bi bi-shield-slash"></i>
-                    </button>
-                  </div>
-                </div>
-
                 <div class="row g-4 mb-4">
                   <!-- Photo Preview Column -->
                   <div class="col-md-5">
@@ -117,6 +95,23 @@
                         </tbody>
                       </table>
                     </div>
+                  </div>
+                </div>
+
+                <!-- Action Bar & Controls below line -->
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 mt-4 text-center text-md-start">
+                  <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                    <span class="text-secondary small">File:</span>
+                    <span class="text-white fw-bold" id="labelFileName">photo.jpg</span>
+                    <span class="text-secondary small" id="labelFileSize">(0 KB)</span>
+                  </div>
+                  <div class="d-flex justify-content-center align-items-center gap-2 flex-nowrap">
+                    <button type="button" class="btn btn-outline-secondary btn-icon" onclick="resetMetadataViewer()" title="Change Photo" aria-label="Change Photo">
+                      <i class="bi bi-arrow-counterclockwise"></i>
+                    </button>
+                    <button type="button" class="btn btn-danger btn-icon" id="btnWipeExif" title="Strip All Metadata & Download" aria-label="Strip All Metadata & Download">
+                      <i class="bi bi-shield-slash"></i>
+                    </button>
                   </div>
                 </div>
 

@@ -41,32 +41,25 @@
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
             <div class="tool-card">
-              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
-                <div>
-                  <h2 class="fs-4 fw-bold text-white mb-2">Color Palette Extractor</h2>
+              <h2 class="fs-4 fw-bold text-white mb-2">Color Palette Extractor</h2>
               <p class="text-secondary mb-4">
                 Extract dominant color palettes from any photo or design locally in your browser. Export HEX, CSS variables, or download a palette card.
               </p>
-                </div>
-                <div class="d-flex gap-2">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" id="btnSample">
-                    <i class="bi bi-image me-1"></i> Sample Image
-                  </button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary" id="btnUploadNew" onclick="document.getElementById('imageFileInput').click()">
-                    <i class="bi bi-upload me-1"></i> Upload Image
-                  </button>
-                  <input type="file" id="imageFileInput" accept="image/*" class="d-none">
-                </div>
-              </div>
 
               <!-- Upload Dropzone (When no image is loaded) -->
               <div id="dropzone" class="tool-dropzone mb-4" onclick="document.getElementById('imageFileInput').click()">
                 <i class="bi bi-palette fs-1 text-secondary mb-2"></i>
                 <h5 class="mt-2 mb-1 text-white fw-semibold">Choose or drop an image here</h5>
                 <p class="text-secondary small mb-3">Supports JPG, PNG, and WebP. 100% processed in-browser.</p>
-                <button type="button" class="btn btn-secondary px-4 py-2">
-                  <i class="bi bi-folder2-open me-1"></i> Browse Photo
-                </button>
+                <input type="file" id="imageFileInput" accept="image/*" class="d-none">
+                <div class="d-flex justify-content-center align-items-center gap-2 mt-2">
+                  <button type="button" class="btn btn-secondary px-4 py-2">
+                    <i class="bi bi-folder2-open me-1"></i> Browse Photo
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary px-3 py-2" id="btnSample" onclick="event.stopPropagation()">
+                    <i class="bi bi-image me-1"></i> Sample Image
+                  </button>
+                </div>
               </div>
 
               <!-- Palette Display Area (Hidden initially) -->
@@ -79,22 +72,11 @@
                     </div>
                   </div>
                   <div class="col-md-7">
-                    <div class="tool-panel">
+                    <div class="tool-panel h-100">
                       <h6 class="text-white fw-bold mb-2">Palette Options</h6>
-                      <div class="mb-3">
+                      <div class="mb-0">
                         <label class="form-label text-secondary small mb-1">Colors to Extract: <strong id="colorCountLabel" class="text-white">6</strong></label>
                         <input type="range" class="form-range" id="colorCountRange" min="4" max="10" value="6">
-                      </div>
-                      <div class="d-flex align-items-center gap-2">
-                        <button type="button" class="btn btn-sm btn-outline-secondary btn-icon" id="btnCopyCss" title="Copy CSS Variables" aria-label="Copy CSS Variables">
-                          <i class="bi bi-code-slash"></i>
-                        </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary btn-icon" id="btnCopyJson" title="Copy JSON" aria-label="Copy JSON">
-                          <i class="bi bi-braces"></i>
-                        </button>
-                        <button type="button" class="btn btn-sm btn-primary btn-icon" id="btnDownloadPalettePng" title="Download Palette PNG Card" aria-label="Download Palette PNG Card">
-                          <i class="bi bi-download"></i>
-                        </button>
                       </div>
                     </div>
                   </div>
@@ -102,8 +84,30 @@
 
                 <!-- Palette Swatches Grid -->
                 <h6 class="text-white fw-bold mb-2">Dominant Colors (Click to Copy HEX):</h6>
-                <div class="palette-swatches-grid" id="swatchesGrid">
+                <div class="palette-swatches-grid mb-4" id="swatchesGrid">
                   <!-- Swatches dynamically populated -->
+                </div>
+
+                <!-- Action Bar & Controls below line -->
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 text-center text-md-start">
+                  <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                    <span class="text-secondary small">Palette:</span>
+                    <span class="text-white fw-bold" id="paletteStatus">Extracted Successfully</span>
+                  </div>
+                  <div class="d-flex justify-content-center align-items-center gap-2 flex-nowrap">
+                    <button type="button" class="btn btn-outline-secondary btn-icon" onclick="document.getElementById('imageFileInput').click()" title="Change Image" aria-label="Change Image">
+                      <i class="bi bi-arrow-counterclockwise"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary btn-icon" id="btnCopyCss" title="Copy CSS Variables" aria-label="Copy CSS Variables">
+                      <i class="bi bi-code-slash"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary btn-icon" id="btnCopyJson" title="Copy JSON" aria-label="Copy JSON">
+                      <i class="bi bi-braces"></i>
+                    </button>
+                    <button type="button" class="btn btn-primary btn-icon" id="btnDownloadPalettePng" title="Download Palette PNG Card" aria-label="Download Palette PNG Card">
+                      <i class="bi bi-download"></i>
+                    </button>
+                  </div>
                 </div>
 
               </div>

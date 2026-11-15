@@ -41,17 +41,10 @@
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
             <div class="tool-card">
-              <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
-                <div>
-                  <h2 class="fs-4 fw-bold text-white mb-2">File Encryptor</h2>
+              <h2 class="fs-4 fw-bold text-white mb-2">File Encryptor</h2>
               <p class="text-secondary mb-4">
                 Encrypt and decrypt files locally with AES-256-GCM. 100% processed in-browser.
               </p>
-                </div>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="btnLoadSampleDoc">
-                  <i class="bi bi-file-earmark-text me-1"></i> Load Sample File
-                </button>
-              </div>
 
               <!-- Encrypt / Decrypt Tabs -->
               <ul class="nav nav-pills mb-4 border-bottom border-secondary border-opacity-25 pb-3 gap-2" role="tablist">
@@ -76,9 +69,14 @@
                     <h5 class="fw-semibold text-white mb-1">Choose or drag file to encrypt</h5>
                     <p class="text-secondary small mb-3">Accepts PDF, ZIP, Images, Documents, or any file type</p>
                     <input type="file" id="fileInputEncrypt" class="d-none">
-                    <button type="button" class="btn btn-secondary px-4 py-2">
-                      <i class="bi bi-folder2-open me-1"></i> Browse File
-                    </button>
+                    <div class="d-flex justify-content-center align-items-center gap-2 mt-2">
+                      <button type="button" class="btn btn-secondary px-4 py-2">
+                        <i class="bi bi-folder2-open me-1"></i> Browse File
+                      </button>
+                      <button type="button" class="btn btn-outline-secondary px-3 py-2" id="btnLoadSampleDoc" onclick="event.stopPropagation()">
+                        <i class="bi bi-file-earmark-text me-1"></i> Sample File
+                      </button>
+                    </div>
                   </div>
 
                   <!-- Selected File Box -->
@@ -114,10 +112,20 @@
                     </div>
                   </div>
 
-                  <div class="mb-3">
-                    <button type="button" class="btn btn-primary w-100 py-2 fw-semibold" id="btnStartEncrypt" disabled>
-                      <i class="bi bi-shield-lock-fill me-1"></i> Encrypt & Download .enc
-                    </button>
+                  <!-- Action Bar below line -->
+                  <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 mt-4 text-center text-md-start">
+                    <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                      <span class="text-secondary small">Security:</span>
+                      <span class="text-white fw-bold">AES-256-GCM + PBKDF2</span>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center gap-2">
+                      <button type="button" class="btn btn-outline-secondary btn-icon" onclick="document.getElementById('btnChangeEncFile').click()" title="Reset File" aria-label="Reset File">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                      </button>
+                      <button type="button" class="btn btn-primary btn-icon" id="btnStartEncrypt" disabled title="Encrypt & Download .enc" aria-label="Encrypt & Download .enc">
+                        <i class="bi bi-shield-lock-fill"></i>
+                      </button>
+                    </div>
                   </div>
 
                   <!-- Progress -->
@@ -136,9 +144,11 @@
                     <i class="bi bi-check-circle-fill text-success fs-1 mb-2 d-inline-block"></i>
                     <h5 class="text-white fw-bold mb-1">File Encrypted Successfully</h5>
                     <p class="text-secondary small mb-3" id="encResultInfo">Your encrypted file is ready for download.</p>
-                    <a id="btnDownloadEncrypted" href="#" class="btn btn-primary btn-icon" title="Download Encrypted File (.enc)" aria-label="Download Encrypted File (.enc)">
-                      <i class="bi bi-download"></i>
-                    </a>
+                    <div class="d-flex justify-content-center align-items-center gap-2 pt-3 border-top border-secondary border-opacity-25">
+                      <a id="btnDownloadEncrypted" href="#" class="btn btn-primary btn-icon" title="Download Encrypted File (.enc)" aria-label="Download Encrypted File (.enc)">
+                        <i class="bi bi-download"></i>
+                      </a>
+                    </div>
                   </div>
                 </div>
 
@@ -182,10 +192,20 @@
                     </div>
                   </div>
 
-                  <div class="mb-3">
-                    <button type="button" class="btn btn-primary w-100 py-2 fw-semibold" id="btnStartDecrypt" disabled>
-                      <i class="bi bi-unlock-fill me-1"></i> Decrypt & Restore File
-                    </button>
+                  <!-- Action Bar below line -->
+                  <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 mt-4 text-center text-md-start">
+                    <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                      <span class="text-secondary small">Status:</span>
+                      <span class="text-white fw-bold">Ready to decrypt</span>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center gap-2">
+                      <button type="button" class="btn btn-outline-secondary btn-icon" onclick="document.getElementById('btnChangeDecFile').click()" title="Reset File" aria-label="Reset File">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                      </button>
+                      <button type="button" class="btn btn-primary btn-icon" id="btnStartDecrypt" disabled title="Decrypt & Restore File" aria-label="Decrypt & Restore File">
+                        <i class="bi bi-unlock-fill"></i>
+                      </button>
+                    </div>
                   </div>
 
                   <!-- Error Alert -->
@@ -198,9 +218,11 @@
                     <i class="bi bi-file-earmark-check-fill text-success fs-1 mb-2 d-inline-block"></i>
                     <h5 class="text-white fw-bold mb-1">File Restored Successfully</h5>
                     <p class="text-secondary small mb-3" id="decResultInfo">Original file restored with exact binary fidelity.</p>
-                    <a id="btnDownloadDecrypted" href="#" class="btn btn-primary btn-icon" title="Download Original File" aria-label="Download Original File">
-                      <i class="bi bi-download"></i>
-                    </a>
+                    <div class="d-flex justify-content-center align-items-center gap-2 pt-3 border-top border-secondary border-opacity-25">
+                      <a id="btnDownloadDecrypted" href="#" class="btn btn-primary btn-icon" title="Download Original File" aria-label="Download Original File">
+                        <i class="bi bi-download"></i>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -41,54 +41,29 @@
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
             <div class="tool-card">
-              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
-                <div>
-                  <h2 class="fs-4 fw-bold text-white mb-2">SVG Minifier</h2>
+              <h2 class="fs-4 fw-bold text-white mb-2">SVG Minifier</h2>
               <p class="text-secondary mb-4">
                 Strip unnecessary metadata, editor comments, and bloated coordinates from SVG files while preserving exact visual appearance.
               </p>
-                </div>
-                <div class="d-flex gap-2">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" id="btnSample">
-                    <i class="bi bi-filetype-svg me-1"></i> Sample SVG
-                  </button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.getElementById('svgFileInput').click()">
-                    <i class="bi bi-upload me-1"></i> Upload SVG
-                  </button>
-                  <input type="file" id="svgFileInput" accept=".svg,image/svg+xml" class="d-none">
-                </div>
-              </div>
 
               <!-- Upload Dropzone -->
               <div id="dropzone" class="tool-dropzone mb-4" onclick="document.getElementById('svgFileInput').click()">
                 <i class="bi bi-file-earmark-code fs-1 text-secondary mb-2"></i>
                 <h5 class="mt-2 mb-1 text-white fw-semibold">Choose or drop an SVG file here</h5>
-                <p class="text-secondary small mb-3">Or click Sample SVG above. 100% processed offline in memory.</p>
-                <button type="button" class="btn btn-secondary px-4 py-2">
-                  <i class="bi bi-folder2-open me-1"></i> Browse File
-                </button>
+                <p class="text-secondary small mb-3">Or choose sample SVG below. 100% processed offline in memory.</p>
+                <input type="file" id="svgFileInput" accept=".svg,image/svg+xml" class="d-none">
+                <div class="d-flex justify-content-center align-items-center gap-2 mt-2">
+                  <button type="button" class="btn btn-secondary px-4 py-2">
+                    <i class="bi bi-folder2-open me-1"></i> Browse File
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary px-3 py-2" id="btnSample" onclick="event.stopPropagation()">
+                    <i class="bi bi-filetype-svg me-1"></i> Sample SVG
+                  </button>
+                </div>
               </div>
 
               <!-- Minification Area (Hidden initially) -->
               <div id="minifierArea" class="d-none">
-                <!-- Optimization Stats Banner -->
-                <div class="p-3 rounded mb-4 border border-secondary border-opacity-25 d-flex justify-content-between align-items-center flex-wrap gap-3 tool-panel">
-                  <div>
-                    <span class="text-secondary small">Original: <strong id="origSizeLabel" class="text-white">0 B</strong></span>
-                    <span class="text-secondary small mx-2">→</span>
-                    <span class="text-secondary small">Minified: <strong id="minSizeLabel" class="text-success">0 B</strong></span>
-                  </div>
-                  <div class="d-flex gap-2 align-items-center">
-                    <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25 fs-6 py-2 px-3" id="reductionLabel">-0%</span>
-                    <button type="button" class="btn btn-sm btn-outline-secondary btn-icon" id="btnCopyMin" title="Copy SVG Code" aria-label="Copy SVG Code">
-                      <i class="bi bi-clipboard"></i>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-primary btn-icon" id="btnDownloadSvg" title="Download .min.svg" aria-label="Download .min.svg">
-                      <i class="bi bi-download"></i>
-                    </button>
-                  </div>
-                </div>
-
                 <!-- Visual Comparison (Original vs Minified) -->
                 <div class="row g-3 mb-4">
                   <div class="col-md-6">
@@ -145,9 +120,30 @@
                 </div>
 
                 <!-- Code View -->
-                <div class="mb-3">
+                <div class="mb-4">
                   <label class="form-label text-secondary small fw-bold mb-1">Minified SVG Code:</label>
                   <div class="code-box" id="minCodeBox"></div>
+                </div>
+
+                <!-- Action Bar & Controls below line -->
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 mt-4 text-center text-md-start">
+                  <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2 flex-wrap">
+                    <span class="text-secondary small">Original: <strong id="origSizeLabel" class="text-white">0 B</strong></span>
+                    <span class="text-secondary small">→</span>
+                    <span class="text-secondary small">Minified: <strong id="minSizeLabel" class="text-success">0 B</strong></span>
+                    <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25 py-1 px-2" id="reductionLabel">-0%</span>
+                  </div>
+                  <div class="d-flex justify-content-center align-items-center gap-2 flex-nowrap">
+                    <button type="button" class="btn btn-outline-secondary btn-icon" onclick="document.getElementById('fileInput').click()" title="Change SVG" aria-label="Change SVG">
+                      <i class="bi bi-arrow-counterclockwise"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary btn-icon" id="btnCopyMin" title="Copy SVG Code" aria-label="Copy SVG Code">
+                      <i class="bi bi-clipboard"></i>
+                    </button>
+                    <button type="button" class="btn btn-primary btn-icon" id="btnDownloadSvg" title="Download .min.svg" aria-label="Download .min.svg">
+                      <i class="bi bi-download"></i>
+                    </button>
+                  </div>
                 </div>
 
               </div>

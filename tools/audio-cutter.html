@@ -41,32 +41,25 @@
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
             <div class="tool-card">
-              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
-                <div>
-                  <h2 class="fs-4 fw-bold text-white mb-2">Audio Cutter</h2>
+              <h2 class="fs-4 fw-bold text-white mb-2">Audio Cutter</h2>
               <p class="text-secondary mb-4">
                 Cut songs and voice recordings with millisecond precision directly in your browser. Lossless export to WAV format.
               </p>
-                </div>
-                <div class="d-flex gap-2">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" id="btnSampleAudio">
-                    <i class="bi bi-music-note-beamed me-1"></i> Sample Tune
-                  </button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.getElementById('audioFileInput').click()">
-                    <i class="bi bi-upload me-1"></i> Open Audio
-                  </button>
-                  <input type="file" id="audioFileInput" accept="audio/*" class="d-none">
-                </div>
-              </div>
 
               <!-- Upload Dropzone -->
               <div id="dropzone" class="tool-dropzone mb-4" onclick="document.getElementById('audioFileInput').click()">
                 <i class="bi bi-soundwave fs-1 text-secondary mb-2"></i>
                 <h5 class="mt-2 mb-1 text-white fw-semibold">Choose or drop an audio file here</h5>
                 <p class="text-secondary small mb-3">Supports MP3, WAV, AAC, and OGG. 100% processed in memory.</p>
-                <button type="button" class="btn btn-secondary px-4 py-2">
-                  <i class="bi bi-folder2-open me-1"></i> Browse Audio File
-                </button>
+                <input type="file" id="audioFileInput" accept="audio/*" class="d-none">
+                <div class="d-flex justify-content-center align-items-center gap-2 mt-2">
+                  <button type="button" class="btn btn-secondary px-4 py-2">
+                    <i class="bi bi-folder2-open me-1"></i> Browse Audio File
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary px-3 py-2" id="btnSampleAudio" onclick="event.stopPropagation()">
+                    <i class="bi bi-music-note-beamed me-1"></i> Sample Tune
+                  </button>
+                </div>
               </div>
 
               <!-- Audio Editor Workspace (Hidden initially) -->
@@ -99,7 +92,7 @@
                     <button type="button" class="btn btn-primary px-3" id="btnPlayPause">
                       <i class="bi bi-play-fill fs-5" id="playIcon"></i> Play
                     </button>
-                    <button type="button" class="btn btn-outline-secondary" id="btnStop">
+                    <button type="button" class="btn btn-outline-secondary btn-icon" id="btnStop" title="Stop Playback" aria-label="Stop Playback">
                       <i class="bi bi-stop-fill"></i>
                     </button>
                     <div class="form-check form-check-inline ms-2 mb-0">
@@ -143,22 +136,27 @@
                   </div>
                 </div>
 
-                <!-- Export & Audio Effects -->
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                  <div class="d-flex align-items-center gap-3">
-                    <div class="form-check">
+                <!-- Action Bar & Controls below line -->
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 mt-4 text-center text-md-start">
+                  <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-3">
+                    <div class="form-check mb-0">
                       <input class="form-check-input" type="checkbox" id="chkFadeIn">
                       <label class="form-check-label text-white small" for="chkFadeIn">Fade In (1s)</label>
                     </div>
-                    <div class="form-check">
+                    <div class="form-check mb-0">
                       <input class="form-check-input" type="checkbox" id="chkFadeOut">
                       <label class="form-check-label text-white small" for="chkFadeOut">Fade Out (1s)</label>
                     </div>
                   </div>
 
-                  <button type="button" class="btn btn-primary btn-icon" id="btnExportWav" title="Export & Download WAV" aria-label="Export & Download WAV">
-                    <i class="bi bi-download"></i>
-                  </button>
+                  <div class="d-flex justify-content-center align-items-center gap-2 flex-nowrap">
+                    <button type="button" class="btn btn-outline-secondary btn-icon" onclick="resetAudioEditor()" title="Change Audio" aria-label="Change Audio">
+                      <i class="bi bi-arrow-counterclockwise"></i>
+                    </button>
+                    <button type="button" class="btn btn-primary btn-icon" id="btnExportWav" title="Export & Download WAV" aria-label="Export & Download WAV">
+                      <i class="bi bi-download"></i>
+                    </button>
+                  </div>
                 </div>
 
               </div>

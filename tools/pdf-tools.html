@@ -76,15 +76,23 @@
                   </div>
 
                   <div id="mergeFileListSection" class="d-none mb-4">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                      <h6 class="fw-bold text-white mb-0">Selected PDFs (<span id="mergeFileCount">0</span> files)</h6>
-                      <button type="button" class="btn btn-sm btn-outline-secondary px-3" id="btnClearMerge">Clear All</button>
-                    </div>
                     <div id="mergeFileList" class="mb-3"></div>
 
-                    <button type="button" id="btnMergePdf" class="btn btn-primary w-100 py-2 fw-semibold">
-                      <i class="bi bi-intersect me-1"></i> Merge Files Now
-                    </button>
+                    <!-- Bottom Action Bar below line -->
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 mt-4 text-center text-md-start">
+                      <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                        <span class="text-secondary small">Queue:</span>
+                        <span class="text-white fw-bold"><span id="mergeFileCount">0</span> files selected</span>
+                      </div>
+                      <div class="d-flex justify-content-center align-items-center gap-2">
+                        <button type="button" class="btn btn-outline-secondary btn-icon" id="btnClearMerge" title="Clear All" aria-label="Clear All">
+                          <i class="bi bi-trash3"></i>
+                        </button>
+                        <button type="button" id="btnMergePdf" class="btn btn-primary btn-icon" title="Merge Files Now" aria-label="Merge Files Now">
+                          <i class="bi bi-intersect"></i>
+                        </button>
+                      </div>
+                    </div>
                   </div>
 
                   <div id="mergeResultBox" class="p-3 border border-secondary border-opacity-25 rounded d-none tool-panel">
@@ -116,11 +124,6 @@
                   </div>
 
                   <div id="imgListSection" class="d-none mb-4">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                      <h6 class="fw-bold text-white mb-0">Image Queue (<span id="imgFileCount">0</span> images)</h6>
-                      <button type="button" class="btn btn-sm btn-outline-secondary px-3" id="btnClearImgs">Clear All</button>
-                    </div>
-
                     <div class="row g-2 mb-3">
                       <div class="col-md-6">
                         <label class="form-label text-secondary small fw-semibold mb-1">Page Layout:</label>
@@ -141,9 +144,21 @@
 
                     <div id="imgFileList" class="mb-3"></div>
 
-                    <button type="button" id="btnConvertImg2Pdf" class="btn btn-primary w-100 py-2 fw-semibold">
-                      <i class="bi bi-file-earmark-pdf me-1"></i> Build PDF Document
-                    </button>
+                    <!-- Bottom Action Bar below line -->
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 mt-4 text-center text-md-start">
+                      <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                        <span class="text-secondary small">Queue:</span>
+                        <span class="text-white fw-bold"><span id="imgFileCount">0</span> images selected</span>
+                      </div>
+                      <div class="d-flex justify-content-center align-items-center gap-2">
+                        <button type="button" class="btn btn-outline-secondary btn-icon" id="btnClearImgs" title="Clear All" aria-label="Clear All">
+                          <i class="bi bi-trash3"></i>
+                        </button>
+                        <button type="button" id="btnConvertImg2Pdf" class="btn btn-primary btn-icon" title="Build PDF Document" aria-label="Build PDF Document">
+                          <i class="bi bi-file-earmark-pdf"></i>
+                        </button>
+                      </div>
+                    </div>
                   </div>
 
                   <div id="imgResultBox" class="p-3 border border-secondary border-opacity-25 rounded d-none tool-panel">
@@ -289,9 +304,9 @@
             <small class="text-secondary">(${formatBytes(file.size)})</small>
           </div>
           <div class="d-flex gap-1 flex-shrink-0">
-            <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" onclick="moveMergeFile(${idx}, -1)" ${idx === 0 ? 'disabled' : ''}><i class="bi bi-arrow-up"></i></button>
-            <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" onclick="moveMergeFile(${idx}, 1)" ${idx === mergeFiles.length - 1 ? 'disabled' : ''}><i class="bi bi-arrow-down"></i></button>
-            <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" onclick="removeMergeFile(${idx})"><i class="bi bi-x"></i></button>
+            <button type="button" class="btn btn-outline-secondary btn-icon btn-sm" onclick="moveMergeFile(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} title="Move Up"><i class="bi bi-arrow-up"></i></button>
+            <button type="button" class="btn btn-outline-secondary btn-icon btn-sm" onclick="moveMergeFile(${idx}, 1)" ${idx === mergeFiles.length - 1 ? 'disabled' : ''} title="Move Down"><i class="bi bi-arrow-down"></i></button>
+            <button type="button" class="btn btn-outline-secondary btn-icon btn-sm" onclick="removeMergeFile(${idx})" title="Remove"><i class="bi bi-x"></i></button>
           </div>
         `;
         mergeFileList.appendChild(item);
@@ -401,9 +416,9 @@
             </div>
           </div>
           <div class="d-flex gap-1 flex-shrink-0">
-            <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" onclick="moveImgFile(${idx}, -1)" ${idx === 0 ? 'disabled' : ''}><i class="bi bi-arrow-up"></i></button>
-            <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" onclick="moveImgFile(${idx}, 1)" ${idx === imgFiles.length - 1 ? 'disabled' : ''}><i class="bi bi-arrow-down"></i></button>
-            <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" onclick="removeImgFile(${idx})"><i class="bi bi-x"></i></button>
+            <button type="button" class="btn btn-outline-secondary btn-icon btn-sm" onclick="moveImgFile(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} title="Move Up"><i class="bi bi-arrow-up"></i></button>
+            <button type="button" class="btn btn-outline-secondary btn-icon btn-sm" onclick="moveImgFile(${idx}, 1)" ${idx === imgFiles.length - 1 ? 'disabled' : ''} title="Move Down"><i class="bi bi-arrow-down"></i></button>
+            <button type="button" class="btn btn-outline-secondary btn-icon btn-sm" onclick="removeImgFile(${idx})" title="Remove"><i class="bi bi-x"></i></button>
           </div>
         `;
         imgFileList.appendChild(item);

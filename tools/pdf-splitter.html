@@ -80,12 +80,11 @@
                     <input type="text" id="rangeInput" class="form-control" placeholder="e.g. 1-3, 5, 8">
                     <button class="btn btn-outline-secondary" type="button" id="btnApplyRange">Select Range</button>
                   </div>
-                  <div class="d-flex gap-2 flex-wrap mb-3">
+                  <div class="d-flex gap-2 flex-wrap mb-2">
                     <button type="button" class="btn btn-sm btn-outline-secondary py-0" id="btnSelectAll">All</button>
                     <button type="button" class="btn btn-sm btn-outline-secondary py-0" id="btnSelectNone">None</button>
                     <button type="button" class="btn btn-sm btn-outline-secondary py-0" id="btnSelectOdd">Odd Pages</button>
                     <button type="button" class="btn btn-sm btn-outline-secondary py-0" id="btnSelectEven">Even Pages</button>
-                    <span class="text-secondary small ms-auto align-self-center" id="selectedCount">0 pages selected</span>
                   </div>
                 </div>
 
@@ -97,11 +96,20 @@
                   </div>
                 </div>
 
-                <!-- Split Options & Execute -->
-                <div class="d-flex gap-2 justify-content-end">
-                  <button type="button" class="btn btn-primary px-4 py-2 fw-semibold" id="btnSplit">
-                    <i class="bi bi-scissors me-1"></i> Extract & Download PDF
-                  </button>
+                <!-- Action Bar & Controls below line -->
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 mt-4 text-center text-md-start">
+                  <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                    <span class="text-secondary small">Selection:</span>
+                    <span class="text-white fw-bold" id="selectedCount">0 pages selected</span>
+                  </div>
+                  <div class="d-flex justify-content-center align-items-center gap-2 flex-nowrap">
+                    <button type="button" class="btn btn-outline-secondary btn-icon" onclick="resetSplitter()" title="Change PDF" aria-label="Change PDF">
+                      <i class="bi bi-arrow-counterclockwise"></i>
+                    </button>
+                    <button type="button" class="btn btn-primary btn-icon" id="btnSplit" title="Extract & Download PDF" aria-label="Extract & Download PDF">
+                      <i class="bi bi-scissors"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
 

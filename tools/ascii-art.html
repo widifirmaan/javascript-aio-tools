@@ -41,17 +41,10 @@
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
             <div class="tool-card">
-              <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
-                <div>
-                  <h2 class="fs-4 fw-bold text-white mb-2">ASCII Art Generator</h2>
+              <h2 class="fs-4 fw-bold text-white mb-2">ASCII Art Generator</h2>
               <p class="text-secondary mb-4">
                 Transform any photo, logo, or icon into high-fidelity ASCII characters, colored HTML, or ANSI terminal codes.
               </p>
-                </div>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="btnSampleAscii">
-                  <i class="bi bi-stars me-1"></i> Load Sample Image
-                </button>
-              </div>
 
               <!-- Dropzone -->
               <div class="tool-dropzone mb-3" id="dropzoneAscii" onclick="document.getElementById('asciiFileInput').click()">
@@ -59,9 +52,14 @@
                 <h5 class="mt-2 mb-1 text-white fw-semibold">Choose or drop an image to convert</h5>
                 <p class="text-secondary small mb-3">Supports JPG, PNG, WebP, SVG</p>
                 <input type="file" id="asciiFileInput" class="d-none" accept="image/*">
-                <button type="button" class="btn btn-secondary px-4 py-2">
-                  <i class="bi bi-folder2-open me-1"></i> Browse File
-                </button>
+                <div class="d-flex justify-content-center align-items-center gap-2 mt-2">
+                  <button type="button" class="btn btn-secondary px-4 py-2">
+                    <i class="bi bi-folder2-open me-1"></i> Browse File
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary px-3 py-2" id="btnSampleAscii" onclick="event.stopPropagation()">
+                    <i class="bi bi-stars me-1"></i> Sample Image
+                  </button>
+                </div>
               </div>
 
               <!-- Controls Toolbar -->
@@ -95,7 +93,7 @@
                     </select>
                   </div>
 
-                  <div class="col-sm-6 col-md-6 d-flex align-items-center gap-3">
+                  <div class="col-sm-6 col-md-12 d-flex align-items-center gap-3">
                     <div class="form-check form-switch">
                       <input class="form-check-input" type="checkbox" id="checkInvert">
                       <label class="form-check-label text-white small" for="checkInvert">Invert Brightness</label>
@@ -105,30 +103,31 @@
                       <label class="form-check-label text-white small" for="checkHighContrast">Boost Contrast</label>
                     </div>
                   </div>
-
-                  <div class="col-sm-6 col-md-6 text-sm-end">
-                    <span id="asciiStats" class="text-secondary small">Ready for image upload</span>
-                  </div>
                 </div>
               </div>
 
               <!-- Output Box -->
-              <div class="position-relative mb-3">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                  <span class="text-secondary small fw-bold">Output Preview:</span>
-                  <div class="btn-group btn-group-sm">
-                    <button type="button" class="btn btn-outline-secondary btn-icon" id="btnCopyText" title="Copy Text Art" aria-label="Copy Text Art">
-                      <i class="bi bi-clipboard"></i>
-                    </button>
-                    <button type="button" class="btn btn-outline-secondary btn-icon" id="btnDownloadTxt" title="Download Text (.txt)" aria-label="Download Text (.txt)">
-                      <i class="bi bi-file-earmark-text"></i>
-                    </button>
-                    <button type="button" class="btn btn-primary btn-icon" id="btnDownloadPng" title="Export as PNG Image" aria-label="Export as PNG Image">
-                      <i class="bi bi-download"></i>
-                    </button>
-                  </div>
-                </div>
+              <div class="position-relative mb-4">
+                <label class="form-label text-secondary small fw-bold mb-2">Output Preview:</label>
                 <div id="asciiOutputBox" class="ascii-preview-box text-white">Upload an image or click "Load Sample Image" above to generate ASCII art...</div>
+              </div>
+
+              <!-- Action Bar & Controls below line -->
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 text-center text-md-start">
+                <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                  <span id="asciiStats" class="text-secondary small">Ready for image upload</span>
+                </div>
+                <div class="d-flex justify-content-center align-items-center gap-2 flex-nowrap">
+                  <button type="button" class="btn btn-outline-secondary btn-icon" id="btnCopyText" title="Copy Text Art" aria-label="Copy Text Art">
+                    <i class="bi bi-clipboard"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary btn-icon" id="btnDownloadTxt" title="Download Text (.txt)" aria-label="Download Text (.txt)">
+                    <i class="bi bi-file-earmark-text"></i>
+                  </button>
+                  <button type="button" class="btn btn-primary btn-icon" id="btnDownloadPng" title="Export as PNG Image" aria-label="Export as PNG Image">
+                    <i class="bi bi-download"></i>
+                  </button>
+                </div>
               </div>
 
             </div>

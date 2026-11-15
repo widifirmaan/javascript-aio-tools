@@ -41,17 +41,10 @@
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
             <div class="tool-card">
-              <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
-                <div>
-                  <h2 class="fs-4 fw-bold text-white mb-2">Instrument Tuner</h2>
+              <h2 class="fs-4 fw-bold text-white mb-2">Instrument Tuner</h2>
               <p class="text-secondary mb-4">
                 High-precision musical pitch detection via Web Audio API autocorrelation. Tune guitars, basses, violins, or voice.
               </p>
-                </div>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="btnTestTone">
-                  <i class="bi bi-play-circle me-1"></i> Test Note (A4 440Hz)
-                </button>
-              </div>
 
               <!-- Main Visual Tuner Box -->
               <div class="gauge-container mb-4">
@@ -74,15 +67,8 @@
                 </div>
                 <div class="d-flex justify-content-between max-w-440 mx-auto small text-secondary px-1" style="max-width: 440px;">
                   <span>-50 (Flat)</span>
-                  <span id="tuneStatusText" class="fw-bold text-secondary">Ready to listen</span>
+                  <span class="fw-semibold text-secondary">In Tune</span>
                   <span>+50 (Sharp)</span>
-                </div>
-
-                <!-- Primary Listening Toggle Button -->
-                <div class="mt-4">
-                  <button type="button" class="btn btn-primary px-4 py-2 fw-semibold" id="btnToggleMic">
-                    <i class="bi bi-mic-fill me-1"></i> <span id="micBtnText">Start Listening</span>
-                  </button>
                 </div>
               </div>
 
@@ -129,6 +115,23 @@
                     <span>High (Quiet)</span>
                     <span>Low (Loud)</span>
                   </div>
+                </div>
+              </div>
+
+              <!-- Action Bar -->
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 mt-4 text-center text-md-start">
+                <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                  <span class="text-secondary small">Status:</span>
+                  <span id="tuneStatusText" class="fw-bold text-white">Ready to listen</span>
+                </div>
+                <div class="d-flex justify-content-center align-items-center gap-2">
+                  <button type="button" class="btn btn-outline-secondary btn-icon" id="btnTestTone" title="Play Reference Tone (A4 440Hz)" aria-label="Play Reference Tone (A4 440Hz)">
+                    <i class="bi bi-volume-up"></i>
+                  </button>
+                  <button type="button" class="btn btn-primary btn-icon" id="btnToggleMic" title="Toggle Microphone" aria-label="Toggle Microphone">
+                    <i class="bi bi-mic-fill" id="micIcon"></i>
+                    <span id="micBtnText" class="visually-hidden">Start Listening</span>
+                  </button>
                 </div>
               </div>
 

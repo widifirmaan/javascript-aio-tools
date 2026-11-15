@@ -107,13 +107,13 @@
                 <i class="bi bi-check-circle-fill text-success fs-1 mb-2 d-inline-block"></i>
                 <h5 class="mt-2 mb-1 text-white fw-bold">Recording Finished</h5>
                 <p class="text-secondary small mb-3" id="resultDetails">Your recording is ready for preview and download.</p>
-                <div class="d-flex justify-content-center align-items-center gap-2">
+                <div class="d-flex justify-content-center align-items-center gap-2 pt-3 border-top border-secondary border-opacity-25 mt-3">
+                  <button type="button" class="btn btn-outline-secondary btn-icon" onclick="resetRecorder()" title="Record Again" aria-label="Record Again">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                  </button>
                   <a id="btnDownloadVideo" href="#" class="btn btn-primary btn-icon" title="Download Recording (.webm)" aria-label="Download Recording (.webm)">
                     <i class="bi bi-download"></i>
                   </a>
-                  <button type="button" class="btn btn-outline-secondary btn-icon" onclick="resetRecorder()" title="Record Again" aria-label="Record Again">
-                    <i class="bi bi-arrow-repeat"></i>
-                  </button>
                 </div>
               </div>
 
