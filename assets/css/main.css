@@ -2672,12 +2672,15 @@ textarea:-ms-input-placeholder,
   gap: 0.25rem;
   flex-wrap: nowrap;
   overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 1px;
 }
 
 .service-details .nav-tabs .nav-link {
   color: rgba(255, 255, 255, 0.7);
   background: transparent;
   border: 1px solid transparent;
+  border-bottom: 2px solid transparent;
   border-top-left-radius: var(--bs-border-radius, 0.375rem);
   border-top-right-radius: var(--bs-border-radius, 0.375rem);
   padding: 0.5rem 1rem;
@@ -2688,6 +2691,7 @@ textarea:-ms-input-placeholder,
 .service-details .nav-tabs .nav-link:hover {
   color: #ffffff;
   border-color: rgba(255, 255, 255, 0.15) rgba(255, 255, 255, 0.15) transparent;
+  border-bottom: 2px solid transparent;
 }
 
 .service-details .nav-tabs .nav-link.active {
