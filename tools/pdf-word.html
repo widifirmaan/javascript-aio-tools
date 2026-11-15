@@ -377,6 +377,109 @@
       }
     }
 
+    function extractPageImages(page, opList, viewport) {
+      if (!opList || !opList.fnArray) return [];
+
+      function transformMatrix(m1, m2) {
+        return [
+          m1[0] * m2[0] + m1[2] * m2[1],
+          m1[1] * m2[0] + m1[3] * m2[1],
+          m1[0] * m2[2] + m1[2] * m2[3],
+          m1[1] * m2[2] + m1[3] * m2[3],
+          m1[0] * m2[4] + m1[2] * m2[5] + m1[4],
+          m1[1] * m2[4] + m1[3] * m2[5] + m1[5]
+        ];
+      }
+
+      let ctm = [1, 0, 0, 1, 0, 0];
+      const stack = [];
+      const images = [];
+
+      for (let i = 0; i < opList.fnArray.length; i++) {
+        const fn = opList.fnArray[i];
+        const args = opList.argsArray[i];
+
+        if (fn === pdfjsLib.OPS.save) {
+          stack.push([...ctm]);
+        } else if (fn === pdfjsLib.OPS.restore) {
+          if (stack.length > 0) ctm = stack.pop();
+        } else if (fn === pdfjsLib.OPS.transform) {
+          ctm = transformMatrix(ctm, args);
+        } else if (fn === pdfjsLib.OPS.paintImageXObject) {
+          const objId = args[0];
+          const imgObj = page.objs.get(objId);
+          if (!imgObj || !imgObj.width || !imgObj.height) continue;
+
+          const w = Math.hypot(ctm[0], ctm[1]);
+          const h = Math.hypot(ctm[2], ctm[3]);
+          const x = ctm[4];
+          const y = ctm[5];
+          const topY = viewport.height - y - h;
+
+          try {
+            const canvas = document.createElement('canvas');
+            canvas.width = imgObj.width;
+            canvas.height = imgObj.height;
+            const ctx = canvas.getContext('2d');
+
+            if (imgObj.bitmap) {
+              ctx.drawImage(imgObj.bitmap, 0, 0);
+            } else if (imgObj.data) {
+              const imgData = ctx.createImageData(imgObj.width, imgObj.height);
+              if (imgObj.data.length === imgObj.width * imgObj.height * 4) {
+                imgData.data.set(imgObj.data);
+              } else if (imgObj.data.length === imgObj.width * imgObj.height * 3) {
+                let srcIdx = 0, dstIdx = 0;
+                while (srcIdx < imgObj.data.length) {
+                  imgData.data[dstIdx] = imgObj.data[srcIdx];
+                  imgData.data[dstIdx + 1] = imgObj.data[srcIdx + 1];
+                  imgData.data[dstIdx + 2] = imgObj.data[srcIdx + 2];
+                  imgData.data[dstIdx + 3] = 255;
+                  srcIdx += 3;
+                  dstIdx += 4;
+                }
+              } else if (imgObj.data.length === imgObj.width * imgObj.height) {
+                let srcIdx = 0, dstIdx = 0;
+                while (srcIdx < imgObj.data.length) {
+                  const v = imgObj.data[srcIdx];
+                  imgData.data[dstIdx] = v;
+                  imgData.data[dstIdx + 1] = v;
+                  imgData.data[dstIdx + 2] = v;
+                  imgData.data[dstIdx + 3] = 255;
+                  srcIdx++;
+                  dstIdx += 4;
+                }
+              }
+              ctx.putImageData(imgData, 0, 0);
+            }
+
+            const dataUrl = canvas.toDataURL('image/png');
+            const b64 = dataUrl.split(',')[1];
+            const bin = atob(b64);
+            const bytes = new Uint8Array(bin.length);
+            for (let b = 0; b < bin.length; b++) bytes[b] = bin.charCodeAt(b);
+
+            const safeX = Math.max(0, Math.round(x));
+            const safeY = Math.max(0, Math.round(topY));
+            const safeW = Math.max(10, Math.round(w));
+            const safeH = Math.max(10, Math.round(h));
+
+            images.push({
+              bytes,
+              x: safeX,
+              topY: safeY,
+              width: safeW,
+              height: safeH
+            });
+          } catch (imgErr) {
+            console.warn('Image extraction failed for', objId, imgErr);
+          }
+        }
+      }
+
+      return images;
+    }
+
     function getFontDetails(it, styles, fontMap) {
       const style = (styles && it.fontName && styles[it.fontName]) || {};
       const fontObj = (fontMap && it.fontName && fontMap[it.fontName]) || {};
@@ -734,7 +837,33 @@
             }
           };
 
-          if (rawItems.length === 0) {
+          // Extract embedded images (logos, product photos, badges, signatures, stamps)
+          const embeddedImages = extractPageImages(page, opList, viewport);
+          const imageParagraphs = embeddedImages.map(img => {
+            return new docx.Paragraph({
+              frame: {
+                position: { x: img.x * 20, y: img.topY * 20 },
+                width: img.width * 20,
+                height: img.height * 20,
+                anchor: {
+                  horizontal: docx.FrameAnchorType.PAGE,
+                  vertical: docx.FrameAnchorType.PAGE
+                },
+                wrap: docx.FrameWrap.NONE
+              },
+              children: [
+                new docx.ImageRun({
+                  data: img.bytes,
+                  transformation: {
+                    width: img.width,
+                    height: img.height
+                  }
+                })
+              ]
+            });
+          });
+
+          if (rawItems.length === 0 && embeddedImages.length === 0) {
             // Scanned / Image-only PDF page: fallback to high-resolution ImageRun
             try {
               progressStatus.textContent = `Rendering scanned page ${pageNum}...`;
@@ -745,7 +874,7 @@
               const ctx = canvas.getContext('2d');
               await page.render({ canvasContext: ctx, viewport: renderViewport }).promise;
 
-              const dataUrl = canvas.toDataURL('image/jpeg', 0.90);
+              const dataUrl = canvas.toDataURL('image/png');
               const b64 = dataUrl.split(',')[1];
               const bin = atob(b64);
               const imgBytes = new Uint8Array(bin.length);
@@ -775,11 +904,13 @@
 
           // Universal Spatial Block Extraction (all document forms: papers, invoices, certificates, tables, contracts)
           const blocks = extractSpatialBlocks(rawItems, viewport);
-          const pageParagraphs = blocks.map(block => buildFramedParagraph(block, styles, viewport.width, fontMap));
+          const textParagraphs = blocks.map(block => buildFramedParagraph(block, styles, viewport.width, fontMap));
+
+          const allPageParagraphs = [...imageParagraphs, ...textParagraphs];
 
           pageSections.push({
             properties: sectionProperties,
-            children: pageParagraphs.length > 0 ? pageParagraphs : [
+            children: allPageParagraphs.length > 0 ? allPageParagraphs : [
               new docx.Paragraph({ children: [new docx.TextRun("No extractable content found on this page.")] })
             ]
           });
