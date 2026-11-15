@@ -41,53 +41,53 @@
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
             <div class="tool-card">
-              <h2 class="fs-4 fw-bold text-white mb-2">Kalkulator Perbandingan Ukuran Ban</h2>
+              <h2 class="fs-4 fw-bold text-white mb-2">Tire Comparison</h2>
               <p class="text-secondary mb-4">
-                Bandingkan spesifikasi dua ukuran ban dan velg: diameter luar, tebal sidewall, keliling putaran roda, serta deviasi kecepatan speedometer kendaraan secara akurat.
+                Compare two tire and rim specifications: overall diameter, sidewall height, circumference difference, and speedometer calibration error offset.
               </p>
 
               <!-- Inputs: Side-by-side Tire A vs Tire B -->
               <div class="row g-3 mb-4">
                 <!-- Tire 1 (Original) -->
                 <div class="col-md-6">
-                  <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
+                  <div class="tool-panel">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                      <h6 class="text-white fw-bold mb-0"><i class="bi bi-disc me-2 text-secondary"></i>Tire 1 (OEM / Standar)</h6>
+                      <h6 class="text-white fw-bold mb-0"><i class="bi bi-disc me-2 text-secondary"></i>Tire 1 (OEM / Standard)</h6>
                     </div>
 
                     <div class="mb-2">
-                      <label for="width1" class="form-label text-secondary small mb-1">Lebar Ban (Width mm)</label>
-                      <input type="number" id="width1" value="205" placeholder="Contoh: 205" class="form-control form-control-sm">
+                      <label for="width1" class="form-label text-secondary small mb-1">Tire Width (mm)</label>
+                      <input type="number" id="width1" value="205" placeholder="e.g. 205" class="form-control form-control-sm">
                     </div>
                     <div class="mb-2">
-                      <label for="aspectRatio1" class="form-label text-secondary small mb-1">Aspek Rasio (Profile %)</label>
-                      <input type="number" id="aspectRatio1" value="55" placeholder="Contoh: 55" class="form-control form-control-sm">
+                      <label for="aspectRatio1" class="form-label text-secondary small mb-1">Aspect Ratio (Profile %)</label>
+                      <input type="number" id="aspectRatio1" value="55" placeholder="e.g. 55" class="form-control form-control-sm">
                     </div>
                     <div class="mb-3">
-                      <label for="diameter1" class="form-label text-secondary small mb-1">Diameter Velg (Rim Inci)</label>
-                      <input type="number" id="diameter1" value="16" placeholder="Contoh: 16" class="form-control form-control-sm">
+                      <label for="diameter1" class="form-label text-secondary small mb-1">Rim Diameter (in)</label>
+                      <input type="number" id="diameter1" value="16" placeholder="e.g. 16" class="form-control form-control-sm">
                     </div>
                   </div>
                 </div>
 
                 <!-- Tire 2 (New) -->
                 <div class="col-md-6">
-                  <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
+                  <div class="tool-panel">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                      <h6 class="text-white fw-bold mb-0"><i class="bi bi-disc me-2 text-secondary"></i>Tire 2 (Pengganti / Baru)</h6>
+                      <h6 class="text-white fw-bold mb-0"><i class="bi bi-disc me-2 text-secondary"></i>Tire 2 (New / Replacement)</h6>
                     </div>
 
                     <div class="mb-2">
-                      <label for="width2" class="form-label text-secondary small mb-1">Lebar Ban (Width mm)</label>
-                      <input type="number" id="width2" value="225" placeholder="Contoh: 225" class="form-control form-control-sm">
+                      <label for="width2" class="form-label text-secondary small mb-1">Tire Width (mm)</label>
+                      <input type="number" id="width2" value="225" placeholder="e.g. 225" class="form-control form-control-sm">
                     </div>
                     <div class="mb-2">
-                      <label for="aspectRatio2" class="form-label text-secondary small mb-1">Aspek Rasio (Profile %)</label>
-                      <input type="number" id="aspectRatio2" value="50" placeholder="Contoh: 50" class="form-control form-control-sm">
+                      <label for="aspectRatio2" class="form-label text-secondary small mb-1">Aspect Ratio (Profile %)</label>
+                      <input type="number" id="aspectRatio2" value="50" placeholder="e.g. 50" class="form-control form-control-sm">
                     </div>
                     <div class="mb-3">
-                      <label for="diameter2" class="form-label text-secondary small mb-1">Diameter Velg (Rim Inci)</label>
-                      <input type="number" id="diameter2" value="17" placeholder="Contoh: 17" class="form-control form-control-sm">
+                      <label for="diameter2" class="form-label text-secondary small mb-1">Rim Diameter (in)</label>
+                      <input type="number" id="diameter2" value="17" placeholder="e.g. 17" class="form-control form-control-sm">
                     </div>
                   </div>
                 </div>
@@ -95,36 +95,36 @@
 
               <div class="d-flex justify-content-center mb-4">
                 <button type="button" id="calculateBtn" class="btn btn-primary px-4 py-2 fw-semibold">
-                  <i class="bi bi-calculator me-1"></i> Hitung Perbandingan Ban
+                  <i class="bi bi-calculator me-1"></i> Compare Tires
                 </button>
               </div>
 
               <!-- Results Area -->
-              <div id="results" class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
+              <div id="results" class="tool-panel">
                 <h5 class="fw-bold text-white mb-3 pb-2 border-bottom border-secondary border-opacity-25">
-                  <i class="bi bi-sliders me-2 text-secondary"></i>Hasil Analisis Perbandingan
+                  <i class="bi bi-sliders me-2 text-secondary"></i>Comparison Analysis Results
                 </h5>
 
                 <div class="row g-3 text-center mb-4">
                   <div class="col-sm-4">
-                    <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
-                      <span class="text-secondary small d-block mb-1">Diameter Ban 1</span>
+                    <div class="tool-panel">
+                      <span class="text-secondary small d-block mb-1">Tire 1 Diameter</span>
                       <strong class="text-white fs-5 d-block" id="diameter1Result">24.88" (631.9 mm)</strong>
                       <span class="text-secondary small">OEM</span>
                     </div>
                   </div>
                   <div class="col-sm-4">
-                    <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
-                      <span class="text-secondary small d-block mb-1">Diameter Ban 2</span>
+                    <div class="tool-panel">
+                      <span class="text-secondary small d-block mb-1">Tire 2 Diameter</span>
                       <strong class="text-white fs-5 d-block" id="diameter2Result">25.86" (656.8 mm)</strong>
-                      <span class="text-secondary small">Baru</span>
+                      <span class="text-secondary small">New</span>
                     </div>
                   </div>
                   <div class="col-sm-4">
-                    <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
-                      <span class="text-secondary small d-block mb-1">Selisih Diameter</span>
+                    <div class="tool-panel">
+                      <span class="text-secondary small d-block mb-1">Diameter Difference</span>
                       <strong class="text-white fs-5 d-block" id="diameterDiffResult">+0.98" (+3.94%)</strong>
-                      <span class="text-secondary small" id="fitmentNotice">Toleransi Wajar</span>
+                      <span class="text-secondary small" id="fitmentNotice">Safe</span>
                     </div>
                   </div>
                 </div>
@@ -132,15 +132,15 @@
                 <!-- Speedometer Offset & Circumference -->
                 <div class="row g-3 text-center mb-4">
                   <div class="col-sm-6">
-                    <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
-                      <span class="text-secondary small d-block mb-1">Keliling Roda (Circumference)</span>
-                      <span class="text-white d-block" id="circumferenceDiffResult">Ban 1: 78.16" | Ban 2: 81.24"</span>
+                    <div class="tool-panel">
+                      <span class="text-secondary small d-block mb-1">Wheel Circumference</span>
+                      <span class="text-white d-block" id="circumferenceDiffResult">Tire 1: 1985 mm | Tire 2: 2063 mm</span>
                     </div>
                   </div>
                   <div class="col-sm-6">
-                    <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
-                      <span class="text-secondary small d-block mb-1">Speedometer pada 100 km/jam</span>
-                      <span class="text-white fw-bold d-block" id="speedoResult">Kecepatan Nyata: ~103.9 km/jam</span>
+                    <div class="tool-panel">
+                      <span class="text-secondary small d-block mb-1">Speedometer at 100 km/h</span>
+                      <span class="text-white fw-bold d-block" id="speedoResult">Actual Speed: ~103.9 km/h</span>
                     </div>
                   </div>
                 </div>
@@ -153,7 +153,7 @@
                         <div class="rim-circle" id="rimVisual1">R16</div>
                       </div>
                     </div>
-                    <span class="text-secondary small fw-semibold">Ban Standar</span>
+                    <span class="text-secondary small fw-semibold">Standard Tire</span>
                   </div>
                   <div class="text-center">
                     <div class="tire-container mx-auto mb-2" id="tireContainer2">
@@ -161,7 +161,7 @@
                         <div class="rim-circle" id="rimVisual2">R17</div>
                       </div>
                     </div>
-                    <span class="text-secondary small fw-semibold">Ban Baru</span>
+                    <span class="text-secondary small fw-semibold">New Tire</span>
                   </div>
                 </div>
               </div>
@@ -288,7 +288,7 @@
       const m2 = calculateTireMetrics(width2, aspectRatio2, diameter2);
 
       if (!m1 || !m2) {
-        messageBox.textContent = 'Harap masukkan angka positif yang valid untuk semua kolom spesifikasi.';
+        messageBox.textContent = 'Please enter valid positive numbers for all tire specifications.';
         messageBox.classList.remove('d-none');
         return;
       }
@@ -304,18 +304,18 @@
       diameterDiffResultSpan.className = Math.abs(diffPercent) <= 3 ? 'text-success fs-5 d-block' : 'text-danger fs-5 d-block';
 
       if (Math.abs(diffPercent) <= 3) {
-        fitmentNotice.textContent = 'Aman (Di bawah batas ±3%)';
+        fitmentNotice.textContent = 'Safe (Within ±3% tolerance)';
         fitmentNotice.className = 'text-success small';
       } else {
-        fitmentNotice.textContent = 'Peringatan: Selisih > 3%';
+        fitmentNotice.textContent = 'Warning: Difference > 3%';
         fitmentNotice.className = 'text-danger small fw-bold';
       }
 
-      circumferenceDiffResultSpan.textContent = `Ban 1: ${m1.circumferenceMM.toFixed(0)} mm | Ban 2: ${m2.circumferenceMM.toFixed(0)} mm`;
+      circumferenceDiffResultSpan.textContent = `Tire 1: ${m1.circumferenceMM.toFixed(0)} mm | Tire 2: ${m2.circumferenceMM.toFixed(0)} mm`;
 
       const speedRatio = m2.diameterMM / m1.diameterMM;
       const actualSpeedAt100 = 100 * speedRatio;
-      speedoResultSpan.textContent = `Kecepatan Sebenarnya: ~${actualSpeedAt100.toFixed(1)} km/jam`;
+      speedoResultSpan.textContent = `Actual Speed: ~${actualSpeedAt100.toFixed(1)} km/h`;
 
       rimVisual1.textContent = `R${diameter1}`;
       rimVisual2.textContent = `R${diameter2}`;

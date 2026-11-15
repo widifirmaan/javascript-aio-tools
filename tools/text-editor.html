@@ -41,9 +41,9 @@
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
             <div class="tool-card">
-              <h2 class="fs-4 fw-bold text-white mb-2">Editor Teks & Penghitung Kata</h2>
+              <h2 class="fs-4 fw-bold text-white mb-2">Text Editor</h2>
               <p class="text-secondary mb-4">
-                Editor teks bebas gangguan dengan statistik kata dan karakter langsung. Tulis draf, catatan, atau salin teks secara aman di memori lokal peramban Anda.
+                Distraction-free rich text editor with live word and character count statistics. Write drafts, notes, or edit documents securely in your browser's local memory.
               </p>
 
               <!-- Editor Toolbar -->
@@ -60,17 +60,17 @@
 
                   <!-- Size Select -->
                   <select id="font-size" class="form-select form-select-sm w-auto">
-                    <option value="2">Kecil</option>
+                    <option value="2">Small</option>
                     <option value="3" selected>Normal</option>
-                    <option value="5">Besar</option>
-                    <option value="6">Judul</option>
+                    <option value="5">Large</option>
+                    <option value="6">Heading</option>
                   </select>
 
                   <!-- Style Buttons -->
                   <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" id="bold-btn" class="btn btn-outline-secondary text-white" title="Tebal (Ctrl+B)"><i class="bi bi-type-bold"></i></button>
-                    <button type="button" id="italic-btn" class="btn btn-outline-secondary text-white" title="Miring (Ctrl+I)"><i class="bi bi-type-italic"></i></button>
-                    <button type="button" id="underline-btn" class="btn btn-outline-secondary text-white" title="Garis Bawah (Ctrl+U)"><i class="bi bi-type-underline"></i></button>
+                    <button type="button" id="bold-btn" class="btn btn-outline-secondary text-white" title="Bold (Ctrl+B)"><i class="bi bi-type-bold"></i></button>
+                    <button type="button" id="italic-btn" class="btn btn-outline-secondary text-white" title="Italic (Ctrl+I)"><i class="bi bi-type-italic"></i></button>
+                    <button type="button" id="underline-btn" class="btn btn-outline-secondary text-white" title="Underline (Ctrl+U)"><i class="bi bi-type-underline"></i></button>
                   </div>
                 </div>
 
@@ -78,10 +78,10 @@
                 <div class="d-flex align-items-center gap-2">
                   <input type="file" id="file-import" accept=".txt,.md" class="d-none">
                   <button type="button" id="import-btn" class="btn btn-sm btn-outline-light rounded-pill px-3">
-                    <i class="bi bi-file-earmark-arrow-up me-1"></i> Buka TXT
+                    <i class="bi bi-file-earmark-arrow-up me-1"></i> Open TXT
                   </button>
                   <button type="button" id="save-btn" class="btn btn-sm btn-primary rounded-pill px-3">
-                    <i class="bi bi-download me-1"></i> Simpan File
+                    <i class="bi bi-download me-1"></i> Save Document
                   </button>
                 </div>
               </div>
@@ -89,11 +89,11 @@
               <!-- Main Canvas Area -->
               <div class="editor-wrapper mb-3">
                 <div id="line-numbers">1<br></div>
-                <div id="editor-area" contenteditable="true" spellcheck="false" placeholder="Mulai mengetik tulisan Anda di sini...">Mulai mengetik tulisan atau draf dokumen Anda di sini. Penghitung kata dan karakter akan berjalan secara real-time di bawah.</div>
+                <div id="editor-area" contenteditable="true" spellcheck="false" placeholder="Start typing your text here...">Start typing your document or draft here. Word and character counts will update in real-time below.</div>
               </div>
 
               <!-- Bottom Statistics Bar -->
-              <div class="p-3 rounded border border-secondary border-opacity-25 d-flex flex-wrap align-items-center justify-content-between gap-3 tool-panel">
+              <div class="tool-panel d-flex flex-wrap align-items-center justify-content-between gap-3">
                 <div class="d-flex flex-wrap align-items-center gap-3 text-secondary small">
                   <span class="text-white fw-bold" id="word-count">Words: 0</span>
                   <span>•</span>
@@ -102,7 +102,7 @@
                   <span id="reading-time">Reading: &lt; 1 min</span>
                 </div>
                 <button type="button" class="btn btn-sm btn-outline-danger px-3" onclick="clearEditor()">
-                  <i class="bi bi-trash3 me-1"></i> Bersihkan Teks
+                  <i class="bi bi-trash3 me-1"></i> Clear Text
                 </button>
               </div>
 
@@ -191,7 +191,7 @@
     const saveBtn = document.getElementById('save-btn');
 
     window.clearEditor = function() {
-      if (confirm('Yakin ingin mengosongkan seluruh teks di editor?')) {
+      if (confirm('Are you sure you want to clear the entire editor?')) {
         editorArea.textContent = '';
         updateCounts();
         updateLineNumbers();
