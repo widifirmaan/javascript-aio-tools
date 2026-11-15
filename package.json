@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "npx wrangler pages dev . --port=3000",
-    "test": "node scripts/test-tools.mjs",
+    "test": "node scripts/test-real-all-tools.mjs",
     "deploy": "wrangler pages deploy . --project-name javascript-aio-tools --commit-dirty=true",
     "screenshots:capture": "node scripts/capture.mjs",
     "screenshots:mockup": "node /home/widifirmaan/readme-project/scripts/generate-mockups.mjs --input raw_screenshots --output screenshots",

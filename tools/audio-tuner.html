@@ -335,7 +335,7 @@
       strings.forEach(s => {
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = 'btn btn-sm btn-outline-info px-3';
+        btn.className = 'btn btn-sm btn-outline-secondary px-3';
         btn.innerHTML = `<i class="bi bi-volume-up me-1"></i> ${s.name} (${s.freq} Hz)`;
         btn.addEventListener('click', () => {
           playReferenceTone(s.freq);

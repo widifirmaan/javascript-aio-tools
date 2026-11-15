@@ -366,6 +366,13 @@ function solve() {
                 history.value += "\n" + x + " = " + expression2;
                 gfg_Run();
             }
+            return;
+        }
+
+        if (typeof y !== 'number' || isNaN(y)) {
+            document.getElementById("expression1").value = isNaN(y) ? "NaN" : "Error";
+            expression2 = isNaN(y) ? "NaN" : "Error";
+            return;
         }
 
         var z = y.toFixed(10);

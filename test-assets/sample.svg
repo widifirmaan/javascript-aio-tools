@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" width="200.7891" height="200.1234" viewBox="0 0 200 200">
+  <metadata>
+    <inkscape:meta>Unneeded Bloat Metadata That Should Be Stripped</inkscape:meta>
+  </metadata>
+  <defs>
+    <!-- Vector definitions -->
+    <linearGradient id="grad1">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+  </defs>
+  <circle cx="100.123456" cy="100.987654" r="80.5555" fill="url(#grad1)" />
+  <path d="M 50.12345 50.67891 L 150.98765 150.54321" stroke="#ffffff" stroke-width="4.123" />
+</svg>
