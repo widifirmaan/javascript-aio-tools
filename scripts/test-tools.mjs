@@ -19,7 +19,6 @@ const pages = [
   'tools/image-compressor.html',
   'tools/image-converter.html',
   'tools/pdf-tools.html',
-  'tools/pdf-word.html',
   'tools/qr-code.html',
   'tools/remove-bg.html',
   'tools/text-editor.html',
@@ -39,7 +38,7 @@ async function runTestSuite() {
   let totalErrors = 0;
 
   // -------------------------------------------------------------
-  // PHASE 1: RESPONSIVENESS & PRELOADER CHECK (ALL 11 PAGES)
+  // PHASE 1: RESPONSIVENESS & PRELOADER CHECK (ALL 10 PAGES)
   // -------------------------------------------------------------
   console.log('\n--- PHASE 1: RESPONSIVENESS & OVERFLOW VALIDATION ---');
   for (const pagePath of pages) {
@@ -116,51 +115,8 @@ async function runTestSuite() {
   // -------------------------------------------------------------
   console.log('\n--- PHASE 2: REAL FUNCTIONAL END-TO-END TESTS ---');
 
-  // Test 1: PDF to Word with REAL PDF File
-  console.log('\n[1/10] Testing PDF to Word (Real PDF -> Real DOCX)...');
-  const pdfWordPage = await browser.newPage();
-  await pdfWordPage.goto(`file://${path.join(REPO_ROOT, 'tools/pdf-word.html')}`);
-  await new Promise(r => setTimeout(r, 800));
-
-  const pdfInput = await pdfWordPage.$('#pdfFileInput');
-  await pdfInput.uploadFile(SAMPLE_PDF);
-  await new Promise(r => setTimeout(r, 600));
-
-  const pdfLoaded = await pdfWordPage.evaluate(() => {
-    return document.getElementById('infoFileName').textContent.includes('sample.pdf') &&
-           !document.getElementById('fileDetailsBox').classList.contains('d-none');
-  });
-
-  if (pdfLoaded) {
-    console.log('  ✓ Real sample.pdf parsed and details displayed');
-    await pdfWordPage.click('#btnConvert');
-
-    // Wait for conversion to complete
-    await pdfWordPage.waitForSelector('#resultBox:not(.d-none)', { timeout: 15000 });
-    const conversionResult = await pdfWordPage.evaluate(() => {
-      const btn = document.getElementById('downloadBtn');
-      const info = document.getElementById('resultFileName');
-      return {
-        hasBlob: btn && btn.href.startsWith('blob:'),
-        downloadName: btn ? btn.download : '',
-        infoText: info ? info.textContent : ''
-      };
-    });
-
-    if (conversionResult.hasBlob && conversionResult.downloadName.endsWith('.docx')) {
-      console.log(`  ✓ Successfully converted to DOCX: ${conversionResult.infoText}`);
-    } else {
-      console.error('  ❌ PDF to Word conversion failed to produce valid blob:', conversionResult);
-      totalErrors++;
-    }
-  } else {
-    console.error('  ❌ PDF to Word failed to load sample.pdf');
-    totalErrors++;
-  }
-  await pdfWordPage.close();
-
-  // Test 2: Image Compressor with REAL JPG File
-  console.log('\n[2/10] Testing Image Compressor (Real JPG file compression)...');
+  // Test 1: Image Compressor with REAL JPG File
+  console.log('\n[1/9] Testing Image Compressor (Real JPG file compression)...');
   const compPage = await browser.newPage();
   await compPage.goto(`file://${path.join(REPO_ROOT, 'tools/image-compressor.html')}`);
   await new Promise(r => setTimeout(r, 600));
@@ -192,8 +148,8 @@ async function runTestSuite() {
   }
   await compPage.close();
 
-  // Test 3: Image Converter with REAL PNG File -> WEBP
-  console.log('\n[3/10] Testing Image Converter (Real PNG -> WebP conversion)...');
+  // Test 2: Image Converter with REAL PNG File -> WEBP
+  console.log('\n[2/9] Testing Image Converter (Real PNG -> WebP conversion)...');
   const convPage = await browser.newPage();
   await convPage.goto(`file://${path.join(REPO_ROOT, 'tools/image-converter.html')}`);
   await new Promise(r => setTimeout(r, 600));
@@ -227,8 +183,8 @@ async function runTestSuite() {
   }
   await convPage.close();
 
-  // Test 4: PDF Studio (Real Image to PDF conversion)
-  console.log('\n[4/10] Testing PDF Studio (Real PNG -> PDF conversion)...');
+  // Test 3: PDF Studio (Real Image to PDF conversion)
+  console.log('\n[3/9] Testing PDF Studio (Real PNG -> PDF conversion)...');
   const pdfToolsPage = await browser.newPage();
   await pdfToolsPage.goto(`file://${path.join(REPO_ROOT, 'tools/pdf-tools.html')}`);
   await new Promise(r => setTimeout(r, 600));
@@ -272,40 +228,8 @@ async function runTestSuite() {
   }
   await pdfToolsPage.close();
 
-  // Test 4b: PDF to Word on Image-Only / Scanned PDF
-  if (fs.existsSync(SCANNED_PDF)) {
-    console.log('\n[4b/10] Testing PDF to Word on Image/Scanned PDF (Image -> DOCX ImageRun)...');
-    const scannedWordPage = await browser.newPage();
-    await scannedWordPage.goto(`file://${path.join(REPO_ROOT, 'tools/pdf-word.html')}`);
-    await new Promise(r => setTimeout(r, 600));
-
-    const sInput = await scannedWordPage.$('#pdfFileInput');
-    await sInput.uploadFile(SCANNED_PDF);
-    await new Promise(r => setTimeout(r, 600));
-
-    await scannedWordPage.click('#btnConvert');
-    await scannedWordPage.waitForSelector('#resultBox:not(.d-none)', { timeout: 15000 });
-
-    const scanWordResult = await scannedWordPage.evaluate(() => {
-      const btn = document.getElementById('downloadBtn');
-      const info = document.getElementById('resultFileName');
-      return {
-        hasBlob: btn && btn.href.startsWith('blob:'),
-        infoText: info ? info.textContent : ''
-      };
-    });
-
-    if (scanWordResult.hasBlob && scanWordResult.infoText.includes('.docx')) {
-      console.log(`  ✓ Image-only scanned PDF converted to Word with ImageRun: ${scanWordResult.infoText}`);
-    } else {
-      console.error('  ❌ Failed to convert image-only PDF to Word:', scanWordResult);
-      totalErrors++;
-    }
-    await scannedWordPage.close();
-  }
-
-  // Test 5: QR Code Studio (Real QR generation with canvas rendering)
-  console.log('\n[5/10] Testing QR Code Studio (Real QR generation)...');
+  // Test 4: QR Code Studio (Real QR generation with canvas rendering)
+  console.log('\n[4/9] Testing QR Code Studio (Real QR generation)...');
   const qrPage = await browser.newPage();
   await qrPage.goto(`file://${path.join(REPO_ROOT, 'tools/qr-code.html')}`);
   await new Promise(r => setTimeout(r, 800));
@@ -333,8 +257,8 @@ async function runTestSuite() {
   }
   await qrPage.close();
 
-  // Test 6: Scientific Calculator (Mathematical accuracy)
-  console.log('\n[6/10] Testing Scientific Calculator (Arithmetic & Functions)...');
+  // Test 5: Scientific Calculator (Mathematical accuracy)
+  console.log('\n[5/9] Testing Scientific Calculator (Arithmetic & Functions)...');
   const calcPage = await browser.newPage();
   await calcPage.goto(`file://${path.join(REPO_ROOT, 'tools/calculator.html')}`);
   await new Promise(r => setTimeout(r, 600));
@@ -384,8 +308,8 @@ async function runTestSuite() {
   }
   await calcPage.close();
 
-  // Test 7: Developer Toolbox (JSON Formatter & Base64 Converter)
-  console.log('\n[7/10] Testing Developer Toolbox (JSON parsing & Base64 encoding)...');
+  // Test 6: Developer Toolbox (JSON Formatter & Base64 Converter)
+  console.log('\n[6/9] Testing Developer Toolbox (JSON parsing & Base64 encoding)...');
   const devPage = await browser.newPage();
   await devPage.goto(`file://${path.join(REPO_ROOT, 'tools/dev-tools.html')}`);
   await new Promise(r => setTimeout(r, 600));
@@ -423,8 +347,8 @@ async function runTestSuite() {
   }
   await devPage.close();
 
-  // Test 8: Text Editor (Live Word & Character Counting)
-  console.log('\n[8/10] Testing Text Editor (Live typing, word count, character count)...');
+  // Test 7: Text Editor (Live Word & Character Counting)
+  console.log('\n[7/9] Testing Text Editor (Live typing, word count, character count)...');
   const textPage = await browser.newPage();
   await textPage.goto(`file://${path.join(REPO_ROOT, 'tools/text-editor.html')}`);
   await new Promise(r => setTimeout(r, 600));
@@ -447,8 +371,8 @@ async function runTestSuite() {
   }
   await textPage.close();
 
-  // Test 9: Tire Comparison (Real Tyre Size Formula)
-  console.log('\n[9/10] Testing Tire Comparison (205/55R16 vs 225/45R17)...');
+  // Test 8: Tire Comparison (Real Tyre Size Formula)
+  console.log('\n[8/9] Testing Tire Comparison (205/55R16 vs 225/45R17)...');
   const tirePage = await browser.newPage();
   await tirePage.goto(`file://${path.join(REPO_ROOT, 'tools/tire-comp.html')}`);
   await new Promise(r => setTimeout(r, 600));
@@ -469,8 +393,8 @@ async function runTestSuite() {
   }
   await tirePage.close();
 
-  // Test 10: Background Remover (Real file upload & preview verification)
-  console.log('\n[10/10] Testing Background Remover (Real image upload & preview)...');
+  // Test 9: Background Remover (Real file upload & preview verification)
+  console.log('\n[9/9] Testing Background Remover (Real image upload & preview)...');
   const bgPage = await browser.newPage();
   await bgPage.goto(`file://${path.join(REPO_ROOT, 'tools/remove-bg.html')}`);
   await new Promise(r => setTimeout(r, 600));

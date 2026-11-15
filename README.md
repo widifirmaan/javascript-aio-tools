@@ -28,7 +28,6 @@ JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection
 | Desktop (MacBook Pro) | Mobile (iPhone 16 Pro) |
 | :---: | :---: |
 | **Main Dashboard Desktop**<br>![Dashboard Desktop](screenshots/Dashboard%20Desktop.png) | **Main Dashboard Mobile**<br>![Dashboard Mobile](screenshots/Dashboard%20Mobile.png) |
-| **PDF to Word Converter Desktop**<br>![PDF to Word Desktop](screenshots/PDF%20to%20Word%20Desktop.png) | **PDF to Word Converter Mobile**<br>![PDF to Word Mobile](screenshots/PDF%20to%20Word%20Mobile.png) |
 | **QR Code Studio Desktop**<br>![QR Code Studio Desktop](screenshots/QR%20Code%20Studio%20Desktop.png) | **QR Code Studio Mobile**<br>![QR Code Studio Mobile](screenshots/QR%20Code%20Studio%20Mobile.png) |
 | **PDF Studio (Merge & Img2Pdf) Desktop**<br>![PDF Studio Desktop](screenshots/PDF%20Studio%20Desktop.png) | **PDF Studio Mobile**<br>![PDF Studio Mobile](screenshots/PDF%20Studio%20Mobile.png) |
 | **Developer & Data Toolbox Desktop**<br>![Developer Toolbox Desktop](screenshots/Developer%20Toolbox%20Desktop.png) | **Developer & Data Toolbox Mobile**<br>![Developer Toolbox Mobile](screenshots/Developer%20Toolbox%20Mobile.png) |
@@ -43,13 +42,9 @@ JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection
 
 ## Features
 
-All 10 tools are executed 100% locally in the browser without uploading documents or images to external servers:
+All 9 tools are executed 100% locally in the browser without uploading documents or images to external servers:
 
 ### 1. 📄 Document & PDF Tools
-- **PDF to Word (.docx) Converter** (`tools/pdf-word.html`):
-  - In-browser PDF parsing and layout extraction via **Mozilla PDF.js**.
-  - Direct generation of valid Microsoft Word OpenXML documents (`.docx`) via **DOCX.js**.
-  - Intelligent heading detection, paragraph grouping, and custom page range selection (e.g. `1-5`).
 - **PDF Studio (Merge & Images to PDF)** (`tools/pdf-tools.html`):
   - **Merge PDFs**: Combine multiple PDF files into one clean document with reordering controls.
   - **Images to PDF**: Convert collections of JPG, PNG, and WebP images into a standardized A4 or original-sized PDF document.
@@ -88,7 +83,7 @@ All 10 tools are executed 100% locally in the browser without uploading document
 | Category | Technologies | Purpose |
 | :--- | :--- | :--- |
 | **Core Architecture** | Vanilla JavaScript (ES6+), HTML5, CSS3 | Zero-framework, lightweight client-side application foundation |
-| **Document Processing** | Mozilla PDF.js v3.11, DOCX.js v8.5, PDF-Lib v1.17 | In-browser PDF parsing, Word (.docx) OpenXML compilation, and PDF merging |
+| **Document Processing** | Mozilla PDF.js v3.11, PDF-Lib v1.17 | In-browser PDF parsing, previewing, and PDF merging/creation |
 | **Edge AI & Computer Vision** | `@imgly/background-removal` (WASM), HTML5 Canvas | On-device machine learning for background removal without server GPUs |
 | **QR Code & Camera** | QRCode.js, Html5-QRCode v2.3 | Client-side QR generation and live webcam video stream decoding |
 | **Developer Utilities** | Native Web Crypto, Atob/Btoa, JSON Parser | Secure client-side Base64, URL encoding, and JWT token parsing |
@@ -106,7 +101,6 @@ All 10 tools are executed 100% locally in the browser without uploading document
 │   ├── js/                  # Shared helper scripts
 │   └── vendor/              # Bootstrap, AOS, Swiper, and icon bundles
 ├── tools/                   # Dedicated interactive web applications
-│   ├── pdf-word.html        # PDF to Word (.docx) converter
 │   ├── qr-code.html         # QR code generator and camera scanner
 │   ├── pdf-tools.html       # PDF merger and images-to-PDF converter
 │   ├── dev-tools.html       # JSON formatter, Base64/URL & JWT inspector
@@ -119,7 +113,7 @@ All 10 tools are executed 100% locally in the browser without uploading document
 ├── screenshots/             # Retina MacBook Pro & iPhone 16 Pro showcase mockups
 ├── scripts/                 # Automated Puppeteer screenshot crawler
 ├── _headers                 # Cloudflare Pages HTTP caching & CORS rules
-├── index.html               # Main dashboard with all 10 tools
+├── index.html               # Main dashboard with all 9 tools
 ├── package.json             # NPM metadata and screenshot automation scripts
 ├── wrangler.toml            # Cloudflare Pages deployment configuration
 └── README.md

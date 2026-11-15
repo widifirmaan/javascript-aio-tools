@@ -17,7 +17,6 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const tasks = [
   { name: 'Dashboard', file: 'index.html', scrollY: 0, mobileScrollY: 0 },
-  { name: 'PDF to Word', file: 'tools/pdf-word.html' },
   { name: 'QR Code Studio', file: 'tools/qr-code.html' },
   { name: 'PDF Studio', file: 'tools/pdf-tools.html' },
   { name: 'Developer Toolbox', file: 'tools/dev-tools.html', action: (page) => page.click('#btnSampleJson').catch(() => {}) },
