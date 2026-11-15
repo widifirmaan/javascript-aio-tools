@@ -236,3 +236,10 @@ npm run deploy
 ## Author
 
 Developed by **[Widi Firmansyah](https://widifirmaan.web.id)**.
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
