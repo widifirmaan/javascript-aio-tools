@@ -534,8 +534,8 @@ async function runTestSuite() {
   }
   await splitPage.close();
 
-  // Test 13: Color Palette Extractor (Canvas Quantization & WCAG)
-  console.log('\n[13/17] Testing Color Palette Extractor (Canvas median cut & contrast)...');
+  // Test 13: Color Palette Extractor (Canvas Quantization)
+  console.log('\n[13/17] Testing Color Palette Extractor (Canvas median cut extraction)...');
   const palettePage = await browser.newPage();
   await palettePage.goto(`file://${path.join(REPO_ROOT, 'tools/color-palette.html')}`);
   await new Promise(r => setTimeout(r, 600));
@@ -545,15 +545,13 @@ async function runTestSuite() {
 
   const palResult = await palettePage.evaluate(() => {
     const swatches = document.querySelectorAll('.swatch-card');
-    const contrastRows = document.querySelectorAll('#contrastTableBody tr');
     return {
-      swatchCount: swatches.length,
-      rowCount: contrastRows.length
+      swatchCount: swatches.length
     };
   });
 
-  if (palResult.swatchCount >= 4 && palResult.rowCount >= 4) {
-    console.log(`  ✓ Color Palette: ${palResult.swatchCount} dominant colors extracted with WCAG contrast ratios`);
+  if (palResult.swatchCount >= 4) {
+    console.log(`  ✓ Color Palette: ${palResult.swatchCount} dominant colors extracted successfully`);
   } else {
     console.error('  ❌ Color Palette Extractor failed:', palResult);
     totalErrors++;

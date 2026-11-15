@@ -51,9 +51,9 @@
             <div class="tool-card">
               <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
                 <div>
-                  <h2 class="fs-4 fw-bold text-white mb-1">Client-Side Military-Grade Encryption</h2>
+                  <h2 class="fs-4 fw-bold text-white mb-1">File Encryptor & Decryptor</h2>
                   <p class="text-secondary small mb-0">
-                    Encrypt any file with AES-GCM 256-bit & PBKDF2 (100,000 iterations). 100% processed in memory.
+                    Encrypt and decrypt files locally with AES-256-GCM. 100% processed in-browser.
                   </p>
                 </div>
                 <button type="button" class="btn btn-sm btn-outline-secondary" id="btnLoadSampleDoc">
@@ -218,18 +218,6 @@
           <!-- Sidebar Column (Col 4) -->
           <div class="col-lg-4">
             <div class="d-flex flex-column gap-4">
-              <div class="tool-sidebar-card">
-                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
-                  <i class="bi bi-info-circle me-2 text-secondary"></i>Security Details
-                </h5>
-                <ul class="text-secondary small ps-3 mb-0 d-flex flex-column gap-2">
-                  <li><strong>Algorithm:</strong> AES-GCM 256-bit (Galois/Counter Mode).</li>
-                  <li><strong>Key Derivation:</strong> PBKDF2 with SHA-256 and 100,000 hash iterations.</li>
-                  <li><strong>Authentication:</strong> 128-bit integrity tag prevents tampering.</li>
-                  <li><strong>Zero Server:</strong> Everything runs locally in browser RAM using Web Crypto API.</li>
-                </ul>
-              </div>
-
               <div class="tool-sidebar-card">
                 <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
                   <i class="bi bi-grid me-2 text-secondary"></i>Other Tools

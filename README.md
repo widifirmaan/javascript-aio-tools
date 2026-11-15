@@ -95,8 +95,7 @@ All 23 tools are executed 100% locally in the browser without uploading document
   - Instant image conversion between JPG, PNG, and WebP formats using HTML5 Canvas APIs.
 - **Color Palette Extractor** (`tools/color-palette.html`):
   - Extracts dominant and harmonious color palettes from images using Median-Cut color quantization on HTML5 Canvas.
-  - Swatch displays with HEX, RGB, HSL values, 1-click CSS variable export, JSON export, and downloadable PNG palette card.
-  - Automated WCAG 2.1 contrast ratio scoring against pure white and pure black for accessibility.
+  - Swatch displays with HEX and RGB values, 1-click CSS variable export, JSON export, and downloadable PNG palette card.
 - **SVG Minifier** (`tools/svg-minifier.html`):
   - Strips XML declarations, doctypes, comments, and editor-specific metadata namespaces (Illustrator, Inkscape, Figma).
   - Rounds path coordinate precision, collapses redundant whitespace, and provides live side-by-side vector preview with savings percentage.
@@ -172,7 +171,7 @@ All 23 tools are executed 100% locally in the browser without uploading document
 │   ├── text-diff.html       # Text Diff comparison (LCS, side-by-side & unified)
 │   ├── password-generator.html # Web Crypto secure password & passphrase generator
 │   ├── pdf-splitter.html    # PDF Splitter & page range extractor
-│   ├── color-palette.html   # Canvas color palette extractor & WCAG contrast checker
+│   ├── color-palette.html   # Canvas color palette extractor & CSS variable generator
 │   ├── svg-minifier.html    # SVG Minifier & coordinate optimizer
 │   ├── audio-cutter.html    # Web Audio waveform cutter & WAV generator
 │   ├── photo-metadata.html  # Binary EXIF parser & privacy metadata wiper

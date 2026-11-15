@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Color Palette Extractor - Extract Colors from Images - WIDIFIRMAAN Tools</title>
-  <meta name="description" content="100% private, client-side color palette extractor. Extract dominant colors from images, check WCAG accessibility contrast, and export CSS/Tailwind variables.">
+  <meta name="description" content="100% private, client-side color palette extractor. Extract dominant colors from images and export CSS, HEX, and Tailwind variables.">
   <link href="../assets/img/favicon.png" rel="icon">
   <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -65,12 +65,6 @@
       font-size: 0.75rem;
       color: #94a3b8;
     }
-    .contrast-badge {
-      font-size: 0.72rem;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-weight: 600;
-    }
     .preview-img-container {
       max-height: 320px;
       overflow: hidden;
@@ -119,7 +113,7 @@
                 <div>
                   <h2 class="fs-4 fw-bold text-white mb-1">Color Palette Extractor</h2>
                   <p class="text-secondary small mb-0">
-                    Extract dominant color palettes from any photo or design locally in your browser. Inspect WCAG contrast and export variables.
+                    Extract dominant color palettes from any photo or design locally in your browser. Export HEX, CSS variables, or download a palette card.
                   </p>
                 </div>
                 <div class="d-flex gap-2">
@@ -178,28 +172,6 @@
                 <h6 class="text-white fw-bold mb-2">Dominant Colors (Click to Copy HEX):</h6>
                 <div class="palette-swatches-grid" id="swatchesGrid">
                   <!-- Swatches dynamically populated -->
-                </div>
-
-                <!-- WCAG Accessibility & Contrast Table -->
-                <div class="p-3 rounded border border-secondary border-opacity-25 mb-3" style="background: rgba(255, 255, 255, 0.02);">
-                  <h6 class="text-white fw-bold mb-2"><i class="bi bi-universal-access me-2 text-primary"></i>WCAG 2.1 Accessibility Contrast</h6>
-                  <p class="text-secondary small mb-3">Contrast ratio of each extracted color against white and dark backgrounds:</p>
-                  <div class="table-responsive">
-                    <table class="table table-dark table-sm table-borderless align-middle mb-0" style="background: transparent;">
-                      <thead>
-                        <tr class="text-secondary small border-bottom border-secondary border-opacity-25">
-                          <th>Color</th>
-                          <th>HEX</th>
-                          <th>vs White (#FFF)</th>
-                          <th>vs Black (#000)</th>
-                          <th>Best Text Match</th>
-                        </tr>
-                      </thead>
-                      <tbody id="contrastTableBody" class="small">
-                        <!-- Populated dynamically -->
-                      </tbody>
-                    </table>
-                  </div>
                 </div>
 
               </div>
@@ -281,7 +253,6 @@
     const colorCountRange = document.getElementById('colorCountRange');
     const colorCountLabel = document.getElementById('colorCountLabel');
     const swatchesGrid = document.getElementById('swatchesGrid');
-    const contrastTableBody = document.getElementById('contrastTableBody');
     const btnSample = document.getElementById('btnSample');
     const btnCopyCss = document.getElementById('btnCopyCss');
     const btnCopyJson = document.getElementById('btnCopyJson');
@@ -431,7 +402,6 @@
       });
 
       renderSwatches();
-      renderContrastTable();
     }
 
     function rgbToHex(r, g, b) {
@@ -477,31 +447,6 @@
           });
         });
         swatchesGrid.appendChild(card);
-      });
-    }
-
-    function renderContrastTable() {
-      contrastTableBody.innerHTML = '';
-      const whiteLum = 1.0;
-      const blackLum = 0.0;
-
-      extractedColors.forEach(c => {
-        const ratioWhite = getContrastRatio(c.lum, whiteLum);
-        const ratioBlack = getContrastRatio(c.lum, blackLum);
-
-        const badgeWhite = ratioWhite >= 7.0 ? '<span class="contrast-badge bg-success text-white">AAA (Pass)</span>' : (ratioWhite >= 4.5 ? '<span class="contrast-badge bg-primary text-white">AA (Pass)</span>' : '<span class="contrast-badge bg-danger text-white">Fail</span>');
-        const badgeBlack = ratioBlack >= 7.0 ? '<span class="contrast-badge bg-success text-white">AAA (Pass)</span>' : (ratioBlack >= 4.5 ? '<span class="contrast-badge bg-primary text-white">AA (Pass)</span>' : '<span class="contrast-badge bg-danger text-white">Fail</span>');
-        const bestText = ratioWhite >= ratioBlack ? '<span class="text-white fw-bold">White (#FFF)</span>' : '<span class="text-secondary fw-bold">Black (#000)</span>';
-
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td><span class="d-inline-block rounded-circle me-2" style="width: 14px; height: 14px; background-color: ${c.hex}; vertical-align: middle;"></span></td>
-          <td class="font-monospace text-white">${c.hex}</td>
-          <td>${ratioWhite.toFixed(2)}:1 ${badgeWhite}</td>
-          <td>${ratioBlack.toFixed(2)}:1 ${badgeBlack}</td>
-          <td>${bestText}</td>
-        `;
-        contrastTableBody.appendChild(row);
       });
     }
 
