@@ -13,74 +13,6 @@
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
 
-  <style>
-    .palette-swatches-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-    .swatch-card {
-      background: #191919;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: border-color 0.15s ease;
-    }
-    .swatch-card:hover {
-      border-color: rgba(255, 255, 255, 0.25);
-    }
-    .swatch-color {
-      height: 95px;
-      width: 100%;
-      position: relative;
-    }
-    .swatch-copy-hint {
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 0.8rem;
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-    .swatch-card:hover .swatch-copy-hint {
-      opacity: 1;
-    }
-    .swatch-details {
-      padding: 10px;
-      text-align: center;
-    }
-    .swatch-hex {
-      font-family: 'Fira Code', monospace;
-      font-weight: bold;
-      font-size: 0.95rem;
-      color: #fff;
-    }
-    .swatch-rgb {
-      font-size: 0.75rem;
-      color: #94a3b8;
-    }
-    .preview-img-container {
-      max-height: 320px;
-      overflow: hidden;
-      border-radius: 8px;
-      background: #191919;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .preview-img-container img {
-      max-height: 320px;
-      max-width: 100%;
-      object-fit: contain;
-    }
-  </style>
 </head>
 
 <body class="service-details-page">
@@ -147,7 +79,7 @@
                     </div>
                   </div>
                   <div class="col-md-7">
-                    <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                    <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
                       <h6 class="text-white fw-bold mb-2">Palette Options</h6>
                       <div class="mb-3">
                         <label class="form-label text-secondary small mb-1">Colors to Extract: <strong id="colorCountLabel" class="text-white">6</strong></label>

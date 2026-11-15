@@ -13,22 +13,6 @@
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
 
-  <style>
-    .preview-canvas-box {
-      background: #191919;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      padding: 12px;
-      text-align: center;
-      max-height: 380px;
-      overflow: auto;
-    }
-    .preview-canvas-box canvas {
-      max-width: 100%;
-      height: auto;
-      border-radius: 6px;
-    }
-  </style>
 </head>
 
 <body class="service-details-page">
@@ -139,7 +123,7 @@
                   </div>
 
                   <!-- Encode Result -->
-                  <div id="encodeResultBox" class="p-4 rounded border border-secondary border-opacity-25 text-center d-none" style="background: rgba(255, 255, 255, 0.02);">
+                  <div id="encodeResultBox" class="p-4 rounded border border-secondary border-opacity-25 text-center d-none tool-panel">
                     <i class="bi bi-check-circle-fill text-success fs-1 mb-2 d-inline-block"></i>
                     <h5 class="text-white fw-bold mb-1">Secret Embedded Successfully!</h5>
                     <p class="text-secondary small mb-3">Your message is invisibly woven into the image's pixels. Download and share safely.</p>
@@ -190,14 +174,14 @@
                   </div>
 
                   <!-- Decode Result Box -->
-                  <div id="decodeResultBox" class="p-3 rounded border border-secondary border-opacity-25 d-none" style="background: rgba(255, 255, 255, 0.02);">
+                  <div id="decodeResultBox" class="p-3 rounded border border-secondary border-opacity-25 d-none tool-panel">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                       <span class="text-white fw-bold small"><i class="bi bi-key-fill me-1 text-success"></i> Revealed Hidden Message:</span>
                       <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" id="btnCopyRevealed">
                         <i class="bi bi-clipboard me-1"></i> Copy
                       </button>
                     </div>
-                    <div id="revealedTextBox" class="p-3 rounded border border-secondary border-opacity-25 font-monospace text-white small" style="background: #191919; white-space: pre-wrap; word-break: break-all; max-height: 240px; overflow-y: auto;">
+                    <div id="revealedTextBox" class="code-box text-white">
                     </div>
                   </div>
                 </div>

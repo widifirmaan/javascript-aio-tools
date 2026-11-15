@@ -13,34 +13,6 @@
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
 
-  <style>
-    .waveform-container {
-      background: #191919;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 16px;
-      position: relative;
-      user-select: none;
-    }
-    #waveformCanvas {
-      width: 100%;
-      height: 140px;
-      display: block;
-      cursor: crosshair;
-      border-radius: 6px;
-      background: #141414;
-    }
-    .time-badge {
-      font-family: 'Fira Code', monospace;
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #ffffff;
-    }
-    .trim-input {
-      font-family: 'Fira Code', monospace;
-      font-size: 0.95rem;
-    }
-  </style>
 </head>
 
 <body class="service-details-page">
@@ -114,7 +86,7 @@
                 <!-- Waveform Display Box -->
                 <div class="waveform-container mb-3">
                   <canvas id="waveformCanvas" width="900" height="200"></canvas>
-                  <div class="d-flex justify-content-between text-secondary mt-2" style="font-size: 0.75rem;">
+                  <div class="d-flex justify-content-between text-secondary mt-2 small">
                     <span>00:00.00</span>
                     <span id="labelCurrentPlayhead" class="text-info fw-bold">00:00.00</span>
                     <span id="labelTotalDuration">00:00.00</span>
@@ -122,7 +94,7 @@
                 </div>
 
                 <!-- Playback & Transport Controls -->
-                <div class="p-3 rounded border border-secondary border-opacity-25 mb-3 d-flex justify-content-between align-items-center flex-wrap gap-2" style="background: rgba(255, 255, 255, 0.02);">
+                <div class="p-3 rounded border border-secondary border-opacity-25 mb-3 d-flex justify-content-between align-items-center flex-wrap gap-2 tool-panel">
                   <div class="d-flex align-items-center gap-2">
                     <button type="button" class="btn btn-primary px-3" id="btnPlayPause">
                       <i class="bi bi-play-fill fs-5" id="playIcon"></i> Play
@@ -146,7 +118,7 @@
                 <!-- Millisecond Precision Range Controls -->
                 <div class="row g-3 mb-4">
                   <div class="col-sm-6">
-                    <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                    <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
                       <label class="form-label text-success small fw-bold mb-1">
                         <i class="bi bi-skip-start-fill me-1"></i> Start Marker:
                       </label>
@@ -158,7 +130,7 @@
                     </div>
                   </div>
                   <div class="col-sm-6">
-                    <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                    <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
                       <label class="form-label text-danger small fw-bold mb-1">
                         <i class="bi bi-skip-end-fill me-1"></i> End Marker:
                       </label>

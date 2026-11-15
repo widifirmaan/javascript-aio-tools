@@ -13,38 +13,6 @@
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
 
-  <style>
-    .svg-preview-box {
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      height: 220px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      padding: 16px;
-    }
-    .svg-preview-box svg {
-      max-width: 100%;
-      max-height: 100%;
-      height: auto;
-      width: auto;
-    }
-    .code-box {
-      background: #191919;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      font-family: 'Fira Code', monospace;
-      font-size: 0.82rem;
-      line-height: 1.5;
-      color: #e5e5e5;
-      height: 180px;
-      overflow-y: auto;
-      padding: 12px;
-      white-space: pre-wrap;
-      word-break: break-all;
-    }
-  </style>
 </head>
 
 <body class="service-details-page">
@@ -104,7 +72,7 @@
               <!-- Minification Area (Hidden initially) -->
               <div id="minifierArea" class="d-none">
                 <!-- Optimization Stats Banner -->
-                <div class="p-3 rounded mb-4 border border-secondary border-opacity-25 d-flex justify-content-between align-items-center flex-wrap gap-3" style="background: rgba(255, 255, 255, 0.02);">
+                <div class="p-3 rounded mb-4 border border-secondary border-opacity-25 d-flex justify-content-between align-items-center flex-wrap gap-3 tool-panel">
                   <div>
                     <span class="text-secondary small">Original: <strong id="origSizeLabel" class="text-white">0 B</strong></span>
                     <span class="text-secondary small mx-2">→</span>
@@ -134,7 +102,7 @@
                 </div>
 
                 <!-- Optimization Settings Toggles -->
-                <div class="p-3 rounded border border-secondary border-opacity-25 mb-4" style="background: rgba(255, 255, 255, 0.02);">
+                <div class="p-3 rounded border border-secondary border-opacity-25 mb-4 tool-panel">
                   <h6 class="text-white fw-bold mb-3">Optimization Passes</h6>
                   <div class="row g-2 small">
                     <div class="col-sm-6">

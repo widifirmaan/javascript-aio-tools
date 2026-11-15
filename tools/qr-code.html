@@ -16,32 +16,6 @@
   <script src="../assets/vendor/qrcode/qrcode.min.js"></script>
   <script src="../assets/vendor/html5-qrcode/html5-qrcode.min.js"></script>
 
-  <style>
-    .qr-preview-wrapper {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 280px;
-    }
-    .qr-white-frame {
-      background: #ffffff;
-      padding: 16px;
-      border-radius: 8px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    #qrcodeContainer img, #qrcodeContainer canvas {
-      max-width: 100%;
-      height: auto;
-      display: block;
-    }
-  </style>
 </head>
 
 <body class="service-details-page">
@@ -95,7 +69,7 @@
                 <div class="tab-pane fade show active" id="generate-pane" role="tabpanel">
                   <div class="row g-4">
                     <div class="col-md-7">
-                      <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                      <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
                         <div class="mb-3">
                           <label class="form-label text-secondary small fw-semibold mb-1">Content Type:</label>
                           <select id="qrType" class="form-select form-select-sm">
@@ -206,7 +180,7 @@
                 <div class="tab-pane fade" id="scan-pane" role="tabpanel">
                   <div class="row g-4">
                     <div class="col-md-6">
-                      <div class="p-3 rounded border border-secondary border-opacity-25 h-100" style="background: rgba(255, 255, 255, 0.02);">
+                      <div class="p-3 rounded border border-secondary border-opacity-25 h-100 tool-panel">
                         <h6 class="fw-bold text-white mb-3">Scan Source</h6>
 
                         <div id="scannerDropzone" class="tool-dropzone mb-3" onclick="document.getElementById('fileQrScan').click()">
@@ -227,12 +201,12 @@
                           </button>
                         </div>
 
-                        <div id="cameraReader" class="mt-3 rounded overflow-hidden d-none" style="width: 100%;"></div>
+                        <div id="cameraReader" class="mt-3 rounded overflow-hidden d-none w-100"></div>
                       </div>
                     </div>
 
                     <div class="col-md-6">
-                      <div class="p-3 rounded border border-secondary border-opacity-25 h-100" style="background: rgba(255, 255, 255, 0.02);">
+                      <div class="p-3 rounded border border-secondary border-opacity-25 h-100 tool-panel">
                         <h6 class="fw-bold text-white mb-3">Decoded Result</h6>
                         <div id="scanEmptyNotice" class="text-center text-secondary py-5">
                           <i class="bi bi-qr-code-scan fs-1 d-block mb-2 text-muted"></i>

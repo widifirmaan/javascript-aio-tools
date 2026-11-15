@@ -13,41 +13,6 @@
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
 
-  <style>
-    .meta-table-box {
-      background: #191919;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .preview-box {
-      background: #191919;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      padding: 12px;
-      text-align: center;
-      max-height: 380px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .preview-box img {
-      max-height: 340px;
-      max-width: 100%;
-      border-radius: 6px;
-      object-fit: contain;
-    }
-    .tag-key {
-      color: #94a3b8;
-      font-weight: 500;
-      width: 40%;
-    }
-    .tag-val {
-      color: #fff;
-      font-family: 'Fira Code', monospace;
-      font-size: 0.88rem;
-    }
-  </style>
 </head>
 
 <body class="service-details-page">
@@ -107,7 +72,7 @@
               <!-- Metadata Workspace (Hidden initially) -->
               <div id="workspaceArea" class="d-none">
                 <!-- Action Bar -->
-                <div class="p-3 rounded mb-4 border border-secondary border-opacity-25 d-flex justify-content-between align-items-center flex-wrap gap-2" style="background: rgba(255, 255, 255, 0.02);">
+                <div class="p-3 rounded mb-4 border border-secondary border-opacity-25 d-flex justify-content-between align-items-center flex-wrap gap-2 tool-panel">
                   <div>
                     <h6 class="mb-0 text-white fw-bold" id="labelFileName">photo.jpg</h6>
                     <span class="text-secondary small" id="labelFileSize">0 KB</span>
@@ -146,7 +111,7 @@
                   <div class="col-md-7">
                     <label class="form-label text-secondary small fw-bold mb-2">Extracted EXIF Tags:</label>
                     <div class="meta-table-box">
-                      <table class="table table-dark table-sm table-striped align-middle mb-0" style="background: transparent;">
+                      <table class="table table-dark table-sm table-striped align-middle mb-0 bg-transparent">
                         <tbody id="metaTableBody">
                           <!-- Populated dynamically -->
                         </tbody>

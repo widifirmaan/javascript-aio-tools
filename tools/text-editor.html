@@ -13,53 +13,6 @@
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
 
-  <style>
-    .editor-wrapper {
-      display: flex;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      overflow: hidden;
-      background: #18181c;
-      min-height: 380px;
-    }
-    #line-numbers {
-      width: 48px;
-      padding: 16px 8px;
-      text-align: right;
-      font-family: 'Fira Code', monospace;
-      font-size: 0.9rem;
-      line-height: 1.6;
-      color: #64748b;
-      background: #131316;
-      border-right: 1px solid rgba(255, 255, 255, 0.06);
-      user-select: none;
-      overflow: hidden;
-    }
-    #editor-area {
-      flex: 1;
-      padding: 16px 20px;
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 1rem;
-      line-height: 1.6;
-      color: #e2e8f0;
-      outline: none;
-      overflow-y: auto;
-      max-height: 520px;
-      min-height: 380px;
-    }
-    #editor-area:empty::before {
-      content: attr(placeholder);
-      color: rgba(255, 255, 255, 0.55);
-      pointer-events: none;
-    }
-    .editor-toolbar {
-      background: #1c1c20;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 10px 14px;
-      margin-bottom: 16px;
-    }
-  </style>
 </head>
 
 <body class="service-details-page">
@@ -97,7 +50,7 @@
               <div class="editor-toolbar d-flex flex-wrap align-items-center justify-content-between gap-2">
                 <div class="d-flex flex-wrap align-items-center gap-2">
                   <!-- Font Select -->
-                  <select id="font-family" class="form-select form-select-sm" style="width: auto;">
+                  <select id="font-family" class="form-select form-select-sm w-auto">
                     <option value="Inter">Inter (Sans-serif)</option>
                     <option value="Arial">Arial</option>
                     <option value="Georgia">Georgia (Serif)</option>
@@ -106,7 +59,7 @@
                   </select>
 
                   <!-- Size Select -->
-                  <select id="font-size" class="form-select form-select-sm" style="width: auto;">
+                  <select id="font-size" class="form-select form-select-sm w-auto">
                     <option value="2">Kecil</option>
                     <option value="3" selected>Normal</option>
                     <option value="5">Besar</option>
@@ -140,7 +93,7 @@
               </div>
 
               <!-- Bottom Statistics Bar -->
-              <div class="p-3 rounded border border-secondary border-opacity-25 d-flex flex-wrap align-items-center justify-content-between gap-3" style="background: rgba(255, 255, 255, 0.02);">
+              <div class="p-3 rounded border border-secondary border-opacity-25 d-flex flex-wrap align-items-center justify-content-between gap-3 tool-panel">
                 <div class="d-flex flex-wrap align-items-center gap-3 text-secondary small">
                   <span class="text-white fw-bold" id="word-count">Words: 0</span>
                   <span>•</span>

@@ -13,28 +13,6 @@
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
 
-  <style>
-    .code-editor {
-      font-family: 'Fira Code', 'Courier New', monospace;
-      font-size: 0.88rem;
-      line-height: 1.5;
-      background: #191919 !important;
-      color: #e5e5e5 !important;
-      border-radius: 8px;
-      padding: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
-      tab-size: 2;
-    }
-    .code-editor:focus {
-      background: #191919 !important;
-      border-color: rgba(255, 255, 255, 0.35) !important;
-      box-shadow: none !important;
-    }
-    .code-editor::placeholder {
-      color: rgba(255, 255, 255, 0.55) !important;
-      opacity: 1 !important;
-    }
-  </style>
 </head>
 
 <body class="service-details-page">
@@ -107,7 +85,7 @@
                     <textarea id="jsonInput" class="form-control code-editor" rows="12" placeholder='Paste your JSON here... e.g. {"name": "WIDIFIRMAAN", "tools": 10}'></textarea>
                   </div>
 
-                  <div id="jsonStatusAlert" class="alert alert-dark py-2 small mb-3 border border-secondary border-opacity-25" style="background: rgba(255,255,255,0.03); color: #cbd5e1;">
+                  <div id="jsonStatusAlert" class="alert alert-dark py-2 small mb-3 border border-secondary border-opacity-25 text-white-50">
                     <i class="bi bi-info-circle me-1"></i> Ready to process JSON.
                   </div>
 
@@ -123,7 +101,7 @@
 
                 <!-- TAB 2: BASE64 & URL ENCODER/DECODER -->
                 <div class="tab-pane fade" id="base64-pane" role="tabpanel">
-                  <div class="p-3 rounded mb-4 border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                  <div class="p-3 rounded mb-4 border border-secondary border-opacity-25 tool-panel">
                     <div class="row g-3">
                       <div class="col-md-6">
                         <label class="form-label text-secondary small fw-semibold mb-1">Input Text:</label>
@@ -147,7 +125,7 @@
                   </div>
 
                   <!-- File to Base64 -->
-                  <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                  <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
                     <h6 class="fw-bold text-white mb-2"><i class="bi bi-file-earmark-arrow-up text-secondary me-2"></i>File to Base64 Data URL</h6>
                     <input type="file" id="file2B64Input" class="form-control form-control-sm mb-2">
                     <textarea id="fileB64Output" class="form-control code-editor mb-2" rows="3" readonly placeholder="Base64 Data URL will appear here..."></textarea>

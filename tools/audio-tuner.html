@@ -13,74 +13,6 @@
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
 
-  <style>
-    .gauge-container {
-      background: #191919;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 24px 16px;
-      text-align: center;
-      position: relative;
-    }
-    .note-display {
-      font-size: 4.5rem;
-      font-weight: 800;
-      line-height: 1;
-      font-family: 'Fira Code', system-ui, sans-serif;
-      color: #ffffff;
-      transition: color 0.15s ease;
-    }
-    .note-display.in-tune {
-      color: #22c55e !important;
-    }
-    .note-display.flat {
-      color: #94a3b8;
-    }
-    .note-display.sharp {
-      color: #f59e0b;
-    }
-    .cents-track {
-      height: 10px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 6px;
-      position: relative;
-      margin: 20px auto 10px;
-      max-width: 440px;
-    }
-    .cents-center-mark {
-      position: absolute;
-      left: 50%;
-      top: -3px;
-      bottom: -3px;
-      width: 3px;
-      background: #22c55e;
-      transform: translateX(-50%);
-      border-radius: 2px;
-    }
-    .cents-needle {
-      position: absolute;
-      top: -5px;
-      width: 12px;
-      height: 20px;
-      background: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 4px;
-      transform: translateX(-50%);
-      transition: left 0.1s ease-out;
-      left: 50%;
-    }
-    .cents-needle.in-tune {
-      background: #22c55e;
-      border-color: #22c55e;
-    }
-    .spectrum-canvas {
-      width: 100%;
-      height: 110px;
-      background: #191919;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-  </style>
 </head>
 
 <body class="service-details-page">
@@ -164,7 +96,7 @@
               </div>
 
               <!-- Tuning Presets -->
-              <div class="p-3 rounded border border-secondary border-opacity-25 mb-4" style="background: rgba(255, 255, 255, 0.02);">
+              <div class="p-3 rounded border border-secondary border-opacity-25 mb-4 tool-panel">
                 <label class="form-label text-white small fw-bold mb-2">Instrument Presets & Target Strings</label>
                 <div class="d-flex flex-wrap gap-2 mb-3">
                   <button type="button" class="btn btn-sm btn-outline-secondary preset-btn active" data-preset="chromatic">Chromatic</button>

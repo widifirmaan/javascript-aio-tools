@@ -57,7 +57,7 @@
               </div>
 
               <!-- Processing / Status Box -->
-              <div id="status" class="alert alert-dark py-3 mb-4 d-none border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.04); color: #ffffff;">
+              <div id="status" class="alert alert-dark py-3 mb-4 d-none border border-secondary border-opacity-25">
                 <div class="d-flex align-items-center">
                   <div class="spinner-border spinner-border-sm me-3 text-primary" role="status"></div>
                   <div>
@@ -72,7 +72,7 @@
                 <div class="row g-3 mb-4">
                   <!-- Original Preview -->
                   <div class="col-md-6">
-                    <div class="p-3 rounded border border-secondary border-opacity-25 h-100 d-flex flex-column" style="background: rgba(255, 255, 255, 0.02);">
+                    <div class="p-3 rounded border border-secondary border-opacity-25 h-100 d-flex flex-column tool-panel">
                       <div class="d-flex justify-content-between align-items-center mb-2">
                         <span class="small fw-semibold text-secondary">Original Photo</span>
                         <span class="text-secondary small fw-semibold" id="origInfo">-</span>
@@ -85,7 +85,7 @@
 
                   <!-- Result Preview -->
                   <div class="col-md-6">
-                    <div class="p-3 rounded border border-secondary border-opacity-25 h-100 d-flex flex-column" style="background: rgba(255, 255, 255, 0.02);">
+                    <div class="p-3 rounded border border-secondary border-opacity-25 h-100 d-flex flex-column tool-panel">
                       <div class="d-flex justify-content-between align-items-center mb-2">
                         <span class="small fw-semibold text-white"><i class="bi bi-check2 me-1 text-success"></i>Transparent Output</span>
                         <span class="text-secondary small fw-semibold" id="resultStatus">Processing...</span>
@@ -93,7 +93,7 @@
                       <div class="text-center rounded overflow-hidden flex-grow-1 d-flex align-items-center justify-content-center checkerboard-bg" style="max-height: 320px; min-height: 200px; position: relative;">
                         <!-- Loading State while Processing -->
                         <div id="resultLoading" class="d-flex flex-column align-items-center justify-content-center p-4">
-                          <div class="spinner-border text-primary mb-2" role="status" style="width: 2rem; height: 2rem;"></div>
+                          <div class="spinner-border text-primary mb-2" role="status"></div>
                           <span class="text-secondary small" id="resultLoadingText">Extracting subject...</span>
                         </div>
                         <!-- Cutout Image (hidden while processing) -->

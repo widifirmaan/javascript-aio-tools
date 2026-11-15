@@ -13,42 +13,6 @@
   <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
 
-  <style>
-    .tire-container {
-      width: 130px;
-      height: 130px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-    .tire-circle {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.03);
-      border: 4px solid rgba(255, 255, 255, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      transition: all 0.3s ease;
-    }
-    .rim-circle {
-      width: 55%;
-      height: 55%;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.06);
-      border: 2px dashed rgba(255, 255, 255, 0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
-      font-size: 0.8rem;
-      font-weight: 600;
-      font-family: 'Fira Code', monospace;
-    }
-  </style>
 </head>
 
 <body class="service-details-page">
@@ -86,7 +50,7 @@
               <div class="row g-3 mb-4">
                 <!-- Tire 1 (Original) -->
                 <div class="col-md-6">
-                  <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                  <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                       <h6 class="text-white fw-bold mb-0"><i class="bi bi-disc me-2 text-secondary"></i>Tire 1 (OEM / Standar)</h6>
                     </div>
@@ -108,7 +72,7 @@
 
                 <!-- Tire 2 (New) -->
                 <div class="col-md-6">
-                  <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                  <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                       <h6 class="text-white fw-bold mb-0"><i class="bi bi-disc me-2 text-secondary"></i>Tire 2 (Pengganti / Baru)</h6>
                     </div>
@@ -136,28 +100,28 @@
               </div>
 
               <!-- Results Area -->
-              <div id="results" class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+              <div id="results" class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
                 <h5 class="fw-bold text-white mb-3 pb-2 border-bottom border-secondary border-opacity-25">
                   <i class="bi bi-sliders me-2 text-secondary"></i>Hasil Analisis Perbandingan
                 </h5>
 
                 <div class="row g-3 text-center mb-4">
                   <div class="col-sm-4">
-                    <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                    <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
                       <span class="text-secondary small d-block mb-1">Diameter Ban 1</span>
                       <strong class="text-white fs-5 d-block" id="diameter1Result">24.88" (631.9 mm)</strong>
                       <span class="text-secondary small">OEM</span>
                     </div>
                   </div>
                   <div class="col-sm-4">
-                    <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                    <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
                       <span class="text-secondary small d-block mb-1">Diameter Ban 2</span>
                       <strong class="text-white fs-5 d-block" id="diameter2Result">25.86" (656.8 mm)</strong>
                       <span class="text-secondary small">Baru</span>
                     </div>
                   </div>
                   <div class="col-sm-4">
-                    <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                    <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
                       <span class="text-secondary small d-block mb-1">Selisih Diameter</span>
                       <strong class="text-white fs-5 d-block" id="diameterDiffResult">+0.98" (+3.94%)</strong>
                       <span class="text-secondary small" id="fitmentNotice">Toleransi Wajar</span>
@@ -168,13 +132,13 @@
                 <!-- Speedometer Offset & Circumference -->
                 <div class="row g-3 text-center mb-4">
                   <div class="col-sm-6">
-                    <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                    <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
                       <span class="text-secondary small d-block mb-1">Keliling Roda (Circumference)</span>
                       <span class="text-white d-block" id="circumferenceDiffResult">Ban 1: 78.16" | Ban 2: 81.24"</span>
                     </div>
                   </div>
                   <div class="col-sm-6">
-                    <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                    <div class="p-3 rounded border border-secondary border-opacity-25 tool-panel">
                       <span class="text-secondary small d-block mb-1">Speedometer pada 100 km/jam</span>
                       <span class="text-white fw-bold d-block" id="speedoResult">Kecepatan Nyata: ~103.9 km/jam</span>
                     </div>
