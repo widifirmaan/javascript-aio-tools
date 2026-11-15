@@ -3232,9 +3232,17 @@ textarea:-ms-input-placeholder,
   min-height: 120px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  width: 100%;
 }
-.regex-highlight-box {
+.railroad-container svg {
+  margin: auto;
+  flex-shrink: 0;
+  max-width: 100%;
+  height: auto;
+}
+.regex-highlight-box,
+.match-highlight-box {
   background: #191919;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--bs-border-radius, 0.375rem);
@@ -3249,7 +3257,8 @@ textarea:-ms-input-placeholder,
   word-break: break-all;
   color: #e2e8f0;
 }
-.regex-highlight-box mark {
+.regex-highlight-box mark,
+.match-highlight-box mark {
   background: rgba(245, 158, 11, 0.25);
   color: #fde68a;
   border-radius: 3px;
