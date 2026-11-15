@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Instrument Tuner & Audio Spectrum - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="100% client-side instrument tuner and pitch detector using Web Audio API autocorrelation. Real-time pitch gauge and FFT spectrum.">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .tuner-card {
+      background: #141418;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .gauge-container {
+      background: #0b0b0f;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 24px 16px;
+      text-align: center;
+      position: relative;
+    }
+    .note-display {
+      font-size: 4.5rem;
+      font-weight: 800;
+      line-height: 1;
+      font-family: 'Fira Code', system-ui, sans-serif;
+      transition: color 0.2s ease;
+    }
+    .note-display.in-tune {
+      color: #22c55e !important;
+      text-shadow: 0 0 24px rgba(34, 197, 94, 0.4);
+    }
+    .note-display.flat {
+      color: #38bdf8;
+    }
+    .note-display.sharp {
+      color: #f59e0b;
+    }
+    .cents-track {
+      height: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      position: relative;
+      margin: 20px auto 10px;
+      max-width: 440px;
+    }
+    .cents-center-mark {
+      position: absolute;
+      left: 50%;
+      top: -4px;
+      bottom: -4px;
+      width: 4px;
+      background: #22c55e;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+    .cents-needle {
+      position: absolute;
+      top: -6px;
+      width: 14px;
+      height: 24px;
+      background: #3b82f6;
+      border: 2px solid #ffffff;
+      border-radius: 4px;
+      transform: translateX(-50%);
+      transition: left 0.1s ease-out, background-color 0.2s ease;
+      left: 50%;
+    }
+    .cents-needle.in-tune {
+      background: #22c55e;
+    }
+    .spectrum-canvas {
+      width: 100%;
+      height: 110px;
+      background: #08080c;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .preset-btn.active {
+      background: #3b82f6 !important;
+      color: #ffffff !important;
+      border-color: #3b82f6 !important;
+    }
+  </style>
+</head>
+
+<body class="service-details-page">
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+      <a href="../index.html" class="logo d-flex align-items-center">
+        <i class="bi bi-cpu-fill text-primary me-2 fs-4"></i>
+        <span class="sitename">WIDIFIRMAAN</span>
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../index.html#services" class="active">All Tools</a></li>
+          <li><a href="https://widifirmaan.web.id" target="_blank">Author</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-title accent-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <div class="breadcrumb-wrapper">
+          <nav class="breadcrumbs">
+            <ol>
+              <li><a href="../index.html">Home</a></li>
+              <li><a href="../index.html#services">Tools</a></li>
+              <li class="current">Instrument Tuner</li>
+            </ol>
+          </nav>
+          <h1 class="mb-2 mb-lg-0">Instrument Tuner & Audio Spectrum</h1>
+        </div>
+      </div>
+    </div>
+
+    <section id="service-details" class="service-details section py-4 py-lg-5">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-4">
+          <!-- Main Content (Col 8) -->
+          <div class="col-lg-8">
+            <div class="tuner-card">
+              <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+                <div>
+                  <h2 class="fs-4 fw-bold text-white mb-1">Real-Time Pitch & Tuning Gauge</h2>
+                  <p class="text-secondary small mb-0">
+                    High-precision musical pitch detection via Web Audio API autocorrelation. Tune guitars, basses, violins, or voice.
+                  </p>
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-info" id="btnTestTone">
+                  <i class="bi bi-play-circle me-1"></i> Test Note (A4 440Hz)
+                </button>
+              </div>
+
+              <!-- Main Visual Tuner Box -->
+              <div class="gauge-container mb-4">
+                <div class="d-flex justify-content-center align-items-baseline gap-2 mb-1">
+                  <div class="note-display text-secondary" id="noteDisplay">--</div>
+                  <span class="text-secondary fs-5" id="octaveDisplay"></span>
+                </div>
+                <div class="d-flex justify-content-center align-items-center gap-3 small mb-2">
+                  <span class="text-secondary">Freq: <strong id="freqDisplay" class="text-white">0.0 Hz</strong></span>
+                  <span class="text-secondary">|</span>
+                  <span class="text-secondary">Target: <strong id="targetFreqDisplay" class="text-info">0.0 Hz</strong></span>
+                  <span class="text-secondary">|</span>
+                  <span class="text-secondary">Dev: <strong id="centsDisplay" class="text-white">0 cents</strong></span>
+                </div>
+
+                <!-- Cents Needle Meter -->
+                <div class="cents-track">
+                  <div class="cents-center-mark"></div>
+                  <div class="cents-needle" id="centsNeedle" style="left: 50%;"></div>
+                </div>
+                <div class="d-flex justify-content-between max-w-440 mx-auto small text-secondary px-1" style="max-width: 440px;">
+                  <span>-50 (Flat)</span>
+                  <span id="tuneStatusText" class="fw-bold text-secondary">Ready to listen</span>
+                  <span>+50 (Sharp)</span>
+                </div>
+
+                <!-- Primary Listening Toggle Button -->
+                <div class="mt-4">
+                  <button type="button" class="btn btn-primary px-4 py-2 fw-semibold" id="btnToggleMic">
+                    <i class="bi bi-mic-fill me-1"></i> <span id="micBtnText">Start Listening</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Realtime FFT Spectrum Canvas -->
+              <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span class="text-white small fw-bold"><i class="bi bi-soundwave me-1 text-primary"></i> Live FFT Frequency Spectrum</span>
+                  <span class="text-secondary small" id="spectrumPeakLabel">Peak: - Hz</span>
+                </div>
+                <canvas id="spectrumCanvas" class="spectrum-canvas"></canvas>
+              </div>
+
+              <!-- Tuning Presets -->
+              <div class="p-3 rounded bg-dark border border-secondary border-opacity-25 mb-4">
+                <label class="form-label text-white small fw-bold mb-2">Instrument Presets & Target Strings</label>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                  <button type="button" class="btn btn-sm btn-outline-secondary preset-btn active" data-preset="chromatic">Chromatic</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="guitar">Guitar (Standard)</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="bass">Bass (4-String)</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="ukulele">Ukulele (GCEA)</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="violin">Violin (GDAE)</button>
+                </div>
+
+                <!-- Target String Buttons (Clickable to play reference tone) -->
+                <div id="stringButtonsContainer" class="d-flex flex-wrap gap-2">
+                  <!-- Injected via JavaScript -->
+                </div>
+              </div>
+
+              <!-- Calibration & Reference Pitch -->
+              <div class="row g-3">
+                <div class="col-sm-6">
+                  <label class="form-label text-white small fw-bold">A4 Calibration Pitch</label>
+                  <div class="input-group input-group-sm">
+                    <input type="number" id="inputA4" class="form-control" value="440" min="415" max="466">
+                    <span class="input-group-text bg-dark text-secondary border-secondary border-opacity-25">Hz</span>
+                  </div>
+                  <span class="text-secondary small">Standard concert pitch is 440 Hz (or 432 Hz).</span>
+                </div>
+                <div class="col-sm-6">
+                  <label class="form-label text-white small fw-bold">Input Sensitivity</label>
+                  <input type="range" class="form-range" id="sliderSensitivity" min="0.005" max="0.08" step="0.005" value="0.02">
+                  <div class="d-flex justify-content-between text-secondary small">
+                    <span>High (Quiet)</span>
+                    <span>Low (Loud)</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Sidebar Column (Col 4) -->
+          <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4">
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-info-circle me-2 text-secondary"></i>How It Works
+                </h5>
+                <ul class="text-secondary small ps-3 mb-0 d-flex flex-column gap-2">
+                  <li><strong>Autocorrelation Algorithm:</strong> Uses time-domain waveform analysis to isolate the fundamental frequency from overtones and harmonics.</li>
+                  <li><strong>Sub-Cent Accuracy:</strong> Parabolic interpolation calculates exact cents deviation without bin rounding errors.</li>
+                  <li><strong>Reference Tone Generator:</strong> Click on any string button to hear the pure reference note.</li>
+                  <li><strong>100% Private:</strong> Audio data never leaves your device's audio buffer.</li>
+                </ul>
+              </div>
+
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-grid me-2 text-secondary"></i>Other Tools
+                </h5>
+                <div class="d-flex flex-column gap-1">
+                  <a href="audio-cutter.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-soundwave me-2"></i>Audio Cutter</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="screen-recorder.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-record-circle me-2"></i>Screen Recorder</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="calculator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-calculator me-2"></i>Scientific Calculator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="ascii-art.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-terminal me-2"></i>ASCII Art Generator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="dev-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-code-slash me-2"></i>Developer Toolbox</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
+    <div class="container text-center">
+      <div class="copyright text-secondary">
+        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+      </div>
+      <div class="credits text-secondary small">
+        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="preloader"></div>
+
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/js/services.js"></script>
+
+  <script>
+    const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+    const PRESETS_DATA = {
+      chromatic: [],
+      guitar: [
+        { name: 'E2', freq: 82.41 },
+        { name: 'A2', freq: 110.00 },
+        { name: 'D3', freq: 146.83 },
+        { name: 'G3', freq: 196.00 },
+        { name: 'B3', freq: 246.94 },
+        { name: 'E4', freq: 329.63 }
+      ],
+      bass: [
+        { name: 'E1', freq: 41.20 },
+        { name: 'A1', freq: 55.00 },
+        { name: 'D2', freq: 73.42 },
+        { name: 'G2', freq: 98.00 }
+      ],
+      ukulele: [
+        { name: 'G4', freq: 392.00 },
+        { name: 'C4', freq: 261.63 },
+        { name: 'E4', freq: 329.63 },
+        { name: 'A4', freq: 440.00 }
+      ],
+      violin: [
+        { name: 'G3', freq: 196.00 },
+        { name: 'D4', freq: 293.66 },
+        { name: 'A4', freq: 440.00 },
+        { name: 'E5', freq: 659.25 }
+      ]
+    };
+
+    // DOM
+    const noteDisplay = document.getElementById('noteDisplay');
+    const octaveDisplay = document.getElementById('octaveDisplay');
+    const freqDisplay = document.getElementById('freqDisplay');
+    const targetFreqDisplay = document.getElementById('targetFreqDisplay');
+    const centsDisplay = document.getElementById('centsDisplay');
+    const centsNeedle = document.getElementById('centsNeedle');
+    const tuneStatusText = document.getElementById('tuneStatusText');
+    const btnToggleMic = document.getElementById('btnToggleMic');
+    const micBtnText = document.getElementById('micBtnText');
+    const spectrumCanvas = document.getElementById('spectrumCanvas');
+    const spectrumCtx = spectrumCanvas.getContext('2d');
+    const spectrumPeakLabel = document.getElementById('spectrumPeakLabel');
+    const inputA4 = document.getElementById('inputA4');
+    const sliderSensitivity = document.getElementById('sliderSensitivity');
+    const stringButtonsContainer = document.getElementById('stringButtonsContainer');
+    const btnTestTone = document.getElementById('btnTestTone');
+
+    let audioCtx = null;
+    let micStream = null;
+    let analyserNode = null;
+    let isListening = false;
+    let animationFrameId = null;
+    let currentPreset = 'chromatic';
+
+    // Set canvas internal resolution
+    function resizeCanvas() {
+      spectrumCanvas.width = spectrumCanvas.clientWidth * (window.devicePixelRatio || 1);
+      spectrumCanvas.height = spectrumCanvas.clientHeight * (window.devicePixelRatio || 1);
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Render Preset String Buttons
+    function renderStringButtons() {
+      stringButtonsContainer.innerHTML = '';
+      const strings = PRESETS_DATA[currentPreset];
+      if (!strings || strings.length === 0) {
+        stringButtonsContainer.innerHTML = '<span class="text-secondary small">All 12 chromatic notes active. Play or sing any note.</span>';
+        return;
+      }
+
+      strings.forEach(s => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn btn-sm btn-outline-info px-3';
+        btn.innerHTML = `<i class="bi bi-volume-up me-1"></i> ${s.name} (${s.freq} Hz)`;
+        btn.addEventListener('click', () => {
+          playReferenceTone(s.freq);
+          setTunerPitch(s.freq, s.name);
+        });
+        stringButtonsContainer.appendChild(btn);
+      });
+    }
+
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentPreset = btn.dataset.preset;
+        renderStringButtons();
+      });
+    });
+    renderStringButtons();
+
+    // Reference Tone Player
+    let activeOsc = null;
+    function playReferenceTone(freq, duration = 1.8) {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+
+      if (activeOsc) {
+        try { activeOsc.stop(); } catch(e){}
+      }
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+      activeOsc = osc;
+    }
+
+    // Mathematical Note Conversion
+    function frequencyToNoteData(freq, a4 = 440) {
+      const noteNum = 12 * (Math.log2(freq / a4)) + 69;
+      const roundedNote = Math.round(noteNum);
+      const noteIndex = (roundedNote % 12 + 12) % 12;
+      const octave = Math.floor(roundedNote / 12) - 1;
+      const targetFreq = a4 * Math.pow(2, (roundedNote - 69) / 12);
+      const cents = Math.round(1200 * Math.log2(freq / targetFreq));
+
+      return {
+        note: NOTE_NAMES[noteIndex],
+        octave: octave,
+        fullName: `${NOTE_NAMES[noteIndex]}${octave}`,
+        targetFreq: parseFloat(targetFreq.toFixed(2)),
+        cents: Math.max(-50, Math.min(50, cents))
+      };
+    }
+
+    // Set Tuner UI explicitly
+    function setTunerPitch(freq, overrideName) {
+      const a4 = parseFloat(inputA4.value) || 440;
+      const data = frequencyToNoteData(freq, a4);
+
+      noteDisplay.textContent = overrideName ? overrideName.replace(/\d/, '') : data.note;
+      octaveDisplay.textContent = overrideName ? overrideName.replace(/\D/g, '') : data.octave;
+      freqDisplay.textContent = `${freq.toFixed(1)} Hz`;
+      targetFreqDisplay.textContent = `${data.targetFreq} Hz`;
+
+      const absCents = Math.abs(data.cents);
+      centsDisplay.textContent = `${data.cents > 0 ? '+' : ''}${data.cents} cents`;
+
+      // Position needle: -50 cents = 0%, 0 cents = 50%, +50 cents = 100%
+      const leftPct = 50 + (data.cents);
+      centsNeedle.style.left = `${leftPct}%`;
+
+      noteDisplay.className = 'note-display';
+      centsNeedle.className = 'cents-needle';
+
+      if (absCents <= 3) {
+        noteDisplay.classList.add('in-tune');
+        centsNeedle.classList.add('in-tune');
+        tuneStatusText.textContent = 'In Tune! ✓';
+        tuneStatusText.className = 'fw-bold text-success';
+      } else if (data.cents < 0) {
+        noteDisplay.classList.add('flat');
+        tuneStatusText.textContent = 'Too Flat (Tune Up)';
+        tuneStatusText.className = 'fw-bold text-info';
+      } else {
+        noteDisplay.classList.add('sharp');
+        tuneStatusText.textContent = 'Too Sharp (Tune Down)';
+        tuneStatusText.className = 'fw-bold text-warning';
+      }
+    }
+    window.setTunerPitch = setTunerPitch;
+
+    // Autocorrelation Pitch Detection Algorithm (Time Domain)
+    function autoCorrelate(buffer, sampleRate, threshold) {
+      const SIZE = buffer.length;
+      let rms = 0;
+
+      for (let i = 0; i < SIZE; i++) {
+        const val = buffer[i];
+        rms += val * val;
+      }
+      rms = Math.sqrt(rms / SIZE);
+
+      // If signal is too quiet, ignore
+      if (rms < threshold) return -1;
+
+      // Find boundaries where signal crosses
+      let r1 = 0, r2 = SIZE - 1;
+      const thres = 0.2;
+      for (let i = 0; i < SIZE / 2; i++) {
+        if (Math.abs(buffer[i]) < thres) { r1 = i; break; }
+      }
+      for (let i = 1; i < SIZE / 2; i++) {
+        if (Math.abs(buffer[SIZE - i]) < thres) { r2 = SIZE - i; break; }
+      }
+
+      const trimBuffer = buffer.slice(r1, r2);
+      const c = new Float32Array(trimBuffer.length);
+
+      for (let i = 0; i < trimBuffer.length; i++) {
+        for (let j = 0; j < trimBuffer.length - i; j++) {
+          c[i] = c[i] + trimBuffer[j] * trimBuffer[j + i];
+        }
+      }
+
+      let d = 0;
+      while (c[d] > c[d + 1]) d++;
+
+      let maxVal = -1, maxPos = -1;
+      for (let i = d; i < trimBuffer.length; i++) {
+        if (c[i] > maxVal) {
+          maxVal = c[i];
+          maxPos = i;
+        }
+      }
+
+      let T0 = maxPos;
+      // Parabolic interpolation for sub-bin accuracy
+      const x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1];
+      const a = (x1 + x3 - 2 * x2) / 2;
+      const b = (x3 - x1) / 2;
+      if (a) T0 = T0 - b / (2 * a);
+
+      return sampleRate / T0;
+    }
+
+    // Audio Loop
+    const buffer = new Float32Array(2048);
+    const freqData = new Uint8Array(1024);
+
+    function audioTick() {
+      if (!isListening || !analyserNode) return;
+
+      analyserNode.getFloatTimeDomainData(buffer);
+      analyserNode.getByteFrequencyData(freqData);
+
+      const sensitivity = parseFloat(sliderSensitivity.value) || 0.02;
+      const pitch = autoCorrelate(buffer, audioCtx.sampleRate, sensitivity);
+
+      if (pitch !== -1 && pitch >= 30 && pitch <= 2000) {
+        setTunerPitch(pitch);
+      }
+
+      // Draw FFT Canvas
+      drawSpectrum(freqData);
+
+      animationFrameId = requestAnimationFrame(audioTick);
+    }
+
+    function drawSpectrum(data) {
+      const w = spectrumCanvas.width;
+      const h = spectrumCanvas.height;
+      spectrumCtx.fillStyle = '#08080c';
+      spectrumCtx.fillRect(0, 0, w, h);
+
+      const barCount = 120;
+      const barWidth = w / barCount;
+      let maxVal = 0;
+      let maxIdx = 0;
+
+      for (let i = 0; i < barCount; i++) {
+        const val = data[i];
+        if (val > maxVal) { maxVal = val; maxIdx = i; }
+        const barHeight = (val / 255) * h;
+
+        const grad = spectrumCtx.createLinearGradient(0, h - barHeight, 0, h);
+        grad.addColorStop(0, '#38bdf8');
+        grad.addColorStop(1, '#1e3a8a');
+
+        spectrumCtx.fillStyle = grad;
+        spectrumCtx.fillRect(i * barWidth, h - barHeight, barWidth - 1, barHeight);
+      }
+
+      if (audioCtx && maxVal > 40) {
+        const peakFreq = Math.round(maxIdx * (audioCtx.sampleRate / 2) / 1024);
+        spectrumPeakLabel.textContent = `Peak: ${peakFreq} Hz`;
+      }
+    }
+
+    // Toggle Microphone
+    async function startListening() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') await audioCtx.resume();
+
+        micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+        const source = audioCtx.createMediaStreamSource(micStream);
+        analyserNode = audioCtx.createAnalyser();
+        analyserNode.fftSize = 2048;
+        source.connect(analyserNode);
+
+        isListening = true;
+        micBtnText.textContent = 'Stop Listening';
+        btnToggleMic.className = 'btn btn-danger px-4 py-2 fw-semibold';
+        tuneStatusText.textContent = 'Listening for notes...';
+        audioTick();
+      } catch (err) {
+        console.error('Microphone error:', err);
+        alert('Could not access microphone: ' + err.message);
+      }
+    }
+
+    function stopListening() {
+      isListening = false;
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      if (micStream) {
+        micStream.getTracks().forEach(t => t.stop());
+        micStream = null;
+      }
+      micBtnText.textContent = 'Start Listening';
+      btnToggleMic.className = 'btn btn-primary px-4 py-2 fw-semibold';
+      tuneStatusText.textContent = 'Listening paused';
+    }
+
+    btnToggleMic.addEventListener('click', () => {
+      if (isListening) stopListening();
+      else startListening();
+    });
+
+    // Test Note Button (Puppeteer & Quick Test Friendly)
+    btnTestTone.addEventListener('click', () => {
+      playReferenceTone(440.0, 2.0);
+      setTunerPitch(440.0, 'A4');
+    });
+  </script>
+</body>
+
+</html>

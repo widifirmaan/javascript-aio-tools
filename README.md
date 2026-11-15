@@ -2,12 +2,12 @@
 
 > Free, fast, and 100% private browser utility suite powered by WebAssembly and client-side JavaScript.
 
-JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection of 21 essential browser utilities for documents, images, audio, video, security & privacy, developer productivity, and calculations. All data is processed entirely in your browser's memory, zero server uploads, 100% private, and completely free.
+JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection of 23 essential browser utilities for documents, images, audio, video, security & privacy, developer productivity, and calculations. All data is processed entirely in your browser's memory, zero server uploads, 100% private, and completely free.
 
 [![Live Demo](https://img.shields.io/badge/Demo-tools.widifirmaan.web.id-10B981?style=flat-square&logo=cloudflare&logoColor=white)](https://tools.widifirmaan.web.id)
 [![Architecture](https://img.shields.io/badge/Architecture-100%25_Client--Side-8B5CF6?style=flat-square)](#features)
 [![WebAssembly](https://img.shields.io/badge/Engine-WebAssembly-654FF0?style=flat-square&logo=webassembly&logoColor=white)](https://webassembly.org/)
-[![Tools](https://img.shields.io/badge/Tools-21_Interactive_Apps-F59E0B?style=flat-square)](#features)
+[![Tools](https://img.shields.io/badge/Tools-23_Interactive_Apps-F59E0B?style=flat-square)](#features)
 [![Deployment](https://img.shields.io/badge/Deployment-Cloudflare_Pages-F38020?style=flat-square&logo=cloudflare)](https://pages.cloudflare.com/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![HTML5 / CSS3](https://img.shields.io/badge/HTML5%20%2F%20CSS3-Modern_Web-E34F26?style=flat-square&logo=html5&logoColor=white)](https://developer.mozilla.org/)
@@ -49,12 +49,14 @@ JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection
 | **Image Converter Desktop**<br>![Image Converter Desktop](screenshots/Image%20Converter%20Desktop.png) | **Image Converter Mobile**<br>![Image Converter Mobile](screenshots/Image%20Converter%20Mobile.png) |
 | **Text Editor Desktop**<br>![Text Editor Desktop](screenshots/Text%20Editor%20Desktop.png) | **Text Editor Mobile**<br>![Text Editor Mobile](screenshots/Text%20Editor%20Mobile.png) |
 | **Tire & Wheel Comparison Desktop**<br>![Tire Comparison Desktop](screenshots/Tire%20Comparison%20Desktop.png) | **Tire & Wheel Comparison Mobile**<br>![Tire Comparison Mobile](screenshots/Tire%20Comparison%20Mobile.png) |
+| **Instrument Tuner Desktop**<br>![Instrument Tuner Desktop](screenshots/Instrument%20Tuner%20Desktop.png) | **Instrument Tuner Mobile**<br>![Instrument Tuner Mobile](screenshots/Instrument%20Tuner%20Mobile.png) |
+| **Barcode Studio Desktop**<br>![Barcode Studio Desktop](screenshots/Barcode%20Studio%20Desktop.png) | **Barcode Studio Mobile**<br>![Barcode Studio Mobile](screenshots/Barcode%20Studio%20Mobile.png) |
 
 ---
 
 ## Features
 
-All 21 tools are executed 100% locally in the browser without uploading documents, images, audio, video, or confidential files to external servers:
+All 23 tools are executed 100% locally in the browser without uploading documents, images, audio, video, or confidential files to external servers:
 
 ### 1. 🛡️ Security & Privacy
 - **File Encryptor** (`tools/file-encryptor.html`):
@@ -106,6 +108,9 @@ All 21 tools are executed 100% locally in the browser without uploading document
   - In-browser screen and window video recording using `navigator.mediaDevices.getDisplayMedia` and HTML5 `MediaRecorder`.
   - Optional system/tab audio and external microphone capture.
   - Live elapsed recording timer, real-time video monitor, and instant WebM video download.
+- **Instrument Tuner & Pitch Spectrogram** (`tools/audio-tuner.html`):
+  - Real-time musical instrument pitch detection using **Web Audio API** and the **YIN Autocorrelation algorithm** with parabolic sub-cent interpolation.
+  - Cents deviation needle gauge (-50 to +50 cents) with in-tune indicator (±3 cents), selectable reference pitch A4 (415–466 Hz), instrument presets (Guitar, Bass, Ukulele, Violin, Chromatic), live FFT spectrogram canvas, and reference tone generator.
 
 ### 4. 🛠️ Developer & Productivity Tools
 - **Regex Visualizer** (`tools/regex-visualizer.html`):
@@ -123,6 +128,9 @@ All 21 tools are executed 100% locally in the browser without uploading document
   - **JWT Token Inspector**: Decodes JSON Web Tokens (Header, Claims/Payload) and checks expiration dates safely without transmitting tokens across the internet.
 - **Distraction-Free Text Editor** (`tools/text-editor.html`):
   - Lightweight rich-text editor with real-time character, word, and paragraph counting.
+- **Industrial Barcode Studio** (`tools/barcode-studio.html`):
+  - Pure client-side 1D vector barcode generator supporting **Code 128 (B)** with Modulo 103 checksum, **EAN-13** and **UPC-A** with automatic Modulo-10 parity check digit calculations, **Code 39**, and **ITF-14** shipping cartons.
+  - Real-time SVG rendering engine, crisp high-res PNG export, and 1-click SVG XML code copy.
 
 ### 5. 🔢 Math & Vehicle Engineering
 - **Scientific Calculator** (`tools/calculator.html`):
@@ -139,10 +147,10 @@ All 21 tools are executed 100% locally in the browser without uploading document
 | **Core Architecture** | Vanilla JavaScript (ES6+), HTML5, CSS3 | Zero-framework, lightweight client-side application foundation |
 | **Cryptography & Privacy** | Web Crypto API (`SubtleCrypto`), AES-GCM, PBKDF2 | Hardware-accelerated 256-bit file encryption, LSB steganography, and secure tokens |
 | **Document Processing** | Mozilla PDF.js v3.11, PDF-Lib v1.17 | In-browser PDF parsing, previewing, splitting, and merging |
-| **Audio & Media APIs** | Web Audio API, Canvas 2D API, MediaRecorder | Client-side waveform slicing, audio encoding, and screen capture |
+| **Audio & Media APIs** | Web Audio API (YIN Pitch Autocorrelation & Tone Synth), Canvas 2D, MediaRecorder | Client-side pitch detection, waveform slicing, audio encoding, and screen capture |
 | **Edge AI & Computer Vision** | `@imgly/background-removal` (WASM), HTML5 Canvas | On-device machine learning for background removal without server GPUs |
 | **QR Code & Camera** | QRCode.js, Html5-QRCode v2.3 | Client-side QR generation and live webcam video stream decoding |
-| **Developer Utilities** | Pure JS AST Tokenizer, Binary EXIF Parser, LCS Diff | Regex Railroad flow generation, metadata analysis, and text diffing |
+| **Developer Utilities** | Pure JS Barcode Encoders (128/EAN/UPC/39/ITF), AST Tokenizer, Binary EXIF, LCS Diff | Vector barcode rendering, Regex Railroad flow generation, metadata analysis, and text diffing |
 | **Styling & Icons** | Tailwind CSS v4, Bootstrap 5.3, Bootstrap Icons, AOS | Responsive neo-brutalist / modern clean interface with scroll animations |
 | **Edge Hosting** | Cloudflare Pages + Custom `_headers` | Global edge distribution, HTTPS SSL, and canonical URL routing |
 
@@ -156,7 +164,7 @@ All 21 tools are executed 100% locally in the browser without uploading document
 │   ├── css/                 # Global styles and typography
 │   ├── js/                  # Shared helper scripts (main.js, services.js)
 │   └── vendor/              # Bootstrap, AOS, Swiper, PDF-Lib, and PDF.js bundles
-├── tools/                   # Dedicated interactive web applications (21 total)
+├── tools/                   # Dedicated interactive web applications (23 total)
 │   ├── file-encryptor.html  # AES-256-GCM client-side file encryption & decryption
 │   ├── steganography.html   # LSB pixel steganography with optional AES protection
 │   ├── ascii-art.html       # ASCII & ANSI 24-bit terminal text art generator
@@ -169,6 +177,8 @@ All 21 tools are executed 100% locally in the browser without uploading document
 │   ├── audio-cutter.html    # Web Audio waveform cutter & WAV generator
 │   ├── photo-metadata.html  # Binary EXIF parser & privacy metadata wiper
 │   ├── screen-recorder.html # DisplayMedia & MediaRecorder screen recorder
+│   ├── audio-tuner.html     # Web Audio YIN autocorrelation pitch tuner & FFT spectrogram
+│   ├── barcode-studio.html  # Pure client-side 1D barcode generator (Code 128, EAN-13, UPC-A, Code 39, ITF-14)
 │   ├── qr-code.html         # QR code generator and camera scanner
 │   ├── pdf-tools.html       # PDF merger and images-to-PDF converter
 │   ├── dev-tools.html       # JSON formatter, Base64/URL & JWT inspector
@@ -178,10 +188,10 @@ All 21 tools are executed 100% locally in the browser without uploading document
 │   ├── calculator.html      # Scientific online calculator
 │   ├── text-editor.html     # Real-time text editor & word counter
 │   └── tire-comp.html       # Tire & rim comparison calculator
-├── screenshots/             # Retina MacBook Pro & iPhone 16 Pro showcase mockups (44 files)
+├── screenshots/             # Retina MacBook Pro & iPhone 16 Pro showcase mockups (48 files)
 ├── scripts/                 # Automated test runner and screenshot crawler
 ├── _headers                 # Cloudflare Pages HTTP caching & CORS rules
-├── index.html               # Main dashboard with all 21 tools
+├── index.html               # Main dashboard with all 23 tools
 ├── package.json             # NPM metadata, test scripts, and build tasks
 ├── wrangler.toml            # Cloudflare Pages deployment configuration
 └── README.md

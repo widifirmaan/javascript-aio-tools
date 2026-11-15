@@ -47,6 +47,8 @@ const tasks = [
   { name: 'Steganography Studio', file: 'tools/steganography.html', action: (page) => page.click('#btnLoadSampleStego').catch(() => {}) },
   { name: 'ASCII Art Generator', file: 'tools/ascii-art.html', action: (page) => page.click('#btnSampleAscii').catch(() => {}) },
   { name: 'Regex Visualizer', file: 'tools/regex-visualizer.html' },
+  { name: 'Instrument Tuner', file: 'tools/audio-tuner.html', action: (page) => page.click('#btnTestTone').catch(() => {}) },
+  { name: 'Barcode Studio', file: 'tools/barcode-studio.html' },
 ];
 
 async function preparePage(page, task, isMobile) {

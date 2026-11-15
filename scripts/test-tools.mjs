@@ -34,7 +34,9 @@ const pages = [
   'tools/file-encryptor.html',
   'tools/steganography.html',
   'tools/ascii-art.html',
-  'tools/regex-visualizer.html'
+  'tools/regex-visualizer.html',
+  'tools/audio-tuner.html',
+  'tools/barcode-studio.html'
 ];
 
 async function runTestSuite() {
@@ -843,6 +845,83 @@ async function runTestSuite() {
     totalErrors++;
   }
   await regexPage.close();
+
+  // Test 22: Instrument Tuner (Pitch detection, cents deviation & needle gauge)
+  console.log('\n[22/23] Testing Instrument Tuner (A4 calibration, needle gauge & cents math)...');
+  const tunerPage = await browser.newPage();
+  await tunerPage.goto(`file://${path.join(REPO_ROOT, 'tools/audio-tuner.html')}`);
+  await new Promise(r => setTimeout(r, 600));
+
+  const tunerRes = await tunerPage.evaluate(() => {
+    // 1. Test In-tune A4 = 440 Hz
+    window.setTunerPitch(440.0, 'A4');
+    const note1 = document.getElementById('noteDisplay').textContent;
+    const inTune1 = document.getElementById('noteDisplay').classList.contains('in-tune');
+    const needle1 = parseFloat(document.getElementById('centsNeedle').style.left);
+
+    // 2. Test Flat note: 430 Hz
+    window.setTunerPitch(430.0);
+    const flat2 = document.getElementById('noteDisplay').classList.contains('flat');
+    const needle2 = parseFloat(document.getElementById('centsNeedle').style.left);
+
+    // 3. Test Sharp note: 450 Hz
+    window.setTunerPitch(450.0);
+    const sharp3 = document.getElementById('noteDisplay').classList.contains('sharp');
+    const needle3 = parseFloat(document.getElementById('centsNeedle').style.left);
+
+    return {
+      note1,
+      inTune1,
+      needle1,
+      flat2,
+      needle2,
+      sharp3,
+      needle3
+    };
+  });
+
+  if (tunerRes.note1.includes('A') && tunerRes.inTune1 && tunerRes.needle1 === 50 && tunerRes.flat2 && tunerRes.needle2 < 50 && tunerRes.sharp3 && tunerRes.needle3 > 50) {
+    console.log(`  ✓ Instrument Tuner: Verified In-Tune (440Hz, needle at ${tunerRes.needle1}%), Flat (<50%), and Sharp (>50%) gauges`);
+  } else {
+    console.error('  ❌ Instrument Tuner failed gauge tests:', tunerRes);
+    totalErrors++;
+  }
+  await tunerPage.close();
+
+  // Test 23: Barcode Studio (Code 128, EAN-13 checksum & vector SVG rendering)
+  console.log('\n[23/23] Testing Barcode Studio (EAN-13 mod-10, Code 128 & vector SVG)...');
+  const barcodePage = await browser.newPage();
+  await barcodePage.goto(`file://${path.join(REPO_ROOT, 'tools/barcode-studio.html')}`);
+  await new Promise(r => setTimeout(r, 600));
+
+  const barcodeRes = await barcodePage.evaluate(() => {
+    // 1. Test EAN-13 (899123456789) -> 13th check digit should be calculated
+    window.loadBarcodePreset('ean13');
+    const svgEan = document.getElementById('barcodePreviewBox').querySelector('svg');
+    const hasEanBars = svgEan && svgEan.querySelectorAll('rect').length >= 30;
+    const eanText = svgEan ? svgEan.querySelector('text').textContent : '';
+
+    // 2. Test Code 128 (PKG-ID-2026-WIDI)
+    window.loadBarcodePreset('code128');
+    const svg128 = document.getElementById('barcodePreviewBox').querySelector('svg');
+    const has128Bars = svg128 && svg128.querySelectorAll('rect').length >= 40;
+    const text128 = svg128 ? svg128.querySelector('text').textContent : '';
+
+    return {
+      hasEanBars,
+      eanText,
+      has128Bars,
+      text128
+    };
+  });
+
+  if (barcodeRes.hasEanBars && barcodeRes.eanText.replace(/\s+/g, '').startsWith('899123456789') && barcodeRes.has128Bars && barcodeRes.text128 === 'PKG-ID-2026-WIDI') {
+    console.log(`  ✓ Barcode Studio: Rendered vector EAN-13 (${barcodeRes.eanText}) and Code 128 (${barcodeRes.text128})`);
+  } else {
+    console.error('  ❌ Barcode Studio failed:', barcodeRes);
+    totalErrors++;
+  }
+  await barcodePage.close();
 
   await browser.close();
 
