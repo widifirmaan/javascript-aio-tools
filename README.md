@@ -41,7 +41,7 @@ JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection
 | **Photo Metadata Editor Desktop**<br>![Photo Metadata Editor Desktop](screenshots/Photo%20Metadata%20Editor%20Desktop.png) | **Photo Metadata Editor Mobile**<br>![Photo Metadata Editor Mobile](screenshots/Photo%20Metadata%20Editor%20Mobile.png) |
 | **Screen Recorder Desktop**<br>![Screen Recorder Desktop](screenshots/Screen%20Recorder%20Desktop.png) | **Screen Recorder Mobile**<br>![Screen Recorder Mobile](screenshots/Screen%20Recorder%20Mobile.png) |
 | **QR Code Studio Desktop**<br>![QR Code Studio Desktop](screenshots/QR%20Code%20Studio%20Desktop.png) | **QR Code Studio Mobile**<br>![QR Code Studio Mobile](screenshots/QR%20Code%20Studio%20Mobile.png) |
-| **PDF Studio (Merge & Img2Pdf) Desktop**<br>![PDF Studio Desktop](screenshots/PDF%20Studio%20Desktop.png) | **PDF Studio Mobile**<br>![PDF Studio Mobile](screenshots/PDF%20Studio%20Mobile.png) |
+| **PDF Studio Desktop**<br>![PDF Studio Desktop](screenshots/PDF%20Studio%20Desktop.png) | **PDF Studio Mobile**<br>![PDF Studio Mobile](screenshots/PDF%20Studio%20Mobile.png) |
 | **Developer Toolbox Desktop**<br>![Developer Toolbox Desktop](screenshots/Developer%20Toolbox%20Desktop.png) | **Developer Toolbox Mobile**<br>![Developer Toolbox Mobile](screenshots/Developer%20Toolbox%20Mobile.png) |
 | **Background Remover Desktop**<br>![Background Remover Desktop](screenshots/Background%20Remover%20Desktop.png) | **Background Remover Mobile**<br>![Background Remover Mobile](screenshots/Background%20Remover%20Mobile.png) |
 | **Image Compressor Desktop**<br>![Image Compressor Desktop](screenshots/Image%20Compressor%20Desktop.png) | **Image Compressor Mobile**<br>![Image Compressor Mobile](screenshots/Image%20Compressor%20Mobile.png) |
@@ -78,12 +78,12 @@ All 23 tools are executed 100% locally in the browser without uploading document
   - Split multi-page PDF documents or extract custom page ranges (e.g., `1-3, 5, 8-10`).
   - Visual interactive page thumbnail selector with quick odd/even toggles.
   - Powered by client-side **PDF-Lib** and **Mozilla PDF.js**.
-- **PDF Studio (Merge & Images to PDF)** (`tools/pdf-tools.html`):
+- **PDF Studio** (`tools/pdf-tools.html`):
   - **Merge PDFs**: Combine multiple PDF files into one clean document with reordering controls.
   - **Images to PDF**: Convert collections of JPG, PNG, and WebP images into a standardized A4 or original-sized PDF document.
 
 ### 3. 🖼️ Media, Audio & Creative Graphics
-- **ASCII & ANSI Art Generator** (`tools/ascii-art.html`):
+- **ASCII Art Generator** (`tools/ascii-art.html`):
   - Convert photos, icons, and logos into monochrome ASCII art, styled color HTML, or 24-bit ANSI terminal escape codes.
   - Configurable character density ramps, contrast boost, brightness inversion, and PNG image export.
 - **Background Remover** (`tools/remove-bg.html`):
@@ -107,7 +107,7 @@ All 23 tools are executed 100% locally in the browser without uploading document
   - In-browser screen and window video recording using `navigator.mediaDevices.getDisplayMedia` and HTML5 `MediaRecorder`.
   - Optional system/tab audio and external microphone capture.
   - Live elapsed recording timer, real-time video monitor, and instant WebM video download.
-- **Instrument Tuner & Pitch Spectrogram** (`tools/audio-tuner.html`):
+- **Instrument Tuner** (`tools/audio-tuner.html`):
   - Real-time musical instrument pitch detection using **Web Audio API** and the **YIN Autocorrelation algorithm** with parabolic sub-cent interpolation.
   - Cents deviation needle gauge (-50 to +50 cents) with in-tune indicator (±3 cents), selectable reference pitch A4 (415–466 Hz), instrument presets (Guitar, Bass, Ukulele, Violin, Chromatic), live FFT spectrogram canvas, and reference tone generator.
 
@@ -118,14 +118,14 @@ All 23 tools are executed 100% locally in the browser without uploading document
 - **Text Diff** (`tools/text-diff.html`):
   - Fast Longest Common Subsequence (LCS) diff engine comparing original and modified texts.
   - Side-by-side split view and unified inline view modes with unified diff statistics (+additions, -deletions, unchanged) and match percentage.
-- **QR Code Studio (Generator & Scanner)** (`tools/qr-code.html`):
+- **QR Code Studio** (`tools/qr-code.html`):
   - **Generator**: Custom QR codes for URLs, Wi-Fi networks (WPA/WEP/Open), WhatsApp direct chat, vCard contacts, and emails with custom colors and size settings.
   - **Scanner**: Decodes QR codes from image uploads or live webcam camera stream using **Html5-QRCode**.
-- **Developer & Data Toolbox** (`tools/dev-tools.html`):
+- **Developer Toolbox** (`tools/dev-tools.html`):
   - **JSON Formatter & Validator**: Beautify (2/4 spaces), Minify, and real-time syntax error pointer.
   - **Base64 & URL Encoder/Decoder**: Two-way encoding for text and files to Base64 data URLs.
   - **JWT Token Inspector**: Decodes JSON Web Tokens (Header, Claims/Payload) and checks expiration dates safely without transmitting tokens across the internet.
-- **Distraction-Free Text Editor** (`tools/text-editor.html`):
+- **Text Editor** (`tools/text-editor.html`):
   - Lightweight rich-text editor with real-time character, word, and paragraph counting.
 - **Barcode Studio** (`tools/barcode-studio.html`):
   - Pure client-side 1D vector barcode generator supporting **Code 128 (B)** with Modulo 103 checksum, **EAN-13** and **UPC-A** with automatic Modulo-10 parity check digit calculations, **Code 39**, and **ITF-14** shipping cartons.
@@ -134,7 +134,7 @@ All 23 tools are executed 100% locally in the browser without uploading document
 ### 5. 🔢 Math & Vehicle Engineering
 - **Scientific Calculator** (`tools/calculator.html`):
   - Responsive mathematical and scientific calculator with trigonometric, logarithmic, and power functions.
-- **Tire & Wheel Size Comparison** (`tools/tire-comp.html`):
+- **Tire Comparison** (`tools/tire-comp.html`):
   - Side-by-side automotive tire specification comparison calculating sidewall height, overall diameter changes, ride height differences, and speedometer calibration error percentage.
 
 ---

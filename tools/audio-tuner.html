@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Instrument Tuner & Audio Spectrum - WIDIFIRMAAN Tools</title>
+  <title>Instrument Tuner - WIDIFIRMAAN Tools</title>
   <meta name="description" content="100% client-side instrument tuner and pitch detector using Web Audio API autocorrelation. Real-time pitch gauge and FFT spectrum.">
   <link href="../assets/img/favicon.png" rel="icon">
   <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -125,10 +125,7 @@
                   <span id="tuneStatusText" class="fw-bold text-white">Ready to listen</span>
                 </div>
                 <div class="d-flex justify-content-center align-items-center gap-2">
-                  <button type="button" class="btn btn-outline-secondary btn-icon" id="btnTestTone" title="Play Reference Tone (A4 440Hz)" aria-label="Play Reference Tone (A4 440Hz)">
-                    <i class="bi bi-volume-up"></i>
-                  </button>
-                  <button type="button" class="btn btn-primary btn-icon" id="btnToggleMic" title="Toggle Microphone" aria-label="Toggle Microphone">
+                  <button type="button" class="btn btn-primary btn-icon" id="btnToggleMic" title="Start Listening" aria-label="Start Listening">
                     <i class="bi bi-mic-fill" id="micIcon"></i>
                     <span id="micBtnText" class="visually-hidden">Start Listening</span>
                   </button>
@@ -241,7 +238,7 @@
     const inputA4 = document.getElementById('inputA4');
     const sliderSensitivity = document.getElementById('sliderSensitivity');
     const stringButtonsContainer = document.getElementById('stringButtonsContainer');
-    const btnTestTone = document.getElementById('btnTestTone');
+    const micIcon = document.getElementById('micIcon');
 
     let audioCtx = null;
     let micStream = null;
@@ -258,7 +255,7 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Render Preset String Buttons
+    // Render Preset String Buttons (calibrated to current A4 reference)
     function renderStringButtons() {
       stringButtonsContainer.innerHTML = '';
       const strings = PRESETS_DATA[currentPreset];
@@ -267,18 +264,25 @@
         return;
       }
 
+      const a4 = parseFloat(inputA4.value) || 440;
+      const ratio = a4 / 440;
+
       strings.forEach(s => {
+        const calibratedFreq = parseFloat((s.freq * ratio).toFixed(2));
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'btn btn-sm btn-outline-secondary px-3';
-        btn.innerHTML = `<i class="bi bi-volume-up me-1"></i> ${s.name} (${s.freq} Hz)`;
+        btn.innerHTML = `<i class="bi bi-volume-up me-1"></i> ${s.name} (${calibratedFreq} Hz)`;
         btn.addEventListener('click', () => {
-          playReferenceTone(s.freq);
-          setTunerPitch(s.freq, s.name);
+          playReferenceTone(calibratedFreq);
+          setTunerPitch(calibratedFreq, s.name);
         });
         stringButtonsContainer.appendChild(btn);
       });
     }
+
+    inputA4.addEventListener('input', renderStringButtons);
+    inputA4.addEventListener('change', renderStringButtons);
 
     document.querySelectorAll('.preset-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -395,25 +399,36 @@
         if (Math.abs(buffer[SIZE - i]) < thres) { r2 = SIZE - i; break; }
       }
 
-      const trimBuffer = buffer.slice(r1, r2);
-      const c = new Float32Array(trimBuffer.length);
+      if (r2 <= r1 + 100) return -1;
 
-      for (let i = 0; i < trimBuffer.length; i++) {
-        for (let j = 0; j < trimBuffer.length - i; j++) {
-          c[i] = c[i] + trimBuffer[j] * trimBuffer[j + i];
+      const trimBuffer = buffer.slice(r1, r2);
+      const trimLen = trimBuffer.length;
+      // Max lag bounded by lowest detectable frequency (30 Hz)
+      const maxLag = Math.min(trimLen - 2, Math.floor(sampleRate / 30));
+      const minLag = Math.max(1, Math.floor(sampleRate / 2200));
+      const c = new Float32Array(maxLag + 2);
+
+      for (let i = 0; i <= maxLag; i++) {
+        let sum = 0;
+        const limit = trimLen - i;
+        for (let j = 0; j < limit; j++) {
+          sum += trimBuffer[j] * trimBuffer[j + i];
         }
+        c[i] = sum;
       }
 
-      let d = 0;
-      while (c[d] > c[d + 1]) d++;
+      let d = minLag;
+      while (d < maxLag && c[d] > c[d + 1]) d++;
 
       let maxVal = -1, maxPos = -1;
-      for (let i = d; i < trimBuffer.length; i++) {
+      for (let i = d; i <= maxLag; i++) {
         if (c[i] > maxVal) {
           maxVal = c[i];
           maxPos = i;
         }
       }
+
+      if (maxPos <= 0 || maxPos >= maxLag) return -1;
 
       let T0 = maxPos;
       // Parabolic interpolation for sub-bin accuracy
@@ -422,6 +437,7 @@
       const b = (x3 - x1) / 2;
       if (a) T0 = T0 - b / (2 * a);
 
+      if (T0 <= 0) return -1;
       return sampleRate / T0;
     }
 
@@ -492,12 +508,18 @@
 
         isListening = true;
         micBtnText.textContent = 'Stop Listening';
-        btnToggleMic.className = 'btn btn-danger px-4 py-2 fw-semibold';
+        btnToggleMic.className = 'btn btn-danger btn-icon';
+        btnToggleMic.title = 'Stop Listening';
+        btnToggleMic.setAttribute('aria-label', 'Stop Listening');
+        micIcon.className = 'bi bi-stop-fill';
         tuneStatusText.textContent = 'Listening for notes...';
+        tuneStatusText.className = 'fw-bold text-white';
         audioTick();
       } catch (err) {
         console.error('Microphone error:', err);
-        alert('Could not access microphone: ' + err.message);
+        tuneStatusText.textContent = 'Microphone access denied or unavailable';
+        tuneStatusText.className = 'fw-bold text-danger';
+        stopListening();
       }
     }
 
@@ -509,19 +531,19 @@
         micStream = null;
       }
       micBtnText.textContent = 'Start Listening';
-      btnToggleMic.className = 'btn btn-primary px-4 py-2 fw-semibold';
-      tuneStatusText.textContent = 'Listening paused';
+      btnToggleMic.className = 'btn btn-primary btn-icon';
+      btnToggleMic.title = 'Start Listening';
+      btnToggleMic.setAttribute('aria-label', 'Start Listening');
+      micIcon.className = 'bi bi-mic-fill';
+      if (tuneStatusText.className.indexOf('text-danger') === -1) {
+        tuneStatusText.textContent = 'Listening paused';
+        tuneStatusText.className = 'fw-bold text-secondary';
+      }
     }
 
     btnToggleMic.addEventListener('click', () => {
       if (isListening) stopListening();
       else startListening();
-    });
-
-    // Test Note Button (Puppeteer & Quick Test Friendly)
-    btnTestTone.addEventListener('click', () => {
-      playReferenceTone(440.0, 2.0);
-      setTunerPitch(440.0, 'A4');
     });
   </script>
 </body>
