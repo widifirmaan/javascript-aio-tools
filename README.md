@@ -89,14 +89,14 @@ JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection
 
 | Category | Technologies | Purpose |
 | :--- | :--- | :--- |
-| **Core Architecture** | Vanilla JavaScript (ES6+), HTML5, CSS3 | Zero-framework, lightweight client-side application foundation |
-| **Cryptography & Privacy** | Web Crypto API (`SubtleCrypto`), AES-GCM, PBKDF2 | Hardware-accelerated 256-bit file encryption, LSB steganography, and secure tokens |
+| **Core Architecture** | Vanilla JavaScript (ES6+), HTML5, CSS3 | Client-side web application without framework overhead |
+| **Cryptography & Privacy** | Web Crypto API (`SubtleCrypto`), AES-GCM, PBKDF2 | Client-side 256-bit file encryption, LSB steganography, and token inspection |
 | **Document Processing** | Mozilla PDF.js v3.11, PDF-Lib v1.17 | In-browser PDF parsing, previewing, splitting, and merging |
-| **Audio & Media APIs** | Web Audio API (YIN Pitch Autocorrelation & Tone Synth), Canvas 2D, MediaRecorder | Client-side pitch detection, waveform slicing, audio encoding, and screen capture |
+| **Audio & Media APIs** | Web Audio API (YIN Pitch Autocorrelation), Canvas 2D, MediaRecorder | Pitch detection, waveform slicing, audio encoding, and screen capture |
 | **Edge AI & Computer Vision** | `@imgly/background-removal` (WASM), HTML5 Canvas | On-device machine learning for background removal without server GPUs |
 | **QR Code & Camera** | QRCode.js, Html5-QRCode v2.3 | Client-side QR generation and live webcam video stream decoding |
 | **Developer Utilities** | Pure JS Barcode Encoders (128/EAN/UPC/39/ITF), AST Tokenizer, Binary EXIF, LCS Diff | Vector barcode rendering, Regex Railroad flow generation, metadata analysis, and text diffing |
-| **Styling & Icons** | Tailwind CSS v4, Bootstrap 5.3, Bootstrap Icons, AOS | Responsive neo-brutalist / modern clean interface with scroll animations |
+| **Styling & Icons** | Tailwind CSS v4, Bootstrap 5.3, Bootstrap Icons, AOS | Responsive modern interface with modal dialogs and scroll animations |
 | **Edge Hosting** | Cloudflare Pages + Custom `_headers` | Global edge distribution, HTTPS SSL, and canonical URL routing |
 
 ---
