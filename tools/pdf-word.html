@@ -376,274 +376,189 @@
       }).filter(it => it.str && it.str.trim().length > 0);
     }
 
-    function groupIntoLines(items, tolerance = 3.5) {
+    function extractSpatialBlocks(rawItems, viewport) {
+      const items = parsePageItems(rawItems, viewport);
       if (items.length === 0) return [];
+
+      // 1. Group items into horizontal lines based on vertical baseline tolerance
       const sorted = [...items].sort((a, b) => a.topY - b.topY);
-      const lines = [];
+      const rawLines = [];
 
       for (const it of sorted) {
-        let matched = lines.find(l => Math.abs(l.topY - it.topY) <= tolerance);
+        let matched = rawLines.find(l => Math.abs(l.topY - it.topY) <= 3.5);
         if (matched) {
           matched.items.push(it);
           matched.topY = matched.items.reduce((sum, item) => sum + item.topY, 0) / matched.items.length;
         } else {
-          lines.push({ topY: it.topY, items: [it] });
+          rawLines.push({ topY: it.topY, items: [it] });
         }
       }
 
-      lines.sort((a, b) => a.topY - b.topY);
-      lines.forEach(l => {
-        l.items.sort((a, b) => a.x - b.x);
-        l.minX = l.items[0].x;
-        const last = l.items[l.items.length - 1];
-        l.maxX = last.x + last.width;
-        l.width = l.maxX - l.minX;
-        l.maxFontSize = Math.max(...l.items.map(i => i.fontSize));
-        l.text = l.items.map(i => i.str).join(' ').replace(/\s+/g, ' ').trim();
-      });
+      rawLines.sort((a, b) => a.topY - b.topY);
 
-      return lines;
-    }
+      // 2. Split each line into segments when a significant horizontal gap exists
+      // This separates multi-column texts, table cells, or side-by-side elements (e.g. date on right, address on left)
+      const segments = [];
+      for (const line of rawLines) {
+        line.items.sort((a, b) => a.x - b.x);
 
-    function detectColumns(items, pageWidth) {
-      if (!items || items.length < 6) return null;
-      const minTopY = Math.min(...items.map(i => i.topY));
-      const maxTopY = Math.max(...items.map(i => i.topY));
-      const span = maxTopY - minTopY;
-      if (span < 50) return null;
+        let currentSeg = {
+          topY: line.topY,
+          items: [line.items[0]],
+          minX: line.items[0].x,
+          maxX: line.items[0].x + line.items[0].width,
+          maxFontSize: line.items[0].fontSize
+        };
 
-      const candidateCutoffs = [minTopY + (span * 0.15), minTopY + (span * 0.25), minTopY];
-      let best = null;
-      let minScore = Infinity;
+        for (let j = 1; j < line.items.length; j++) {
+          const it = line.items[j];
+          const prev = line.items[j - 1];
+          const gap = it.x - (prev.x + prev.width);
+          const avgFontSize = (prev.fontSize + it.fontSize) / 2;
 
-      for (const cutoff of candidateCutoffs) {
-        const bodyItems = items.filter(it => it.topY >= cutoff);
-        if (bodyItems.length < 6) continue;
-
-        for (let splitX = pageWidth * 0.22; splitX <= pageWidth * 0.68; splitX += 10) {
-          let left = 0, right = 0, crossing = 0;
-          for (const it of bodyItems) {
-            const itRight = it.x + it.width;
-            if (itRight < splitX - 6) left++;
-            else if (it.x > splitX + 6) right++;
-            else crossing++;
-          }
-          const total = left + right + crossing;
-          if (total < 6) continue;
-          const leftRatio = left / total;
-          const rightRatio = right / total;
-          const crossRatio = crossing / total;
-
-          if (leftRatio >= 0.18 && rightRatio >= 0.22 && crossRatio <= 0.10) {
-            const score = (crossRatio * 20) + Math.abs(0.35 - leftRatio);
-            if (score < minScore) {
-              minScore = score;
-              best = { splitX, topCutoff: cutoff > minTopY ? cutoff : null };
-            }
+          if (gap > Math.max(22, avgFontSize * 2.0)) {
+            currentSeg.width = currentSeg.maxX - currentSeg.minX;
+            segments.push(currentSeg);
+            currentSeg = {
+              topY: line.topY,
+              items: [it],
+              minX: it.x,
+              maxX: it.x + it.width,
+              maxFontSize: it.fontSize
+            };
+          } else {
+            currentSeg.items.push(it);
+            currentSeg.maxX = Math.max(currentSeg.maxX, it.x + it.width);
+            currentSeg.maxFontSize = Math.max(currentSeg.maxFontSize, it.fontSize);
           }
         }
+        currentSeg.width = currentSeg.maxX - currentSeg.minX;
+        segments.push(currentSeg);
       }
-      return best;
-    }
 
-    function buildElementsFromLines(lines, styles, blockLeft = 50, blockWidth = 500) {
-      const elements = [];
-      let i = 0;
+      // 3. Cluster vertically adjacent segments that share column alignment into Spatial Blocks
+      const blocks = [];
+      const visited = new Set();
 
-      while (i < lines.length) {
-        // 1. Data Table Detection
-        let tableEnd = i;
-        while (tableEnd < lines.length && (
-          lines[tableEnd].items.length >= 3 || 
-          (lines[tableEnd].items.length === 2 && (lines[tableEnd].items[1].x - (lines[tableEnd].items[0].x + lines[tableEnd].items[0].width)) > 110)
-        )) {
-          tableEnd++;
-        }
+      for (let i = 0; i < segments.length; i++) {
+        if (visited.has(i)) continue;
+        visited.add(i);
 
-        if (tableEnd - i >= 2) {
-          const tableLines = lines.slice(i, tableEnd);
-          const maxCols = Math.max(...tableLines.map(l => l.items.length));
-          const colPct = Math.floor(100 / maxCols);
+        const seg = segments[i];
+        const block = {
+          minX: seg.minX,
+          maxX: seg.maxX,
+          minTopY: seg.topY,
+          maxTopY: seg.topY + seg.maxFontSize,
+          maxFontSize: seg.maxFontSize,
+          segments: [seg]
+        };
 
-          const tableRows = tableLines.map((tl, rowIdx) => {
-            const isHeader = rowIdx === 0;
-            const cells = [];
-            for (let c = 0; c < maxCols; c++) {
-              const it = tl.items[c];
-              if (!it) {
-                cells.push(new docx.TableCell({
-                  width: { size: colPct, type: docx.WidthType.PERCENTAGE },
-                  margins: { top: 60, bottom: 60, left: 80, right: 80 },
-                  children: [new docx.Paragraph({})]
-                }));
-                continue;
-              }
-              const fd = getFontDetails(it, styles);
-              const cellText = it.str.trim();
-              const isNum = c > 0 && !isNaN(Number(cellText.replace(/[^0-9.-]/g, '')));
+        let lastTopY = seg.topY;
+        let lastFontSize = seg.maxFontSize;
 
-              cells.push(new docx.TableCell({
-                width: { size: colPct, type: docx.WidthType.PERCENTAGE },
-                margins: { top: 60, bottom: 60, left: 80, right: 80 },
-                children: [
-                  new docx.Paragraph({
-                    alignment: isNum ? docx.AlignmentType.RIGHT : docx.AlignmentType.LEFT,
-                    children: [
-                      new docx.TextRun({
-                        text: cellText,
-                        font: fd.cleanFont,
-                        size: fd.halfPoints,
-                        bold: isHeader || fd.isBold,
-                        italics: fd.isItalic
-                      })
-                    ]
-                  })
-                ]
-              }));
-            }
-            return new docx.TableRow({ children: cells });
-          });
+        for (let j = i + 1; j < segments.length; j++) {
+          if (visited.has(j)) continue;
+          const cand = segments[j];
+          const vertDist = cand.topY - lastTopY;
 
-          elements.push(new docx.Table({
-            width: { size: 100, type: docx.WidthType.PERCENTAGE },
-            borders: {
-              top: { style: docx.BorderStyle.SINGLE, size: 2, color: 'CCCCCC' },
-              bottom: { style: docx.BorderStyle.SINGLE, size: 2, color: 'CCCCCC' },
-              left: { style: docx.BorderStyle.NONE },
-              right: { style: docx.BorderStyle.NONE },
-              insideHorizontal: { style: docx.BorderStyle.SINGLE, size: 1, color: 'EBEBEB' },
-              insideVertical: { style: docx.BorderStyle.NONE }
-            },
-            rows: tableRows
-          }));
-
-          elements.push(new docx.Paragraph({ spacing: { after: 120 } }));
-          i = tableEnd;
-          continue;
-        }
-
-        const line = lines[i];
-
-        // 2. Split Left/Right Single Line (e.g. Job Title on Left, Date on Far Right)
-        if (line.items.length === 2) {
-          const itLeft = line.items[0];
-          const itRight = line.items[1];
-          const gap = itRight.x - (itLeft.x + itLeft.width);
-
-          if (gap > 100) {
-            const fdL = getFontDetails(itLeft, styles);
-            const fdR = getFontDetails(itRight, styles);
-
-            elements.push(new docx.Table({
-              width: { size: 100, type: docx.WidthType.PERCENTAGE },
-              borders: {
-                top: { style: docx.BorderStyle.NONE }, bottom: { style: docx.BorderStyle.NONE },
-                left: { style: docx.BorderStyle.NONE }, right: { style: docx.BorderStyle.NONE },
-                insideHorizontal: { style: docx.BorderStyle.NONE }, insideVertical: { style: docx.BorderStyle.NONE }
-              },
-              rows: [
-                new docx.TableRow({
-                  children: [
-                    new docx.TableCell({
-                      width: { size: 70, type: docx.WidthType.PERCENTAGE },
-                      borders: { top: { style: docx.BorderStyle.NONE }, bottom: { style: docx.BorderStyle.NONE }, left: { style: docx.BorderStyle.NONE }, right: { style: docx.BorderStyle.NONE } },
-                      children: [
-                        new docx.Paragraph({
-                          children: [
-                            new docx.TextRun({
-                              text: itLeft.str.trim(),
-                              font: fdL.cleanFont,
-                              size: fdL.halfPoints,
-                              bold: fdL.isBold,
-                              italics: fdL.isItalic
-                            })
-                          ]
-                        })
-                      ]
-                    }),
-                    new docx.TableCell({
-                      width: { size: 30, type: docx.WidthType.PERCENTAGE },
-                      borders: { top: { style: docx.BorderStyle.NONE }, bottom: { style: docx.BorderStyle.NONE }, left: { style: docx.BorderStyle.NONE }, right: { style: docx.BorderStyle.NONE } },
-                      children: [
-                        new docx.Paragraph({
-                          alignment: docx.AlignmentType.RIGHT,
-                          children: [
-                            new docx.TextRun({
-                              text: itRight.str.trim(),
-                              font: fdR.cleanFont,
-                              size: fdR.halfPoints,
-                              bold: fdR.isBold,
-                              italics: fdR.isItalic
-                            })
-                          ]
-                        })
-                      ]
-                    })
-                  ]
-                })
-              ]
-            }));
-            i++;
+          // Stop checking if cand is far below current block
+          if (vertDist > lastFontSize * 2.4) {
+            if (cand.topY - lastTopY > 40) break;
             continue;
           }
+
+          // Check if horizontally aligned or substantially overlapping
+          const overlapX = Math.min(block.maxX, cand.maxX) - Math.max(block.minX, cand.minX);
+          const minW = Math.min(block.maxX - block.minX, cand.width);
+          const isLeftAligned = Math.abs(cand.minX - block.minX) <= 18;
+          const isOverlapping = minW > 0 && (overlapX / minW) >= 0.45;
+          const isFontCompatible = Math.abs(cand.maxFontSize - lastFontSize) <= 4;
+
+          if ((isLeftAligned || isOverlapping) && isFontCompatible) {
+            visited.add(j);
+            block.segments.push(cand);
+            block.minX = Math.min(block.minX, cand.minX);
+            block.maxX = Math.max(block.maxX, cand.maxX);
+            block.maxTopY = Math.max(block.maxTopY, cand.topY + cand.maxFontSize);
+            block.maxFontSize = Math.max(block.maxFontSize, cand.maxFontSize);
+            lastTopY = cand.topY;
+            lastFontSize = cand.maxFontSize;
+          }
         }
 
-        const lineAlignment = getLineAlignment(line, blockLeft, blockWidth);
-
-        // 3. Headings with exact font runs
-        if (line.maxFontSize >= 18) {
-          elements.push(new docx.Paragraph({
-            heading: docx.HeadingLevel.HEADING_1,
-            alignment: lineAlignment,
-            children: buildRunsFromItems(line.items, styles),
-            spacing: { before: 240, after: 100 }
-          }));
-          i++;
-          continue;
-        } else if (line.maxFontSize >= 13.5) {
-          elements.push(new docx.Paragraph({
-            heading: docx.HeadingLevel.HEADING_2,
-            alignment: lineAlignment,
-            children: buildRunsFromItems(line.items, styles),
-            spacing: { before: 180, after: 80 }
-          }));
-          i++;
-          continue;
-        }
-
-        // 4. Group consecutive normal lines into flowing paragraphs
-        const paragraphRuns = [...buildRunsFromItems(line.items, styles)];
-        let nextIdx = i + 1;
-
-        while (nextIdx < lines.length) {
-          const nextLine = lines[nextIdx];
-          if (nextLine.maxFontSize >= 13.5 || nextLine.items.length >= 3) break;
-          const vertDist = nextLine.topY - lines[nextIdx - 1].topY;
-          if (vertDist > line.maxFontSize * 1.8) break;
-          if (line.text.endsWith(':')) break;
-          if (/^[•\-\*▪]|\d+\./.test(nextLine.text)) break;
-
-          paragraphRuns.push(new docx.TextRun({ text: ' ' }));
-          paragraphRuns.push(...buildRunsFromItems(nextLine.items, styles));
-          nextIdx++;
-        }
-
-        let spaceAfter = 100;
-        if (nextIdx < lines.length) {
-          const gapPt = lines[nextIdx].topY - lines[nextIdx - 1].topY;
-          spaceAfter = Math.max(60, Math.min(300, Math.round(gapPt * 15)));
-        }
-
-        elements.push(new docx.Paragraph({
-          alignment: lineAlignment,
-          children: paragraphRuns,
-          spacing: { after: spaceAfter }
-        }));
-
-        i = nextIdx;
+        block.width = block.maxX - block.minX;
+        block.height = block.maxTopY - block.minTopY;
+        blocks.push(block);
       }
 
-      return elements;
+      return blocks;
+    }
+
+    function buildFramedParagraph(block, styles, pageWidth) {
+      block.segments.sort((a, b) => a.topY - b.topY);
+
+      const runs = [];
+      for (let sIdx = 0; sIdx < block.segments.length; sIdx++) {
+        const seg = block.segments[sIdx];
+
+        if (sIdx > 0) {
+          runs.push(new docx.TextRun({ break: 1 }));
+        }
+
+        for (let iIdx = 0; iIdx < seg.items.length; iIdx++) {
+          const it = seg.items[iIdx];
+          const fd = getFontDetails(it, styles);
+
+          if (iIdx > 0) {
+            const prev = seg.items[iIdx - 1];
+            const gap = it.x - (prev.x + prev.width);
+            if (gap > 2) {
+              runs.push(new docx.TextRun({ text: ' ' }));
+            }
+          }
+
+          runs.push(new docx.TextRun({
+            text: it.str,
+            font: fd.cleanFont,
+            size: fd.halfPoints,
+            bold: fd.isBold,
+            italics: fd.isItalic
+          }));
+        }
+      }
+
+      // Detect alignment
+      const blockMid = block.minX + (block.width / 2);
+      const pageMid = pageWidth / 2;
+      let alignment = docx.AlignmentType.LEFT;
+      if (Math.abs(blockMid - pageMid) < 30 && block.width < pageWidth * 0.70) {
+        alignment = docx.AlignmentType.CENTER;
+      } else if (block.maxX > pageWidth - 50 && block.minX > pageWidth * 0.45) {
+        alignment = docx.AlignmentType.RIGHT;
+      }
+
+      // Add safety padding to frame width to avoid premature line-wrapping in Word font rasterizers
+      const frameWidthTwips = Math.round(Math.min(
+        (pageWidth - block.minX) * 20,
+        Math.max(block.width + Math.max(16, block.maxFontSize * 1.5), 50) * 20
+      ));
+      const frameXTwips = Math.round(Math.max(0, block.minX) * 20);
+      const frameYTwips = Math.round(Math.max(0, block.minTopY) * 20);
+
+      return new docx.Paragraph({
+        alignment: alignment,
+        frame: {
+          position: { x: frameXTwips, y: frameYTwips },
+          width: frameWidthTwips,
+          anchor: {
+            horizontal: docx.FrameAnchorType.PAGE,
+            vertical: docx.FrameAnchorType.PAGE
+          },
+          wrap: docx.FrameWrap.NONE
+        },
+        children: runs
+      });
     }
 
     btnConvert.addEventListener('click', async () => {
@@ -685,7 +600,7 @@
           targetPages = Array.from({ length: totalPdfPages }, (_, i) => i + 1);
         }
 
-        const docChildren = [];
+        const pageSections = [];
 
         for (let idx = 0; idx < targetPages.length; idx++) {
           const pageNum = targetPages[idx];
@@ -699,6 +614,23 @@
           const textContent = await page.getTextContent();
           const styles = textContent.styles || {};
           const rawItems = (textContent.items || []).filter(it => it.str && it.str.trim().length > 0);
+
+          const isLandscape = viewport.width > viewport.height;
+          const sectionProperties = {
+            page: {
+              size: {
+                width: Math.round(viewport.width * 20),
+                height: Math.round(viewport.height * 20),
+                orientation: isLandscape ? docx.PageOrientation.LANDSCAPE : docx.PageOrientation.PORTRAIT
+              },
+              margin: {
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0
+              }
+            }
+          };
 
           if (rawItems.length === 0) {
             // Scanned / Image-only PDF page: fallback to high-resolution ImageRun
@@ -717,97 +649,38 @@
               const imgBytes = new Uint8Array(bin.length);
               for (let b = 0; b < bin.length; b++) imgBytes[b] = bin.charCodeAt(b);
 
-              const docWidth = 550;
-              const docHeight = Math.round(docWidth * (renderViewport.height / renderViewport.width));
-
-              if (docChildren.length > 0) {
-                docChildren.push(new docx.Paragraph({ children: [new docx.PageBreak()] }));
-              }
-              docChildren.push(new docx.Paragraph({
+              pageSections.push({
+                properties: sectionProperties,
                 children: [
-                  new docx.ImageRun({
-                    data: imgBytes,
-                    transformation: { width: docWidth, height: docHeight }
+                  new docx.Paragraph({
+                    children: [
+                      new docx.ImageRun({
+                        data: imgBytes,
+                        transformation: {
+                          width: Math.round(viewport.width),
+                          height: Math.round(viewport.height)
+                        }
+                      })
+                    ]
                   })
                 ]
-              }));
+              });
             } catch (scanErr) {
               console.warn('Scanned render failed:', scanErr);
             }
             continue;
           }
 
-          // Page break between subsequent pages
-          if (docChildren.length > 0) {
-            docChildren.push(new docx.Paragraph({ children: [new docx.PageBreak()] }));
-          }
+          // Universal Spatial Block Extraction (all document forms: papers, invoices, certificates, tables, contracts)
+          const blocks = extractSpatialBlocks(rawItems, viewport);
+          const pageParagraphs = blocks.map(block => buildFramedParagraph(block, styles, viewport.width));
 
-          const parsedItems = parsePageItems(rawItems, viewport);
-          const lines = groupIntoLines(parsedItems);
-          const colSplit = detectColumns(parsedItems, viewport.width);
-
-          if (colSplit) {
-            // Multi-Column Layout (CV sidebars, multi-column articles)
-            const headerLines = [];
-            const leftColLines = [];
-            const rightColLines = [];
-
-            for (const line of lines) {
-              if (colSplit.topCutoff && line.topY < colSplit.topCutoff) {
-                headerLines.push(line);
-              } else {
-                if (line.maxX < colSplit.splitX + 8) {
-                  leftColLines.push(line);
-                } else if (line.minX > colSplit.splitX - 8) {
-                  rightColLines.push(line);
-                } else {
-                  const mid = line.minX + (line.width / 2);
-                  if (mid < colSplit.splitX) leftColLines.push(line);
-                  else rightColLines.push(line);
-                }
-              }
-            }
-
-            if (headerLines.length > 0) {
-              docChildren.push(...buildElementsFromLines(headerLines, styles, 50, viewport.width - 100));
-            }
-
-            const leftElements = buildElementsFromLines(leftColLines, styles, 50, colSplit.splitX - 50);
-            const rightElements = buildElementsFromLines(rightColLines, styles, colSplit.splitX, viewport.width - colSplit.splitX - 50);
-
-            const leftPct = Math.max(25, Math.min(45, Math.round((colSplit.splitX / viewport.width) * 100)));
-            const rightPct = 100 - leftPct;
-
-            docChildren.push(new docx.Table({
-              width: { size: 100, type: docx.WidthType.PERCENTAGE },
-              borders: {
-                top: { style: docx.BorderStyle.NONE }, bottom: { style: docx.BorderStyle.NONE },
-                left: { style: docx.BorderStyle.NONE }, right: { style: docx.BorderStyle.NONE },
-                insideHorizontal: { style: docx.BorderStyle.NONE }, insideVertical: { style: docx.BorderStyle.NONE }
-              },
-              rows: [
-                new docx.TableRow({
-                  children: [
-                    new docx.TableCell({
-                      width: { size: leftPct, type: docx.WidthType.PERCENTAGE },
-                      margins: { top: 60, bottom: 60, left: 80, right: 80 },
-                      borders: { top: { style: docx.BorderStyle.NONE }, bottom: { style: docx.BorderStyle.NONE }, left: { style: docx.BorderStyle.NONE }, right: { style: docx.BorderStyle.NONE } },
-                      children: leftElements.length > 0 ? leftElements : [new docx.Paragraph({})]
-                    }),
-                    new docx.TableCell({
-                      width: { size: rightPct, type: docx.WidthType.PERCENTAGE },
-                      margins: { top: 60, bottom: 60, left: 80, right: 80 },
-                      borders: { top: { style: docx.BorderStyle.NONE }, bottom: { style: docx.BorderStyle.NONE }, left: { style: docx.BorderStyle.NONE }, right: { style: docx.BorderStyle.NONE } },
-                      children: rightElements.length > 0 ? rightElements : [new docx.Paragraph({})]
-                    })
-                  ]
-                })
-              ]
-            }));
-          } else {
-            // Standard Single-Column Flow
-            docChildren.push(...buildElementsFromLines(lines, styles, 50, viewport.width - 100));
-          }
+          pageSections.push({
+            properties: sectionProperties,
+            children: pageParagraphs.length > 0 ? pageParagraphs : [
+              new docx.Paragraph({ children: [new docx.TextRun("No extractable content found on this page.")] })
+            ]
+          });
         }
 
         progressBar.style.width = '92%';
@@ -817,19 +690,14 @@
         const doc = new docx.Document({
           creator: "JavaScript AIO Tools - Widi Firmansyah",
           title: selectedFile.name,
-          sections: [
+          sections: pageSections.length > 0 ? pageSections : [
             {
               properties: {
                 page: {
-                  margin: {
-                    top: 1000,
-                    right: 1000,
-                    bottom: 1000,
-                    left: 1000
-                  }
+                  margin: { top: 720, right: 720, bottom: 720, left: 720 }
                 }
               },
-              children: docChildren.length > 0 ? docChildren : [
+              children: [
                 new docx.Paragraph({ children: [new docx.TextRun("No extractable content found in this document.")] })
               ]
             }
