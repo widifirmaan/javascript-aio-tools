@@ -12,7 +12,6 @@ JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![HTML5 / CSS3](https://img.shields.io/badge/HTML5%20%2F%20CSS3-Modern_Web-E34F26?style=flat-square&logo=html5&logoColor=white)](https://developer.mozilla.org/)
 [![Tailwind & Bootstrap](https://img.shields.io/badge/UI-Tailwind_%26_Bootstrap-38BDF8?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![License](https://img.shields.io/badge/License-MIT-3B82F6?style=flat-square)](LICENSE)
 
 ---
 
@@ -109,7 +108,7 @@ All 23 tools are executed 100% locally in the browser without uploading document
   - Live elapsed recording timer, real-time video monitor, and instant WebM video download.
 - **Instrument Tuner** (`tools/audio-tuner.html`):
   - Real-time musical instrument pitch detection using **Web Audio API** and the **YIN Autocorrelation algorithm** with parabolic sub-cent interpolation.
-  - Cents deviation needle gauge (-50 to +50 cents) with in-tune indicator (±3 cents), selectable reference pitch A4 (415–466 Hz), instrument presets (Guitar, Bass, Ukulele, Violin, Chromatic), live FFT spectrogram canvas, and reference tone generator.
+  - Cents deviation needle gauge (-50 to +50 cents) with in-tune indicator (±3 cents), selectable reference pitch A4 (415–466 Hz), instrument presets (Guitar, Bass, Ukulele, Violin, Chromatic), and live FFT spectrogram canvas.
 
 ### 4. 🛠️ Developer & Productivity Tools
 - **Regex Visualizer** (`tools/regex-visualizer.html`):
@@ -236,10 +235,4 @@ npm run deploy
 ## Author
 
 Developed by **[Widi Firmansyah](https://widifirmaan.web.id)**.
-
----
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
 
