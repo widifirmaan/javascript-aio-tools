@@ -30,7 +30,11 @@ const pages = [
   'tools/svg-minifier.html',
   'tools/audio-cutter.html',
   'tools/photo-metadata.html',
-  'tools/screen-recorder.html'
+  'tools/screen-recorder.html',
+  'tools/file-encryptor.html',
+  'tools/steganography.html',
+  'tools/ascii-art.html',
+  'tools/regex-visualizer.html'
 ];
 
 async function runTestSuite() {
@@ -634,7 +638,7 @@ async function runTestSuite() {
   await photoPage.close();
 
   // Test 17: Screen Recorder (DisplayMedia & MediaRecorder DOM integrity)
-  console.log('\n[17/17] Testing Screen Recorder (Controls & video monitor setup)...');
+  console.log('\n[17/21] Testing Screen Recorder (Controls & video monitor setup)...');
   const recPage = await browser.newPage();
   await recPage.goto(`file://${path.join(REPO_ROOT, 'tools/screen-recorder.html')}`);
   await new Promise(r => setTimeout(r, 600));
@@ -657,6 +661,188 @@ async function runTestSuite() {
     totalErrors++;
   }
   await recPage.close();
+
+  // Test 18: File Encryptor (AES-GCM 256 + PBKDF2 roundtrip)
+  console.log('\n[18/21] Testing File Encryptor (AES-256-GCM encryption & decryption roundtrip)...');
+  const encPage = await browser.newPage();
+  await encPage.goto(`file://${path.join(REPO_ROOT, 'tools/file-encryptor.html')}`);
+  await new Promise(r => setTimeout(r, 600));
+
+  await encPage.click('#btnLoadSampleDoc');
+  await encPage.waitForSelector('#btnStartEncrypt:not([disabled])', { timeout: 5000 });
+  await encPage.click('#btnStartEncrypt');
+  await encPage.waitForSelector('#encResultBox:not(.d-none)', { timeout: 10000 });
+
+  const encRes = await encPage.evaluate(async () => {
+    const btn = document.getElementById('btnDownloadEncrypted');
+    const info = document.getElementById('encResultInfo').textContent;
+    const res = await fetch(btn.href);
+    const blob = await res.blob();
+    const arrayBuffer = await blob.arrayBuffer();
+    const bytes = new Uint8Array(arrayBuffer);
+    const magic = String.fromCharCode(...bytes.slice(0, 4));
+
+    // Now test decryption directly in page context
+    const file = new File([blob], 'secret_plan.txt.enc');
+    window.setDecFile(file);
+    document.getElementById('decPassword').value = 'WidiFirmaanSecure2026!';
+    document.getElementById('btnStartDecrypt').disabled = false;
+    document.getElementById('btnStartDecrypt').click();
+
+    await new Promise(r => setTimeout(r, 1500));
+
+    const decBox = document.getElementById('decResultBox');
+    const decInfo = document.getElementById('decResultInfo').textContent;
+    const decBtn = document.getElementById('btnDownloadDecrypted');
+
+    return {
+      isEnc1: magic === 'ENC1',
+      encName: btn.download,
+      encInfo: info,
+      decSuccess: !decBox.classList.contains('d-none'),
+      decInfo,
+      restoredName: decBtn.download
+    };
+  });
+
+  if (encRes.isEnc1 && encRes.encName.endsWith('.enc') && encRes.decSuccess && encRes.restoredName === 'secret_plan.txt') {
+    console.log(`  ✓ File Encryptor verified: AES-256-GCM container (${encRes.encName}) encrypted & decrypted back to "${encRes.restoredName}"`);
+  } else {
+    console.error('  ❌ File Encryptor failed roundtrip:', encRes);
+    totalErrors++;
+  }
+  await encPage.close();
+
+  // Test 19: Steganography Studio (LSB message embedding & extraction)
+  console.log('\n[19/21] Testing Steganography Studio (LSB pixel encoding & decoding)...');
+  const stegPage = await browser.newPage();
+  await stegPage.goto(`file://${path.join(REPO_ROOT, 'tools/steganography.html')}`);
+  await new Promise(r => setTimeout(r, 600));
+
+  await stegPage.click('#btnLoadSampleStego');
+  await stegPage.waitForSelector('#btnStartEncode:not([disabled])', { timeout: 5000 });
+  await stegPage.click('#btnStartEncode');
+  await stegPage.waitForSelector('#encodeResultBox:not(.d-none)', { timeout: 8000 });
+
+  const stegRes = await stegPage.evaluate(async () => {
+    const btn = document.getElementById('btnDownloadStego');
+    const res = await fetch(btn.href);
+    const blob = await res.blob();
+
+    // Now simulate loading the stego image in the Decode tab
+    const file = new File([blob], 'stego_hidden_message.png', { type: 'image/png' });
+    const img = new Image();
+    const dataUrl = await new Promise(resolve => {
+      const r = new FileReader();
+      r.onload = () => resolve(r.result);
+      r.readAsDataURL(file);
+    });
+
+    await new Promise(resolve => {
+      img.onload = () => {
+        const canvas = document.getElementById('canvasDecode');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        document.getElementById('dropzoneDecode').classList.add('d-none');
+        document.getElementById('imageBoxDecode').classList.remove('d-none');
+        document.getElementById('btnStartDecode').disabled = false;
+        resolve();
+      };
+      img.src = dataUrl;
+    });
+
+    document.getElementById('btnStartDecode').click();
+    await new Promise(r => setTimeout(r, 1200));
+
+    const revealedText = document.getElementById('revealedTextBox').textContent;
+    return {
+      hasDownload: btn.download === 'stego_hidden_message.png',
+      revealedText
+    };
+  });
+
+  if (stegRes.hasDownload && stegRes.revealedText.includes('CONFIDENTIAL: Project Antigravity 2.0')) {
+    console.log(`  ✓ Steganography Studio: Secret message encoded to PNG and decoded cleanly ("${stegRes.revealedText.slice(0, 45)}...")`);
+  } else {
+    console.error('  ❌ Steganography Studio failed:', stegRes);
+    totalErrors++;
+  }
+  await stegPage.close();
+
+  // Test 20: ASCII Art Generator (Image luminance analysis & ANSI/HTML output)
+  console.log('\n[20/21] Testing ASCII Art Generator (Pixel luminance math & formatting)...');
+  const asciiPage = await browser.newPage();
+  await asciiPage.goto(`file://${path.join(REPO_ROOT, 'tools/ascii-art.html')}`);
+  await new Promise(r => setTimeout(r, 600));
+
+  await asciiPage.click('#btnSampleAscii');
+  await new Promise(r => setTimeout(r, 1000));
+
+  const asciiRes = await asciiPage.evaluate(() => {
+    const output = document.getElementById('asciiOutputBox');
+    const stats = document.getElementById('asciiStats').textContent;
+    const plainText = output.textContent;
+
+    // Switch to colored HTML
+    document.getElementById('selectColorMode').value = 'colorHtml';
+    document.getElementById('selectColorMode').dispatchEvent(new Event('change'));
+
+    const htmlOutput = output.innerHTML;
+    const hasSpans = htmlOutput.includes('<span style="color:rgb(');
+
+    return {
+      hasPlainText: plainText.length > 200,
+      stats,
+      hasSpans
+    };
+  });
+
+  if (asciiRes.hasPlainText && asciiRes.stats.includes('cols') && asciiRes.hasSpans) {
+    console.log(`  ✓ ASCII Art Generator: Rendered monochrome text & colored HTML (${asciiRes.stats})`);
+  } else {
+    console.error('  ❌ ASCII Art Generator failed:', asciiRes);
+    totalErrors++;
+  }
+  await asciiPage.close();
+
+  // Test 21: Regex Visualizer (Pattern match, group capture & railroad track SVG)
+  console.log('\n[21/21] Testing Regex Visualizer (Pattern matching, group table & railroad SVG)...');
+  const regexPage = await browser.newPage();
+  await regexPage.goto(`file://${path.join(REPO_ROOT, 'tools/regex-visualizer.html')}`);
+  await new Promise(r => setTimeout(r, 600));
+
+  const regexRes = await regexPage.evaluate(() => {
+    window.loadPreset('email');
+    const badge = document.getElementById('matchStatsBadge').textContent;
+    const highlight = document.getElementById('highlightBox').innerHTML;
+    const svg = document.getElementById('railroadContainer').querySelector('svg');
+    const tableRows = document.querySelectorAll('#groupTableBody tr').length;
+
+    // Test Syntax error handling
+    document.getElementById('regexPattern').value = '[a-z(';
+    document.getElementById('regexPattern').dispatchEvent(new Event('input'));
+    const errorBadge = document.getElementById('matchStatsBadge').textContent;
+    const hasErrorAlert = !document.getElementById('regexErrorAlert').classList.contains('d-none');
+
+    return {
+      matchBadge: badge,
+      hasMarks: highlight.includes('<mark>'),
+      hasSvg: svg !== null && svg.querySelectorAll('rect').length >= 3,
+      tableRows,
+      errorBadge,
+      hasErrorAlert
+    };
+  });
+
+  if (regexRes.matchBadge.includes('Match') && regexRes.hasMarks && regexRes.hasSvg && regexRes.hasErrorAlert) {
+    console.log(`  ✓ Regex Visualizer: Pattern matching (${regexRes.matchBadge}, ${regexRes.tableRows} rows), Railroad SVG generated, syntax error caught`);
+  } else {
+    console.error('  ❌ Regex Visualizer failed:', regexRes);
+    totalErrors++;
+  }
+  await regexPage.close();
 
   await browser.close();
 

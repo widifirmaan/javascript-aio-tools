@@ -43,6 +43,10 @@ const tasks = [
   { name: 'Audio Cutter', file: 'tools/audio-cutter.html', action: (page) => page.click('#btnSampleAudio').catch(() => {}) },
   { name: 'Photo Metadata Editor', file: 'tools/photo-metadata.html', action: (page) => page.click('#btnSamplePhoto').catch(() => {}) },
   { name: 'Screen Recorder', file: 'tools/screen-recorder.html' },
+  { name: 'File Encryptor', file: 'tools/file-encryptor.html', action: (page) => page.click('#btnLoadSampleDoc').catch(() => {}) },
+  { name: 'Steganography Studio', file: 'tools/steganography.html', action: (page) => page.click('#btnLoadSampleStego').catch(() => {}) },
+  { name: 'ASCII Art Generator', file: 'tools/ascii-art.html', action: (page) => page.click('#btnSampleAscii').catch(() => {}) },
+  { name: 'Regex Visualizer', file: 'tools/regex-visualizer.html' },
 ];
 
 async function preparePage(page, task, isMobile) {

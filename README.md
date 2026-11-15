@@ -2,12 +2,12 @@
 
 > Free, fast, and 100% private browser utility suite powered by WebAssembly and client-side JavaScript.
 
-JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection of 17 essential browser utilities for documents, images, audio, video, developer productivity, and calculations. All data is processed entirely in your browser's memory, zero server uploads, 100% private, and completely free.
+JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection of 21 essential browser utilities for documents, images, audio, video, security & privacy, developer productivity, and calculations. All data is processed entirely in your browser's memory, zero server uploads, 100% private, and completely free.
 
 [![Live Demo](https://img.shields.io/badge/Demo-tools.widifirmaan.web.id-10B981?style=flat-square&logo=cloudflare&logoColor=white)](https://tools.widifirmaan.web.id)
 [![Architecture](https://img.shields.io/badge/Architecture-100%25_Client--Side-8B5CF6?style=flat-square)](#features)
 [![WebAssembly](https://img.shields.io/badge/Engine-WebAssembly-654FF0?style=flat-square&logo=webassembly&logoColor=white)](https://webassembly.org/)
-[![Tools](https://img.shields.io/badge/Tools-17_Interactive_Apps-F59E0B?style=flat-square)](#features)
+[![Tools](https://img.shields.io/badge/Tools-21_Interactive_Apps-F59E0B?style=flat-square)](#features)
 [![Deployment](https://img.shields.io/badge/Deployment-Cloudflare_Pages-F38020?style=flat-square&logo=cloudflare)](https://pages.cloudflare.com/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![HTML5 / CSS3](https://img.shields.io/badge/HTML5%20%2F%20CSS3-Modern_Web-E34F26?style=flat-square&logo=html5&logoColor=white)](https://developer.mozilla.org/)
@@ -28,6 +28,10 @@ JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection
 | Desktop (MacBook Pro) | Mobile (iPhone 16 Pro) |
 | :---: | :---: |
 | **Main Dashboard Desktop**<br>![Dashboard Desktop](screenshots/Dashboard%20Desktop.png) | **Main Dashboard Mobile**<br>![Dashboard Mobile](screenshots/Dashboard%20Mobile.png) |
+| **File Encryptor Desktop**<br>![File Encryptor Desktop](screenshots/File%20Encryptor%20Desktop.png) | **File Encryptor Mobile**<br>![File Encryptor Mobile](screenshots/File%20Encryptor%20Mobile.png) |
+| **Steganography Studio Desktop**<br>![Steganography Studio Desktop](screenshots/Steganography%20Studio%20Desktop.png) | **Steganography Studio Mobile**<br>![Steganography Studio Mobile](screenshots/Steganography%20Studio%20Mobile.png) |
+| **ASCII Art Generator Desktop**<br>![ASCII Art Generator Desktop](screenshots/ASCII%20Art%20Generator%20Desktop.png) | **ASCII Art Generator Mobile**<br>![ASCII Art Generator Mobile](screenshots/ASCII%20Art%20Generator%20Mobile.png) |
+| **Regex Visualizer Desktop**<br>![Regex Visualizer Desktop](screenshots/Regex%20Visualizer%20Desktop.png) | **Regex Visualizer Mobile**<br>![Regex Visualizer Mobile](screenshots/Regex%20Visualizer%20Mobile.png) |
 | **Text Diff Desktop**<br>![Text Diff Desktop](screenshots/Text%20Diff%20Desktop.png) | **Text Diff Mobile**<br>![Text Diff Mobile](screenshots/Text%20Diff%20Mobile.png) |
 | **Password Generator Desktop**<br>![Password Generator Desktop](screenshots/Password%20Generator%20Desktop.png) | **Password Generator Mobile**<br>![Password Generator Mobile](screenshots/Password%20Generator%20Mobile.png) |
 | **PDF Splitter Desktop**<br>![PDF Splitter Desktop](screenshots/PDF%20Splitter%20Desktop.png) | **PDF Splitter Mobile**<br>![PDF Splitter Mobile](screenshots/PDF%20Splitter%20Mobile.png) |
@@ -50,9 +54,24 @@ JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection
 
 ## Features
 
-All 17 tools are executed 100% locally in the browser without uploading documents, images, audio, or video to external servers:
+All 21 tools are executed 100% locally in the browser without uploading documents, images, audio, video, or confidential files to external servers:
 
-### 1. 📄 Document & PDF Tools
+### 1. 🛡️ Security & Privacy
+- **File Encryptor** (`tools/file-encryptor.html`):
+  - Military-grade file encryption and decryption using **AES-GCM 256-bit** and **PBKDF2 key derivation** (100,000 hash iterations via native `Web Crypto API`).
+  - Supports any file type (PDF, ZIP, photos, confidential text) with encrypted binary container (`.enc`) retaining original filename upon decryption.
+- **Steganography Studio** (`tools/steganography.html`):
+  - In-browser image steganography using the **Least Significant Bit (LSB)** technique across RGB pixel channels.
+  - Invisibly embeds confidential messages or passphrases with optional **AES-GCM encryption** into lossless PNG images.
+- **Password Generator** (`tools/password-generator.html`):
+  - Cryptographically secure random password generation powered by `window.crypto.getRandomValues()`.
+  - Customizable character types (uppercase, lowercase, numbers, symbols) and Diceware passphrase generator.
+  - Real-time Shannon entropy calculation (bits), brute-force crack-time estimation, and bulk generation.
+- **Photo Metadata Editor** (`tools/photo-metadata.html`):
+  - Pure JavaScript binary EXIF parser displaying camera make, lens model, shutter speed, ISO, aperture, and GPS coordinates.
+  - 1-click **Strip EXIF & Clean Image** tool to erase GPS and camera fingerprints before publishing photos online.
+
+### 2. 📄 Document & PDF Tools
 - **PDF Splitter** (`tools/pdf-splitter.html`):
   - Split multi-page PDF documents or extract custom page ranges (e.g., `1-3, 5, 8-10`).
   - Visual interactive page thumbnail selector with quick odd/even toggles.
@@ -60,9 +79,11 @@ All 17 tools are executed 100% locally in the browser without uploading document
 - **PDF Studio (Merge & Images to PDF)** (`tools/pdf-tools.html`):
   - **Merge PDFs**: Combine multiple PDF files into one clean document with reordering controls.
   - **Images to PDF**: Convert collections of JPG, PNG, and WebP images into a standardized A4 or original-sized PDF document.
-  - Powered by **PDF-Lib** client-side engine.
 
-### 2. 🖼️ Media, Audio & Video Processing
+### 3. 🖼️ Media, Audio & Creative Graphics
+- **ASCII & ANSI Art Generator** (`tools/ascii-art.html`):
+  - Convert photos, icons, and logos into monochrome ASCII art, styled color HTML, or 24-bit ANSI terminal escape codes.
+  - Configurable character density ramps, contrast boost, brightness inversion, and PNG image export.
 - **AI Background Remover** (`tools/remove-bg.html`):
   - Automatic foreground detection and background removal using **Edge WebAssembly AI** (`@imgly/background-removal`).
   - Zero server GPU or CPU required, runs directly on the user's hardware via WebAssembly.
@@ -81,24 +102,18 @@ All 17 tools are executed 100% locally in the browser without uploading document
   - Interactive Web Audio API waveform visualizer with draggable start/end trim handles.
   - Optional smooth fade-in and fade-out audio envelope curves.
   - 100% browser-based PCM WAV audio encoding and instant playback preview.
-- **Photo Metadata Editor** (`tools/photo-metadata.html`):
-  - Pure JavaScript binary EXIF parser displaying camera make, lens model, shutter speed, ISO, aperture, and GPS coordinates.
-  - Interactive Google Maps and OpenStreetMap location links.
-  - 1-click **Strip EXIF & Clean Image** tool to erase GPS and camera fingerprints before publishing photos online.
 - **Screen Recorder** (`tools/screen-recorder.html`):
   - In-browser screen and window video recording using `navigator.mediaDevices.getDisplayMedia` and HTML5 `MediaRecorder`.
   - Optional system/tab audio and external microphone capture.
   - Live elapsed recording timer, real-time video monitor, and instant WebM video download.
 
-### 3. 🛠️ Developer & Productivity Tools
+### 4. 🛠️ Developer & Productivity Tools
+- **Regex Visualizer** (`tools/regex-visualizer.html`):
+  - Interactive Regular Expression tester with dynamic **SVG Railroad Flow Diagrams**.
+  - Real-time match highlighting, multi-group capture table, cheat sheet, and instant regex syntax error detection.
 - **Text Diff** (`tools/text-diff.html`):
   - Fast Longest Common Subsequence (LCS) diff engine comparing original and modified texts.
   - Side-by-side split view and unified inline view modes with addition/deletion badges and match percentage.
-  - Case-insensitive and whitespace-ignoring diff toggles, with 1-click unified patch copy.
-- **Password Generator** (`tools/password-generator.html`):
-  - Cryptographically secure random password generation powered by `window.crypto.getRandomValues()`.
-  - Customizable character types (uppercase, lowercase, numbers, symbols) and Diceware passphrase generator.
-  - Real-time Shannon entropy calculation (bits), brute-force crack-time estimation, and bulk generation.
 - **QR Code Studio (Generator & Scanner)** (`tools/qr-code.html`):
   - **Generator**: Custom QR codes for URLs, Wi-Fi networks (WPA/WEP/Open), WhatsApp direct chat, vCard contacts, and emails with custom colors and size settings.
   - **Scanner**: Decodes QR codes from image uploads or live webcam camera stream using **Html5-QRCode**.
@@ -109,7 +124,7 @@ All 17 tools are executed 100% locally in the browser without uploading document
 - **Distraction-Free Text Editor** (`tools/text-editor.html`):
   - Lightweight rich-text editor with real-time character, word, and paragraph counting.
 
-### 4. 🔢 Math & Vehicle Engineering
+### 5. 🔢 Math & Vehicle Engineering
 - **Scientific Calculator** (`tools/calculator.html`):
   - Responsive mathematical and scientific calculator with trigonometric, logarithmic, and power functions.
 - **Tire & Wheel Size Comparison** (`tools/tire-comp.html`):
@@ -122,11 +137,12 @@ All 17 tools are executed 100% locally in the browser without uploading document
 | Category | Technologies | Purpose |
 | :--- | :--- | :--- |
 | **Core Architecture** | Vanilla JavaScript (ES6+), HTML5, CSS3 | Zero-framework, lightweight client-side application foundation |
+| **Cryptography & Privacy** | Web Crypto API (`SubtleCrypto`), AES-GCM, PBKDF2 | Hardware-accelerated 256-bit file encryption, LSB steganography, and secure tokens |
 | **Document Processing** | Mozilla PDF.js v3.11, PDF-Lib v1.17 | In-browser PDF parsing, previewing, splitting, and merging |
 | **Audio & Media APIs** | Web Audio API, Canvas 2D API, MediaRecorder | Client-side waveform slicing, audio encoding, and screen capture |
 | **Edge AI & Computer Vision** | `@imgly/background-removal` (WASM), HTML5 Canvas | On-device machine learning for background removal without server GPUs |
 | **QR Code & Camera** | QRCode.js, Html5-QRCode v2.3 | Client-side QR generation and live webcam video stream decoding |
-| **Developer Utilities** | Web Crypto API, Binary EXIF Parser, LCS Diff | Secure random generation, metadata analysis, and diffing |
+| **Developer Utilities** | Pure JS AST Tokenizer, Binary EXIF Parser, LCS Diff | Regex Railroad flow generation, metadata analysis, and text diffing |
 | **Styling & Icons** | Tailwind CSS v4, Bootstrap 5.3, Bootstrap Icons, AOS | Responsive neo-brutalist / modern clean interface with scroll animations |
 | **Edge Hosting** | Cloudflare Pages + Custom `_headers` | Global edge distribution, HTTPS SSL, and canonical URL routing |
 
@@ -140,7 +156,11 @@ All 17 tools are executed 100% locally in the browser without uploading document
 │   ├── css/                 # Global styles and typography
 │   ├── js/                  # Shared helper scripts (main.js, services.js)
 │   └── vendor/              # Bootstrap, AOS, Swiper, PDF-Lib, and PDF.js bundles
-├── tools/                   # Dedicated interactive web applications (17 total)
+├── tools/                   # Dedicated interactive web applications (21 total)
+│   ├── file-encryptor.html  # AES-256-GCM client-side file encryption & decryption
+│   ├── steganography.html   # LSB pixel steganography with optional AES protection
+│   ├── ascii-art.html       # ASCII & ANSI 24-bit terminal text art generator
+│   ├── regex-visualizer.html# Regex tester & SVG railroad track flow visualizer
 │   ├── text-diff.html       # Text Diff comparison (LCS, side-by-side & unified)
 │   ├── password-generator.html # Web Crypto secure password & passphrase generator
 │   ├── pdf-splitter.html    # PDF Splitter & page range extractor
@@ -158,10 +178,10 @@ All 17 tools are executed 100% locally in the browser without uploading document
 │   ├── calculator.html      # Scientific online calculator
 │   ├── text-editor.html     # Real-time text editor & word counter
 │   └── tire-comp.html       # Tire & rim comparison calculator
-├── screenshots/             # Retina MacBook Pro & iPhone 16 Pro showcase mockups
+├── screenshots/             # Retina MacBook Pro & iPhone 16 Pro showcase mockups (44 files)
 ├── scripts/                 # Automated test runner and screenshot crawler
 ├── _headers                 # Cloudflare Pages HTTP caching & CORS rules
-├── index.html               # Main dashboard with all 17 tools
+├── index.html               # Main dashboard with all 21 tools
 ├── package.json             # NPM metadata, test scripts, and build tasks
 ├── wrangler.toml            # Cloudflare Pages deployment configuration
 └── README.md

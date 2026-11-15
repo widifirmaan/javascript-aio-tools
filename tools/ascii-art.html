@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>ASCII & ANSI Art Generator - Convert Images to Text Art - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="100% client-side ASCII and colored ANSI terminal text art generator. Convert images into monospace text, HTML, and terminal banners.">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .ascii-card {
+      background: #141418;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .ascii-preview-box {
+      background: #09090c;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 14px;
+      max-height: 520px;
+      overflow: auto;
+      font-family: 'Fira Code', 'Courier New', Courier, monospace;
+      font-size: 8px;
+      line-height: 8px;
+      letter-spacing: 0px;
+      white-space: pre;
+      user-select: all;
+    }
+    .dropzone-box {
+      border: 2px dashed rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      background: #17171d;
+      transition: all 0.2s ease;
+    }
+    .dropzone-box:hover, .dropzone-box.dragover {
+      border-color: #3b82f6;
+      background: rgba(59, 130, 246, 0.05);
+    }
+  </style>
+</head>
+
+<body class="service-details-page">
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+      <a href="../index.html" class="logo d-flex align-items-center">
+        <i class="bi bi-cpu-fill text-primary me-2 fs-4"></i>
+        <span class="sitename">WIDIFIRMAAN</span>
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../index.html#services" class="active">All Tools</a></li>
+          <li><a href="https://widifirmaan.web.id" target="_blank">Author</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-title accent-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <div class="breadcrumb-wrapper">
+          <nav class="breadcrumbs">
+            <ol>
+              <li><a href="../index.html">Home</a></li>
+              <li><a href="../index.html#services">Tools</a></li>
+              <li class="current">ASCII Art Generator</li>
+            </ol>
+          </nav>
+          <h1 class="mb-2 mb-lg-0">ASCII & ANSI Text Art Generator</h1>
+        </div>
+      </div>
+    </div>
+
+    <section id="service-details" class="service-details section py-4 py-lg-5">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-4">
+          <!-- Main Content (Col 8) -->
+          <div class="col-lg-8">
+            <div class="ascii-card">
+              <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+                <div>
+                  <h2 class="fs-4 fw-bold text-white mb-1">Convert Images to Monospace Art</h2>
+                  <p class="text-secondary small mb-0">
+                    Transform any photo, logo, or icon into high-fidelity ASCII characters, colored HTML, or ANSI terminal codes.
+                  </p>
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-primary" id="btnSampleAscii">
+                  <i class="bi bi-stars me-1"></i> Load Sample Image
+                </button>
+              </div>
+
+              <!-- Dropzone -->
+              <div class="dropzone-box mb-3" id="dropzoneAscii">
+                <i class="bi bi-card-image text-primary fs-2 mb-2 d-inline-block"></i>
+                <h6 class="fw-bold text-white mb-1">Select or Drag Image to Convert</h6>
+                <p class="text-secondary small mb-2">Supports JPG, PNG, WebP, SVG</p>
+                <input type="file" id="asciiFileInput" class="d-none" accept="image/*">
+                <button type="button" class="btn btn-sm btn-outline-primary px-3" onclick="document.getElementById('asciiFileInput').click()">
+                  <i class="bi bi-folder2-open me-1"></i> Browse File
+                </button>
+              </div>
+
+              <!-- Controls Toolbar -->
+              <div class="p-3 rounded bg-dark border border-secondary border-opacity-25 mb-3">
+                <div class="row g-3">
+                  <div class="col-sm-6 col-md-4">
+                    <label class="form-label text-white small fw-bold">Character Ramp</label>
+                    <select id="selectRamp" class="form-select form-select-sm">
+                      <option value="standard">Standard (@%#*+=-:. )</option>
+                      <option value="detailed">High Density (70+ chars)</option>
+                      <option value="blocks">Blocks (█▓▒░ )</option>
+                      <option value="binary">Binary (10 )</option>
+                      <option value="minimal">Minimal (# . )</option>
+                    </select>
+                  </div>
+
+                  <div class="col-sm-6 col-md-4">
+                    <div class="d-flex justify-content-between">
+                      <label class="form-label text-white small fw-bold">Width (Columns)</label>
+                      <span id="widthValueLabel" class="text-info small fw-bold">75</span>
+                    </div>
+                    <input type="range" class="form-range" id="sliderWidth" min="20" max="150" value="75">
+                  </div>
+
+                  <div class="col-sm-6 col-md-4">
+                    <label class="form-label text-white small fw-bold">Color Mode</label>
+                    <select id="selectColorMode" class="form-select form-select-sm">
+                      <option value="mono">Monochrome Text</option>
+                      <option value="colorHtml">Colored HTML</option>
+                      <option value="ansi">ANSI Terminal Escape</option>
+                    </select>
+                  </div>
+
+                  <div class="col-sm-6 col-md-6 d-flex align-items-center gap-3">
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="checkInvert">
+                      <label class="form-check-label text-white small" for="checkInvert">Invert Brightness</label>
+                    </div>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="checkHighContrast">
+                      <label class="form-check-label text-white small" for="checkHighContrast">Boost Contrast</label>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6 col-md-6 text-sm-end">
+                    <span id="asciiStats" class="text-secondary small">Ready for image upload</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Output Box -->
+              <div class="position-relative mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span class="text-secondary small fw-bold">Output Preview:</span>
+                  <div class="btn-group btn-group-sm">
+                    <button type="button" class="btn btn-outline-secondary" id="btnCopyText" title="Copy Text Art">
+                      <i class="bi bi-clipboard me-1"></i> Copy
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" id="btnDownloadTxt" title="Download .txt">
+                      <i class="bi bi-download me-1"></i> .TXT
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" id="btnDownloadPng" title="Export as PNG">
+                      <i class="bi bi-file-earmark-image me-1"></i> PNG
+                    </button>
+                  </div>
+                </div>
+                <div id="asciiOutputBox" class="ascii-preview-box text-white">Upload an image or click "Load Sample Image" above to generate ASCII art...</div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Sidebar Column (Col 4) -->
+          <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4">
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-terminal me-2 text-secondary"></i>Use Cases
+                </h5>
+                <ul class="text-secondary small ps-3 mb-0 d-flex flex-column gap-2">
+                  <li><strong>README & GitHub Banners:</strong> Add stylized headers to your open-source projects.</li>
+                  <li><strong>CLI Terminal Tools:</strong> Copy ANSI 24-bit codes for command-line welcoming banners.</li>
+                  <li><strong>Code Comments:</strong> Embed ASCII diagrams and illustrations in code files.</li>
+                  <li><strong>100% In-Browser:</strong> Canvas pixel luminescence math without server bandwidth.</li>
+                </ul>
+              </div>
+
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-grid me-2 text-secondary"></i>Other Tools
+                </h5>
+                <div class="d-flex flex-column gap-1">
+                  <a href="svg-minifier.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-filetype-svg me-2"></i>SVG Minifier</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="color-palette.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-palette me-2"></i>Color Palette</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="image-compressor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-image me-2"></i>Image Compressor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="text-diff.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-diff me-2"></i>Text Diff</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="qr-code.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-qr-code me-2"></i>QR Code Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
+    <div class="container text-center">
+      <div class="copyright text-secondary">
+        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+      </div>
+      <div class="credits text-secondary small">
+        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="preloader"></div>
+
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/js/services.js"></script>
+
+  <script>
+    const RAMPS = {
+      standard: '@%#*+=-:. ',
+      detailed: '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. ',
+      blocks: '█▓▒░ ',
+      binary: '10 ',
+      minimal: '#. '
+    };
+
+    const asciiFileInput = document.getElementById('asciiFileInput');
+    const selectRamp = document.getElementById('selectRamp');
+    const sliderWidth = document.getElementById('sliderWidth');
+    const widthValueLabel = document.getElementById('widthValueLabel');
+    const selectColorMode = document.getElementById('selectColorMode');
+    const checkInvert = document.getElementById('checkInvert');
+    const checkHighContrast = document.getElementById('checkHighContrast');
+    const asciiStats = document.getElementById('asciiStats');
+    const asciiOutputBox = document.getElementById('asciiOutputBox');
+    const btnCopyText = document.getElementById('btnCopyText');
+    const btnDownloadTxt = document.getElementById('btnDownloadTxt');
+    const btnDownloadPng = document.getElementById('btnDownloadPng');
+    const btnSampleAscii = document.getElementById('btnSampleAscii');
+
+    let currentImg = null;
+    let plainTextResult = '';
+    let ansiResult = '';
+
+    sliderWidth.addEventListener('input', () => {
+      widthValueLabel.textContent = sliderWidth.value;
+      renderAscii();
+    });
+
+    [selectRamp, selectColorMode, checkInvert, checkHighContrast].forEach(el => {
+      el.addEventListener('change', renderAscii);
+    });
+
+    asciiFileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const img = new Image();
+          img.onload = () => {
+            currentImg = img;
+            renderAscii();
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    function renderAscii() {
+      if (!currentImg) return;
+
+      const targetWidth = parseInt(sliderWidth.value, 10);
+      // Monospace characters are roughly 2:1 height:width, so we scale height by 0.5
+      const aspect = currentImg.height / currentImg.width;
+      const targetHeight = Math.max(1, Math.round(targetWidth * aspect * 0.5));
+
+      const offCanvas = document.createElement('canvas');
+      offCanvas.width = targetWidth;
+      offCanvas.height = targetHeight;
+      const ctx = offCanvas.getContext('2d');
+      ctx.drawImage(currentImg, 0, 0, targetWidth, targetHeight);
+
+      const imgData = ctx.getImageData(0, 0, targetWidth, targetHeight);
+      const pixels = imgData.data;
+
+      const ramp = RAMPS[selectRamp.value] || RAMPS.standard;
+      const rampLen = ramp.length;
+      const invert = checkInvert.checked;
+      const boostContrast = checkHighContrast.checked;
+      const colorMode = selectColorMode.value;
+
+      let plainLines = [];
+      let htmlLines = [];
+      let ansiLines = [];
+
+      for (let y = 0; y < targetHeight; y++) {
+        let plainRow = '';
+        let htmlRow = '';
+        let ansiRow = '';
+
+        for (let x = 0; x < targetWidth; x++) {
+          const idx = (y * targetWidth + x) * 4;
+          let r = pixels[idx];
+          let g = pixels[idx + 1];
+          let b = pixels[idx + 2];
+          const a = pixels[idx + 3];
+
+          if (a === 0) {
+            plainRow += ' ';
+            htmlRow += '&nbsp;';
+            ansiRow += ' ';
+            continue;
+          }
+
+          // Perceived luminance formula (ITU-R BT.601)
+          let lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+          if (boostContrast) {
+            lum = lum < 0.5 ? Math.pow(lum * 2, 1.5) / 2 : 1 - Math.pow((1 - lum) * 2, 1.5) / 2;
+          }
+
+          if (invert) {
+            lum = 1 - lum;
+          }
+
+          const charIdx = Math.min(rampLen - 1, Math.floor(lum * rampLen));
+          const char = ramp[charIdx];
+
+          plainRow += char;
+
+          if (colorMode === 'colorHtml') {
+            const safeChar = char === ' ' ? '&nbsp;' : (char === '<' ? '&lt;' : (char === '>' ? '&gt;' : char));
+            htmlRow += `<span style="color:rgb(${r},${g},${b})">${safeChar}</span>`;
+          } else if (colorMode === 'ansi') {
+            ansiRow += `\x1b[38;2;${r};${g};${b}m${char}\x1b[0m`;
+          }
+        }
+
+        plainLines.push(plainRow);
+        if (colorMode === 'colorHtml') htmlLines.push(htmlRow);
+        if (colorMode === 'ansi') ansiLines.push(ansiRow);
+      }
+
+      plainTextResult = plainLines.join('\n');
+      ansiResult = ansiLines.join('\n');
+
+      if (colorMode === 'colorHtml') {
+        asciiOutputBox.innerHTML = htmlLines.join('<br>');
+      } else {
+        asciiOutputBox.textContent = plainTextResult;
+      }
+
+      asciiStats.textContent = `${targetWidth} × ${targetHeight} cols (${plainTextResult.length.toLocaleString()} chars)`;
+    }
+
+    btnCopyText.addEventListener('click', () => {
+      const mode = selectColorMode.value;
+      const textToCopy = mode === 'ansi' ? ansiResult : plainTextResult;
+      if (!textToCopy) return;
+
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        btnCopyText.innerHTML = '<i class="bi bi-check2 text-success me-1"></i> Copied!';
+        setTimeout(() => {
+          btnCopyText.innerHTML = '<i class="bi bi-clipboard me-1"></i> Copy';
+        }, 1500);
+      });
+    });
+
+    btnDownloadTxt.addEventListener('click', () => {
+      if (!plainTextResult) return;
+      const blob = new Blob([plainTextResult], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ascii_art.txt';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    btnDownloadPng.addEventListener('click', () => {
+      if (!plainTextResult) return;
+      const lines = plainTextResult.split('\n');
+      const fontSize = 12;
+      const charWidth = 7.2;
+      const lineHeight = 12;
+      const padding = 20;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(lines[0].length * charWidth + padding * 2);
+      canvas.height = Math.round(lines.length * lineHeight + padding * 2);
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = '#0d0d12';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.font = `${fontSize}px 'Courier New', monospace`;
+      ctx.fillStyle = '#38bdf8';
+      ctx.textBaseline = 'top';
+
+      lines.forEach((line, i) => {
+        ctx.fillText(line, padding, padding + i * lineHeight);
+      });
+
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'ascii_art.png';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    });
+
+    btnSampleAscii.addEventListener('click', () => {
+      const sampleCanvas = document.createElement('canvas');
+      sampleCanvas.width = 180;
+      sampleCanvas.height = 180;
+      const sCtx = sampleCanvas.getContext('2d');
+
+      sCtx.fillStyle = '#050508';
+      sCtx.fillRect(0, 0, 180, 180);
+
+      // Draw stylized robot/shield emblem
+      sCtx.fillStyle = '#38bdf8';
+      sCtx.beginPath();
+      sCtx.arc(90, 90, 70, 0, Math.PI * 2);
+      sCtx.fill();
+
+      sCtx.fillStyle = '#050508';
+      sCtx.beginPath();
+      sCtx.arc(90, 90, 50, 0, Math.PI * 2);
+      sCtx.fill();
+
+      sCtx.fillStyle = '#38bdf8';
+      sCtx.fillRect(60, 80, 60, 20);
+      sCtx.fillRect(80, 60, 20, 60);
+
+      const img = new Image();
+      img.onload = () => {
+        currentImg = img;
+        sliderWidth.value = 65;
+        widthValueLabel.textContent = '65';
+        renderAscii();
+      };
+      img.src = sampleCanvas.toDataURL();
+    });
+  </script>
+</body>
+
+</html>

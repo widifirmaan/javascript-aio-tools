@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>File Encryptor - AES-256-GCM Secure File Encryption - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="100% private, client-side AES-256-GCM file encryption and decryption powered by Web Crypto API. Zero server upload.">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .crypto-card {
+      background: #141418;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .dropzone-box {
+      border: 2px dashed rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 36px 20px;
+      text-align: center;
+      cursor: pointer;
+      background: #17171d;
+      transition: all 0.2s ease;
+    }
+    .dropzone-box:hover, .dropzone-box.dragover {
+      border-color: #3b82f6;
+      background: rgba(59, 130, 246, 0.05);
+    }
+    .file-badge-box {
+      background: #1c1c24;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 14px 18px;
+    }
+    .progress-bar-custom {
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body class="service-details-page">
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+      <a href="../index.html" class="logo d-flex align-items-center">
+        <i class="bi bi-cpu-fill text-primary me-2 fs-4"></i>
+        <span class="sitename">WIDIFIRMAAN</span>
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../index.html#services" class="active">All Tools</a></li>
+          <li><a href="https://widifirmaan.web.id" target="_blank">Author</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-title accent-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <div class="breadcrumb-wrapper">
+          <nav class="breadcrumbs">
+            <ol>
+              <li><a href="../index.html">Home</a></li>
+              <li><a href="../index.html#services">Tools</a></li>
+              <li class="current">File Encryptor</li>
+            </ol>
+          </nav>
+          <h1 class="mb-2 mb-lg-0">AES-256 File Encryptor & Decryptor</h1>
+        </div>
+      </div>
+    </div>
+
+    <section id="service-details" class="service-details section py-4 py-lg-5">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-4">
+          <!-- Main Content (Col 8) -->
+          <div class="col-lg-8">
+            <div class="crypto-card">
+              <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+                <div>
+                  <h2 class="fs-4 fw-bold text-white mb-1">Client-Side Military-Grade Encryption</h2>
+                  <p class="text-secondary small mb-0">
+                    Encrypt any file with AES-GCM 256-bit & PBKDF2 (100,000 iterations). 100% processed in memory.
+                  </p>
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-primary" id="btnLoadSampleDoc">
+                  <i class="bi bi-file-earmark-text me-1"></i> Load Sample File
+                </button>
+              </div>
+
+              <!-- Encrypt / Decrypt Tabs -->
+              <ul class="nav nav-pills mb-4 border-bottom border-secondary border-opacity-25 pb-3 gap-2" role="tablist">
+                <li class="nav-item">
+                  <button class="nav-link active px-4 py-2" id="tabEncrypt" data-bs-toggle="pill" data-bs-target="#paneEncrypt">
+                    <i class="bi bi-lock-fill me-1"></i> Encrypt File
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button class="nav-link px-4 py-2" id="tabDecrypt" data-bs-toggle="pill" data-bs-target="#paneDecrypt">
+                    <i class="bi bi-unlock-fill me-1"></i> Decrypt File (.enc)
+                  </button>
+                </li>
+              </ul>
+
+              <div class="tab-content">
+                <!-- PANE 1: ENCRYPT -->
+                <div class="tab-pane fade show active" id="paneEncrypt">
+                  <!-- Dropzone -->
+                  <div class="dropzone-box mb-3" id="dropzoneEncrypt">
+                    <i class="bi bi-shield-lock text-primary fs-1 mb-2 d-inline-block"></i>
+                    <h5 class="fw-bold text-white mb-1">Choose or Drag File to Encrypt</h5>
+                    <p class="text-secondary small mb-3">Accepts PDF, ZIP, Images, Documents, or any file type</p>
+                    <input type="file" id="fileInputEncrypt" class="d-none">
+                    <button type="button" class="btn btn-outline-primary px-4" onclick="document.getElementById('fileInputEncrypt').click()">
+                      <i class="bi bi-folder2-open me-1"></i> Browse File
+                    </button>
+                  </div>
+
+                  <!-- Selected File Box -->
+                  <div id="fileBoxEncrypt" class="file-badge-box mb-3 d-none">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="d-flex align-items-center gap-3">
+                        <i class="bi bi-file-earmark-lock text-info fs-3"></i>
+                        <div>
+                          <div class="text-white fw-bold" id="encFileName">filename.ext</div>
+                          <div class="text-secondary small" id="encFileSize">0 KB</div>
+                        </div>
+                      </div>
+                      <button type="button" class="btn btn-sm btn-outline-secondary" id="btnChangeEncFile">
+                        <i class="bi bi-x-lg"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Password Input Section -->
+                  <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                      <label class="form-label text-white small fw-bold">Encryption Password</label>
+                      <div class="input-group">
+                        <input type="password" id="encPassword" class="form-control font-monospace" placeholder="Enter secure passphrase...">
+                        <button class="btn btn-outline-secondary" type="button" id="btnToggleEncPass">
+                          <i class="bi bi-eye"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label text-white small fw-bold">Confirm Password</label>
+                      <input type="password" id="encPasswordConfirm" class="form-control font-monospace" placeholder="Re-enter passphrase...">
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <button type="button" class="btn btn-primary w-100 py-2 fw-semibold" id="btnStartEncrypt" disabled>
+                      <i class="bi bi-shield-lock-fill me-1"></i> Encrypt & Download .enc
+                    </button>
+                  </div>
+
+                  <!-- Progress -->
+                  <div id="encProgressBox" class="p-3 rounded border border-secondary border-opacity-25 mb-3 d-none">
+                    <div class="d-flex justify-content-between small text-secondary mb-1">
+                      <span id="encProgressStatus">Deriving key with PBKDF2...</span>
+                      <span id="encProgressPercent">0%</span>
+                    </div>
+                    <div class="progress-bar-custom">
+                      <div id="encProgressBar" style="width: 0%; height: 100%; background: #3b82f6; transition: width 0.3s;"></div>
+                    </div>
+                  </div>
+
+                  <!-- Result -->
+                  <div id="encResultBox" class="p-4 rounded border border-success border-opacity-25 text-center d-none" style="background: rgba(34, 197, 94, 0.05);">
+                    <i class="bi bi-check-circle-fill text-success fs-1 mb-2 d-inline-block"></i>
+                    <h5 class="text-white fw-bold mb-1">File Encrypted Successfully</h5>
+                    <p class="text-secondary small mb-3" id="encResultInfo">Your encrypted file is ready for download.</p>
+                    <a id="btnDownloadEncrypted" href="#" class="btn btn-success px-4 py-2">
+                      <i class="bi bi-download me-1"></i> Download Encrypted (.enc)
+                    </a>
+                  </div>
+                </div>
+
+                <!-- PANE 2: DECRYPT -->
+                <div class="tab-pane fade" id="paneDecrypt">
+                  <!-- Dropzone -->
+                  <div class="dropzone-box mb-3" id="dropzoneDecrypt">
+                    <i class="bi bi-unlock text-info fs-1 mb-2 d-inline-block"></i>
+                    <h5 class="fw-bold text-white mb-1">Choose or Drag .enc File to Decrypt</h5>
+                    <p class="text-secondary small mb-3">Select the encrypted file previously created by this tool</p>
+                    <input type="file" id="fileInputDecrypt" class="d-none" accept=".enc">
+                    <button type="button" class="btn btn-outline-info px-4" onclick="document.getElementById('fileInputDecrypt').click()">
+                      <i class="bi bi-folder2-open me-1"></i> Browse .enc File
+                    </button>
+                  </div>
+
+                  <!-- Selected File Box -->
+                  <div id="fileBoxDecrypt" class="file-badge-box mb-3 d-none">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="d-flex align-items-center gap-3">
+                        <i class="bi bi-file-earmark-check text-success fs-3"></i>
+                        <div>
+                          <div class="text-white fw-bold" id="decFileName">filename.enc</div>
+                          <div class="text-secondary small" id="decFileSize">0 KB</div>
+                        </div>
+                      </div>
+                      <button type="button" class="btn btn-sm btn-outline-secondary" id="btnChangeDecFile">
+                        <i class="bi bi-x-lg"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Password Input -->
+                  <div class="mb-4">
+                    <label class="form-label text-white small fw-bold">Decryption Password</label>
+                    <div class="input-group">
+                      <input type="password" id="decPassword" class="form-control font-monospace" placeholder="Enter original password...">
+                      <button class="btn btn-outline-secondary" type="button" id="btnToggleDecPass">
+                        <i class="bi bi-eye"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <button type="button" class="btn btn-info w-100 py-2 fw-semibold text-white" id="btnStartDecrypt" disabled>
+                      <i class="bi bi-unlock-fill me-1"></i> Decrypt & Restore File
+                    </button>
+                  </div>
+
+                  <!-- Error Alert -->
+                  <div id="decErrorAlert" class="alert alert-danger d-none py-2 px-3 small" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i> <span id="decErrorMsg">Decryption failed. Invalid password or corrupted file.</span>
+                  </div>
+
+                  <!-- Result -->
+                  <div id="decResultBox" class="p-4 rounded border border-info border-opacity-25 text-center d-none" style="background: rgba(14, 165, 233, 0.05);">
+                    <i class="bi bi-file-earmark-check-fill text-info fs-1 mb-2 d-inline-block"></i>
+                    <h5 class="text-white fw-bold mb-1">File Restored Successfully</h5>
+                    <p class="text-secondary small mb-3" id="decResultInfo">Original file restored with exact binary fidelity.</p>
+                    <a id="btnDownloadDecrypted" href="#" class="btn btn-info text-white px-4 py-2">
+                      <i class="bi bi-download me-1"></i> Download Original File
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar Column (Col 4) -->
+          <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4">
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-info-circle me-2 text-secondary"></i>Security Details
+                </h5>
+                <ul class="text-secondary small ps-3 mb-0 d-flex flex-column gap-2">
+                  <li><strong>Algorithm:</strong> AES-GCM 256-bit (Galois/Counter Mode).</li>
+                  <li><strong>Key Derivation:</strong> PBKDF2 with SHA-256 and 100,000 hash iterations.</li>
+                  <li><strong>Authentication:</strong> 128-bit integrity tag prevents tampering.</li>
+                  <li><strong>Zero Server:</strong> Everything runs locally in browser RAM using Web Crypto API.</li>
+                </ul>
+              </div>
+
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-grid me-2 text-secondary"></i>Other Tools
+                </h5>
+                <div class="d-flex flex-column gap-1">
+                  <a href="password-generator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-shield-lock me-2"></i>Password Generator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="text-diff.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-diff me-2"></i>Text Diff</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="pdf-splitter.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-scissors me-2"></i>PDF Splitter</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="photo-metadata.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-camera me-2"></i>Photo Metadata</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="dev-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-code-slash me-2"></i>Developer Toolbox</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
+    <div class="container text-center">
+      <div class="copyright text-secondary">
+        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+      </div>
+      <div class="credits text-secondary small">
+        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="preloader"></div>
+
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/js/services.js"></script>
+
+  <script>
+    // BINARY FORMAT SPECIFICATION FOR .enc:
+    // [0..3]: Magic 4 bytes: 'ENC1' (0x45, 0x4E, 0x43, 0x31)
+    // [4..19]: Salt 16 bytes (PBKDF2)
+    // [20..31]: IV 12 bytes (AES-GCM)
+    // [32..33]: FileName Length (Uint16 big endian)
+    // [34..34+len-1]: Original File Name (UTF-8 bytes)
+    // [rest]: Ciphertext + 16-byte GCM authentication tag
+
+    const MAGIC = new Uint8Array([0x45, 0x4E, 0x43, 0x31]); // 'ENC1'
+
+    const formatBytes = (bytes) => {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    };
+
+    // DOM ELEMENTS - ENCRYPT
+    const dropzoneEncrypt = document.getElementById('dropzoneEncrypt');
+    const fileInputEncrypt = document.getElementById('fileInputEncrypt');
+    const fileBoxEncrypt = document.getElementById('fileBoxEncrypt');
+    const encFileName = document.getElementById('encFileName');
+    const encFileSize = document.getElementById('encFileSize');
+    const btnChangeEncFile = document.getElementById('btnChangeEncFile');
+    const encPassword = document.getElementById('encPassword');
+    const encPasswordConfirm = document.getElementById('encPasswordConfirm');
+    const btnToggleEncPass = document.getElementById('btnToggleEncPass');
+    const btnStartEncrypt = document.getElementById('btnStartEncrypt');
+    const encProgressBox = document.getElementById('encProgressBox');
+    const encProgressBar = document.getElementById('encProgressBar');
+    const encProgressStatus = document.getElementById('encProgressStatus');
+    const encProgressPercent = document.getElementById('encProgressPercent');
+    const encResultBox = document.getElementById('encResultBox');
+    const encResultInfo = document.getElementById('encResultInfo');
+    const btnDownloadEncrypted = document.getElementById('btnDownloadEncrypted');
+    const btnLoadSampleDoc = document.getElementById('btnLoadSampleDoc');
+
+    // DOM ELEMENTS - DECRYPT
+    const dropzoneDecrypt = document.getElementById('dropzoneDecrypt');
+    const fileInputDecrypt = document.getElementById('fileInputDecrypt');
+    const fileBoxDecrypt = document.getElementById('fileBoxDecrypt');
+    const decFileName = document.getElementById('decFileName');
+    const decFileSize = document.getElementById('decFileSize');
+    const btnChangeDecFile = document.getElementById('btnChangeDecFile');
+    const decPassword = document.getElementById('decPassword');
+    const btnToggleDecPass = document.getElementById('btnToggleDecPass');
+    const btnStartDecrypt = document.getElementById('btnStartDecrypt');
+    const decErrorAlert = document.getElementById('decErrorAlert');
+    const decErrorMsg = document.getElementById('decErrorMsg');
+    const decResultBox = document.getElementById('decResultBox');
+    const decResultInfo = document.getElementById('decResultInfo');
+    const btnDownloadDecrypted = document.getElementById('btnDownloadDecrypted');
+
+    let currentEncFile = null;
+    let currentDecFile = null;
+    let encBlobUrl = null;
+    let decBlobUrl = null;
+
+    // Toggle password view
+    btnToggleEncPass.addEventListener('click', () => {
+      const type = encPassword.type === 'password' ? 'text' : 'password';
+      encPassword.type = type;
+      encPasswordConfirm.type = type;
+      btnToggleEncPass.innerHTML = `<i class="bi bi-eye${type === 'password' ? '' : '-slash'}"></i>`;
+    });
+    btnToggleDecPass.addEventListener('click', () => {
+      const type = decPassword.type === 'password' ? 'text' : 'password';
+      decPassword.type = type;
+      btnToggleDecPass.innerHTML = `<i class="bi bi-eye${type === 'password' ? '' : '-slash'}"></i>`;
+    });
+
+    // Encrypt file select
+    function setEncFile(file) {
+      currentEncFile = file;
+      encFileName.textContent = file.name;
+      encFileSize.textContent = formatBytes(file.size);
+      dropzoneEncrypt.classList.add('d-none');
+      fileBoxEncrypt.classList.remove('d-none');
+      encResultBox.classList.add('d-none');
+      validateEncInputs();
+    }
+
+    fileInputEncrypt.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) setEncFile(e.target.files[0]);
+    });
+
+    btnChangeEncFile.addEventListener('click', () => {
+      currentEncFile = null;
+      fileInputEncrypt.value = '';
+      dropzoneEncrypt.classList.remove('d-none');
+      fileBoxEncrypt.classList.add('d-none');
+      encResultBox.classList.add('d-none');
+      validateEncInputs();
+    });
+
+    function validateEncInputs() {
+      const hasFile = currentEncFile !== null;
+      const pass = encPassword.value;
+      const passConf = encPasswordConfirm.value;
+      const validPass = pass.length >= 4 && pass === passConf;
+      btnStartEncrypt.disabled = !(hasFile && validPass);
+    }
+
+    encPassword.addEventListener('input', validateEncInputs);
+    encPasswordConfirm.addEventListener('input', validateEncInputs);
+
+    // Decrypt file select
+    function setDecFile(file) {
+      currentDecFile = file;
+      decFileName.textContent = file.name;
+      decFileSize.textContent = formatBytes(file.size);
+      dropzoneDecrypt.classList.add('d-none');
+      fileBoxDecrypt.classList.remove('d-none');
+      decResultBox.classList.add('d-none');
+      decErrorAlert.classList.add('d-none');
+      validateDecInputs();
+    }
+    window.setDecFile = setDecFile;
+    window.setEncFile = setEncFile;
+
+    fileInputDecrypt.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) setDecFile(e.target.files[0]);
+    });
+
+    btnChangeDecFile.addEventListener('click', () => {
+      currentDecFile = null;
+      fileInputDecrypt.value = '';
+      dropzoneDecrypt.classList.remove('d-none');
+      fileBoxDecrypt.classList.add('d-none');
+      decResultBox.classList.add('d-none');
+      decErrorAlert.classList.add('d-none');
+      validateDecInputs();
+    });
+
+    function validateDecInputs() {
+      const hasFile = currentDecFile !== null;
+      const pass = decPassword.value;
+      btnStartDecrypt.disabled = !(hasFile && pass.length >= 1);
+    }
+
+    decPassword.addEventListener('input', validateDecInputs);
+
+    // Crypto key derivation helper
+    async function deriveKey(password, salt, iterations = 100000) {
+      const enc = new TextEncoder();
+      const passKey = await window.crypto.subtle.importKey(
+        'raw',
+        enc.encode(password),
+        'PBKDF2',
+        false,
+        ['deriveKey']
+      );
+
+      return await window.crypto.subtle.deriveKey(
+        {
+          name: 'PBKDF2',
+          salt: salt,
+          iterations: iterations,
+          hash: 'SHA-256'
+        },
+        passKey,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['encrypt', 'decrypt']
+      );
+    }
+
+    // START ENCRYPTION
+    btnStartEncrypt.addEventListener('click', async () => {
+      if (!currentEncFile || encPassword.value !== encPasswordConfirm.value) return;
+
+      btnStartEncrypt.disabled = true;
+      encProgressBox.classList.remove('d-none');
+      encResultBox.classList.add('d-none');
+      encProgressBar.style.width = '15%';
+      encProgressPercent.textContent = '15%';
+      encProgressStatus.textContent = 'Reading source file...';
+
+      try {
+        const fileBuffer = await currentEncFile.arrayBuffer();
+
+        encProgressBar.style.width = '35%';
+        encProgressPercent.textContent = '35%';
+        encProgressStatus.textContent = 'Generating crypto salt & IV...';
+
+        const salt = window.crypto.getRandomValues(new Uint8Array(16));
+        const iv = window.crypto.getRandomValues(new Uint8Array(12));
+
+        encProgressBar.style.width = '55%';
+        encProgressPercent.textContent = '55%';
+        encProgressStatus.textContent = 'Deriving 256-bit AES key (PBKDF2 100k)...';
+
+        const aesKey = await deriveKey(encPassword.value, salt);
+
+        encProgressBar.style.width = '75%';
+        encProgressPercent.textContent = '75%';
+        encProgressStatus.textContent = 'Encrypting data with AES-GCM...';
+
+        const ciphertext = await window.crypto.subtle.encrypt(
+          { name: 'AES-GCM', iv: iv },
+          aesKey,
+          fileBuffer
+        );
+
+        encProgressBar.style.width = '90%';
+        encProgressPercent.textContent = '90%';
+        encProgressStatus.textContent = 'Compiling encrypted container...';
+
+        // Prepare File Name bytes
+        const nameBytes = new TextEncoder().encode(currentEncFile.name);
+        const nameLen = nameBytes.length;
+
+        // Container: Magic (4) + Salt (16) + IV (12) + NameLen (2) + NameBytes (len) + Ciphertext
+        const totalSize = 4 + 16 + 12 + 2 + nameLen + ciphertext.byteLength;
+        const container = new Uint8Array(totalSize);
+
+        container.set(MAGIC, 0);
+        container.set(salt, 4);
+        container.set(iv, 20);
+        new DataView(container.buffer).setUint16(32, nameLen, false);
+        container.set(nameBytes, 34);
+        container.set(new Uint8Array(ciphertext), 34 + nameLen);
+
+        encProgressBar.style.width = '100%';
+        encProgressPercent.textContent = '100%';
+        encProgressStatus.textContent = 'Done!';
+
+        if (encBlobUrl) URL.revokeObjectURL(encBlobUrl);
+        const blob = new Blob([container], { type: 'application/octet-stream' });
+        encBlobUrl = URL.createObjectURL(blob);
+
+        const outName = `${currentEncFile.name}.enc`;
+        btnDownloadEncrypted.href = encBlobUrl;
+        btnDownloadEncrypted.download = outName;
+        encResultInfo.textContent = `${outName} (${formatBytes(totalSize)}) encrypted with AES-256-GCM.`;
+
+        encProgressBox.classList.add('d-none');
+        encResultBox.classList.remove('d-none');
+      } catch (err) {
+        console.error('Encryption failed:', err);
+        alert('Encryption failed: ' + err.message);
+      } finally {
+        btnStartEncrypt.disabled = false;
+      }
+    });
+
+    // START DECRYPTION
+    btnStartDecrypt.addEventListener('click', async () => {
+      if (!currentDecFile || !decPassword.value) return;
+
+      btnStartDecrypt.disabled = true;
+      decErrorAlert.classList.add('d-none');
+      decResultBox.classList.add('d-none');
+
+      try {
+        const encBuffer = await currentDecFile.arrayBuffer();
+        if (encBuffer.byteLength < 34 + 16) {
+          throw new Error('File is too short to be a valid encrypted container.');
+        }
+
+        const dataView = new DataView(encBuffer);
+        const headerBytes = new Uint8Array(encBuffer, 0, 4);
+        const isEnc1 = headerBytes[0] === 0x45 && headerBytes[1] === 0x4E && headerBytes[2] === 0x43 && headerBytes[3] === 0x31;
+        if (!isEnc1) {
+          throw new Error('Invalid file format. Magic header "ENC1" not found.');
+        }
+
+        const salt = new Uint8Array(encBuffer, 4, 16);
+        const iv = new Uint8Array(encBuffer, 20, 12);
+        const nameLen = dataView.getUint16(32, false);
+
+        if (encBuffer.byteLength < 34 + nameLen + 16) {
+          throw new Error('Corrupted container header.');
+        }
+
+        const nameBytes = new Uint8Array(encBuffer, 34, nameLen);
+        const originalName = new TextDecoder().decode(nameBytes);
+        const ciphertext = new Uint8Array(encBuffer, 34 + nameLen);
+
+        // Derive Key
+        const aesKey = await deriveKey(decPassword.value, salt);
+
+        // Decrypt
+        const decryptedBuffer = await window.crypto.subtle.decrypt(
+          { name: 'AES-GCM', iv: iv },
+          aesKey,
+          ciphertext
+        );
+
+        if (decBlobUrl) URL.revokeObjectURL(decBlobUrl);
+        const blob = new Blob([decBufferOrBlob(decryptedBuffer, originalName)]);
+        decBlobUrl = URL.createObjectURL(blob);
+
+        btnDownloadDecrypted.href = decBlobUrl;
+        btnDownloadDecrypted.download = originalName;
+        decResultInfo.textContent = `Restored: ${originalName} (${formatBytes(decryptedBuffer.byteLength)}).`;
+        decResultBox.classList.remove('d-none');
+      } catch (err) {
+        console.error('Decryption failed:', err);
+        decErrorMsg.textContent = 'Decryption failed: ' + (err.name === 'OperationError' ? 'Incorrect password or tampered data.' : err.message);
+        decErrorAlert.classList.remove('d-none');
+      } finally {
+        btnStartDecrypt.disabled = false;
+      }
+    });
+
+    function decBufferOrBlob(buffer, filename) {
+      let mime = 'application/octet-stream';
+      if (filename.endsWith('.pdf')) mime = 'application/pdf';
+      else if (filename.endsWith('.png')) mime = 'image/png';
+      else if (filename.endsWith('.jpg') || filename.endsWith('.jpeg')) mime = 'image/jpeg';
+      else if (filename.endsWith('.txt')) mime = 'text/plain';
+      return new Blob([buffer], { type: mime });
+    }
+
+    // Sample Document Button
+    btnLoadSampleDoc.addEventListener('click', () => {
+      const sampleContent = 'CONFIDENTIAL DOCUMENT\n=====================\nThis document was encrypted securely on ' + new Date().toISOString() + '\nZero server uploads. 100% private client-side encryption.\n';
+      const sampleBlob = new Blob([sampleContent], { type: 'text/plain' });
+      const sampleFile = new File([sampleBlob], 'secret_plan.txt', { type: 'text/plain' });
+      setEncFile(sampleFile);
+      encPassword.value = 'WidiFirmaanSecure2026!';
+      encPasswordConfirm.value = 'WidiFirmaanSecure2026!';
+      validateEncInputs();
+    });
+  </script>
+</body>
+
+</html>

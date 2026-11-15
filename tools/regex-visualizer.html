@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Regex Visualizer - Interactive Regex Tester & Railroad Diagram - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="100% client-side Regular Expression tester with interactive SVG railroad flow diagram, real-time match highlighting, and group capturing.">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .regex-card {
+      background: #141418;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .railroad-container {
+      background: #09090d;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 16px;
+      min-height: 180px;
+      max-height: 480px;
+      overflow: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .railroad-container svg {
+      max-width: none;
+    }
+    .match-highlight-box {
+      background: #111116;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 200px;
+      overflow-y: auto;
+      line-height: 1.6;
+    }
+    .match-highlight-box mark {
+      background: rgba(59, 130, 246, 0.35);
+      color: #93c5fd;
+      border: 1px solid #3b82f6;
+      border-radius: 3px;
+      padding: 1px 3px;
+    }
+    .match-highlight-box mark:nth-child(even) {
+      background: rgba(168, 85, 247, 0.35);
+      color: #d8b4fe;
+      border-color: #a855f7;
+    }
+    .group-table {
+      font-size: 0.85rem;
+      font-family: 'Fira Code', monospace;
+    }
+    .group-table th {
+      background: #1a1a22;
+      color: #94a3b8;
+    }
+    .group-table td {
+      background: #121217;
+      color: #f1f5f9;
+      border-color: rgba(255, 255, 255, 0.06);
+    }
+  </style>
+</head>
+
+<body class="service-details-page">
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+      <a href="../index.html" class="logo d-flex align-items-center">
+        <i class="bi bi-cpu-fill text-primary me-2 fs-4"></i>
+        <span class="sitename">WIDIFIRMAAN</span>
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../index.html#services" class="active">All Tools</a></li>
+          <li><a href="https://widifirmaan.web.id" target="_blank">Author</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-title accent-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <div class="breadcrumb-wrapper">
+          <nav class="breadcrumbs">
+            <ol>
+              <li><a href="../index.html">Home</a></li>
+              <li><a href="../index.html#services">Tools</a></li>
+              <li class="current">Regex Visualizer</li>
+            </ol>
+          </nav>
+          <h1 class="mb-2 mb-lg-0">Regex Visualizer & Railroad Diagram</h1>
+        </div>
+      </div>
+    </div>
+
+    <section id="service-details" class="service-details section py-4 py-lg-5">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-4">
+          <!-- Main Content (Col 8) -->
+          <div class="col-lg-8">
+            <div class="regex-card">
+              <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+                <div>
+                  <h2 class="fs-4 fw-bold text-white mb-1">Interactive Regex Flow & Testing</h2>
+                  <p class="text-secondary small mb-0">
+                    Live pattern matching with syntax analysis, capture group inspection, and dynamic railroad SVG track diagrams.
+                  </p>
+                </div>
+                <div class="dropdown">
+                  <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-lightning-charge me-1"></i> Quick Presets
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow">
+                    <li><button class="dropdown-item small" type="button" onclick="loadPreset('email')">Email Address</button></li>
+                    <li><button class="dropdown-item small" type="button" onclick="loadPreset('url')">URL / Web Link</button></li>
+                    <li><button class="dropdown-item small" type="button" onclick="loadPreset('ipv4')">IPv4 Address</button></li>
+                    <li><button class="dropdown-item small" type="button" onclick="loadPreset('date')">Date (YYYY-MM-DD)</button></li>
+                    <li><button class="dropdown-item small" type="button" onclick="loadPreset('phone')">Phone Number</button></li>
+                    <li><button class="dropdown-item small" type="button" onclick="loadPreset('slug')">URL Slug</button></li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Regex Input Box -->
+              <div class="mb-3">
+                <label class="form-label text-white small fw-bold">Regular Expression</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-dark text-secondary border-secondary border-opacity-25 font-monospace">/</span>
+                  <input type="text" id="regexPattern" class="form-control font-monospace text-info" value="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" placeholder="Enter regex pattern...">
+                  <span class="input-group-text bg-dark text-secondary border-secondary border-opacity-25 font-monospace">/</span>
+                  <input type="text" id="regexFlags" class="form-control font-monospace text-warning text-center" style="max-width: 80px;" value="g" placeholder="flags">
+                </div>
+                <!-- Error box if regex syntax is invalid -->
+                <div id="regexErrorAlert" class="text-danger small mt-1 d-none">
+                  <i class="bi bi-exclamation-circle me-1"></i> <span id="regexErrorText">Invalid regular expression</span>
+                </div>
+              </div>
+
+              <!-- Flags Toggles -->
+              <div class="d-flex flex-wrap gap-3 mb-4 p-2 rounded bg-dark border border-secondary border-opacity-25 small">
+                <span class="text-secondary fw-bold align-self-center me-1">Flags:</span>
+                <div class="form-check form-check-inline mb-0">
+                  <input class="form-check-input flag-check" type="checkbox" id="flagG" value="g" checked>
+                  <label class="form-check-label text-white" for="flagG">Global (g)</label>
+                </div>
+                <div class="form-check form-check-inline mb-0">
+                  <input class="form-check-input flag-check" type="checkbox" id="flagI" value="i">
+                  <label class="form-check-label text-white" for="flagI">Case Insensitive (i)</label>
+                </div>
+                <div class="form-check form-check-inline mb-0">
+                  <input class="form-check-input flag-check" type="checkbox" id="flagM" value="m">
+                  <label class="form-check-label text-white" for="flagM">Multiline (m)</label>
+                </div>
+                <div class="form-check form-check-inline mb-0">
+                  <input class="form-check-input flag-check" type="checkbox" id="flagS" value="s">
+                  <label class="form-check-label text-white" for="flagS">Dotall (s)</label>
+                </div>
+                <div class="form-check form-check-inline mb-0">
+                  <input class="form-check-input flag-check" type="checkbox" id="flagU" value="u">
+                  <label class="form-check-label text-white" for="flagU">Unicode (u)</label>
+                </div>
+              </div>
+
+              <!-- Railroad Visualizer -->
+              <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="text-white small fw-bold">
+                    <i class="bi bi-bezier2 me-1 text-primary"></i> Railroad Flow Diagram (SVG)
+                  </span>
+                  <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" id="btnDownloadSvg">
+                    <i class="bi bi-download me-1"></i> Save SVG
+                  </button>
+                </div>
+                <div class="railroad-container" id="railroadContainer">
+                  <!-- Dynamic SVG will be rendered here -->
+                </div>
+              </div>
+
+              <!-- Test String Area -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label class="form-label text-white small fw-bold mb-0">Test String</label>
+                  <span id="matchStatsBadge" class="badge bg-primary">Calculating...</span>
+                </div>
+                <textarea id="testStringInput" class="form-control font-monospace small" rows="4" placeholder="Enter text to match against regex...">Contact us at support@example.com or admin@widifirmaan.web.id for inquiries. Fake address: test@invalid.</textarea>
+              </div>
+
+              <!-- Highlighted Matches View -->
+              <div class="mb-4">
+                <label class="form-label text-secondary small fw-bold">Match Highlighter</label>
+                <div id="highlightBox" class="match-highlight-box text-white"></div>
+              </div>
+
+              <!-- Capture Groups Table -->
+              <div id="groupTableSection" class="d-none">
+                <label class="form-label text-secondary small fw-bold">Captured Matches & Groups</label>
+                <div class="table-responsive rounded border border-secondary border-opacity-25">
+                  <table class="table group-table mb-0">
+                    <thead>
+                      <tr>
+                        <th style="width: 70px;">#</th>
+                        <th>Full Match</th>
+                        <th>Groups</th>
+                        <th style="width: 100px;">Index</th>
+                      </tr>
+                    </thead>
+                    <tbody id="groupTableBody">
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Sidebar Column (Col 4) -->
+          <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4">
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-book me-2 text-secondary"></i>Regex Cheat Sheet
+                </h5>
+                <div class="text-secondary small d-flex flex-column gap-2">
+                  <div class="d-flex justify-content-between"><code class="text-info">\d</code> <span>Any digit (0-9)</span></div>
+                  <div class="d-flex justify-content-between"><code class="text-info">\w</code> <span>Word character</span></div>
+                  <div class="d-flex justify-content-between"><code class="text-info">\s</code> <span>Whitespace space/tab</span></div>
+                  <div class="d-flex justify-content-between"><code class="text-info">[abc]</code> <span>Any of a, b, or c</span></div>
+                  <div class="d-flex justify-content-between"><code class="text-info">[^a]</code> <span>Not 'a'</span></div>
+                  <div class="d-flex justify-content-between"><code class="text-info">a* / a+</code> <span>0+ / 1+ occurrences</span></div>
+                  <div class="d-flex justify-content-between"><code class="text-info">a?</code> <span>Optional (0 or 1)</span></div>
+                  <div class="d-flex justify-content-between"><code class="text-info">a{2,5}</code> <span>Between 2 and 5 times</span></div>
+                  <div class="d-flex justify-content-between"><code class="text-info">(a|b)</code> <span>Either 'a' or 'b'</span></div>
+                  <div class="d-flex justify-content-between"><code class="text-info">^ / $</code> <span>Start / End of line</span></div>
+                </div>
+              </div>
+
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-grid me-2 text-secondary"></i>Other Tools
+                </h5>
+                <div class="d-flex flex-column gap-1">
+                  <a href="text-diff.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-diff me-2"></i>Text Diff</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="dev-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-code-slash me-2"></i>Developer Toolbox</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="text-editor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-pencil-square me-2"></i>Text Editor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="password-generator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-shield-lock me-2"></i>Password Generator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="file-encryptor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-lock me-2"></i>File Encryptor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
+    <div class="container text-center">
+      <div class="copyright text-secondary">
+        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+      </div>
+      <div class="credits text-secondary small">
+        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="preloader"></div>
+
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/js/services.js"></script>
+
+  <script>
+    const regexPattern = document.getElementById('regexPattern');
+    const regexFlags = document.getElementById('regexFlags');
+    const flagChecks = document.querySelectorAll('.flag-check');
+    const testStringInput = document.getElementById('testStringInput');
+    const highlightBox = document.getElementById('highlightBox');
+    const matchStatsBadge = document.getElementById('matchStatsBadge');
+    const regexErrorAlert = document.getElementById('regexErrorAlert');
+    const regexErrorText = document.getElementById('regexErrorText');
+    const railroadContainer = document.getElementById('railroadContainer');
+    const groupTableSection = document.getElementById('groupTableSection');
+    const groupTableBody = document.getElementById('groupTableBody');
+    const btnDownloadSvg = document.getElementById('btnDownloadSvg');
+
+    // Sync flag checkboxes with flags input
+    flagChecks.forEach(chk => {
+      chk.addEventListener('change', () => {
+        let f = '';
+        flagChecks.forEach(c => { if (c.checked) f += c.value; });
+        regexFlags.value = f;
+        updateRegex();
+      });
+    });
+
+    regexFlags.addEventListener('input', () => {
+      const val = regexFlags.value;
+      flagChecks.forEach(c => {
+        c.checked = val.includes(c.value);
+      });
+      updateRegex();
+    });
+
+    regexPattern.addEventListener('input', updateRegex);
+    testStringInput.addEventListener('input', updateRegex);
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+    }
+
+    // PRESETS
+    const PRESETS = {
+      email: {
+        pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}',
+        flags: 'g',
+        text: 'Contact info: support@widifirmaan.web.id or info@domain.com. Invalid: test@.com'
+      },
+      url: {
+        pattern: 'https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)',
+        flags: 'gi',
+        text: 'Visit https://tools.widifirmaan.web.id or http://example.org/path?id=123 for tools.'
+      },
+      ipv4: {
+        pattern: '\\b(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b',
+        flags: 'g',
+        text: 'Localhost: 127.0.0.1, Router: 192.168.1.1, Public: 8.8.8.8, Invalid: 300.1.2.3'
+      },
+      date: {
+        pattern: '\\b(\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])\\b',
+        flags: 'g',
+        text: 'Recorded dates: 2026-11-15, 2024-01-01 and 1999-12-31.'
+      },
+      phone: {
+        pattern: '(?:\\+?\\d{1,3}[- ]?)?\\(?\\d{3}\\)?[- ]?\\d{3}[- ]?\\d{4}',
+        flags: 'g',
+        text: 'Call +1 (555) 234-5678 or 0812-345-6789 or 555 890 1234.'
+      },
+      slug: {
+        pattern: '^[a-z0-9]+(?:-[a-z0-9]+)*$',
+        flags: 'g',
+        text: 'my-awesome-post-title-2026'
+      }
+    };
+
+    window.loadPreset = function(name) {
+      if (!PRESETS[name]) return;
+      const p = PRESETS[name];
+      regexPattern.value = p.pattern;
+      regexFlags.value = p.flags;
+      flagChecks.forEach(c => { c.checked = p.flags.includes(c.value); });
+      testStringInput.value = p.text;
+      updateRegex();
+    };
+
+    function updateRegex() {
+      const pat = regexPattern.value;
+      const flags = regexFlags.value;
+      const testStr = testStringInput.value;
+
+      regexErrorAlert.classList.add('d-none');
+      let re = null;
+
+      try {
+        re = new RegExp(pat, flags);
+      } catch (err) {
+        regexErrorAlert.classList.remove('d-none');
+        regexErrorText.textContent = err.message;
+        matchStatsBadge.textContent = 'Syntax Error';
+        matchStatsBadge.className = 'badge bg-danger';
+        highlightBox.textContent = testStr;
+        groupTableSection.classList.add('d-none');
+        drawRailroad(pat);
+        return;
+      }
+
+      // MATCH TESTING
+      let matches = [];
+      if (pat.length > 0) {
+        if (re.global) {
+          let match;
+          let guard = 0;
+          while ((match = re.exec(testStr)) !== null && guard < 1000) {
+            guard++;
+            matches.push(match);
+            if (match[0].length === 0) re.lastIndex++;
+          }
+        } else {
+          const match = re.exec(testStr);
+          if (match) matches.push(match);
+        }
+      }
+
+      // Update badge
+      if (matches.length > 0) {
+        matchStatsBadge.textContent = `${matches.length} Match${matches.length > 1 ? 'es' : ''}`;
+        matchStatsBadge.className = 'badge bg-success';
+      } else {
+        matchStatsBadge.textContent = 'No Match';
+        matchStatsBadge.className = 'badge bg-secondary';
+      }
+
+      // Build Highlighted HTML
+      if (matches.length === 0) {
+        highlightBox.textContent = testStr;
+        groupTableSection.classList.add('d-none');
+      } else {
+        let lastIdx = 0;
+        let html = '';
+        matches.forEach(m => {
+          const start = m.index;
+          const end = start + m[0].length;
+          html += escapeHtml(testStr.slice(lastIdx, start));
+          html += `<mark>${escapeHtml(m[0])}</mark>`;
+          lastIdx = end;
+        });
+        html += escapeHtml(testStr.slice(lastIdx));
+        highlightBox.innerHTML = html;
+
+        // Populate Table
+        groupTableSection.classList.remove('d-none');
+        groupTableBody.innerHTML = '';
+        matches.forEach((m, i) => {
+          const tr = document.createElement('tr');
+          const groups = m.slice(1);
+          const groupsStr = groups.length > 0
+            ? groups.map((g, gi) => `<span class="badge bg-secondary bg-opacity-50 text-white me-1 font-monospace">Group ${gi + 1}: ${g !== undefined ? escapeHtml(g) : 'null'}</span>`).join(' ')
+            : '<span class="text-secondary small">None</span>';
+
+          tr.innerHTML = `
+            <td class="text-secondary">${i + 1}</td>
+            <td class="text-info fw-bold">${escapeHtml(m[0])}</td>
+            <td>${groupsStr}</td>
+            <td class="text-secondary">${m.index}..${m.index + m[0].length}</td>
+          `;
+          groupTableBody.appendChild(tr);
+        });
+      }
+
+      // Draw Railroad Diagram
+      drawRailroad(pat);
+    }
+
+    // RAILROAD SVG GENERATOR
+    function drawRailroad(pattern) {
+      if (!pattern) {
+        railroadContainer.innerHTML = '<span class="text-secondary small">Enter a regex pattern to visualize tracks</span>';
+        return;
+      }
+
+      // Tokenize regex elements
+      const tokens = parseRegexTokens(pattern);
+
+      // Node layout calculations
+      const nodeHeight = 32;
+      const padding = 14;
+      const trackY = 40;
+      let curX = 35; // Start circle radius 6 at x=20
+
+      let nodes = [];
+      tokens.forEach((tok) => {
+        const textWidth = Math.max(34, tok.label.length * 8.5 + 20);
+        nodes.push({
+          x: curX,
+          y: trackY - nodeHeight / 2,
+          w: textWidth,
+          h: nodeHeight,
+          tok: tok
+        });
+        curX += textWidth + 24;
+      });
+
+      const totalWidth = curX + 35;
+      const totalHeight = 80;
+
+      // Build SVG
+      let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${totalHeight}" viewBox="0 0 ${totalWidth} ${totalHeight}">
+        <defs>
+          <linearGradient id="gradLit" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#1e3a8a"/>
+            <stop offset="100%" stop-color="#3b82f6"/>
+          </linearGradient>
+          <linearGradient id="gradSet" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#581c87"/>
+            <stop offset="100%" stop-color="#a855f7"/>
+          </linearGradient>
+          <linearGradient id="gradGroup" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#064e3b"/>
+            <stop offset="100%" stop-color="#10b981"/>
+          </linearGradient>
+          <linearGradient id="gradQuant" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#164e63"/>
+            <stop offset="100%" stop-color="#06b6d4"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Main Base Track -->
+        <line x1="20" y1="${trackY}" x2="${totalWidth - 20}" y2="${trackY}" stroke="#334155" stroke-width="2.5" />
+
+        <!-- Start Dot -->
+        <circle cx="20" cy="${trackY}" r="6" fill="#10b981" stroke="#064e3b" stroke-width="2" />
+      `;
+
+      // Render Nodes
+      nodes.forEach((n) => {
+        let bg = 'url(#gradLit)';
+        let stroke = '#60a5fa';
+
+        if (n.tok.type === 'set') {
+          bg = 'url(#gradSet)';
+          stroke = '#c084fc';
+        } else if (n.tok.type === 'group') {
+          bg = 'url(#gradGroup)';
+          stroke = '#34d399';
+        } else if (n.tok.type === 'quant') {
+          bg = 'url(#gradQuant)';
+          stroke = '#22d3ee';
+        } else if (n.tok.type === 'anchor') {
+          bg = '#334155';
+          stroke = '#94a3b8';
+        }
+
+        // Draw node pill
+        svg += `
+          <g>
+            <rect x="${n.x}" y="${n.y}" width="${n.w}" height="${n.h}" rx="6" ry="6" fill="${bg}" stroke="${stroke}" stroke-width="1.5" />
+            <text x="${n.x + n.w / 2}" y="${n.y + n.h / 2 + 4.5}" fill="#ffffff" font-family="'Fira Code', monospace" font-size="12" font-weight="600" text-anchor="middle">${escapeXml(n.tok.label)}</text>
+          </g>
+        `;
+      });
+
+      // End Dot
+      svg += `
+        <circle cx="${totalWidth - 20}" cy="${trackY}" r="6" fill="#ef4444" stroke="#7f1d1d" stroke-width="2" />
+      </svg>`;
+
+      railroadContainer.innerHTML = svg;
+    }
+
+    function escapeXml(unsafe) {
+      return unsafe.replace(/[<>&'"]/g, c => {
+        switch (c) {
+          case '<': return '&lt;';
+          case '>': return '&gt;';
+          case '&': return '&amp;';
+          case '\'': return '&apos;';
+          case '"': return '&quot;';
+        }
+      });
+    }
+
+    // Robust Regex Tokenizer for Visualization
+    function parseRegexTokens(pat) {
+      let tokens = [];
+      let i = 0;
+      const len = pat.length;
+
+      while (i < len) {
+        const ch = pat[i];
+
+        if (ch === '^') {
+          tokens.push({ type: 'anchor', label: 'Start (^)' });
+          i++;
+        } else if (ch === '$') {
+          tokens.push({ type: 'anchor', label: 'End ($)' });
+          i++;
+        } else if (ch === '[') {
+          let j = i + 1;
+          while (j < len && pat[j] !== ']') {
+            if (pat[j] === '\\') j++;
+            j++;
+          }
+          const setStr = pat.slice(i, j + 1);
+          tokens.push({ type: 'set', label: setStr });
+          i = j + 1;
+        } else if (ch === '(') {
+          let j = i + 1;
+          let depth = 1;
+          while (j < len && depth > 0) {
+            if (pat[j] === '\\') j++;
+            else if (pat[j] === '(') depth++;
+            else if (pat[j] === ')') depth--;
+            j++;
+          }
+          const groupStr = pat.slice(i, j);
+          tokens.push({ type: 'group', label: groupStr });
+          i = j;
+        } else if (ch === '*' || ch === '+' || ch === '?') {
+          tokens.push({ type: 'quant', label: ch });
+          i++;
+        } else if (ch === '{') {
+          let j = i + 1;
+          while (j < len && pat[j] !== '}') j++;
+          tokens.push({ type: 'quant', label: pat.slice(i, j + 1) });
+          i = j + 1;
+        } else if (ch === '\\') {
+          const next = pat[i + 1] || '';
+          tokens.push({ type: 'set', label: '\\' + next });
+          i += 2;
+        } else if (ch === '|') {
+          tokens.push({ type: 'quant', label: 'OR (|)' });
+          i++;
+        } else {
+          // Accumulate literal run
+          let lit = ch;
+          let j = i + 1;
+          while (j < len && !'^$[]()*+?{\\|'.includes(pat[j])) {
+            lit += pat[j];
+            j++;
+          }
+          tokens.push({ type: 'lit', label: `"${lit}"` });
+          i = j;
+        }
+      }
+      return tokens;
+    }
+
+    btnDownloadSvg.addEventListener('click', () => {
+      const svgEl = railroadContainer.querySelector('svg');
+      if (!svgEl) return;
+      const svgData = new XMLSerializer().serializeToString(svgEl);
+      const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'regex_railroad.svg';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // Initial render
+    updateRegex();
+  </script>
+</body>
+
+</html>

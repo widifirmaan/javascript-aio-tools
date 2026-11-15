@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Steganography Studio - Hide Secret Messages in Images - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="100% client-side image steganography using Least Significant Bit (LSB) encoding. Hide confidential text inside PNG images with optional AES encryption.">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .stego-card {
+      background: #141418;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .preview-canvas-box {
+      background: #0d0d11;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      max-height: 380px;
+      overflow: auto;
+    }
+    .preview-canvas-box canvas {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+    }
+    .dropzone-box {
+      border: 2px dashed rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 36px 20px;
+      text-align: center;
+      cursor: pointer;
+      background: #17171d;
+      transition: all 0.2s ease;
+    }
+    .dropzone-box:hover, .dropzone-box.dragover {
+      border-color: #3b82f6;
+      background: rgba(59, 130, 246, 0.05);
+    }
+  </style>
+</head>
+
+<body class="service-details-page">
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+      <a href="../index.html" class="logo d-flex align-items-center">
+        <i class="bi bi-cpu-fill text-primary me-2 fs-4"></i>
+        <span class="sitename">WIDIFIRMAAN</span>
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../index.html#services" class="active">All Tools</a></li>
+          <li><a href="https://widifirmaan.web.id" target="_blank">Author</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-title accent-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <div class="breadcrumb-wrapper">
+          <nav class="breadcrumbs">
+            <ol>
+              <li><a href="../index.html">Home</a></li>
+              <li><a href="../index.html#services">Tools</a></li>
+              <li class="current">Steganography Studio</li>
+            </ol>
+          </nav>
+          <h1 class="mb-2 mb-lg-0">Steganography Studio (Hide Messages in Images)</h1>
+        </div>
+      </div>
+    </div>
+
+    <section id="service-details" class="service-details section py-4 py-lg-5">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-4">
+          <!-- Main Content (Col 8) -->
+          <div class="col-lg-8">
+            <div class="stego-card">
+              <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+                <div>
+                  <h2 class="fs-4 fw-bold text-white mb-1">LSB Image Steganography</h2>
+                  <p class="text-secondary small mb-0">
+                    Hide secret text or passwords invisibly into the pixel channels (RGB) of any image. 100% client-side.
+                  </p>
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-primary" id="btnLoadSampleStego">
+                  <i class="bi bi-image me-1"></i> Load Sample Image
+                </button>
+              </div>
+
+              <!-- Mode Tabs -->
+              <ul class="nav nav-pills mb-4 border-bottom border-secondary border-opacity-25 pb-3 gap-2" role="tablist">
+                <li class="nav-item">
+                  <button class="nav-link active px-4 py-2" id="tabEncode" data-bs-toggle="pill" data-bs-target="#paneEncode">
+                    <i class="bi bi-eye-slash-fill me-1"></i> Hide Message (Encode)
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button class="nav-link px-4 py-2" id="tabDecode" data-bs-toggle="pill" data-bs-target="#paneDecode">
+                    <i class="bi bi-eye-fill me-1"></i> Reveal Message (Decode)
+                  </button>
+                </li>
+              </ul>
+
+              <div class="tab-content">
+                <!-- PANE 1: ENCODE -->
+                <div class="tab-pane fade show active" id="paneEncode">
+                  <!-- Dropzone / Image input -->
+                  <div class="dropzone-box mb-3" id="dropzoneEncode">
+                    <i class="bi bi-image text-primary fs-1 mb-2 d-inline-block"></i>
+                    <h5 class="fw-bold text-white mb-1">Choose Carrier Image</h5>
+                    <p class="text-secondary small mb-3">Accepts PNG, JPG, or WebP (Output will be lossless PNG)</p>
+                    <input type="file" id="fileInputEncode" class="d-none" accept="image/*">
+                    <button type="button" class="btn btn-outline-primary px-4" onclick="document.getElementById('fileInputEncode').click()">
+                      <i class="bi bi-folder2-open me-1"></i> Select Image
+                    </button>
+                  </div>
+
+                  <!-- Image Preview & Capacity -->
+                  <div id="imageBoxEncode" class="mb-4 d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <span class="text-white small fw-bold">Carrier Image Preview:</span>
+                      <button type="button" class="btn btn-sm btn-outline-secondary" id="btnChangeEncImg">
+                        <i class="bi bi-x-lg me-1"></i> Change Image
+                      </button>
+                    </div>
+                    <div class="preview-canvas-box mb-2">
+                      <canvas id="canvasEncode"></canvas>
+                    </div>
+                    <div class="d-flex justify-content-between small text-secondary">
+                      <span id="encImgDimensions">Resolution: -</span>
+                      <span id="encCapacityLabel">Max Capacity: 0 Bytes</span>
+                    </div>
+                  </div>
+
+                  <!-- Secret Message Input -->
+                  <div class="mb-3">
+                    <label class="form-label text-white small fw-bold">Secret Message to Embed</label>
+                    <textarea id="secretTextInput" class="form-control font-monospace" rows="4" placeholder="Enter your confidential note, recovery seed, or secret text here..."></textarea>
+                    <div class="d-flex justify-content-between small text-secondary mt-1">
+                      <span id="payloadSizeLabel">Payload: 0 Bytes</span>
+                      <span id="capacityUsedLabel">Usage: 0%</span>
+                    </div>
+                  </div>
+
+                  <!-- Optional Password Protection -->
+                  <div class="mb-4">
+                    <label class="form-label text-white small fw-bold">
+                      <i class="bi bi-shield-lock me-1 text-info"></i> Optional Password (AES-256 Encryption)
+                    </label>
+                    <input type="password" id="stegoPassword" class="form-control" placeholder="Leave empty for unencrypted LSB, or enter password for double protection...">
+                  </div>
+
+                  <div class="mb-3">
+                    <button type="button" class="btn btn-primary w-100 py-2 fw-semibold" id="btnStartEncode" disabled>
+                      <i class="bi bi-shield-shaded me-1"></i> Encode & Embed Message into Image
+                    </button>
+                  </div>
+
+                  <!-- Encode Result -->
+                  <div id="encodeResultBox" class="p-4 rounded border border-success border-opacity-25 text-center d-none" style="background: rgba(34, 197, 94, 0.05);">
+                    <i class="bi bi-check-circle-fill text-success fs-1 mb-2 d-inline-block"></i>
+                    <h5 class="text-white fw-bold mb-1">Secret Embedded Successfully!</h5>
+                    <p class="text-secondary small mb-3">Your message is invisibly woven into the image's pixels. Download and share safely.</p>
+                    <a id="btnDownloadStego" href="#" class="btn btn-success px-4 py-2">
+                      <i class="bi bi-download me-1"></i> Download Stego PNG
+                    </a>
+                  </div>
+                </div>
+
+                <!-- PANE 2: DECODE -->
+                <div class="tab-pane fade" id="paneDecode">
+                  <div class="dropzone-box mb-3" id="dropzoneDecode">
+                    <i class="bi bi-search text-info fs-1 mb-2 d-inline-block"></i>
+                    <h5 class="fw-bold text-white mb-1">Choose Stego Image (PNG)</h5>
+                    <p class="text-secondary small mb-3">Select the image containing hidden message</p>
+                    <input type="file" id="fileInputDecode" class="d-none" accept="image/png,image/*">
+                    <button type="button" class="btn btn-outline-info px-4" onclick="document.getElementById('fileInputDecode').click()">
+                      <i class="bi bi-folder2-open me-1"></i> Select Stego Image
+                    </button>
+                  </div>
+
+                  <div id="imageBoxDecode" class="mb-3 d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <span class="text-white small fw-bold">Loaded Stego Image:</span>
+                      <button type="button" class="btn btn-sm btn-outline-secondary" id="btnChangeDecImg">
+                        <i class="bi bi-x-lg me-1"></i> Change
+                      </button>
+                    </div>
+                    <div class="preview-canvas-box mb-2">
+                      <canvas id="canvasDecode"></canvas>
+                    </div>
+                  </div>
+
+                  <div class="mb-4">
+                    <label class="form-label text-white small fw-bold">Password (if encrypted)</label>
+                    <input type="password" id="stegoPasswordDecode" class="form-control" placeholder="Enter password if message was encrypted...">
+                  </div>
+
+                  <div class="mb-3">
+                    <button type="button" class="btn btn-info w-100 py-2 fw-semibold text-white" id="btnStartDecode" disabled>
+                      <i class="bi bi-unlock-fill me-1"></i> Extract & Reveal Message
+                    </button>
+                  </div>
+
+                  <!-- Error Alert -->
+                  <div id="decodeErrorAlert" class="alert alert-danger d-none py-2 px-3 small" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i> <span id="decodeErrorMsg">No hidden steganographic message detected.</span>
+                  </div>
+
+                  <!-- Decode Result Box -->
+                  <div id="decodeResultBox" class="p-3 rounded border border-info border-opacity-25 d-none" style="background: rgba(14, 165, 233, 0.05);">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <span class="text-info fw-bold small"><i class="bi bi-key-fill me-1"></i> Revealed Hidden Message:</span>
+                      <button type="button" class="btn btn-sm btn-outline-info py-0 px-2" id="btnCopyRevealed">
+                        <i class="bi bi-clipboard me-1"></i> Copy
+                      </button>
+                    </div>
+                    <div id="revealedTextBox" class="p-3 rounded bg-dark border border-secondary border-opacity-25 font-monospace text-white small" style="white-space: pre-wrap; word-break: break-all; max-height: 240px; overflow-y: auto;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar Column (Col 4) -->
+          <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4">
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-info-circle me-2 text-secondary"></i>How It Works
+                </h5>
+                <ul class="text-secondary small ps-3 mb-0 d-flex flex-column gap-2">
+                  <li><strong>LSB Technique:</strong> Replaces the lowest bit (Least Significant Bit) of RGB color channels without altering visible appearance.</li>
+                  <li><strong>Capacity:</strong> Each pixel holds 3 bits of data (R, G, and B channels).</li>
+                  <li><strong>Lossless Format:</strong> Must be saved as PNG. Lossy formats like JPEG discard LSB data.</li>
+                  <li><strong>Double Protection:</strong> Optional AES-GCM encryption ensures message security even if extracted.</li>
+                </ul>
+              </div>
+
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-grid me-2 text-secondary"></i>Other Tools
+                </h5>
+                <div class="d-flex flex-column gap-1">
+                  <a href="file-encryptor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-lock me-2"></i>File Encryptor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="photo-metadata.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-camera me-2"></i>Photo Metadata</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="password-generator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-shield-lock me-2"></i>Password Generator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="text-diff.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-diff me-2"></i>Text Diff</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="color-palette.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-palette me-2"></i>Color Palette</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
+    <div class="container text-center">
+      <div class="copyright text-secondary">
+        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+      </div>
+      <div class="credits text-secondary small">
+        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="preloader"></div>
+
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/js/services.js"></script>
+
+  <script>
+    // STEGANOGRAPHY HEADER SPEC:
+    // [0..3]: Magic 4 bytes 'STEG' (0x53, 0x54, 0x45, 0x47)
+    // [4..7]: 4 bytes Uint32 payload byte length
+    // [8]: 1 byte flag (0x01 = AES encrypted, 0x00 = plain text)
+    // If encrypted: [9..24] 16 bytes salt + [25..36] 12 bytes IV
+    // Followed by payload bytes
+
+    const MAGIC_STEG = [0x53, 0x54, 0x45, 0x47]; // 'STEG'
+
+    // DOM ENCODE
+    const dropzoneEncode = document.getElementById('dropzoneEncode');
+    const fileInputEncode = document.getElementById('fileInputEncode');
+    const imageBoxEncode = document.getElementById('imageBoxEncode');
+    const canvasEncode = document.getElementById('canvasEncode');
+    const ctxEncode = canvasEncode.getContext('2d');
+    const btnChangeEncImg = document.getElementById('btnChangeEncImg');
+    const encImgDimensions = document.getElementById('encImgDimensions');
+    const encCapacityLabel = document.getElementById('encCapacityLabel');
+    const secretTextInput = document.getElementById('secretTextInput');
+    const payloadSizeLabel = document.getElementById('payloadSizeLabel');
+    const capacityUsedLabel = document.getElementById('capacityUsedLabel');
+    const stegoPassword = document.getElementById('stegoPassword');
+    const btnStartEncode = document.getElementById('btnStartEncode');
+    const encodeResultBox = document.getElementById('encodeResultBox');
+    const btnDownloadStego = document.getElementById('btnDownloadStego');
+    const btnLoadSampleStego = document.getElementById('btnLoadSampleStego');
+
+    // DOM DECODE
+    const dropzoneDecode = document.getElementById('dropzoneDecode');
+    const fileInputDecode = document.getElementById('fileInputDecode');
+    const imageBoxDecode = document.getElementById('imageBoxDecode');
+    const canvasDecode = document.getElementById('canvasDecode');
+    const ctxDecode = canvasDecode.getContext('2d');
+    const btnChangeDecImg = document.getElementById('btnChangeDecImg');
+    const stegoPasswordDecode = document.getElementById('stegoPasswordDecode');
+    const btnStartDecode = document.getElementById('btnStartDecode');
+    const decodeErrorAlert = document.getElementById('decodeErrorAlert');
+    const decodeErrorMsg = document.getElementById('decodeErrorMsg');
+    const decodeResultBox = document.getElementById('decodeResultBox');
+    const revealedTextBox = document.getElementById('revealedTextBox');
+    const btnCopyRevealed = document.getElementById('btnCopyRevealed');
+
+    let maxCapacityBytes = 0;
+    let stegoBlobUrl = null;
+
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
+
+    function loadEncodeImage(img) {
+      canvasEncode.width = img.width;
+      canvasEncode.height = img.height;
+      ctxEncode.drawImage(img, 0, 0);
+
+      // 3 channels (RGB) per pixel, each channel holds 1 bit -> total bits / 8
+      maxCapacityBytes = Math.floor((img.width * img.height * 3) / 8);
+      encImgDimensions.textContent = `Resolution: ${img.width} × ${img.height} px`;
+      encCapacityLabel.textContent = `Max Capacity: ${formatBytes(maxCapacityBytes)}`;
+
+      dropzoneEncode.classList.add('d-none');
+      imageBoxEncode.classList.remove('d-none');
+      encodeResultBox.classList.add('d-none');
+      validateEncode();
+    }
+
+    fileInputEncode.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const img = new Image();
+          img.onload = () => loadEncodeImage(img);
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    btnChangeEncImg.addEventListener('click', () => {
+      fileInputEncode.value = '';
+      maxCapacityBytes = 0;
+      dropzoneEncode.classList.remove('d-none');
+      imageBoxEncode.classList.add('d-none');
+      encodeResultBox.classList.add('d-none');
+      validateEncode();
+    });
+
+    function validateEncode() {
+      const text = secretTextInput.value.trim();
+      const textBytes = new TextEncoder().encode(text).length;
+      const overhead = stegoPassword.value ? (9 + 16 + 12 + 16) : 9;
+      const totalReq = textBytes + overhead;
+
+      payloadSizeLabel.textContent = `Payload: ${formatBytes(totalReq)}`;
+      if (maxCapacityBytes > 0) {
+        const pct = Math.min(100, ((totalReq / maxCapacityBytes) * 100)).toFixed(1);
+        capacityUsedLabel.textContent = `Usage: ${pct}%`;
+        capacityUsedLabel.className = totalReq > maxCapacityBytes ? 'text-danger' : 'text-secondary';
+        btnStartEncode.disabled = text.length === 0 || totalReq > maxCapacityBytes;
+      } else {
+        capacityUsedLabel.textContent = 'Usage: 0%';
+        btnStartEncode.disabled = true;
+      }
+    }
+
+    secretTextInput.addEventListener('input', validateEncode);
+    stegoPassword.addEventListener('input', validateEncode);
+
+    // Crypto Helper for Stego Password
+    async function deriveAesKey(pass, salt) {
+      const enc = new TextEncoder();
+      const baseKey = await window.crypto.subtle.importKey('raw', enc.encode(pass), 'PBKDF2', false, ['deriveKey']);
+      return await window.crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt, iterations: 10000, hash: 'SHA-256' },
+        baseKey,
+        { name: 'AES-GCM', length: 128 },
+        false,
+        ['encrypt', 'decrypt']
+      );
+    }
+
+    // ENCODE ACTION
+    btnStartEncode.addEventListener('click', async () => {
+      const text = secretTextInput.value.trim();
+      if (!text || maxCapacityBytes === 0) return;
+
+      btnStartEncode.disabled = true;
+      try {
+        const textBytes = new TextEncoder().encode(text);
+        let payloadBytes;
+        let isEncrypted = 0;
+        let salt = null;
+        let iv = null;
+
+        if (stegoPassword.value.trim().length > 0) {
+          isEncrypted = 1;
+          salt = window.crypto.getRandomValues(new Uint8Array(16));
+          iv = window.crypto.getRandomValues(new Uint8Array(12));
+          const key = await deriveAesKey(stegoPassword.value, salt);
+          const ciphertext = await window.crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, textBytes);
+          payloadBytes = new Uint8Array(ciphertext);
+        } else {
+          payloadBytes = textBytes;
+        }
+
+        // Header: 4 bytes MAGIC ('STEG') + 4 bytes length (Uint32) + 1 byte flag
+        // + (if encrypted: 16 salt + 12 iv) + payloadBytes
+        const headerLen = isEncrypted ? (9 + 16 + 12) : 9;
+        const totalLen = headerLen + payloadBytes.length;
+        const fullData = new Uint8Array(totalLen);
+
+        fullData.set(MAGIC_STEG, 0);
+        new DataView(fullData.buffer).setUint32(4, payloadBytes.length, false);
+        fullData[8] = isEncrypted;
+
+        let offset = 9;
+        if (isEncrypted) {
+          fullData.set(salt, offset);
+          offset += 16;
+          fullData.set(iv, offset);
+          offset += 12;
+        }
+        fullData.set(payloadBytes, offset);
+
+        // Get Image Pixels
+        const imgData = ctxEncode.getImageData(0, 0, canvasEncode.width, canvasEncode.height);
+        const pixels = imgData.data;
+
+        // Convert fullData into bit array
+        let bitIndex = 0;
+        const totalBits = totalLen * 8;
+
+        for (let i = 0; i < pixels.length && bitIndex < totalBits; i++) {
+          // Skip Alpha channel (every 4th byte: 3, 7, 11, etc.)
+          if ((i + 1) % 4 === 0) continue;
+
+          const byteIndex = Math.floor(bitIndex / 8);
+          const bitPos = 7 - (bitIndex % 8);
+          const bit = (fullData[byteIndex] >> bitPos) & 1;
+
+          // Replace LSB
+          pixels[i] = (pixels[i] & ~1) | bit;
+          bitIndex++;
+        }
+
+        ctxEncode.putImageData(imgData, 0, 0);
+
+        // Export as lossless PNG
+        canvasEncode.toBlob((blob) => {
+          if (stegoBlobUrl) URL.revokeObjectURL(stegoBlobUrl);
+          stegoBlobUrl = URL.createObjectURL(blob);
+          btnDownloadStego.href = stegoBlobUrl;
+          btnDownloadStego.download = 'stego_hidden_message.png';
+          encodeResultBox.classList.remove('d-none');
+        }, 'image/png');
+
+      } catch (err) {
+        console.error('Embedding error:', err);
+        alert('Failed to embed secret: ' + err.message);
+      } finally {
+        btnStartEncode.disabled = false;
+      }
+    });
+
+    // DECODE IMAGE SELECT
+    fileInputDecode.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const img = new Image();
+          img.onload = () => {
+            canvasDecode.width = img.width;
+            canvasDecode.height = img.height;
+            ctxDecode.drawImage(img, 0, 0);
+            dropzoneDecode.classList.add('d-none');
+            imageBoxDecode.classList.remove('d-none');
+            decodeResultBox.classList.add('d-none');
+            decodeErrorAlert.classList.add('d-none');
+            btnStartDecode.disabled = false;
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    btnChangeDecImg.addEventListener('click', () => {
+      fileInputDecode.value = '';
+      dropzoneDecode.classList.remove('d-none');
+      imageBoxDecode.classList.add('d-none');
+      decodeResultBox.classList.add('d-none');
+      decodeErrorAlert.classList.add('d-none');
+      btnStartDecode.disabled = true;
+    });
+
+    // DECODE ACTION
+    btnStartDecode.addEventListener('click', async () => {
+      btnStartDecode.disabled = true;
+      decodeErrorAlert.classList.add('d-none');
+      decodeResultBox.classList.add('d-none');
+
+      try {
+        const imgData = ctxDecode.getImageData(0, 0, canvasDecode.width, canvasDecode.height);
+        const pixels = imgData.data;
+
+        // Function to read N bytes from pixels starting at pixelBitOffset
+        function extractBits(numBytes, startBit = 0) {
+          const bytes = new Uint8Array(numBytes);
+          let bitIndex = 0;
+          let currentPixelChannel = 0;
+          let pixelPos = 0;
+
+          // fast forward to startBit
+          while (pixelPos < pixels.length && currentPixelChannel < startBit) {
+            if ((pixelPos + 1) % 4 !== 0) currentPixelChannel++;
+            pixelPos++;
+          }
+
+          while (pixelPos < pixels.length && bitIndex < numBytes * 8) {
+            if ((pixelPos + 1) % 4 !== 0) {
+              const bit = pixels[pixelPos] & 1;
+              const byteIdx = Math.floor(bitIndex / 8);
+              const bitPos = 7 - (bitIndex % 8);
+              bytes[byteIdx] |= (bit << bitPos);
+              bitIndex++;
+            }
+            pixelPos++;
+          }
+          return { bytes, endChannel: currentPixelChannel + bitIndex };
+        }
+
+        // Read header first: 9 bytes
+        const { bytes: headerBytes, endChannel: hEnd } = extractBits(9, 0);
+        const isSteg = headerBytes[0] === 0x53 && headerBytes[1] === 0x54 && headerBytes[2] === 0x45 && headerBytes[3] === 0x47;
+        if (!isSteg) {
+          throw new Error('No steganographic message detected in this image.');
+        }
+
+        const dataLen = new DataView(headerBytes.buffer).getUint32(4, false);
+        const isEncrypted = headerBytes[8] === 1;
+
+        if (dataLen <= 0 || dataLen > (pixels.length * 3 / 8)) {
+          throw new Error('Corrupted or invalid hidden data length.');
+        }
+
+        let salt = null;
+        let iv = null;
+        let payloadOffsetChannel = 9 * 8;
+
+        if (isEncrypted) {
+          const { bytes: cryptoParams } = extractBits(28, 9 * 8);
+          salt = cryptoParams.slice(0, 16);
+          iv = cryptoParams.slice(16, 28);
+          payloadOffsetChannel = (9 + 28) * 8;
+        }
+
+        // Extract payload
+        const { bytes: payloadBytes } = extractBits(dataLen, payloadOffsetChannel);
+
+        let finalPlainText = '';
+        if (isEncrypted) {
+          const pass = stegoPasswordDecode.value;
+          if (!pass) {
+            throw new Error('This hidden message is encrypted. Please enter the password.');
+          }
+          const key = await deriveAesKey(pass, salt);
+          const decrypted = await window.crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, payloadBytes);
+          finalPlainText = new TextDecoder().decode(decrypted);
+        } else {
+          finalPlainText = new TextDecoder().decode(payloadBytes);
+        }
+
+        revealedTextBox.textContent = finalPlainText;
+        decodeResultBox.classList.remove('d-none');
+      } catch (err) {
+        console.error('Decoding error:', err);
+        decodeErrorMsg.textContent = err.name === 'OperationError' ? 'Incorrect decryption password.' : err.message;
+        decodeErrorAlert.classList.remove('d-none');
+      } finally {
+        btnStartDecode.disabled = false;
+      }
+    });
+
+    btnCopyRevealed.addEventListener('click', () => {
+      navigator.clipboard.writeText(revealedTextBox.textContent).then(() => {
+        btnCopyRevealed.innerHTML = '<i class="bi bi-check2 text-success me-1"></i> Copied!';
+        setTimeout(() => {
+          btnCopyRevealed.innerHTML = '<i class="bi bi-clipboard me-1"></i> Copy';
+        }, 1500);
+      });
+    });
+
+    // Sample Image Generator
+    btnLoadSampleStego.addEventListener('click', () => {
+      const sampleCanvas = document.createElement('canvas');
+      sampleCanvas.width = 400;
+      sampleCanvas.height = 300;
+      const sCtx = sampleCanvas.getContext('2d');
+
+      // Create a nice gradient with modern geometric pattern
+      const grad = sCtx.createLinearGradient(0, 0, 400, 300);
+      grad.addColorStop(0, '#1e3a8a');
+      grad.addColorStop(0.5, '#4f46e5');
+      grad.addColorStop(1, '#06b6d4');
+      sCtx.fillStyle = grad;
+      sCtx.fillRect(0, 0, 400, 300);
+
+      sCtx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+      sCtx.beginPath();
+      sCtx.arc(100, 80, 60, 0, Math.PI * 2);
+      sCtx.fill();
+      sCtx.beginPath();
+      sCtx.arc(320, 220, 80, 0, Math.PI * 2);
+      sCtx.fill();
+
+      sCtx.fillStyle = '#ffffff';
+      sCtx.font = 'bold 22px system-ui, sans-serif';
+      sCtx.textAlign = 'center';
+      sCtx.fillText('WIDIFIRMAAN STEGO LAB', 200, 155);
+
+      const img = new Image();
+      img.onload = () => {
+        loadEncodeImage(img);
+        secretTextInput.value = 'CONFIDENTIAL: Project Antigravity 2.0 release token: #SEC-99281-WIDI';
+        validateEncode();
+      };
+      img.src = sampleCanvas.toDataURL('image/png');
+    });
+  </script>
+</body>
+
+</html>
