@@ -291,27 +291,74 @@
       }
     }
 
-    function getFontDetails(it, styles) {
-      const style = (styles && it.fontName && styles[it.fontName]) || {};
-      const rawName = ((it.fontName || '') + ' ' + (style.fontFamily || '')).toLowerCase();
+    function resolveFontInfo(rawFontName, fallback) {
+      let name = (rawFontName || '').replace(/^[A-Za-z0-9]{6}\+/, '').trim();
+      const lower = name.toLowerCase();
 
-      const isBold = rawName.includes('bold') || rawName.includes('black') || rawName.includes('heavy') || rawName.includes('semibold') || rawName.includes('700') || rawName.includes('800') || rawName.includes('900');
-      const isItalic = rawName.includes('italic') || rawName.includes('oblique');
+      const isBold = lower.includes('bold') || lower.includes('-bd') || lower.includes('_bd') ||
+                     lower.includes('blk') || lower.includes('black') || lower.includes('heavy') ||
+                     lower.includes('demi') || lower.includes('semibold') || lower.includes('700') ||
+                     lower.includes('800') || lower.includes('900');
+
+      const isItalic = lower.includes('italic') || lower.includes('-it') || lower.includes('_it') ||
+                       lower.includes('oblique') || lower.includes('obl') || lower.includes('slanted');
 
       let cleanFont = 'Calibri';
-      if (rawName.includes('times') || rawName.includes('georgia') || (rawName.includes('serif') && !rawName.includes('sans'))) {
+      if (lower.includes('times')) {
         cleanFont = 'Times New Roman';
-      } else if (rawName.includes('courier') || rawName.includes('mono') || rawName.includes('code')) {
+      } else if (lower.includes('georgia')) {
+        cleanFont = 'Georgia';
+      } else if (lower.includes('garamond')) {
+        cleanFont = 'Garamond';
+      } else if (lower.includes('cambria')) {
+        cleanFont = 'Cambria';
+      } else if (lower.includes('courier') || lower.includes('mono') || lower.includes('consolas')) {
         cleanFont = 'Courier New';
-      } else if (rawName.includes('arial') || rawName.includes('helvetica') || rawName.includes('sans')) {
-        cleanFont = 'Arial';
-      } else if (rawName.includes('roboto')) {
+      } else if (lower.includes('segoe')) {
+        cleanFont = 'Segoe UI';
+      } else if (lower.includes('poppins')) {
+        cleanFont = 'Poppins';
+      } else if (lower.includes('roboto')) {
         cleanFont = 'Roboto';
-      } else if (rawName.includes('calibri')) {
+      } else if (lower.includes('montserrat')) {
+        cleanFont = 'Montserrat';
+      } else if (lower.includes('open') && lower.includes('sans')) {
+        cleanFont = 'Open Sans';
+      } else if (lower.includes('lato')) {
+        cleanFont = 'Lato';
+      } else if (lower.includes('verdana')) {
+        cleanFont = 'Verdana';
+      } else if (lower.includes('tahoma')) {
+        cleanFont = 'Tahoma';
+      } else if (lower.includes('trebuchet')) {
+        cleanFont = 'Trebuchet MS';
+      } else if (lower.includes('franklin')) {
+        cleanFont = 'Franklin Gothic Medium';
+      } else if (lower.includes('arial') || lower.includes('helvetica') || lower.includes('avenir')) {
+        cleanFont = 'Arial';
+      } else if (lower.includes('calibri')) {
         cleanFont = 'Calibri';
-      } else if (style.fontFamily && !style.fontFamily.includes('sans-serif') && !style.fontFamily.includes('serif')) {
-        cleanFont = style.fontFamily.split(',')[0].replace(/['"]/g, '').trim();
+      } else if (fallback === 'monospace') {
+        cleanFont = 'Courier New';
+      } else if (fallback === 'serif' && !lower.includes('sans')) {
+        cleanFont = 'Times New Roman';
+      } else if (lower.includes('sans')) {
+        cleanFont = 'Arial';
+      } else if (name && !name.toLowerCase().startsWith('type3') && !name.toLowerCase().startsWith('font')) {
+        const baseName = name.split('-')[0].replace(/(PSMT|MT|Std|LT|Pro|Regular|Roman)$/i, '').replace(/([a-z])([A-Z])/g, '$1 $2').trim();
+        cleanFont = baseName || 'Calibri';
       }
+
+      return { cleanFont, isBold, isItalic };
+    }
+
+    function getFontDetails(it, styles, fontMap) {
+      const style = (styles && it.fontName && styles[it.fontName]) || {};
+      const fontObj = (fontMap && it.fontName && fontMap[it.fontName]) || {};
+      const rawPdfFontName = fontObj.name || it.fontName || '';
+      const fallbackFamily = fontObj.fallback || style.fontFamily || '';
+
+      const { cleanFont, isBold, isItalic } = resolveFontInfo(rawPdfFontName, fallbackFamily);
 
       const fontSize = it.fontSize || (it.transform ? Math.hypot(it.transform[0], it.transform[1]) : 11);
       const halfPoints = Math.round(fontSize * 2);
@@ -319,11 +366,11 @@
       return { isBold, isItalic, cleanFont, fontSize, halfPoints };
     }
 
-    function buildRunsFromItems(items, styles) {
+    function buildRunsFromItems(items, styles, fontMap) {
       const runs = [];
       for (let idx = 0; idx < items.length; idx++) {
         const it = items[idx];
-        const fd = getFontDetails(it, styles);
+        const fd = getFontDetails(it, styles, fontMap);
 
         if (idx > 0) {
           const prev = items[idx - 1];
@@ -495,7 +542,7 @@
       return blocks;
     }
 
-    function buildFramedParagraph(block, styles, pageWidth) {
+    function buildFramedParagraph(block, styles, pageWidth, fontMap) {
       block.segments.sort((a, b) => a.topY - b.topY);
 
       const runs = [];
@@ -508,7 +555,7 @@
 
         for (let iIdx = 0; iIdx < seg.items.length; iIdx++) {
           const it = seg.items[iIdx];
-          const fd = getFontDetails(it, styles);
+          const fd = getFontDetails(it, styles, fontMap);
 
           if (iIdx > 0) {
             const prev = seg.items[iIdx - 1];
@@ -611,8 +658,25 @@
 
           const page = await pdfDoc.getPage(pageNum);
           const viewport = page.getViewport({ scale: 1.0 });
-          const textContent = await page.getTextContent();
+          const [textContent] = await Promise.all([
+            page.getTextContent(),
+            page.getOperatorList().catch(() => null)
+          ]);
           const styles = textContent.styles || {};
+          const fontMap = {};
+          if (page.commonObjs) {
+            for (const fontId of Object.keys(styles)) {
+              if (page.commonObjs.has(fontId)) {
+                const fo = page.commonObjs.get(fontId);
+                if (fo) {
+                  fontMap[fontId] = {
+                    name: fo.name || '',
+                    fallback: fo.fallbackName || ''
+                  };
+                }
+              }
+            }
+          }
           const rawItems = (textContent.items || []).filter(it => it.str && it.str.trim().length > 0);
 
           const isLandscape = viewport.width > viewport.height;
@@ -673,7 +737,7 @@
 
           // Universal Spatial Block Extraction (all document forms: papers, invoices, certificates, tables, contracts)
           const blocks = extractSpatialBlocks(rawItems, viewport);
-          const pageParagraphs = blocks.map(block => buildFramedParagraph(block, styles, viewport.width));
+          const pageParagraphs = blocks.map(block => buildFramedParagraph(block, styles, viewport.width, fontMap));
 
           pageSections.push({
             properties: sectionProperties,
