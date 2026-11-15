@@ -167,7 +167,7 @@
                   </div>
 
                   <!-- Action Bar & Controls -->
-                  <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 text-center text-md-start">
+                  <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 mt-4 text-center text-md-start">
                     <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
                       <span class="text-secondary small">Resolution:</span>
                       <span id="lblSize" class="text-white fw-bold">256 x 256 px</span>
@@ -180,7 +180,6 @@
                         <i class="bi bi-download"></i>
                       </button>
                     </div>
-                  </div>
                   </div>
                 </div>
 
@@ -433,13 +432,13 @@
         canvas.toBlob(async (blob) => {
           try {
             await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-            alert('QR Code image copied to clipboard!');
+            const origHtml = btnCopyQr.innerHTML;
+            btnCopyQr.innerHTML = '<i class="bi bi-check-lg text-success"></i>';
+            setTimeout(() => { btnCopyQr.innerHTML = origHtml; }, 2000);
           } catch (e) {
-            alert('Unable to copy image: ' + e.message);
+            console.warn('Clipboard write failed:', e);
           }
         });
-      } else {
-        alert('Direct image copy is not supported in this browser.');
       }
     });
 
@@ -456,6 +455,27 @@
       }
     }
 
+    // Drag-and-drop support on scanner dropzone
+    ['dragenter', 'dragover'].forEach(name => {
+      scannerDropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        scannerDropzone.classList.add('dragover');
+      });
+    });
+    ['dragleave', 'drop'].forEach(name => {
+      scannerDropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        scannerDropzone.classList.remove('dragover');
+      });
+    });
+    scannerDropzone.addEventListener('drop', (e) => {
+      const files = e.dataTransfer.files;
+      if (files.length > 0 && files[0].type.startsWith('image/')) {
+        fileQrScan.files = files;
+        fileQrScan.dispatchEvent(new Event('change'));
+      }
+    });
+
     fileQrScan.addEventListener('change', async (e) => {
       if (e.target.files.length > 0) {
         const file = e.target.files[0];
@@ -464,7 +484,13 @@
           const result = await html5QrCode.scanFile(file, true);
           displayScanResult(result);
         } catch (err) {
-          alert('Unable to detect a QR code in the uploaded image.');
+          scanEmptyNotice.innerHTML = `
+            <i class="bi bi-exclamation-triangle fs-1 d-block mb-2 text-warning"></i>
+            <span class="text-white fw-semibold">No QR code found in this image.</span><br>
+            <span class="small text-secondary">Please try a clearer image with good contrast.</span>
+          `;
+          scanEmptyNotice.classList.remove('d-none');
+          scanResultBox.classList.add('d-none');
         }
       }
     });
@@ -486,7 +512,13 @@
           () => {}
         );
       } catch (err) {
-        alert('Unable to access camera: ' + err);
+        scanEmptyNotice.innerHTML = `
+          <i class="bi bi-camera-video-off fs-1 d-block mb-2 text-danger"></i>
+          <span class="text-white fw-semibold">Camera Access Denied or Unavailable</span><br>
+          <span class="small text-secondary">${err.message || err}</span>
+        `;
+        scanEmptyNotice.classList.remove('d-none');
+        scanResultBox.classList.add('d-none');
         stopCamera();
       }
     });
@@ -505,10 +537,19 @@
 
     btnStopCamera.addEventListener('click', stopCamera);
 
-    btnCopyScan.addEventListener('click', () => {
+    // Stop camera when switching tabs
+    document.getElementById('generate-tab').addEventListener('shown.bs.tab', stopCamera);
+
+    btnCopyScan.addEventListener('click', async () => {
       if (scanResultText.value) {
-        navigator.clipboard.writeText(scanResultText.value);
-        alert('Result copied to clipboard!');
+        try {
+          await navigator.clipboard.writeText(scanResultText.value);
+          const origHtml = btnCopyScan.innerHTML;
+          btnCopyScan.innerHTML = '<i class="bi bi-check-lg me-1 text-success"></i> Copied!';
+          setTimeout(() => { btnCopyScan.innerHTML = origHtml; }, 2000);
+        } catch (e) {
+          console.warn('Clipboard write failed:', e);
+        }
       }
     });
 
