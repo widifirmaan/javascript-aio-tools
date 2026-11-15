@@ -14,22 +14,16 @@
   <link href="../assets/css/main.css" rel="stylesheet">
 
   <style>
-    .barcode-card {
-      background: #141418;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 24px;
-    }
     .barcode-preview-box {
       background: #ffffff;
-      border-radius: 12px;
-      padding: 30px 20px;
+      border-radius: 8px;
+      padding: 24px 16px;
       display: flex;
       justify-content: center;
       align-items: center;
       overflow-x: auto;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-      min-height: 180px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      min-height: 160px;
     }
     .barcode-preview-box svg {
       max-width: 100%;
@@ -39,37 +33,22 @@
 </head>
 
 <body class="service-details-page">
-
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-      <a href="../index.html" class="logo d-flex align-items-center">
-        <i class="bi bi-cpu-fill text-primary me-2 fs-4"></i>
-        <span class="sitename">WIDIFIRMAAN</span>
-      </a>
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="../index.html#services" class="active">All Tools</a></li>
-          <li><a href="https://widifirmaan.web.id" target="_blank">Author</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-    </div>
-  </header>
-
   <main class="main">
-    <div class="page-title accent-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <div class="breadcrumb-wrapper">
-          <nav class="breadcrumbs">
-            <ol>
-              <li><a href="../index.html">Home</a></li>
-              <li><a href="../index.html#services">Tools</a></li>
-              <li class="current">Barcode Studio</li>
-            </ol>
-          </nav>
-          <h1 class="mb-2 mb-lg-0">Industrial Barcode Studio</h1>
-        </div>
+    <!-- Single Page Title Bar (Consistent with Homepage) -->
+    <div class="page-title">
+      <div class="container d-flex align-items-center gap-2">
+        <h1 class="mb-0 fs-5 fw-bold text-nowrap">
+          <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
+            <i class="bi bi-arrow-left"></i>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-6 d-none d-sm-inline">| Free Stuff</span></span>
+          </a>
+        </h1>
+        <span class="text-secondary opacity-50">/</span>
+        <nav class="breadcrumbs text-nowrap text-truncate" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item active text-white text-truncate" aria-current="page">Barcode Studio</li>
+          </ol>
+        </nav>
       </div>
     </div>
 
@@ -78,7 +57,7 @@
         <div class="row g-4">
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
-            <div class="barcode-card">
+            <div class="tool-card">
               <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
                 <div>
                   <h2 class="fs-4 fw-bold text-white mb-1">Standard 1D Retail & Logistics Barcodes</h2>
@@ -87,7 +66,7 @@
                   </p>
                 </div>
                 <div class="dropdown">
-                  <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                     <i class="bi bi-tag me-1"></i> Preset Samples
                   </button>
                   <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow">
@@ -122,7 +101,7 @@
               </div>
 
               <!-- Barcode Configuration Form -->
-              <div class="p-3 rounded bg-dark border border-secondary border-opacity-25 mb-4">
+              <div class="p-3 rounded border border-secondary border-opacity-25 mb-4" style="background: rgba(255, 255, 255, 0.02);">
                 <div class="row g-3">
                   <div class="col-md-5">
                     <label class="form-label text-white small fw-bold">Barcode Symbology</label>
@@ -137,7 +116,7 @@
 
                   <div class="col-md-7">
                     <label class="form-label text-white small fw-bold">Barcode Value / Data</label>
-                    <input type="text" id="barcodeValueInput" class="form-control form-control-sm font-monospace text-info" value="899123456789">
+                    <input type="text" id="barcodeValueInput" class="form-control form-control-sm font-monospace text-white" value="899123456789">
                     <div id="formatHint" class="text-secondary small mt-1">EAN-13 requires 12 or 13 numeric digits (checksum auto-calculated).</div>
                   </div>
 
@@ -209,8 +188,8 @@
                     <span><i class="bi bi-palette me-2"></i>Color Palette</span>
                     <i class="bi bi-chevron-right small"></i>
                   </a>
-                  <a href="image-converter.html" class="sidebar-tool-link">
-                    <span><i class="bi bi-arrow-repeat me-2"></i>Image Converter</span>
+                  <a href="audio-tuner.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-music-note-beamed me-2"></i>Instrument Tuner</span>
                     <i class="bi bi-chevron-right small"></i>
                   </a>
                   <a href="dev-tools.html" class="sidebar-tool-link">
@@ -226,13 +205,13 @@
     </section>
   </main>
 
-  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
-    <div class="container text-center">
-      <div class="copyright text-secondary">
-        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+    <footer id="footer" class="footer position-relative">
+    <div class="container">
+      <div class="copyright text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
       </div>
-      <div class="credits text-secondary small">
-        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      <div class="credits">
+        Designed by <a href="https://widifirmaan.web.id/">Widi Firmansyah</a>
       </div>
     </div>
   </footer>

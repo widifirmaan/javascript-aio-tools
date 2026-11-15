@@ -14,15 +14,9 @@
   <link href="../assets/css/main.css" rel="stylesheet">
 
   <style>
-    .stego-card {
-      background: #141418;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 24px;
-    }
     .preview-canvas-box {
-      background: #0d0d11;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #191919;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 8px;
       padding: 12px;
       text-align: center;
@@ -34,54 +28,26 @@
       height: auto;
       border-radius: 6px;
     }
-    .dropzone-box {
-      border: 2px dashed rgba(255, 255, 255, 0.15);
-      border-radius: 12px;
-      padding: 36px 20px;
-      text-align: center;
-      cursor: pointer;
-      background: #17171d;
-      transition: all 0.2s ease;
-    }
-    .dropzone-box:hover, .dropzone-box.dragover {
-      border-color: #3b82f6;
-      background: rgba(59, 130, 246, 0.05);
-    }
   </style>
 </head>
 
 <body class="service-details-page">
-
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-      <a href="../index.html" class="logo d-flex align-items-center">
-        <i class="bi bi-cpu-fill text-primary me-2 fs-4"></i>
-        <span class="sitename">WIDIFIRMAAN</span>
-      </a>
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="../index.html#services" class="active">All Tools</a></li>
-          <li><a href="https://widifirmaan.web.id" target="_blank">Author</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-    </div>
-  </header>
-
   <main class="main">
-    <div class="page-title accent-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <div class="breadcrumb-wrapper">
-          <nav class="breadcrumbs">
-            <ol>
-              <li><a href="../index.html">Home</a></li>
-              <li><a href="../index.html#services">Tools</a></li>
-              <li class="current">Steganography Studio</li>
-            </ol>
-          </nav>
-          <h1 class="mb-2 mb-lg-0">Steganography Studio (Hide Messages in Images)</h1>
-        </div>
+    <!-- Single Page Title Bar (Consistent with Homepage) -->
+    <div class="page-title">
+      <div class="container d-flex align-items-center gap-2">
+        <h1 class="mb-0 fs-5 fw-bold text-nowrap">
+          <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
+            <i class="bi bi-arrow-left"></i>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-6 d-none d-sm-inline">| Free Stuff</span></span>
+          </a>
+        </h1>
+        <span class="text-secondary opacity-50">/</span>
+        <nav class="breadcrumbs text-nowrap text-truncate" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item active text-white text-truncate" aria-current="page">Steganography Studio</li>
+          </ol>
+        </nav>
       </div>
     </div>
 
@@ -90,7 +56,7 @@
         <div class="row g-4">
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
-            <div class="stego-card">
+            <div class="tool-card">
               <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
                 <div>
                   <h2 class="fs-4 fw-bold text-white mb-1">LSB Image Steganography</h2>
@@ -98,7 +64,7 @@
                     Hide secret text or passwords invisibly into the pixel channels (RGB) of any image. 100% client-side.
                   </p>
                 </div>
-                <button type="button" class="btn btn-sm btn-outline-primary" id="btnLoadSampleStego">
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="btnLoadSampleStego">
                   <i class="bi bi-image me-1"></i> Load Sample Image
                 </button>
               </div>
@@ -121,13 +87,15 @@
                 <!-- PANE 1: ENCODE -->
                 <div class="tab-pane fade show active" id="paneEncode">
                   <!-- Dropzone / Image input -->
-                  <div class="dropzone-box mb-3" id="dropzoneEncode">
-                    <i class="bi bi-image text-primary fs-1 mb-2 d-inline-block"></i>
-                    <h5 class="fw-bold text-white mb-1">Choose Carrier Image</h5>
+                  <div class="tool-dropzone mb-3" id="dropzoneEncode" onclick="document.getElementById('fileInputEncode').click()">
+                    <i class="bi bi-image fs-1 text-secondary mb-2 d-inline-block"></i>
+                    <h5 class="fw-semibold text-white mb-1">Choose carrier image</h5>
                     <p class="text-secondary small mb-3">Accepts PNG, JPG, or WebP (Output will be lossless PNG)</p>
                     <input type="file" id="fileInputEncode" class="d-none" accept="image/*">
-                    <button type="button" class="btn btn-outline-primary px-4" onclick="document.getElementById('fileInputEncode').click()">
+                    <button type="button" class="btn btn-secondary px-4 py-2">
                       <i class="bi bi-folder2-open me-1"></i> Select Image
+                    </button>
+                  </div>
                     </button>
                   </div>
 
@@ -173,11 +141,11 @@
                   </div>
 
                   <!-- Encode Result -->
-                  <div id="encodeResultBox" class="p-4 rounded border border-success border-opacity-25 text-center d-none" style="background: rgba(34, 197, 94, 0.05);">
+                  <div id="encodeResultBox" class="p-4 rounded border border-secondary border-opacity-25 text-center d-none" style="background: rgba(255, 255, 255, 0.02);">
                     <i class="bi bi-check-circle-fill text-success fs-1 mb-2 d-inline-block"></i>
                     <h5 class="text-white fw-bold mb-1">Secret Embedded Successfully!</h5>
                     <p class="text-secondary small mb-3">Your message is invisibly woven into the image's pixels. Download and share safely.</p>
-                    <a id="btnDownloadStego" href="#" class="btn btn-success px-4 py-2">
+                    <a id="btnDownloadStego" href="#" class="btn btn-primary px-4 py-2">
                       <i class="bi bi-download me-1"></i> Download Stego PNG
                     </a>
                   </div>
@@ -185,12 +153,12 @@
 
                 <!-- PANE 2: DECODE -->
                 <div class="tab-pane fade" id="paneDecode">
-                  <div class="dropzone-box mb-3" id="dropzoneDecode">
-                    <i class="bi bi-search text-info fs-1 mb-2 d-inline-block"></i>
-                    <h5 class="fw-bold text-white mb-1">Choose Stego Image (PNG)</h5>
+                  <div class="tool-dropzone mb-3" id="dropzoneDecode" onclick="document.getElementById('fileInputDecode').click()">
+                    <i class="bi bi-search fs-1 text-secondary mb-2 d-inline-block"></i>
+                    <h5 class="fw-semibold text-white mb-1">Choose stego image (PNG)</h5>
                     <p class="text-secondary small mb-3">Select the image containing hidden message</p>
                     <input type="file" id="fileInputDecode" class="d-none" accept="image/png,image/*">
-                    <button type="button" class="btn btn-outline-info px-4" onclick="document.getElementById('fileInputDecode').click()">
+                    <button type="button" class="btn btn-secondary px-4 py-2">
                       <i class="bi bi-folder2-open me-1"></i> Select Stego Image
                     </button>
                   </div>
@@ -213,7 +181,7 @@
                   </div>
 
                   <div class="mb-3">
-                    <button type="button" class="btn btn-info w-100 py-2 fw-semibold text-white" id="btnStartDecode" disabled>
+                    <button type="button" class="btn btn-primary w-100 py-2 fw-semibold" id="btnStartDecode" disabled>
                       <i class="bi bi-unlock-fill me-1"></i> Extract & Reveal Message
                     </button>
                   </div>
@@ -224,14 +192,14 @@
                   </div>
 
                   <!-- Decode Result Box -->
-                  <div id="decodeResultBox" class="p-3 rounded border border-info border-opacity-25 d-none" style="background: rgba(14, 165, 233, 0.05);">
+                  <div id="decodeResultBox" class="p-3 rounded border border-secondary border-opacity-25 d-none" style="background: rgba(255, 255, 255, 0.02);">
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                      <span class="text-info fw-bold small"><i class="bi bi-key-fill me-1"></i> Revealed Hidden Message:</span>
-                      <button type="button" class="btn btn-sm btn-outline-info py-0 px-2" id="btnCopyRevealed">
+                      <span class="text-white fw-bold small"><i class="bi bi-key-fill me-1 text-success"></i> Revealed Hidden Message:</span>
+                      <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" id="btnCopyRevealed">
                         <i class="bi bi-clipboard me-1"></i> Copy
                       </button>
                     </div>
-                    <div id="revealedTextBox" class="p-3 rounded bg-dark border border-secondary border-opacity-25 font-monospace text-white small" style="white-space: pre-wrap; word-break: break-all; max-height: 240px; overflow-y: auto;">
+                    <div id="revealedTextBox" class="p-3 rounded border border-secondary border-opacity-25 font-monospace text-white small" style="background: #191919; white-space: pre-wrap; word-break: break-all; max-height: 240px; overflow-y: auto;">
                     </div>
                   </div>
                 </div>
@@ -247,10 +215,10 @@
                   <i class="bi bi-info-circle me-2 text-secondary"></i>How It Works
                 </h5>
                 <ul class="text-secondary small ps-3 mb-0 d-flex flex-column gap-2">
-                  <li><strong>LSB Technique:</strong> Replaces the lowest bit (Least Significant Bit) of RGB color channels without altering visible appearance.</li>
+                  <li><strong>LSB Technique:</strong> Replaces lowest bit of RGB channels without changing visible appearance.</li>
                   <li><strong>Capacity:</strong> Each pixel holds 3 bits of data (R, G, and B channels).</li>
-                  <li><strong>Lossless Format:</strong> Must be saved as PNG. Lossy formats like JPEG discard LSB data.</li>
-                  <li><strong>Double Protection:</strong> Optional AES-GCM encryption ensures message security even if extracted.</li>
+                  <li><strong>Lossless Format:</strong> Must be saved as PNG. Lossy formats discard LSB data.</li>
+                  <li><strong>Optional Encryption:</strong> AES-GCM 256-bit password protection.</li>
                 </ul>
               </div>
 
@@ -288,13 +256,13 @@
     </section>
   </main>
 
-  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
-    <div class="container text-center">
-      <div class="copyright text-secondary">
-        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+    <footer id="footer" class="footer position-relative">
+    <div class="container">
+      <div class="copyright text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
       </div>
-      <div class="credits text-secondary small">
-        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      <div class="credits">
+        Designed by <a href="https://widifirmaan.web.id/">Widi Firmansyah</a>
       </div>
     </div>
   </footer>

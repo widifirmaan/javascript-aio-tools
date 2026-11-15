@@ -14,15 +14,9 @@
   <link href="../assets/css/main.css" rel="stylesheet">
 
   <style>
-    .tuner-card {
-      background: #141418;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 24px;
-    }
     .gauge-container {
-      background: #0b0b0f;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #191919;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 12px;
       padding: 24px 16px;
       text-align: center;
@@ -33,20 +27,20 @@
       font-weight: 800;
       line-height: 1;
       font-family: 'Fira Code', system-ui, sans-serif;
-      transition: color 0.2s ease;
+      color: #ffffff;
+      transition: color 0.15s ease;
     }
     .note-display.in-tune {
       color: #22c55e !important;
-      text-shadow: 0 0 24px rgba(34, 197, 94, 0.4);
     }
     .note-display.flat {
-      color: #38bdf8;
+      color: #94a3b8;
     }
     .note-display.sharp {
       color: #f59e0b;
     }
     .cents-track {
-      height: 12px;
+      height: 10px;
       background: rgba(255, 255, 255, 0.08);
       border-radius: 6px;
       position: relative;
@@ -56,75 +50,56 @@
     .cents-center-mark {
       position: absolute;
       left: 50%;
-      top: -4px;
-      bottom: -4px;
-      width: 4px;
+      top: -3px;
+      bottom: -3px;
+      width: 3px;
       background: #22c55e;
       transform: translateX(-50%);
       border-radius: 2px;
     }
     .cents-needle {
       position: absolute;
-      top: -6px;
-      width: 14px;
-      height: 24px;
-      background: #3b82f6;
-      border: 2px solid #ffffff;
+      top: -5px;
+      width: 12px;
+      height: 20px;
+      background: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 4px;
       transform: translateX(-50%);
-      transition: left 0.1s ease-out, background-color 0.2s ease;
+      transition: left 0.1s ease-out;
       left: 50%;
     }
     .cents-needle.in-tune {
       background: #22c55e;
+      border-color: #22c55e;
     }
     .spectrum-canvas {
       width: 100%;
       height: 110px;
-      background: #08080c;
+      background: #191919;
       border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    .preset-btn.active {
-      background: #3b82f6 !important;
-      color: #ffffff !important;
-      border-color: #3b82f6 !important;
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
   </style>
 </head>
 
 <body class="service-details-page">
-
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-      <a href="../index.html" class="logo d-flex align-items-center">
-        <i class="bi bi-cpu-fill text-primary me-2 fs-4"></i>
-        <span class="sitename">WIDIFIRMAAN</span>
-      </a>
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="../index.html#services" class="active">All Tools</a></li>
-          <li><a href="https://widifirmaan.web.id" target="_blank">Author</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-    </div>
-  </header>
-
   <main class="main">
-    <div class="page-title accent-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <div class="breadcrumb-wrapper">
-          <nav class="breadcrumbs">
-            <ol>
-              <li><a href="../index.html">Home</a></li>
-              <li><a href="../index.html#services">Tools</a></li>
-              <li class="current">Instrument Tuner</li>
-            </ol>
-          </nav>
-          <h1 class="mb-2 mb-lg-0">Instrument Tuner & Audio Spectrum</h1>
-        </div>
+    <!-- Single Page Title Bar (Consistent with Homepage) -->
+    <div class="page-title">
+      <div class="container d-flex align-items-center gap-2">
+        <h1 class="mb-0 fs-5 fw-bold text-nowrap">
+          <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
+            <i class="bi bi-arrow-left"></i>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-6 d-none d-sm-inline">| Free Stuff</span></span>
+          </a>
+        </h1>
+        <span class="text-secondary opacity-50">/</span>
+        <nav class="breadcrumbs text-nowrap text-truncate" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item active text-white text-truncate" aria-current="page">Instrument Tuner</li>
+          </ol>
+        </nav>
       </div>
     </div>
 
@@ -133,7 +108,7 @@
         <div class="row g-4">
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
-            <div class="tuner-card">
+            <div class="tool-card">
               <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
                 <div>
                   <h2 class="fs-4 fw-bold text-white mb-1">Real-Time Pitch & Tuning Gauge</h2>
@@ -141,7 +116,7 @@
                     High-precision musical pitch detection via Web Audio API autocorrelation. Tune guitars, basses, violins, or voice.
                   </p>
                 </div>
-                <button type="button" class="btn btn-sm btn-outline-info" id="btnTestTone">
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="btnTestTone">
                   <i class="bi bi-play-circle me-1"></i> Test Note (A4 440Hz)
                 </button>
               </div>
@@ -189,7 +164,7 @@
               </div>
 
               <!-- Tuning Presets -->
-              <div class="p-3 rounded bg-dark border border-secondary border-opacity-25 mb-4">
+              <div class="p-3 rounded border border-secondary border-opacity-25 mb-4" style="background: rgba(255, 255, 255, 0.02);">
                 <label class="form-label text-white small fw-bold mb-2">Instrument Presets & Target Strings</label>
                 <div class="d-flex flex-wrap gap-2 mb-3">
                   <button type="button" class="btn btn-sm btn-outline-secondary preset-btn active" data-preset="chromatic">Chromatic</button>
@@ -211,7 +186,7 @@
                   <label class="form-label text-white small fw-bold">A4 Calibration Pitch</label>
                   <div class="input-group input-group-sm">
                     <input type="number" id="inputA4" class="form-control" value="440" min="415" max="466">
-                    <span class="input-group-text bg-dark text-secondary border-secondary border-opacity-25">Hz</span>
+                    <span class="input-group-text bg-transparent text-secondary border-secondary border-opacity-25">Hz</span>
                   </div>
                   <span class="text-secondary small">Standard concert pitch is 440 Hz (or 432 Hz).</span>
                 </div>
@@ -236,10 +211,9 @@
                   <i class="bi bi-info-circle me-2 text-secondary"></i>How It Works
                 </h5>
                 <ul class="text-secondary small ps-3 mb-0 d-flex flex-column gap-2">
-                  <li><strong>Autocorrelation Algorithm:</strong> Uses time-domain waveform analysis to isolate the fundamental frequency from overtones and harmonics.</li>
-                  <li><strong>Sub-Cent Accuracy:</strong> Parabolic interpolation calculates exact cents deviation without bin rounding errors.</li>
-                  <li><strong>Reference Tone Generator:</strong> Click on any string button to hear the pure reference note.</li>
-                  <li><strong>100% Private:</strong> Audio data never leaves your device's audio buffer.</li>
+                  <li><strong>Autocorrelation:</strong> Analyzes waveform time-domain data to isolate fundamental pitch.</li>
+                  <li><strong>Sub-Cent Interpolation:</strong> Parabolic math ensures sub-cent tuning accuracy.</li>
+                  <li><strong>Reference Tone:</strong> Play pure reference sound by clicking any instrument string.</li>
                 </ul>
               </div>
 
@@ -248,6 +222,10 @@
                   <i class="bi bi-grid me-2 text-secondary"></i>Other Tools
                 </h5>
                 <div class="d-flex flex-column gap-1">
+                  <a href="barcode-studio.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-upc-scan me-2"></i>Barcode Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
                   <a href="audio-cutter.html" class="sidebar-tool-link">
                     <span><i class="bi bi-soundwave me-2"></i>Audio Cutter</span>
                     <i class="bi bi-chevron-right small"></i>
@@ -258,10 +236,6 @@
                   </a>
                   <a href="calculator.html" class="sidebar-tool-link">
                     <span><i class="bi bi-calculator me-2"></i>Scientific Calculator</span>
-                    <i class="bi bi-chevron-right small"></i>
-                  </a>
-                  <a href="ascii-art.html" class="sidebar-tool-link">
-                    <span><i class="bi bi-terminal me-2"></i>ASCII Art Generator</span>
                     <i class="bi bi-chevron-right small"></i>
                   </a>
                   <a href="dev-tools.html" class="sidebar-tool-link">
@@ -277,13 +251,13 @@
     </section>
   </main>
 
-  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
-    <div class="container text-center">
-      <div class="copyright text-secondary">
-        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+    <footer id="footer" class="footer position-relative">
+    <div class="container">
+      <div class="copyright text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
       </div>
-      <div class="credits text-secondary small">
-        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      <div class="credits">
+        Designed by <a href="https://widifirmaan.web.id/">Widi Firmansyah</a>
       </div>
     </div>
   </footer>

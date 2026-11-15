@@ -14,31 +14,6 @@
   <link href="../assets/css/main.css" rel="stylesheet">
 
   <style>
-    .crypto-card {
-      background: #141418;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 24px;
-    }
-    .dropzone-box {
-      border: 2px dashed rgba(255, 255, 255, 0.15);
-      border-radius: 12px;
-      padding: 36px 20px;
-      text-align: center;
-      cursor: pointer;
-      background: #17171d;
-      transition: all 0.2s ease;
-    }
-    .dropzone-box:hover, .dropzone-box.dragover {
-      border-color: #3b82f6;
-      background: rgba(59, 130, 246, 0.05);
-    }
-    .file-badge-box {
-      background: #1c1c24;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      padding: 14px 18px;
-    }
     .progress-bar-custom {
       height: 8px;
       border-radius: 4px;
@@ -49,37 +24,22 @@
 </head>
 
 <body class="service-details-page">
-
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-      <a href="../index.html" class="logo d-flex align-items-center">
-        <i class="bi bi-cpu-fill text-primary me-2 fs-4"></i>
-        <span class="sitename">WIDIFIRMAAN</span>
-      </a>
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="../index.html#services" class="active">All Tools</a></li>
-          <li><a href="https://widifirmaan.web.id" target="_blank">Author</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-    </div>
-  </header>
-
   <main class="main">
-    <div class="page-title accent-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <div class="breadcrumb-wrapper">
-          <nav class="breadcrumbs">
-            <ol>
-              <li><a href="../index.html">Home</a></li>
-              <li><a href="../index.html#services">Tools</a></li>
-              <li class="current">File Encryptor</li>
-            </ol>
-          </nav>
-          <h1 class="mb-2 mb-lg-0">AES-256 File Encryptor & Decryptor</h1>
-        </div>
+    <!-- Single Page Title Bar (Consistent with Homepage) -->
+    <div class="page-title">
+      <div class="container d-flex align-items-center gap-2">
+        <h1 class="mb-0 fs-5 fw-bold text-nowrap">
+          <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
+            <i class="bi bi-arrow-left"></i>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-6 d-none d-sm-inline">| Free Stuff</span></span>
+          </a>
+        </h1>
+        <span class="text-secondary opacity-50">/</span>
+        <nav class="breadcrumbs text-nowrap text-truncate" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item active text-white text-truncate" aria-current="page">File Encryptor</li>
+          </ol>
+        </nav>
       </div>
     </div>
 
@@ -88,7 +48,7 @@
         <div class="row g-4">
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
-            <div class="crypto-card">
+            <div class="tool-card">
               <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
                 <div>
                   <h2 class="fs-4 fw-bold text-white mb-1">Client-Side Military-Grade Encryption</h2>
@@ -96,7 +56,7 @@
                     Encrypt any file with AES-GCM 256-bit & PBKDF2 (100,000 iterations). 100% processed in memory.
                   </p>
                 </div>
-                <button type="button" class="btn btn-sm btn-outline-primary" id="btnLoadSampleDoc">
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="btnLoadSampleDoc">
                   <i class="bi bi-file-earmark-text me-1"></i> Load Sample File
                 </button>
               </div>
@@ -119,18 +79,18 @@
                 <!-- PANE 1: ENCRYPT -->
                 <div class="tab-pane fade show active" id="paneEncrypt">
                   <!-- Dropzone -->
-                  <div class="dropzone-box mb-3" id="dropzoneEncrypt">
-                    <i class="bi bi-shield-lock text-primary fs-1 mb-2 d-inline-block"></i>
-                    <h5 class="fw-bold text-white mb-1">Choose or Drag File to Encrypt</h5>
+                  <div class="tool-dropzone mb-3" id="dropzoneEncrypt" onclick="document.getElementById('fileInputEncrypt').click()">
+                    <i class="bi bi-shield-lock fs-1 text-secondary mb-2 d-inline-block"></i>
+                    <h5 class="fw-semibold text-white mb-1">Choose or drag file to encrypt</h5>
                     <p class="text-secondary small mb-3">Accepts PDF, ZIP, Images, Documents, or any file type</p>
                     <input type="file" id="fileInputEncrypt" class="d-none">
-                    <button type="button" class="btn btn-outline-primary px-4" onclick="document.getElementById('fileInputEncrypt').click()">
+                    <button type="button" class="btn btn-secondary px-4 py-2">
                       <i class="bi bi-folder2-open me-1"></i> Browse File
                     </button>
                   </div>
 
                   <!-- Selected File Box -->
-                  <div id="fileBoxEncrypt" class="file-badge-box mb-3 d-none">
+                  <div id="fileBoxEncrypt" class="p-3 rounded border border-secondary border-opacity-25 mb-3 d-none" style="background: rgba(255, 255, 255, 0.02);">
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="d-flex align-items-center gap-3">
                         <i class="bi bi-file-earmark-lock text-info fs-3"></i>
@@ -180,11 +140,11 @@
                   </div>
 
                   <!-- Result -->
-                  <div id="encResultBox" class="p-4 rounded border border-success border-opacity-25 text-center d-none" style="background: rgba(34, 197, 94, 0.05);">
+                  <div id="encResultBox" class="p-4 rounded border border-secondary border-opacity-25 text-center d-none" style="background: rgba(255, 255, 255, 0.02);">
                     <i class="bi bi-check-circle-fill text-success fs-1 mb-2 d-inline-block"></i>
                     <h5 class="text-white fw-bold mb-1">File Encrypted Successfully</h5>
                     <p class="text-secondary small mb-3" id="encResultInfo">Your encrypted file is ready for download.</p>
-                    <a id="btnDownloadEncrypted" href="#" class="btn btn-success px-4 py-2">
+                    <a id="btnDownloadEncrypted" href="#" class="btn btn-primary px-4 py-2">
                       <i class="bi bi-download me-1"></i> Download Encrypted (.enc)
                     </a>
                   </div>
@@ -193,18 +153,18 @@
                 <!-- PANE 2: DECRYPT -->
                 <div class="tab-pane fade" id="paneDecrypt">
                   <!-- Dropzone -->
-                  <div class="dropzone-box mb-3" id="dropzoneDecrypt">
-                    <i class="bi bi-unlock text-info fs-1 mb-2 d-inline-block"></i>
-                    <h5 class="fw-bold text-white mb-1">Choose or Drag .enc File to Decrypt</h5>
+                  <div class="tool-dropzone mb-3" id="dropzoneDecrypt" onclick="document.getElementById('fileInputDecrypt').click()">
+                    <i class="bi bi-unlock fs-1 text-secondary mb-2 d-inline-block"></i>
+                    <h5 class="fw-semibold text-white mb-1">Choose or drag .enc file to decrypt</h5>
                     <p class="text-secondary small mb-3">Select the encrypted file previously created by this tool</p>
                     <input type="file" id="fileInputDecrypt" class="d-none" accept=".enc">
-                    <button type="button" class="btn btn-outline-info px-4" onclick="document.getElementById('fileInputDecrypt').click()">
+                    <button type="button" class="btn btn-secondary px-4 py-2">
                       <i class="bi bi-folder2-open me-1"></i> Browse .enc File
                     </button>
                   </div>
 
                   <!-- Selected File Box -->
-                  <div id="fileBoxDecrypt" class="file-badge-box mb-3 d-none">
+                  <div id="fileBoxDecrypt" class="p-3 rounded border border-secondary border-opacity-25 mb-3 d-none" style="background: rgba(255, 255, 255, 0.02);">
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="d-flex align-items-center gap-3">
                         <i class="bi bi-file-earmark-check text-success fs-3"></i>
@@ -231,7 +191,7 @@
                   </div>
 
                   <div class="mb-3">
-                    <button type="button" class="btn btn-info w-100 py-2 fw-semibold text-white" id="btnStartDecrypt" disabled>
+                    <button type="button" class="btn btn-primary w-100 py-2 fw-semibold" id="btnStartDecrypt" disabled>
                       <i class="bi bi-unlock-fill me-1"></i> Decrypt & Restore File
                     </button>
                   </div>
@@ -242,11 +202,11 @@
                   </div>
 
                   <!-- Result -->
-                  <div id="decResultBox" class="p-4 rounded border border-info border-opacity-25 text-center d-none" style="background: rgba(14, 165, 233, 0.05);">
-                    <i class="bi bi-file-earmark-check-fill text-info fs-1 mb-2 d-inline-block"></i>
+                  <div id="decResultBox" class="p-4 rounded border border-secondary border-opacity-25 text-center d-none" style="background: rgba(255, 255, 255, 0.02);">
+                    <i class="bi bi-file-earmark-check-fill text-success fs-1 mb-2 d-inline-block"></i>
                     <h5 class="text-white fw-bold mb-1">File Restored Successfully</h5>
                     <p class="text-secondary small mb-3" id="decResultInfo">Original file restored with exact binary fidelity.</p>
-                    <a id="btnDownloadDecrypted" href="#" class="btn btn-info text-white px-4 py-2">
+                    <a id="btnDownloadDecrypted" href="#" class="btn btn-primary px-4 py-2">
                       <i class="bi bi-download me-1"></i> Download Original File
                     </a>
                   </div>
@@ -279,6 +239,10 @@
                     <span><i class="bi bi-shield-lock me-2"></i>Password Generator</span>
                     <i class="bi bi-chevron-right small"></i>
                   </a>
+                  <a href="steganography.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-eye-slash me-2"></i>Steganography Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
                   <a href="text-diff.html" class="sidebar-tool-link">
                     <span><i class="bi bi-file-diff me-2"></i>Text Diff</span>
                     <i class="bi bi-chevron-right small"></i>
@@ -304,13 +268,13 @@
     </section>
   </main>
 
-  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
-    <div class="container text-center">
-      <div class="copyright text-secondary">
-        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+    <footer id="footer" class="footer position-relative">
+    <div class="container">
+      <div class="copyright text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
       </div>
-      <div class="credits text-secondary small">
-        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      <div class="credits">
+        Designed by <a href="https://widifirmaan.web.id/">Widi Firmansyah</a>
       </div>
     </div>
   </footer>

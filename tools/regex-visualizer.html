@@ -14,16 +14,10 @@
   <link href="../assets/css/main.css" rel="stylesheet">
 
   <style>
-    .regex-card {
-      background: #141418;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 24px;
-    }
     .railroad-container {
-      background: #09090d;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
+      background: #191919;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
       padding: 16px;
       min-height: 180px;
       max-height: 480px;
@@ -36,7 +30,7 @@
       max-width: none;
     }
     .match-highlight-box {
-      background: #111116;
+      background: #191919;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 8px;
       padding: 12px;
@@ -65,11 +59,11 @@
       font-family: 'Fira Code', monospace;
     }
     .group-table th {
-      background: #1a1a22;
+      background: #191919;
       color: #94a3b8;
     }
     .group-table td {
-      background: #121217;
+      background: rgba(255, 255, 255, 0.02);
       color: #f1f5f9;
       border-color: rgba(255, 255, 255, 0.06);
     }
@@ -77,37 +71,22 @@
 </head>
 
 <body class="service-details-page">
-
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-      <a href="../index.html" class="logo d-flex align-items-center">
-        <i class="bi bi-cpu-fill text-primary me-2 fs-4"></i>
-        <span class="sitename">WIDIFIRMAAN</span>
-      </a>
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="../index.html#services" class="active">All Tools</a></li>
-          <li><a href="https://widifirmaan.web.id" target="_blank">Author</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-    </div>
-  </header>
-
   <main class="main">
-    <div class="page-title accent-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <div class="breadcrumb-wrapper">
-          <nav class="breadcrumbs">
-            <ol>
-              <li><a href="../index.html">Home</a></li>
-              <li><a href="../index.html#services">Tools</a></li>
-              <li class="current">Regex Visualizer</li>
-            </ol>
-          </nav>
-          <h1 class="mb-2 mb-lg-0">Regex Visualizer & Railroad Diagram</h1>
-        </div>
+    <!-- Single Page Title Bar (Consistent with Homepage) -->
+    <div class="page-title">
+      <div class="container d-flex align-items-center gap-2">
+        <h1 class="mb-0 fs-5 fw-bold text-nowrap">
+          <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
+            <i class="bi bi-arrow-left"></i>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-6 d-none d-sm-inline">| Free Stuff</span></span>
+          </a>
+        </h1>
+        <span class="text-secondary opacity-50">/</span>
+        <nav class="breadcrumbs text-nowrap text-truncate" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item active text-white text-truncate" aria-current="page">Regex Visualizer</li>
+          </ol>
+        </nav>
       </div>
     </div>
 
@@ -116,7 +95,7 @@
         <div class="row g-4">
           <!-- Main Content (Col 8) -->
           <div class="col-lg-8">
-            <div class="regex-card">
+            <div class="tool-card">
               <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
                 <div>
                   <h2 class="fs-4 fw-bold text-white mb-1">Interactive Regex Flow & Testing</h2>
@@ -125,7 +104,7 @@
                   </p>
                 </div>
                 <div class="dropdown">
-                  <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                     <i class="bi bi-lightning-charge me-1"></i> Quick Presets
                   </button>
                   <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow">
@@ -286,13 +265,13 @@
     </section>
   </main>
 
-  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
-    <div class="container text-center">
-      <div class="copyright text-secondary">
-        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+    <footer id="footer" class="footer position-relative">
+    <div class="container">
+      <div class="copyright text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
       </div>
-      <div class="credits text-secondary small">
-        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      <div class="credits">
+        Designed by <a href="https://widifirmaan.web.id/">Widi Firmansyah</a>
       </div>
     </div>
   </footer>
