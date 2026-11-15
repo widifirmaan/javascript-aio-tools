@@ -291,16 +291,82 @@
       }
     }
 
+    function getFontDetails(it, styles) {
+      const style = (styles && it.fontName && styles[it.fontName]) || {};
+      const rawName = ((it.fontName || '') + ' ' + (style.fontFamily || '')).toLowerCase();
+
+      const isBold = rawName.includes('bold') || rawName.includes('black') || rawName.includes('heavy') || rawName.includes('semibold') || rawName.includes('700') || rawName.includes('800') || rawName.includes('900');
+      const isItalic = rawName.includes('italic') || rawName.includes('oblique');
+
+      let cleanFont = 'Calibri';
+      if (rawName.includes('times') || rawName.includes('georgia') || (rawName.includes('serif') && !rawName.includes('sans'))) {
+        cleanFont = 'Times New Roman';
+      } else if (rawName.includes('courier') || rawName.includes('mono') || rawName.includes('code')) {
+        cleanFont = 'Courier New';
+      } else if (rawName.includes('arial') || rawName.includes('helvetica') || rawName.includes('sans')) {
+        cleanFont = 'Arial';
+      } else if (rawName.includes('roboto')) {
+        cleanFont = 'Roboto';
+      } else if (rawName.includes('calibri')) {
+        cleanFont = 'Calibri';
+      } else if (style.fontFamily && !style.fontFamily.includes('sans-serif') && !style.fontFamily.includes('serif')) {
+        cleanFont = style.fontFamily.split(',')[0].replace(/['"]/g, '').trim();
+      }
+
+      const fontSize = it.fontSize || (it.transform ? Math.hypot(it.transform[0], it.transform[1]) : 11);
+      const halfPoints = Math.round(fontSize * 2);
+
+      return { isBold, isItalic, cleanFont, fontSize, halfPoints };
+    }
+
+    function buildRunsFromItems(items, styles) {
+      const runs = [];
+      for (let idx = 0; idx < items.length; idx++) {
+        const it = items[idx];
+        const fd = getFontDetails(it, styles);
+
+        if (idx > 0) {
+          const prev = items[idx - 1];
+          const gap = it.x - (prev.x + prev.width);
+          if (gap > 2) {
+            runs.push(new docx.TextRun({ text: ' ' }));
+          }
+        }
+
+        runs.push(new docx.TextRun({
+          text: it.str,
+          font: fd.cleanFont,
+          size: fd.halfPoints,
+          bold: fd.isBold,
+          italics: fd.isItalic
+        }));
+      }
+      return runs;
+    }
+
+    function getLineAlignment(line, blockLeft, blockWidth) {
+      const lineMid = line.minX + (line.width / 2);
+      const blockMid = blockLeft + (blockWidth / 2);
+      if (Math.abs(lineMid - blockMid) < 20 && line.width < blockWidth * 0.85) {
+        return docx.AlignmentType.CENTER;
+      }
+      if (line.maxX > blockLeft + blockWidth - 25 && line.minX > blockLeft + (blockWidth * 0.35)) {
+        return docx.AlignmentType.RIGHT;
+      }
+      return docx.AlignmentType.LEFT;
+    }
+
     function parsePageItems(rawItems, viewport) {
       if (!rawItems || rawItems.length === 0) return [];
       return rawItems.map(it => {
-        const fontSize = it.fontSize || (it.transform ? Math.sqrt(it.transform[0]*it.transform[0] + it.transform[1]*it.transform[1]) : 12);
+        const fontSize = it.fontSize || (it.transform ? Math.hypot(it.transform[0], it.transform[1]) : 11);
         const x = it.transform ? it.transform[4] : (it.x || 0);
         const y = it.transform ? it.transform[5] : (it.y || 0);
         const topY = viewport.height - y - fontSize;
         const width = it.width || (it.str.length * fontSize * 0.5);
         return {
           str: it.str,
+          fontName: it.fontName || '',
           x: x,
           y: y,
           topY: topY,
@@ -380,12 +446,12 @@
       return best;
     }
 
-    function buildElementsFromLines(lines) {
+    function buildElementsFromLines(lines, styles, blockLeft = 50, blockWidth = 500) {
       const elements = [];
       let i = 0;
 
       while (i < lines.length) {
-        // 1. Data Table Detection (multiple consecutive lines with 3+ aligned columns or paired columns with large gap)
+        // 1. Data Table Detection
         let tableEnd = i;
         while (tableEnd < lines.length && (
           lines[tableEnd].items.length >= 3 || 
@@ -404,18 +470,31 @@
             const cells = [];
             for (let c = 0; c < maxCols; c++) {
               const it = tl.items[c];
-              const cellText = it ? it.str.trim() : '';
+              if (!it) {
+                cells.push(new docx.TableCell({
+                  width: { size: colPct, type: docx.WidthType.PERCENTAGE },
+                  margins: { top: 60, bottom: 60, left: 80, right: 80 },
+                  children: [new docx.Paragraph({})]
+                }));
+                continue;
+              }
+              const fd = getFontDetails(it, styles);
+              const cellText = it.str.trim();
+              const isNum = c > 0 && !isNaN(Number(cellText.replace(/[^0-9.-]/g, '')));
+
               cells.push(new docx.TableCell({
                 width: { size: colPct, type: docx.WidthType.PERCENTAGE },
                 margins: { top: 60, bottom: 60, left: 80, right: 80 },
                 children: [
                   new docx.Paragraph({
-                    alignment: (c > 0 && it && !isNaN(Number(cellText.replace(/[^0-9.-]/g, '')))) ? docx.AlignmentType.RIGHT : docx.AlignmentType.LEFT,
+                    alignment: isNum ? docx.AlignmentType.RIGHT : docx.AlignmentType.LEFT,
                     children: [
                       new docx.TextRun({
                         text: cellText,
-                        bold: isHeader || (it && it.fontSize >= 12.5),
-                        size: Math.round(Math.max(9, Math.min(22, (it ? it.fontSize : 10) * 1.6)))
+                        font: fd.cleanFont,
+                        size: fd.halfPoints,
+                        bold: isHeader || fd.isBold,
+                        italics: fd.isItalic
                       })
                     ]
                   })
@@ -438,7 +517,7 @@
             rows: tableRows
           }));
 
-          elements.push(new docx.Paragraph({ spacing: { after: 100 } }));
+          elements.push(new docx.Paragraph({ spacing: { after: 120 } }));
           i = tableEnd;
           continue;
         }
@@ -452,6 +531,9 @@
           const gap = itRight.x - (itLeft.x + itLeft.width);
 
           if (gap > 100) {
+            const fdL = getFontDetails(itLeft, styles);
+            const fdR = getFontDetails(itRight, styles);
+
             elements.push(new docx.Table({
               width: { size: 100, type: docx.WidthType.PERCENTAGE },
               borders: {
@@ -470,8 +552,10 @@
                           children: [
                             new docx.TextRun({
                               text: itLeft.str.trim(),
-                              bold: itLeft.fontSize >= 12,
-                              size: Math.round(Math.max(10, Math.min(26, itLeft.fontSize * 1.6)))
+                              font: fdL.cleanFont,
+                              size: fdL.halfPoints,
+                              bold: fdL.isBold,
+                              italics: fdL.isItalic
                             })
                           ]
                         })
@@ -486,7 +570,10 @@
                           children: [
                             new docx.TextRun({
                               text: itRight.str.trim(),
-                              size: Math.round(Math.max(10, Math.min(26, itRight.fontSize * 1.6)))
+                              font: fdR.cleanFont,
+                              size: fdR.halfPoints,
+                              bold: fdR.isBold,
+                              italics: fdR.isItalic
                             })
                           ]
                         })
@@ -501,27 +588,31 @@
           }
         }
 
-        // 3. Headings
+        const lineAlignment = getLineAlignment(line, blockLeft, blockWidth);
+
+        // 3. Headings with exact font runs
         if (line.maxFontSize >= 18) {
           elements.push(new docx.Paragraph({
-            text: line.text,
             heading: docx.HeadingLevel.HEADING_1,
-            spacing: { before: 200, after: 80 }
+            alignment: lineAlignment,
+            children: buildRunsFromItems(line.items, styles),
+            spacing: { before: 240, after: 100 }
           }));
           i++;
           continue;
         } else if (line.maxFontSize >= 13.5) {
           elements.push(new docx.Paragraph({
-            text: line.text,
             heading: docx.HeadingLevel.HEADING_2,
-            spacing: { before: 160, after: 60 }
+            alignment: lineAlignment,
+            children: buildRunsFromItems(line.items, styles),
+            spacing: { before: 180, after: 80 }
           }));
           i++;
           continue;
         }
 
         // 4. Group consecutive normal lines into flowing paragraphs
-        let paraText = line.text;
+        const paragraphRuns = [...buildRunsFromItems(line.items, styles)];
         let nextIdx = i + 1;
 
         while (nextIdx < lines.length) {
@@ -529,21 +620,24 @@
           if (nextLine.maxFontSize >= 13.5 || nextLine.items.length >= 3) break;
           const vertDist = nextLine.topY - lines[nextIdx - 1].topY;
           if (vertDist > line.maxFontSize * 1.8) break;
-          if (paraText.endsWith(':')) break;
+          if (line.text.endsWith(':')) break;
           if (/^[•\-\*▪]|\d+\./.test(nextLine.text)) break;
 
-          paraText += ' ' + nextLine.text;
+          paragraphRuns.push(new docx.TextRun({ text: ' ' }));
+          paragraphRuns.push(...buildRunsFromItems(nextLine.items, styles));
           nextIdx++;
         }
 
+        let spaceAfter = 100;
+        if (nextIdx < lines.length) {
+          const gapPt = lines[nextIdx].topY - lines[nextIdx - 1].topY;
+          spaceAfter = Math.max(60, Math.min(300, Math.round(gapPt * 15)));
+        }
+
         elements.push(new docx.Paragraph({
-          children: [
-            new docx.TextRun({
-              text: paraText.replace(/\s+/g, ' ').trim(),
-              size: Math.round(Math.max(10, Math.min(24, line.maxFontSize * 1.6)))
-            })
-          ],
-          spacing: { after: 90 }
+          alignment: lineAlignment,
+          children: paragraphRuns,
+          spacing: { after: spaceAfter }
         }));
 
         i = nextIdx;
@@ -603,6 +697,7 @@
           const page = await pdfDoc.getPage(pageNum);
           const viewport = page.getViewport({ scale: 1.0 });
           const textContent = await page.getTextContent();
+          const styles = textContent.styles || {};
           const rawItems = (textContent.items || []).filter(it => it.str && it.str.trim().length > 0);
 
           if (rawItems.length === 0) {
@@ -674,11 +769,11 @@
             }
 
             if (headerLines.length > 0) {
-              docChildren.push(...buildElementsFromLines(headerLines));
+              docChildren.push(...buildElementsFromLines(headerLines, styles, 50, viewport.width - 100));
             }
 
-            const leftElements = buildElementsFromLines(leftColLines);
-            const rightElements = buildElementsFromLines(rightColLines);
+            const leftElements = buildElementsFromLines(leftColLines, styles, 50, colSplit.splitX - 50);
+            const rightElements = buildElementsFromLines(rightColLines, styles, colSplit.splitX, viewport.width - colSplit.splitX - 50);
 
             const leftPct = Math.max(25, Math.min(45, Math.round((colSplit.splitX / viewport.width) * 100)));
             const rightPct = 100 - leftPct;
@@ -711,7 +806,7 @@
             }));
           } else {
             // Standard Single-Column Flow
-            docChildren.push(...buildElementsFromLines(lines));
+            docChildren.push(...buildElementsFromLines(lines, styles, 50, viewport.width - 100));
           }
         }
 
