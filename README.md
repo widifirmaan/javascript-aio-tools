@@ -55,86 +55,33 @@ JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection
 
 ## Features
 
-All 23 tools are executed 100% locally in the browser without uploading documents, images, audio, video, or confidential files to external servers:
-
-### 1. 🛡️ Security & Privacy
-- **File Encryptor** (`tools/file-encryptor.html`):
-  - High-performance client-side file encryption and decryption using **AES-GCM 256-bit** and **PBKDF2 key derivation** (100,000 hash iterations via native `Web Crypto API`).
-  - Supports any file type (PDF, ZIP, photos, confidential text) with encrypted binary container (`.enc`) retaining original filename upon decryption.
-- **Steganography Studio** (`tools/steganography.html`):
-  - In-browser image steganography using the **Least Significant Bit (LSB)** technique across RGB pixel channels.
-  - Invisibly embeds confidential messages or passphrases with optional **AES-GCM encryption** into lossless PNG images.
-- **Password Generator** (`tools/password-generator.html`):
-  - Cryptographically secure random password generation powered by `window.crypto.getRandomValues()`.
-  - Customizable character types (uppercase, lowercase, numbers, symbols) and Diceware passphrase generator.
-  - Real-time Shannon entropy calculation (bits), brute-force crack-time estimation, and bulk generation.
-- **Photo Metadata Editor** (`tools/photo-metadata.html`):
-  - Pure JavaScript binary EXIF parser displaying camera make, lens model, shutter speed, ISO, aperture, and GPS coordinates.
-  - 1-click **Strip EXIF & Clean Image** tool to erase GPS and camera fingerprints before publishing photos online.
-
-### 2. 📄 Document & PDF Tools
-- **PDF Splitter** (`tools/pdf-splitter.html`):
-  - Split multi-page PDF documents or extract custom page ranges (e.g., `1-3, 5, 8-10`).
-  - Visual interactive page thumbnail selector with quick odd/even toggles.
-  - Powered by client-side **PDF-Lib** and **Mozilla PDF.js**.
-- **PDF Studio** (`tools/pdf-tools.html`):
-  - **Merge PDFs**: Combine multiple PDF files into one clean document with reordering controls.
-  - **Images to PDF**: Convert collections of JPG, PNG, and WebP images into a standardized A4 or original-sized PDF document.
-
-### 3. 🖼️ Media, Audio & Creative Graphics
-- **ASCII Art Generator** (`tools/ascii-art.html`):
-  - Convert photos, icons, and logos into monochrome ASCII art, styled color HTML, or 24-bit ANSI terminal escape codes.
-  - Configurable character density ramps, contrast boost, brightness inversion, and PNG image export.
-- **Background Remover** (`tools/remove-bg.html`):
-  - Automatic foreground detection and background removal using **Edge WebAssembly AI** (`@imgly/background-removal`).
-  - Zero server GPU or CPU required, runs directly on the user's hardware via WebAssembly.
-- **Image Compressor** (`tools/image-compressor.html`):
-  - Fast client-side image compression reducing payload size by up to 80% while retaining visual fidelity.
-- **Image Converter** (`tools/image-converter.html`):
-  - Instant image conversion between JPG, PNG, and WebP formats using HTML5 Canvas APIs.
-- **Color Palette Extractor** (`tools/color-palette.html`):
-  - Extracts dominant and harmonious color palettes from images using Median-Cut color quantization on HTML5 Canvas.
-  - Swatch displays with HEX and RGB values, 1-click CSS variable export, JSON export, and downloadable PNG palette card.
-- **SVG Minifier** (`tools/svg-minifier.html`):
-  - Strips XML declarations, doctypes, comments, and editor-specific metadata namespaces (Illustrator, Inkscape, Figma).
-  - Rounds path coordinate precision, collapses redundant whitespace, and provides live side-by-side vector preview with savings percentage.
-- **Audio Cutter** (`tools/audio-cutter.html`):
-  - Interactive Web Audio API waveform visualizer with draggable start/end trim handles.
-  - Optional smooth fade-in and fade-out audio envelope curves.
-  - 100% browser-based PCM WAV audio encoding and instant playback preview.
-- **Screen Recorder** (`tools/screen-recorder.html`):
-  - In-browser screen and window video recording using `navigator.mediaDevices.getDisplayMedia` and HTML5 `MediaRecorder`.
-  - Optional system/tab audio and external microphone capture.
-  - Live elapsed recording timer, real-time video monitor, and instant WebM video download.
-- **Instrument Tuner** (`tools/audio-tuner.html`):
-  - Real-time musical instrument pitch detection using **Web Audio API** and the **YIN Autocorrelation algorithm** with parabolic sub-cent interpolation.
-  - Cents deviation needle gauge (-50 to +50 cents) with in-tune indicator (±3 cents), selectable reference pitch A4 (415–466 Hz), instrument presets (Guitar, Bass, Ukulele, Violin, Chromatic), and live FFT spectrogram canvas.
-
-### 4. 🛠️ Developer & Productivity Tools
-- **Regex Visualizer** (`tools/regex-visualizer.html`):
-  - Interactive Regular Expression tester with dynamic **SVG Railroad Flow Diagrams**.
-  - Real-time match highlighting, multi-group capture table, and instant regex syntax error detection.
-- **Text Diff** (`tools/text-diff.html`):
-  - Fast Longest Common Subsequence (LCS) diff engine comparing original and modified texts.
-  - Side-by-side split view and unified inline view modes with unified diff statistics (+additions, -deletions, unchanged) and match percentage.
-- **QR Code Studio** (`tools/qr-code.html`):
-  - **Generator**: Custom QR codes for URLs, Wi-Fi networks (WPA/WEP/Open), WhatsApp direct chat, vCard contacts, and emails with custom colors and size settings.
-  - **Scanner**: Decodes QR codes from image uploads or live webcam camera stream using **Html5-QRCode**.
-- **Developer Toolbox** (`tools/dev-tools.html`):
-  - **JSON Formatter & Validator**: Beautify (2/4 spaces), Minify, and real-time syntax error pointer.
-  - **Base64 & URL Encoder/Decoder**: Two-way encoding for text and files to Base64 data URLs.
-  - **JWT Token Inspector**: Decodes JSON Web Tokens (Header, Claims/Payload) and checks expiration dates safely without transmitting tokens across the internet.
-- **Text Editor** (`tools/text-editor.html`):
-  - Lightweight rich-text editor with real-time character, word, and paragraph counting.
-- **Barcode Studio** (`tools/barcode-studio.html`):
-  - Pure client-side 1D vector barcode generator supporting **Code 128 (B)** with Modulo 103 checksum, **EAN-13** and **UPC-A** with automatic Modulo-10 parity check digit calculations, **Code 39**, and **ITF-14** shipping cartons.
-  - Real-time SVG rendering engine, crisp high-res PNG export, and 1-click SVG XML code copy.
-
-### 5. 🔢 Math & Vehicle Engineering
-- **Scientific Calculator** (`tools/calculator.html`):
-  - Responsive mathematical and scientific calculator with trigonometric, logarithmic, and power functions.
-- **Tire Comparison** (`tools/tire-comp.html`):
-  - Side-by-side automotive tire specification comparison calculating sidewall height, overall diameter changes, ride height differences, and speedometer calibration error percentage.
+- **23 In-Browser Utilities**: Essential developer and creative tools running 100% in the browser with zero server uploads:
+  - **File Encryptor (`tools/file-encryptor.html`)**: AES-GCM 256-bit encryption and decryption with PBKDF2 key derivation (100,000 iterations) via native Web Crypto API.
+  - **Steganography Studio (`tools/steganography.html`)**: Least Significant Bit (LSB) image steganography across RGB pixel channels with optional AES-GCM encryption.
+  - **Password Generator (`tools/password-generator.html`)**: Cryptographically secure random password generation with character sets, Diceware passphrases, and Shannon entropy estimation.
+  - **Photo Metadata Editor (`tools/photo-metadata.html`)**: Pure JavaScript binary EXIF parser displaying camera settings and GPS coordinates with 1-click EXIF stripping.
+  - **PDF Splitter (`tools/pdf-splitter.html`)**: Multi-page PDF page range extraction and visual thumbnail preview powered by PDF-Lib and Mozilla PDF.js.
+  - **PDF Studio (`tools/pdf-tools.html`)**: Multi-document PDF merger and batch JPG/PNG/WebP images-to-PDF compiler.
+  - **ASCII Art Generator (`tools/ascii-art.html`)**: Image-to-ASCII converter generating monochrome text, styled HTML, and 24-bit ANSI terminal escape codes.
+  - **Background Remover (`tools/remove-bg.html`)**: In-browser neural background removal powered by `@imgly/background-removal` WebAssembly runtime.
+  - **Image Compressor (`tools/image-compressor.html`)**: Client-side canvas image compression with configurable quality levels and instant download.
+  - **Image Converter (`tools/image-converter.html`)**: Format conversion between JPG, PNG, and WebP using HTML5 Canvas APIs.
+  - **Color Palette Extractor (`tools/color-palette.html`)**: Dominant color extraction using Median-Cut color quantization with CSS variables, JSON, and PNG card export.
+  - **SVG Minifier (`tools/svg-minifier.html`)**: XML namespace cleaner, comment stripper, and path coordinate precision optimizer with side-by-side vector preview.
+  - **Audio Cutter (`tools/audio-cutter.html`)**: Interactive Web Audio waveform trimmer with draggable handles, fade envelope curves, and PCM WAV export.
+  - **Screen Recorder (`tools/screen-recorder.html`)**: DisplayMedia and MediaRecorder video capture with microphone/tab audio support and WebM download.
+  - **Instrument Tuner (`tools/audio-tuner.html`)**: Real-time pitch detection via YIN autocorrelation algorithm with -50 to +50 cents deviation needle and live FFT spectrogram.
+  - **Regex Visualizer (`tools/regex-visualizer.html`)**: Regular expression tester with dynamic SVG railroad track flow diagrams and capture group inspection.
+  - **Text Diff (`tools/text-diff.html`)**: Longest Common Subsequence (LCS) text comparator with side-by-side split and unified diff modes.
+  - **QR Code Studio (`tools/qr-code.html`)**: QR code generator for URLs, Wi-Fi networks, WhatsApp, and vCards, plus webcam and image QR scanner via Html5-QRCode.
+  - **Developer Toolbox (`tools/dev-tools.html`)**: JSON Formatter & Validator (2/4 space beautify, minify), Base64/URL encoder-decoder, and client-side JWT token inspector.
+  - **Text Editor (`tools/text-editor.html`)**: Rich-text editing workspace with real-time character, word, and paragraph counters.
+  - **Barcode Studio (`tools/barcode-studio.html`)**: Pure JavaScript 1D vector barcode generator supporting Code 128 (B), EAN-13, UPC-A, Code 39, and ITF-14.
+  - **Scientific Calculator (`tools/calculator.html`)**: Client-side scientific calculator with trigonometric, logarithmic, and power functions.
+  - **Tire Comparison (`tools/tire-comp.html`)**: Automotive tire specification comparator calculating sidewall height, rolling diameter, ride height delta, and speedometer error percentage.
+- **100% Client-Side Privacy**: All file processing, cryptographic operations, image rendering, and document manipulation execute in browser memory—no files or metadata are uploaded to any external server.
+- **Zero Framework Runtime**: Built with Vanilla JavaScript (ES6+), HTML5, and CSS without client-side framework overhead.
+- **Responsive Dark Theme**: Modern dark theme with Bootstrap 5.3 and Tailwind CSS v4 styling, mobile off-canvas drawer navigation, and responsive tool grid.
 
 ---
 
@@ -205,28 +152,34 @@ All 23 tools are executed 100% locally in the browser without uploading document
 
 ### Local Development
 
-> **Environment Variables:** No `.env` file or API keys are required. All image processing, document conversions, audio rendering, and calculations run 100% inside your browser.
+> **Environment Variables:** No `.env` file or API keys are required. All utilities run 100% client-side in the browser.
 
 ```bash
 # 1. Clone the repository
 git clone https://github.com/widifirmaan/javascript-aio-tools.git
 cd javascript-aio-tools
 
-# 2. Run local preview server using any static server:
-npx serve .
-# or using Python:
+# 2. Start local preview server with Cloudflare Wrangler
+npm run dev
+
+# Or run using Python:
 python3 -m http.server 3000
-# or using Cloudflare Wrangler:
-npx wrangler pages dev . --port=3000
 ```
-Open `http://localhost:3000` in your browser.
+
+Open `http://localhost:3000` in your web browser.
+
+### Automated Testing
+
+```bash
+# Run test suite verifying all 23 tools
+npm test
+```
 
 ### Cloudflare Pages Deployment
 
-Deploy instantly to Cloudflare Pages via Wrangler CLI:
+Deploy static assets directly to Cloudflare Pages via Wrangler CLI:
 
 ```bash
-# Deploy static assets directly to Cloudflare Pages
 npm run deploy
 ```
 
