@@ -64,36 +64,46 @@
 
               <!-- Metadata Workspace (Hidden initially) -->
               <div id="workspaceArea" class="d-none">
-                <!-- Action Bar -->
-                <div class="row g-4 mb-4">
+                <!-- Comparison / Workspace Panels -->
+                <div class="row g-3 mb-4">
                   <!-- Photo Preview Column -->
-                  <div class="col-md-5">
-                    <label class="form-label text-secondary small fw-bold mb-2">Photo Preview:</label>
-                    <div class="preview-box mb-3">
-                      <img id="photoImgPreview" src="" alt="Photo preview">
-                    </div>
-
-                    <!-- GPS Map Warning Badge (if GPS exists) -->
-                    <div id="gpsAlertBox" class="p-3 rounded border border-warning border-opacity-25 bg-warning bg-opacity-10 d-none">
-                      <div class="d-flex align-items-center gap-2 text-warning fw-bold small mb-1">
-                        <i class="bi bi-geo-alt-fill fs-5"></i> GPS Coordinates Detected!
+                  <div class="col-md-6">
+                    <div class="p-3 rounded border border-secondary border-opacity-25 h-100 d-flex flex-column tool-panel">
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="small fw-semibold text-secondary">Photo Preview</span>
+                        <span class="text-secondary small fw-semibold" id="labelPreviewDims">-</span>
                       </div>
-                      <p class="text-secondary small mb-2" id="gpsCoordText">Lat: 0, Lon: 0</p>
-                      <a id="btnMapLink" href="#" target="_blank" class="btn btn-sm btn-outline-warning py-1 w-100">
-                        <i class="bi bi-box-arrow-up-right me-1"></i> View Location in Map
-                      </a>
+                      <div class="rounded overflow-hidden flex-grow-1 d-flex align-items-center justify-content-center checkerboard-bg mb-3" style="max-height: 280px; min-height: 200px;">
+                        <img id="photoImgPreview" src="" alt="Photo preview" class="img-fluid" style="max-height: 280px; object-fit: contain;">
+                      </div>
+
+                      <!-- GPS Map Warning Badge (if GPS exists) -->
+                      <div id="gpsAlertBox" class="p-3 rounded border border-warning border-opacity-25 bg-warning bg-opacity-10 d-none mt-auto">
+                        <div class="d-flex align-items-center gap-2 text-warning fw-bold small mb-1">
+                          <i class="bi bi-geo-alt-fill fs-5"></i> GPS Coordinates Detected!
+                        </div>
+                        <p class="text-secondary small mb-2" id="gpsCoordText">Lat: 0, Lon: 0</p>
+                        <a id="btnMapLink" href="#" target="_blank" class="btn btn-sm btn-outline-warning py-1 w-100">
+                          <i class="bi bi-box-arrow-up-right me-1"></i> View Location in Map
+                        </a>
+                      </div>
                     </div>
                   </div>
 
                   <!-- Metadata Table Column -->
-                  <div class="col-md-7">
-                    <label class="form-label text-secondary small fw-bold mb-2">Extracted EXIF Tags:</label>
-                    <div class="meta-table-box">
-                      <table class="table table-dark table-sm table-striped align-middle mb-0 bg-transparent">
-                        <tbody id="metaTableBody">
-                          <!-- Populated dynamically -->
-                        </tbody>
-                      </table>
+                  <div class="col-md-6">
+                    <div class="p-3 rounded border border-secondary border-opacity-25 h-100 d-flex flex-column tool-panel">
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="small fw-semibold text-white"><i class="bi bi-info-circle me-1 text-primary"></i>Extracted EXIF Tags</span>
+                        <span class="text-secondary small fw-semibold" id="labelTagCount">0 tags</span>
+                      </div>
+                      <div class="meta-table-box flex-grow-1 overflow-y-auto" style="max-height: 360px;">
+                        <table class="table table-dark table-sm table-striped align-middle mb-0 bg-transparent">
+                          <tbody id="metaTableBody">
+                            <!-- Populated dynamically -->
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -109,8 +119,8 @@
                     <button type="button" class="btn btn-outline-secondary btn-icon" onclick="resetMetadataViewer()" title="Change Photo" aria-label="Change Photo">
                       <i class="bi bi-arrow-counterclockwise"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-icon" id="btnWipeExif" title="Strip All Metadata & Download" aria-label="Strip All Metadata & Download">
-                      <i class="bi bi-shield-slash"></i>
+                    <button type="button" class="btn btn-primary btn-icon" id="btnWipeExif" title="Strip All Metadata & Download" aria-label="Strip All Metadata & Download">
+                      <i class="bi bi-download"></i>
                     </button>
                   </div>
                 </div>
@@ -217,6 +227,11 @@
       currentRawBuffer = null;
       parsedTags = {};
       photoFileInput.value = '';
+      photoImgPreview.src = '';
+      const previewDims = document.getElementById('labelPreviewDims');
+      if (previewDims) previewDims.textContent = '-';
+      const tagCount = document.getElementById('labelTagCount');
+      if (tagCount) tagCount.textContent = '0 tags';
       dropzone.classList.remove('d-none');
       workspaceArea.classList.add('d-none');
     };
@@ -306,17 +321,13 @@
         }
       }
 
-      // Add default metadata if EXIF absent
-      if (!parsedTags['Camera Model']) {
-        const img = new Image();
-        img.onload = () => {
-          parsedTags['Dimensions'] = `${img.naturalWidth} × ${img.naturalHeight} pixels`;
-          renderMetadataTable();
-        };
-        img.src = photoImgPreview.src;
-      } else {
+      // Load natural dimensions for table and preview header
+      const img = new Image();
+      img.onload = () => {
+        parsedTags['Dimensions'] = `${img.naturalWidth} × ${img.naturalHeight} pixels`;
         renderMetadataTable();
-      }
+      };
+      img.src = photoImgPreview.src;
     }
 
     function parseTiffHeader(view, tiffOffset) {
@@ -372,6 +383,11 @@
       metaTableBody.innerHTML = '';
 
       const keys = Object.keys(parsedTags);
+      const tagCountEl = document.getElementById('labelTagCount');
+      if (tagCountEl) tagCountEl.textContent = `${keys.length} tags`;
+      const previewDimsEl = document.getElementById('labelPreviewDims');
+      if (previewDimsEl && parsedTags['Dimensions']) previewDimsEl.textContent = parsedTags['Dimensions'];
+
       if (keys.length === 0) {
         metaTableBody.innerHTML = '<tr><td colspan="2" class="p-3 text-center text-secondary">No EXIF metadata found.</td></tr>';
         return;
@@ -380,8 +396,8 @@
       keys.forEach(k => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td class="tag-key px-3 py-2">${k}</td>
-          <td class="tag-val px-3 py-2">${parsedTags[k]}</td>
+          <td class="tag-key px-3 py-2 text-secondary fw-semibold small">${k}</td>
+          <td class="tag-val px-3 py-2 text-white small">${parsedTags[k]}</td>
         `;
         metaTableBody.appendChild(row);
       });
