@@ -2,12 +2,12 @@
 
 > Free, fast, and 100% private browser utility suite powered by WebAssembly and client-side JavaScript.
 
-JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection of 10 essential browser utilities for documents, images, developer productivity, and calculations. All data is processed entirely in your browser's memory, zero server uploads, 100% private, and completely free.
+JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection of 17 essential browser utilities for documents, images, audio, video, developer productivity, and calculations. All data is processed entirely in your browser's memory, zero server uploads, 100% private, and completely free.
 
 [![Live Demo](https://img.shields.io/badge/Demo-tools.widifirmaan.web.id-10B981?style=flat-square&logo=cloudflare&logoColor=white)](https://tools.widifirmaan.web.id)
 [![Architecture](https://img.shields.io/badge/Architecture-100%25_Client--Side-8B5CF6?style=flat-square)](#features)
 [![WebAssembly](https://img.shields.io/badge/Engine-WebAssembly-654FF0?style=flat-square&logo=webassembly&logoColor=white)](https://webassembly.org/)
-[![Tools](https://img.shields.io/badge/Tools-10_Interactive_Apps-F59E0B?style=flat-square)](#features)
+[![Tools](https://img.shields.io/badge/Tools-17_Interactive_Apps-F59E0B?style=flat-square)](#features)
 [![Deployment](https://img.shields.io/badge/Deployment-Cloudflare_Pages-F38020?style=flat-square&logo=cloudflare)](https://pages.cloudflare.com/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![HTML5 / CSS3](https://img.shields.io/badge/HTML5%20%2F%20CSS3-Modern_Web-E34F26?style=flat-square&logo=html5&logoColor=white)](https://developer.mozilla.org/)
@@ -28,6 +28,14 @@ JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection
 | Desktop (MacBook Pro) | Mobile (iPhone 16 Pro) |
 | :---: | :---: |
 | **Main Dashboard Desktop**<br>![Dashboard Desktop](screenshots/Dashboard%20Desktop.png) | **Main Dashboard Mobile**<br>![Dashboard Mobile](screenshots/Dashboard%20Mobile.png) |
+| **Text Diff Desktop**<br>![Text Diff Desktop](screenshots/Text%20Diff%20Desktop.png) | **Text Diff Mobile**<br>![Text Diff Mobile](screenshots/Text%20Diff%20Mobile.png) |
+| **Password Generator Desktop**<br>![Password Generator Desktop](screenshots/Password%20Generator%20Desktop.png) | **Password Generator Mobile**<br>![Password Generator Mobile](screenshots/Password%20Generator%20Mobile.png) |
+| **PDF Splitter Desktop**<br>![PDF Splitter Desktop](screenshots/PDF%20Splitter%20Desktop.png) | **PDF Splitter Mobile**<br>![PDF Splitter Mobile](screenshots/PDF%20Splitter%20Mobile.png) |
+| **Color Palette Extractor Desktop**<br>![Color Palette Extractor Desktop](screenshots/Color%20Palette%20Extractor%20Desktop.png) | **Color Palette Extractor Mobile**<br>![Color Palette Extractor Mobile](screenshots/Color%20Palette%20Extractor%20Mobile.png) |
+| **SVG Minifier Desktop**<br>![SVG Minifier Desktop](screenshots/SVG%20Minifier%20Desktop.png) | **SVG Minifier Mobile**<br>![SVG Minifier Mobile](screenshots/SVG%20Minifier%20Mobile.png) |
+| **Audio Cutter Desktop**<br>![Audio Cutter Desktop](screenshots/Audio%20Cutter%20Desktop.png) | **Audio Cutter Mobile**<br>![Audio Cutter Mobile](screenshots/Audio%20Cutter%20Mobile.png) |
+| **Photo Metadata Editor Desktop**<br>![Photo Metadata Editor Desktop](screenshots/Photo%20Metadata%20Editor%20Desktop.png) | **Photo Metadata Editor Mobile**<br>![Photo Metadata Editor Mobile](screenshots/Photo%20Metadata%20Editor%20Mobile.png) |
+| **Screen Recorder Desktop**<br>![Screen Recorder Desktop](screenshots/Screen%20Recorder%20Desktop.png) | **Screen Recorder Mobile**<br>![Screen Recorder Mobile](screenshots/Screen%20Recorder%20Mobile.png) |
 | **QR Code Studio Desktop**<br>![QR Code Studio Desktop](screenshots/QR%20Code%20Studio%20Desktop.png) | **QR Code Studio Mobile**<br>![QR Code Studio Mobile](screenshots/QR%20Code%20Studio%20Mobile.png) |
 | **PDF Studio (Merge & Img2Pdf) Desktop**<br>![PDF Studio Desktop](screenshots/PDF%20Studio%20Desktop.png) | **PDF Studio Mobile**<br>![PDF Studio Mobile](screenshots/PDF%20Studio%20Mobile.png) |
 | **Developer & Data Toolbox Desktop**<br>![Developer Toolbox Desktop](screenshots/Developer%20Toolbox%20Desktop.png) | **Developer & Data Toolbox Mobile**<br>![Developer Toolbox Mobile](screenshots/Developer%20Toolbox%20Mobile.png) |
@@ -42,15 +50,19 @@ JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection
 
 ## Features
 
-All 9 tools are executed 100% locally in the browser without uploading documents or images to external servers:
+All 17 tools are executed 100% locally in the browser without uploading documents, images, audio, or video to external servers:
 
 ### 1. 📄 Document & PDF Tools
+- **PDF Splitter** (`tools/pdf-splitter.html`):
+  - Split multi-page PDF documents or extract custom page ranges (e.g., `1-3, 5, 8-10`).
+  - Visual interactive page thumbnail selector with quick odd/even toggles.
+  - Powered by client-side **PDF-Lib** and **Mozilla PDF.js**.
 - **PDF Studio (Merge & Images to PDF)** (`tools/pdf-tools.html`):
   - **Merge PDFs**: Combine multiple PDF files into one clean document with reordering controls.
   - **Images to PDF**: Convert collections of JPG, PNG, and WebP images into a standardized A4 or original-sized PDF document.
   - Powered by **PDF-Lib** client-side engine.
 
-### 2. 🖼️ Media & Image Processing
+### 2. 🖼️ Media, Audio & Video Processing
 - **AI Background Remover** (`tools/remove-bg.html`):
   - Automatic foreground detection and background removal using **Edge WebAssembly AI** (`@imgly/background-removal`).
   - Zero server GPU or CPU required, runs directly on the user's hardware via WebAssembly.
@@ -58,8 +70,35 @@ All 9 tools are executed 100% locally in the browser without uploading documents
   - Fast client-side image compression reducing payload size by up to 80% while retaining visual fidelity.
 - **Image Converter** (`tools/image-converter.html`):
   - Instant image conversion between JPG, PNG, and WebP formats using HTML5 Canvas APIs.
+- **Color Palette Extractor** (`tools/color-palette.html`):
+  - Extracts dominant and harmonious color palettes from images using Median-Cut color quantization on HTML5 Canvas.
+  - Swatch displays with HEX, RGB, HSL values, 1-click CSS variable export, JSON export, and downloadable PNG palette card.
+  - Automated WCAG 2.1 contrast ratio scoring against pure white and pure black for accessibility.
+- **SVG Minifier** (`tools/svg-minifier.html`):
+  - Strips XML declarations, doctypes, comments, and editor-specific metadata namespaces (Illustrator, Inkscape, Figma).
+  - Rounds path coordinate precision, collapses redundant whitespace, and provides live side-by-side vector preview with savings percentage.
+- **Audio Cutter** (`tools/audio-cutter.html`):
+  - Interactive Web Audio API waveform visualizer with draggable start/end trim handles.
+  - Optional smooth fade-in and fade-out audio envelope curves.
+  - 100% browser-based PCM WAV audio encoding and instant playback preview.
+- **Photo Metadata Editor** (`tools/photo-metadata.html`):
+  - Pure JavaScript binary EXIF parser displaying camera make, lens model, shutter speed, ISO, aperture, and GPS coordinates.
+  - Interactive Google Maps and OpenStreetMap location links.
+  - 1-click **Strip EXIF & Clean Image** tool to erase GPS and camera fingerprints before publishing photos online.
+- **Screen Recorder** (`tools/screen-recorder.html`):
+  - In-browser screen and window video recording using `navigator.mediaDevices.getDisplayMedia` and HTML5 `MediaRecorder`.
+  - Optional system/tab audio and external microphone capture.
+  - Live elapsed recording timer, real-time video monitor, and instant WebM video download.
 
 ### 3. 🛠️ Developer & Productivity Tools
+- **Text Diff** (`tools/text-diff.html`):
+  - Fast Longest Common Subsequence (LCS) diff engine comparing original and modified texts.
+  - Side-by-side split view and unified inline view modes with addition/deletion badges and match percentage.
+  - Case-insensitive and whitespace-ignoring diff toggles, with 1-click unified patch copy.
+- **Password Generator** (`tools/password-generator.html`):
+  - Cryptographically secure random password generation powered by `window.crypto.getRandomValues()`.
+  - Customizable character types (uppercase, lowercase, numbers, symbols) and Diceware passphrase generator.
+  - Real-time Shannon entropy calculation (bits), brute-force crack-time estimation, and bulk generation.
 - **QR Code Studio (Generator & Scanner)** (`tools/qr-code.html`):
   - **Generator**: Custom QR codes for URLs, Wi-Fi networks (WPA/WEP/Open), WhatsApp direct chat, vCard contacts, and emails with custom colors and size settings.
   - **Scanner**: Decodes QR codes from image uploads or live webcam camera stream using **Html5-QRCode**.
@@ -83,10 +122,11 @@ All 9 tools are executed 100% locally in the browser without uploading documents
 | Category | Technologies | Purpose |
 | :--- | :--- | :--- |
 | **Core Architecture** | Vanilla JavaScript (ES6+), HTML5, CSS3 | Zero-framework, lightweight client-side application foundation |
-| **Document Processing** | Mozilla PDF.js v3.11, PDF-Lib v1.17 | In-browser PDF parsing, previewing, and PDF merging/creation |
+| **Document Processing** | Mozilla PDF.js v3.11, PDF-Lib v1.17 | In-browser PDF parsing, previewing, splitting, and merging |
+| **Audio & Media APIs** | Web Audio API, Canvas 2D API, MediaRecorder | Client-side waveform slicing, audio encoding, and screen capture |
 | **Edge AI & Computer Vision** | `@imgly/background-removal` (WASM), HTML5 Canvas | On-device machine learning for background removal without server GPUs |
 | **QR Code & Camera** | QRCode.js, Html5-QRCode v2.3 | Client-side QR generation and live webcam video stream decoding |
-| **Developer Utilities** | Native Web Crypto, Atob/Btoa, JSON Parser | Secure client-side Base64, URL encoding, and JWT token parsing |
+| **Developer Utilities** | Web Crypto API, Binary EXIF Parser, LCS Diff | Secure random generation, metadata analysis, and diffing |
 | **Styling & Icons** | Tailwind CSS v4, Bootstrap 5.3, Bootstrap Icons, AOS | Responsive neo-brutalist / modern clean interface with scroll animations |
 | **Edge Hosting** | Cloudflare Pages + Custom `_headers` | Global edge distribution, HTTPS SSL, and canonical URL routing |
 
@@ -98,9 +138,17 @@ All 9 tools are executed 100% locally in the browser without uploading documents
 /
 ├── assets/                  # CSS styles, vendor scripts, and font assets
 │   ├── css/                 # Global styles and typography
-│   ├── js/                  # Shared helper scripts
-│   └── vendor/              # Bootstrap, AOS, Swiper, and icon bundles
-├── tools/                   # Dedicated interactive web applications
+│   ├── js/                  # Shared helper scripts (main.js, services.js)
+│   └── vendor/              # Bootstrap, AOS, Swiper, PDF-Lib, and PDF.js bundles
+├── tools/                   # Dedicated interactive web applications (17 total)
+│   ├── text-diff.html       # Text Diff comparison (LCS, side-by-side & unified)
+│   ├── password-generator.html # Web Crypto secure password & passphrase generator
+│   ├── pdf-splitter.html    # PDF Splitter & page range extractor
+│   ├── color-palette.html   # Canvas color palette extractor & WCAG contrast checker
+│   ├── svg-minifier.html    # SVG Minifier & coordinate optimizer
+│   ├── audio-cutter.html    # Web Audio waveform cutter & WAV generator
+│   ├── photo-metadata.html  # Binary EXIF parser & privacy metadata wiper
+│   ├── screen-recorder.html # DisplayMedia & MediaRecorder screen recorder
 │   ├── qr-code.html         # QR code generator and camera scanner
 │   ├── pdf-tools.html       # PDF merger and images-to-PDF converter
 │   ├── dev-tools.html       # JSON formatter, Base64/URL & JWT inspector
@@ -111,10 +159,10 @@ All 9 tools are executed 100% locally in the browser without uploading documents
 │   ├── text-editor.html     # Real-time text editor & word counter
 │   └── tire-comp.html       # Tire & rim comparison calculator
 ├── screenshots/             # Retina MacBook Pro & iPhone 16 Pro showcase mockups
-├── scripts/                 # Automated Puppeteer screenshot crawler
+├── scripts/                 # Automated test runner and screenshot crawler
 ├── _headers                 # Cloudflare Pages HTTP caching & CORS rules
-├── index.html               # Main dashboard with all 9 tools
-├── package.json             # NPM metadata and screenshot automation scripts
+├── index.html               # Main dashboard with all 17 tools
+├── package.json             # NPM metadata, test scripts, and build tasks
 ├── wrangler.toml            # Cloudflare Pages deployment configuration
 └── README.md
 ```
@@ -125,11 +173,11 @@ All 9 tools are executed 100% locally in the browser without uploading documents
 
 ### Prerequisites
 - Any modern web browser (Google Chrome, Firefox, Edge, or Safari).
-- (Optional) Node.js 18+ to run a local dev server or trigger the screenshot crawler.
+- (Optional) Node.js 18+ to run a local dev server or trigger the test runner.
 
 ### Local Development
 
-> **Environment Variables:** No `.env` file or API keys are required. All image processing, document conversions, and calculations run 100% inside your browser.
+> **Environment Variables:** No `.env` file or API keys are required. All image processing, document conversions, audio rendering, and calculations run 100% inside your browser.
 
 ```bash
 # 1. Clone the repository
@@ -151,7 +199,7 @@ Deploy instantly to Cloudflare Pages via Wrangler CLI:
 
 ```bash
 # Deploy static assets directly to Cloudflare Pages
-npx wrangler pages deploy . --project-name javascript-aio-tools --branch master
+npm run deploy
 ```
 
 ---

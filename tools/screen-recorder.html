@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Screen Recorder - In-Browser Screen & Audio Recording - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="100% private, client-side screen recorder. Record screen, app windows, or browser tabs with microphone audio directly in your browser. Zero server upload.">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .recording-preview-box {
+      background: #111114;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      min-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .recording-preview-box video {
+      width: 100%;
+      max-height: 440px;
+      object-fit: contain;
+      background: #000;
+    }
+    .rec-indicator {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      background: #ef4444;
+      border-radius: 50%;
+      margin-right: 6px;
+      animation: pulse-rec 1.2s infinite ease-in-out;
+    }
+    @keyframes pulse-rec {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.85); }
+    }
+    .timer-badge {
+      font-family: 'Fira Code', monospace;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body class="service-details-page">
+  <main class="main">
+    <!-- Single Page Title Bar -->
+    <div class="page-title">
+      <div class="container d-flex align-items-center gap-2">
+        <h1 class="mb-0 fs-5 fw-bold text-nowrap">
+          <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
+            <i class="bi bi-arrow-left"></i>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-6 d-none d-sm-inline">| Free Stuff</span></span>
+          </a>
+        </h1>
+        <span class="text-secondary opacity-50">/</span>
+        <nav class="breadcrumbs text-nowrap text-truncate" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item active text-white text-truncate" aria-current="page">Screen Recorder</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <section id="service-details" class="service-details section py-4 py-lg-5">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-4">
+          <!-- Main Content (Col 8) -->
+          <div class="col-lg-8">
+            <div class="tool-card">
+              <h2 class="fs-4 fw-bold text-white mb-2">In-Browser Screen & Audio Recorder</h2>
+              <p class="text-secondary mb-4">
+                Capture your entire screen, app windows, or specific browser tabs with system sound and microphone audio. 100% private with zero cloud uploads.
+              </p>
+
+              <!-- Setup & Control Bar -->
+              <div class="p-3 rounded mb-4 border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                <div class="row g-3 align-items-center">
+                  <div class="col-md-7">
+                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                      <div class="form-check mb-0">
+                        <input class="form-check-input" type="checkbox" id="chkMic">
+                        <label class="form-check-label text-white small" for="chkMic">
+                          <i class="bi bi-mic me-1"></i> Include Microphone
+                        </label>
+                      </div>
+                      <div class="form-check mb-0">
+                        <input class="form-check-input" type="checkbox" id="chkAudio" checked>
+                        <label class="form-check-label text-white small" for="chkAudio">
+                          <i class="bi bi-volume-up me-1"></i> System Audio
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-5 d-flex justify-content-md-end gap-2">
+                    <button type="button" class="btn btn-primary px-4 py-2 fw-semibold" id="btnStartRec">
+                      <i class="bi bi-record-circle me-1"></i> Start Recording
+                    </button>
+                    <button type="button" class="btn btn-warning px-3 d-none" id="btnPauseRec">
+                      <i class="bi bi-pause-fill me-1"></i> Pause
+                    </button>
+                    <button type="button" class="btn btn-danger px-3 d-none" id="btnStopRec">
+                      <i class="bi bi-stop-circle me-1"></i> Stop
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live Recording Active Bar (Shown only when recording) -->
+              <div id="recActiveBar" class="p-3 rounded mb-4 border border-danger border-opacity-50 bg-danger bg-opacity-10 d-none d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div class="d-flex align-items-center">
+                  <span class="rec-indicator"></span>
+                  <span class="text-danger fw-bold me-3">RECORDING LIVE</span>
+                  <span class="timer-badge" id="timerDisplay">00:00:00</span>
+                </div>
+                <span class="text-secondary small">Click Stop when finished to download.</span>
+              </div>
+
+              <!-- Video Monitor Box -->
+              <div class="recording-preview-box mb-4">
+                <!-- Idle State Message -->
+                <div id="idleStateNotice" class="text-center p-4 text-secondary">
+                  <i class="bi bi-display fs-1 d-block mb-2 opacity-50"></i>
+                  <h5>Ready to Record</h5>
+                  <p class="small mb-0">Click <strong>Start Recording</strong> above and select your screen, window, or tab.</p>
+                </div>
+
+                <!-- Video Element (Live Monitor or Recorded Playback) -->
+                <video id="videoMonitor" controls class="d-none" playsinline autoplay muted></video>
+              </div>
+
+              <!-- Download & Result Box (Shown when recording finished) -->
+              <div id="resultBox" class="p-4 rounded border border-secondary border-opacity-25 text-center d-none" style="background: rgba(255, 255, 255, 0.02);">
+                <i class="bi bi-check-circle-fill text-success fs-1 mb-2 d-inline-block"></i>
+                <h5 class="mt-2 mb-1 text-white fw-bold">Recording Finished</h5>
+                <p class="text-secondary small mb-3" id="resultDetails">Your recording is ready for preview and download.</p>
+                <div class="d-flex justify-content-center gap-2">
+                  <a id="btnDownloadVideo" href="#" class="btn btn-primary px-4 py-2">
+                    <i class="bi bi-download me-1"></i> Download Recording (.webm)
+                  </a>
+                  <button type="button" class="btn btn-outline-secondary px-3" onclick="resetRecorder()">
+                    <i class="bi bi-arrow-repeat me-1"></i> Record New
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Sidebar Column (Col 4) -->
+          <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4">
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-grid me-2 text-secondary"></i>Other Tools
+                </h5>
+                <div class="d-flex flex-column gap-1">
+                  <a href="audio-cutter.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-soundwave me-2"></i>Audio Cutter</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="photo-metadata.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-camera me-2"></i>Photo Metadata Editor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="image-compressor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-image me-2"></i>Image Compressor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="text-diff.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-diff me-2"></i>Text Diff</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="password-generator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-shield-lock me-2"></i>Password Generator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="dev-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-code-slash me-2"></i>Developer Toolbox</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="pdf-splitter.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-scissors me-2"></i>PDF Splitter</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="calculator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-calculator me-2"></i>Scientific Calculator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
+    <div class="container text-center">
+      <div class="copyright text-secondary">
+        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+      </div>
+      <div class="credits text-secondary small">
+        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="preloader"></div>
+
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/js/services.js"></script>
+
+  <script>
+    const btnStartRec = document.getElementById('btnStartRec');
+    const btnPauseRec = document.getElementById('btnPauseRec');
+    const btnStopRec = document.getElementById('btnStopRec');
+    const chkMic = document.getElementById('chkMic');
+    const chkAudio = document.getElementById('chkAudio');
+    const recActiveBar = document.getElementById('recActiveBar');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const idleStateNotice = document.getElementById('idleStateNotice');
+    const videoMonitor = document.getElementById('videoMonitor');
+    const resultBox = document.getElementById('resultBox');
+    const resultDetails = document.getElementById('resultDetails');
+    const btnDownloadVideo = document.getElementById('btnDownloadVideo');
+
+    let mediaStream = null;
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let recordStartTime = 0;
+    let timerInterval = null;
+    let recordedBlobUrl = null;
+
+    const formatBytes = (bytes) => {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    };
+
+    window.resetRecorder = function() {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+      }
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(t => t.stop());
+        mediaStream = null;
+      }
+      clearInterval(timerInterval);
+      if (recordedBlobUrl) URL.revokeObjectURL(recordedBlobUrl);
+      recordedBlobUrl = null;
+
+      btnStartRec.classList.remove('d-none');
+      btnPauseRec.classList.add('d-none');
+      btnStopRec.classList.add('d-none');
+      recActiveBar.classList.add('d-none');
+      resultBox.classList.add('d-none');
+      idleStateNotice.classList.remove('d-none');
+      videoMonitor.classList.add('d-none');
+      videoMonitor.src = '';
+      videoMonitor.srcObject = null;
+    };
+
+    btnStartRec.addEventListener('click', async () => {
+      try {
+        const displayStream = await navigator.mediaDevices.getDisplayMedia({
+          video: {
+            cursor: 'always'
+          },
+          audio: chkAudio.checked
+        });
+
+        // Combine with microphone stream if requested
+        let combinedStream = displayStream;
+        if (chkMic.checked) {
+          try {
+            const micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const audioCtx = new AudioContext();
+            const dest = audioCtx.createMediaStreamDestination();
+
+            if (displayStream.getAudioTracks().length > 0) {
+              const sysSource = audioCtx.createMediaStreamSource(displayStream);
+              sysSource.connect(dest);
+            }
+            const micSource = audioCtx.createMediaStreamSource(micStream);
+            micSource.connect(dest);
+
+            const combinedTracks = [
+              ...displayStream.getVideoTracks(),
+              ...dest.stream.getAudioTracks()
+            ];
+            combinedStream = new MediaStream(combinedTracks);
+          } catch (micErr) {
+            console.warn('Microphone access denied or unavailable:', micErr);
+          }
+        }
+
+        mediaStream = combinedStream;
+        recordedChunks = [];
+
+        // Check supported mime type
+        let mimeType = 'video/webm;codecs=vp9';
+        if (!MediaRecorder.isTypeSupported(mimeType)) {
+          mimeType = 'video/webm';
+        }
+
+        mediaRecorder = new MediaRecorder(combinedStream, { mimeType });
+
+        mediaRecorder.ondataavailable = (e) => {
+          if (e.data && e.data.size > 0) {
+            recordedChunks.push(e.data);
+          }
+        };
+
+        mediaRecorder.onstop = () => {
+          finishRecording();
+        };
+
+        // When user clicks browser native "Stop Sharing"
+        displayStream.getVideoTracks()[0].onended = () => {
+          if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+            mediaRecorder.stop();
+          }
+        };
+
+        mediaRecorder.start(1000); // Record chunks every 1 sec
+
+        // UI State
+        btnStartRec.classList.add('d-none');
+        btnPauseRec.classList.remove('d-none');
+        btnStopRec.classList.remove('d-none');
+        recActiveBar.classList.remove('d-none');
+        idleStateNotice.classList.add('d-none');
+        resultBox.classList.add('d-none');
+
+        // Monitor stream
+        videoMonitor.classList.remove('d-none');
+        videoMonitor.srcObject = combinedStream;
+        videoMonitor.muted = true; // Avoid feedback
+        videoMonitor.play();
+
+        recordStartTime = Date.now();
+        startTimer();
+
+      } catch (err) {
+        console.warn('Screen recording cancelled or failed:', err);
+      }
+    });
+
+    btnPauseRec.addEventListener('click', () => {
+      if (!mediaRecorder) return;
+      if (mediaRecorder.state === 'recording') {
+        mediaRecorder.pause();
+        btnPauseRec.innerHTML = '<i class="bi bi-play-fill me-1"></i> Resume';
+      } else if (mediaRecorder.state === 'paused') {
+        mediaRecorder.resume();
+        btnPauseRec.innerHTML = '<i class="bi bi-pause-fill me-1"></i> Pause';
+      }
+    });
+
+    btnStopRec.addEventListener('click', () => {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+      }
+    });
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - recordStartTime) / 1000);
+        const h = Math.floor(elapsed / 3600);
+        const m = Math.floor((elapsed % 3600) / 60);
+        const s = elapsed % 60;
+        timerDisplay.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      }, 1000);
+    }
+
+    function finishRecording() {
+      clearInterval(timerInterval);
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(t => t.stop());
+      }
+
+      btnStartRec.classList.remove('d-none');
+      btnPauseRec.classList.add('d-none');
+      btnStopRec.classList.add('d-none');
+      recActiveBar.classList.add('d-none');
+
+      const blob = new Blob(recordedChunks, { type: 'video/webm' });
+      if (recordedBlobUrl) URL.revokeObjectURL(recordedBlobUrl);
+      recordedBlobUrl = URL.createObjectURL(blob);
+
+      // Playback review
+      videoMonitor.srcObject = null;
+      videoMonitor.src = recordedBlobUrl;
+      videoMonitor.muted = false;
+      videoMonitor.controls = true;
+
+      const dateStr = new Date().toISOString().slice(0, 10);
+      const outName = `screen_recording_${dateStr}.webm`;
+
+      resultDetails.textContent = `${outName} (${formatBytes(blob.size)}) - Ready for playback and download.`;
+      btnDownloadVideo.href = recordedBlobUrl;
+      btnDownloadVideo.download = outName;
+
+      resultBox.classList.remove('d-none');
+    }
+  </script>
+</body>
+
+</html>

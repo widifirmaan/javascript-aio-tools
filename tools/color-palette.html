@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Color Palette Extractor - Extract Colors from Images - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="100% private, client-side color palette extractor. Extract dominant colors from images, check WCAG accessibility contrast, and export CSS/Tailwind variables.">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .palette-swatches-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .swatch-card {
+      background: #18181c;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .swatch-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    .swatch-color {
+      height: 95px;
+      width: 100%;
+      position: relative;
+    }
+    .swatch-copy-hint {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .swatch-card:hover .swatch-copy-hint {
+      opacity: 1;
+    }
+    .swatch-details {
+      padding: 10px;
+      text-align: center;
+    }
+    .swatch-hex {
+      font-family: 'Fira Code', monospace;
+      font-weight: bold;
+      font-size: 0.95rem;
+      color: #fff;
+    }
+    .swatch-rgb {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+    .contrast-badge {
+      font-size: 0.72rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .preview-img-container {
+      max-height: 320px;
+      overflow: hidden;
+      border-radius: 10px;
+      background: #131316;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .preview-img-container img {
+      max-height: 320px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+  </style>
+</head>
+
+<body class="service-details-page">
+  <main class="main">
+    <!-- Single Page Title Bar -->
+    <div class="page-title">
+      <div class="container d-flex align-items-center gap-2">
+        <h1 class="mb-0 fs-5 fw-bold text-nowrap">
+          <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
+            <i class="bi bi-arrow-left"></i>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-6 d-none d-sm-inline">| Free Stuff</span></span>
+          </a>
+        </h1>
+        <span class="text-secondary opacity-50">/</span>
+        <nav class="breadcrumbs text-nowrap text-truncate" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item active text-white text-truncate" aria-current="page">Color Palette Extractor</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <section id="service-details" class="service-details section py-4 py-lg-5">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-4">
+          <!-- Main Content (Col 8) -->
+          <div class="col-lg-8">
+            <div class="tool-card">
+              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+                <div>
+                  <h2 class="fs-4 fw-bold text-white mb-1">Color Palette Extractor</h2>
+                  <p class="text-secondary small mb-0">
+                    Extract dominant color palettes from any photo or design locally in your browser. Inspect WCAG contrast and export variables.
+                  </p>
+                </div>
+                <div class="d-flex gap-2">
+                  <button type="button" class="btn btn-sm btn-outline-primary" id="btnSample">
+                    <i class="bi bi-image me-1"></i> Sample Image
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" id="btnUploadNew" onclick="document.getElementById('imageFileInput').click()">
+                    <i class="bi bi-upload me-1"></i> Upload Image
+                  </button>
+                  <input type="file" id="imageFileInput" accept="image/*" class="d-none">
+                </div>
+              </div>
+
+              <!-- Upload Dropzone (When no image is loaded) -->
+              <div id="dropzone" class="tool-dropzone mb-4" onclick="document.getElementById('imageFileInput').click()">
+                <i class="bi bi-palette fs-1 text-secondary mb-2"></i>
+                <h5 class="mt-2 mb-1 text-white fw-semibold">Choose or drop an image here</h5>
+                <p class="text-secondary small mb-3">Supports JPG, PNG, and WebP. 100% processed in-browser.</p>
+                <button type="button" class="btn btn-secondary px-4 py-2">
+                  <i class="bi bi-folder2-open me-1"></i> Browse Photo
+                </button>
+              </div>
+
+              <!-- Palette Display Area (Hidden initially) -->
+              <div id="paletteArea" class="d-none">
+                <!-- Image Preview and Controls -->
+                <div class="row g-3 mb-4 align-items-center">
+                  <div class="col-md-5">
+                    <div class="preview-img-container">
+                      <img id="sourceImagePreview" src="" alt="Source preview">
+                    </div>
+                  </div>
+                  <div class="col-md-7">
+                    <div class="p-3 rounded border border-secondary border-opacity-25" style="background: rgba(255, 255, 255, 0.02);">
+                      <h6 class="text-white fw-bold mb-2">Palette Options</h6>
+                      <div class="mb-3">
+                        <label class="form-label text-secondary small mb-1">Colors to Extract: <strong id="colorCountLabel" class="text-white">6</strong></label>
+                        <input type="range" class="form-range" id="colorCountRange" min="4" max="10" value="6">
+                      </div>
+                      <div class="d-flex gap-2 flex-wrap">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" id="btnCopyCss">
+                          <i class="bi bi-code-slash me-1"></i> Copy CSS Vars
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" id="btnCopyJson">
+                          <i class="bi bi-braces me-1"></i> Copy JSON
+                        </button>
+                        <button type="button" class="btn btn-sm btn-primary" id="btnDownloadPalettePng">
+                          <i class="bi bi-download me-1"></i> Download PNG Card
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Palette Swatches Grid -->
+                <h6 class="text-white fw-bold mb-2">Dominant Colors (Click to Copy HEX):</h6>
+                <div class="palette-swatches-grid" id="swatchesGrid">
+                  <!-- Swatches dynamically populated -->
+                </div>
+
+                <!-- WCAG Accessibility & Contrast Table -->
+                <div class="p-3 rounded border border-secondary border-opacity-25 mb-3" style="background: rgba(255, 255, 255, 0.02);">
+                  <h6 class="text-white fw-bold mb-2"><i class="bi bi-universal-access me-2 text-primary"></i>WCAG 2.1 Accessibility Contrast</h6>
+                  <p class="text-secondary small mb-3">Contrast ratio of each extracted color against white and dark backgrounds:</p>
+                  <div class="table-responsive">
+                    <table class="table table-dark table-sm table-borderless align-middle mb-0" style="background: transparent;">
+                      <thead>
+                        <tr class="text-secondary small border-bottom border-secondary border-opacity-25">
+                          <th>Color</th>
+                          <th>HEX</th>
+                          <th>vs White (#FFF)</th>
+                          <th>vs Black (#000)</th>
+                          <th>Best Text Match</th>
+                        </tr>
+                      </thead>
+                      <tbody id="contrastTableBody" class="small">
+                        <!-- Populated dynamically -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Sidebar Column (Col 4) -->
+          <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4">
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-grid me-2 text-secondary"></i>Other Tools
+                </h5>
+                <div class="d-flex flex-column gap-1">
+                  <a href="image-compressor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-image me-2"></i>Image Compressor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="image-converter.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-arrow-repeat me-2"></i>Image Converter</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="remove-bg.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-person-bounding-box me-2"></i>Background Remover</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="text-diff.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-diff me-2"></i>Text Diff</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="password-generator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-shield-lock me-2"></i>Password Generator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="dev-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-code-slash me-2"></i>Developer Toolbox</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="qr-code.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-qr-code me-2"></i>QR Code Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="calculator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-calculator me-2"></i>Scientific Calculator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
+    <div class="container text-center">
+      <div class="copyright text-secondary">
+        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+      </div>
+      <div class="credits text-secondary small">
+        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="preloader"></div>
+
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/js/services.js"></script>
+
+  <script>
+    const dropzone = document.getElementById('dropzone');
+    const imageFileInput = document.getElementById('imageFileInput');
+    const paletteArea = document.getElementById('paletteArea');
+    const sourceImagePreview = document.getElementById('sourceImagePreview');
+    const colorCountRange = document.getElementById('colorCountRange');
+    const colorCountLabel = document.getElementById('colorCountLabel');
+    const swatchesGrid = document.getElementById('swatchesGrid');
+    const contrastTableBody = document.getElementById('contrastTableBody');
+    const btnSample = document.getElementById('btnSample');
+    const btnCopyCss = document.getElementById('btnCopyCss');
+    const btnCopyJson = document.getElementById('btnCopyJson');
+    const btnDownloadPalettePng = document.getElementById('btnDownloadPalettePng');
+
+    let currentImage = null;
+    let extractedColors = [];
+
+    ['dragenter', 'dragover'].forEach(name => {
+      dropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+      });
+    });
+    ['dragleave', 'drop'].forEach(name => {
+      dropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+      });
+    });
+    dropzone.addEventListener('drop', (e) => {
+      const files = e.dataTransfer.files;
+      if (files.length > 0 && files[0].type.startsWith('image/')) {
+        loadImage(files[0]);
+      } else {
+        alert('Please choose an image file (PNG, JPG, WebP).');
+      }
+    });
+
+    imageFileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        loadImage(e.target.files[0]);
+      }
+    });
+
+    function loadImage(file) {
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        const img = new Image();
+        img.onload = () => {
+          currentImage = img;
+          sourceImagePreview.src = evt.target.result;
+          dropzone.classList.add('d-none');
+          paletteArea.classList.remove('d-none');
+          extractPalette();
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    colorCountRange.addEventListener('input', () => {
+      colorCountLabel.textContent = colorCountRange.value;
+      if (currentImage) extractPalette();
+    });
+
+    // Quantization: Median Cut Algorithm on Canvas ImageData
+    function extractPalette() {
+      if (!currentImage) return;
+
+      const targetCount = parseInt(colorCountRange.value, 10);
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+
+      // Downsample for instant computation
+      const maxDim = 150;
+      let w = currentImage.width;
+      let h = currentImage.height;
+      if (w > h) {
+        if (w > maxDim) { h = Math.round(h * maxDim / w); w = maxDim; }
+      } else {
+        if (h > maxDim) { w = Math.round(w * maxDim / h); h = maxDim; }
+      }
+      canvas.width = w;
+      canvas.height = h;
+      ctx.drawImage(currentImage, 0, 0, w, h);
+
+      const imgData = ctx.getImageData(0, 0, w, h).data;
+      const pixels = [];
+
+      for (let i = 0; i < imgData.length; i += 16) { // Sample every 4th pixel for speed
+        const a = imgData[i + 3];
+        if (a < 128) continue; // Skip transparent
+        pixels.push([imgData[i], imgData[i + 1], imgData[i + 2]]);
+      }
+
+      if (pixels.length === 0) return;
+
+      // Median Cut clustering
+      function medianCut(pixelList, depth) {
+        if (depth === 0 || pixelList.length === 0) {
+          const avg = [0, 0, 0];
+          for (const p of pixelList) {
+            avg[0] += p[0];
+            avg[1] += p[1];
+            avg[2] += p[2];
+          }
+          const cnt = pixelList.length || 1;
+          return [{
+            r: Math.round(avg[0] / cnt),
+            g: Math.round(avg[1] / cnt),
+            b: Math.round(avg[2] / cnt),
+            count: cnt
+          }];
+        }
+
+        // Find dimension with maximum range
+        let minR = 255, maxR = 0, minG = 255, maxG = 0, minB = 255, maxB = 0;
+        for (const p of pixelList) {
+          if (p[0] < minR) minR = p[0]; if (p[0] > maxR) maxR = p[0];
+          if (p[1] < minG) minG = p[1]; if (p[1] > maxG) maxG = p[1];
+          if (p[2] < minB) minB = p[2]; if (p[2] > maxB) maxB = p[2];
+        }
+
+        const rangeR = maxR - minR;
+        const rangeG = maxG - minG;
+        const rangeB = maxB - minB;
+        let sortIndex = 0;
+        if (rangeG >= rangeR && rangeG >= rangeB) sortIndex = 1;
+        else if (rangeB >= rangeR && rangeB >= rangeG) sortIndex = 2;
+
+        pixelList.sort((a, b) => a[sortIndex] - b[sortIndex]);
+        const mid = Math.floor(pixelList.length / 2);
+
+        return [
+          ...medianCut(pixelList.slice(0, mid), depth - 1),
+          ...medianCut(pixelList.slice(mid), depth - 1)
+        ];
+      }
+
+      const depth = Math.ceil(Math.log2(targetCount));
+      let clusters = medianCut(pixels, depth);
+
+      // Sort by cluster size (dominance)
+      clusters.sort((a, b) => b.count - a.count);
+      clusters = clusters.slice(0, targetCount);
+
+      extractedColors = clusters.map(c => {
+        const hex = rgbToHex(c.r, c.g, c.b);
+        return {
+          r: c.r,
+          g: c.g,
+          b: c.b,
+          hex: hex,
+          lum: getLuminance(c.r, c.g, c.b)
+        };
+      });
+
+      renderSwatches();
+      renderContrastTable();
+    }
+
+    function rgbToHex(r, g, b) {
+      const h = ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+      return '#' + h;
+    }
+
+    function getLuminance(r, g, b) {
+      const a = [r, g, b].map(v => {
+        v /= 255;
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+      });
+      return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+    }
+
+    function getContrastRatio(lum1, lum2) {
+      const l1 = Math.max(lum1, lum2);
+      const l2 = Math.min(lum1, lum2);
+      return (l1 + 0.05) / (l2 + 0.05);
+    }
+
+    function renderSwatches() {
+      swatchesGrid.innerHTML = '';
+      extractedColors.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'swatch-card';
+        card.innerHTML = `
+          <div class="swatch-color" style="background-color: ${c.hex};">
+            <div class="swatch-copy-hint"><i class="bi bi-clipboard me-1"></i> Copy</div>
+          </div>
+          <div class="swatch-details">
+            <div class="swatch-hex">${c.hex}</div>
+            <div class="swatch-rgb">rgb(${c.r}, ${c.g}, ${c.b})</div>
+          </div>
+        `;
+        card.addEventListener('click', () => {
+          navigator.clipboard.writeText(c.hex).then(() => {
+            const hexEl = card.querySelector('.swatch-hex');
+            const orig = hexEl.textContent;
+            hexEl.textContent = 'Copied!';
+            hexEl.style.color = '#22c55e';
+            setTimeout(() => { hexEl.textContent = orig; hexEl.style.color = '#fff'; }, 1500);
+          });
+        });
+        swatchesGrid.appendChild(card);
+      });
+    }
+
+    function renderContrastTable() {
+      contrastTableBody.innerHTML = '';
+      const whiteLum = 1.0;
+      const blackLum = 0.0;
+
+      extractedColors.forEach(c => {
+        const ratioWhite = getContrastRatio(c.lum, whiteLum);
+        const ratioBlack = getContrastRatio(c.lum, blackLum);
+
+        const badgeWhite = ratioWhite >= 7.0 ? '<span class="contrast-badge bg-success text-white">AAA (Pass)</span>' : (ratioWhite >= 4.5 ? '<span class="contrast-badge bg-primary text-white">AA (Pass)</span>' : '<span class="contrast-badge bg-danger text-white">Fail</span>');
+        const badgeBlack = ratioBlack >= 7.0 ? '<span class="contrast-badge bg-success text-white">AAA (Pass)</span>' : (ratioBlack >= 4.5 ? '<span class="contrast-badge bg-primary text-white">AA (Pass)</span>' : '<span class="contrast-badge bg-danger text-white">Fail</span>');
+        const bestText = ratioWhite >= ratioBlack ? '<span class="text-white fw-bold">White (#FFF)</span>' : '<span class="text-secondary fw-bold">Black (#000)</span>';
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><span class="d-inline-block rounded-circle me-2" style="width: 14px; height: 14px; background-color: ${c.hex}; vertical-align: middle;"></span></td>
+          <td class="font-monospace text-white">${c.hex}</td>
+          <td>${ratioWhite.toFixed(2)}:1 ${badgeWhite}</td>
+          <td>${ratioBlack.toFixed(2)}:1 ${badgeBlack}</td>
+          <td>${bestText}</td>
+        `;
+        contrastTableBody.appendChild(row);
+      });
+    }
+
+    btnCopyCss.addEventListener('click', () => {
+      const vars = extractedColors.map((c, i) => `  --color-${i + 1}: ${c.hex};`).join('\n');
+      const css = `:root {\n${vars}\n}`;
+      navigator.clipboard.writeText(css).then(() => {
+        const orig = btnCopyCss.innerHTML;
+        btnCopyCss.innerHTML = '<i class="bi bi-check2 text-success me-1"></i> Copied!';
+        setTimeout(() => { btnCopyCss.innerHTML = orig; }, 2000);
+      });
+    });
+
+    btnCopyJson.addEventListener('click', () => {
+      const arr = extractedColors.map(c => c.hex);
+      navigator.clipboard.writeText(JSON.stringify(arr, null, 2)).then(() => {
+        const orig = btnCopyJson.innerHTML;
+        btnCopyJson.innerHTML = '<i class="bi bi-check2 text-success me-1"></i> Copied!';
+        setTimeout(() => { btnCopyJson.innerHTML = orig; }, 2000);
+      });
+    });
+
+    btnDownloadPalettePng.addEventListener('click', () => {
+      if (extractedColors.length === 0) return;
+
+      const cardW = 800;
+      const cardH = 340;
+      const canvas = document.createElement('canvas');
+      canvas.width = cardW;
+      canvas.height = cardH;
+      const ctx = canvas.getContext('2d');
+
+      // Background
+      ctx.fillStyle = '#18181c';
+      ctx.fillRect(0, 0, cardW, cardH);
+
+      // Title
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 22px Inter, sans-serif';
+      ctx.fillText('Color Palette by WIDIFIRMAAN Tools', 40, 50);
+
+      // Swatch bars
+      const swatchW = (cardW - 80) / extractedColors.length;
+      const swatchH = 160;
+      const startY = 80;
+
+      extractedColors.forEach((c, idx) => {
+        const x = 40 + (idx * swatchW);
+        ctx.fillStyle = c.hex;
+        ctx.fillRect(x, startY, swatchW, swatchH);
+
+        // Hex text below
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 15px Consolas, monospace';
+        ctx.fillText(c.hex, x + 8, startY + swatchH + 30);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '12px Inter, sans-serif';
+        ctx.fillText(`rgb(${c.r},${c.g},${c.b})`, x + 8, startY + swatchH + 50);
+      });
+
+      const url = canvas.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'color-palette.png';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+
+    // Preset Sample Image
+    btnSample.addEventListener('click', () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 600;
+      canvas.height = 400;
+      const ctx = canvas.getContext('2d');
+
+      // Draw artistic gradient and colorful shapes
+      const grad = ctx.createLinearGradient(0, 0, 600, 400);
+      grad.addColorStop(0, '#1e3a8a');
+      grad.addColorStop(0.35, '#0d9488');
+      grad.addColorStop(0.7, '#f59e0b');
+      grad.addColorStop(1, '#e11d48');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 600, 400);
+
+      ctx.fillStyle = '#f8fafc';
+      ctx.beginPath();
+      ctx.arc(300, 200, 90, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(50, 50, 100, 80);
+
+      const sampleUrl = canvas.toDataURL('image/png');
+      const img = new Image();
+      img.onload = () => {
+        currentImage = img;
+        sourceImagePreview.src = sampleUrl;
+        dropzone.classList.add('d-none');
+        paletteArea.classList.remove('d-none');
+        extractPalette();
+      };
+      img.src = sampleUrl;
+    });
+  </script>
+</body>
+
+</html>

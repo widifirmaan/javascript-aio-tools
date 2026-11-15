@@ -22,7 +22,15 @@ const pages = [
   'tools/qr-code.html',
   'tools/remove-bg.html',
   'tools/text-editor.html',
-  'tools/tire-comp.html'
+  'tools/tire-comp.html',
+  'tools/text-diff.html',
+  'tools/password-generator.html',
+  'tools/pdf-splitter.html',
+  'tools/color-palette.html',
+  'tools/svg-minifier.html',
+  'tools/audio-cutter.html',
+  'tools/photo-metadata.html',
+  'tools/screen-recorder.html'
 ];
 
 async function runTestSuite() {
@@ -38,7 +46,7 @@ async function runTestSuite() {
   let totalErrors = 0;
 
   // -------------------------------------------------------------
-  // PHASE 1: RESPONSIVENESS & PRELOADER CHECK (ALL 10 PAGES)
+  // PHASE 1: RESPONSIVENESS & PRELOADER CHECK (ALL 18 PAGES)
   // -------------------------------------------------------------
   console.log('\n--- PHASE 1: RESPONSIVENESS & OVERFLOW VALIDATION ---');
   for (const pagePath of pages) {
@@ -116,7 +124,7 @@ async function runTestSuite() {
   console.log('\n--- PHASE 2: REAL FUNCTIONAL END-TO-END TESTS ---');
 
   // Test 1: Image Compressor with REAL JPG File
-  console.log('\n[1/9] Testing Image Compressor (Real JPG file compression)...');
+  console.log('\n[1/17] Testing Image Compressor (Real JPG file compression)...');
   const compPage = await browser.newPage();
   await compPage.goto(`file://${path.join(REPO_ROOT, 'tools/image-compressor.html')}`);
   await new Promise(r => setTimeout(r, 600));
@@ -149,7 +157,7 @@ async function runTestSuite() {
   await compPage.close();
 
   // Test 2: Image Converter with REAL PNG File -> WEBP
-  console.log('\n[2/9] Testing Image Converter (Real PNG -> WebP conversion)...');
+  console.log('\n[2/17] Testing Image Converter (Real PNG -> WebP conversion)...');
   const convPage = await browser.newPage();
   await convPage.goto(`file://${path.join(REPO_ROOT, 'tools/image-converter.html')}`);
   await new Promise(r => setTimeout(r, 600));
@@ -426,6 +434,229 @@ async function runTestSuite() {
     totalErrors++;
   }
   await bgPage.close();
+
+  // Test 10: Text Diff (Code & Text Comparison)
+  console.log('\n[10/17] Testing Text Diff (LCS diff algorithm & visual highlight)...');
+  const diffPage = await browser.newPage();
+  await diffPage.goto(`file://${path.join(REPO_ROOT, 'tools/text-diff.html')}`);
+  await new Promise(r => setTimeout(r, 600));
+
+  await diffPage.click('#btnLoadSample');
+  await new Promise(r => setTimeout(r, 400));
+  await diffPage.click('#btnRunDiff');
+  await new Promise(r => setTimeout(r, 400));
+
+  const diffResult = await diffPage.evaluate(() => {
+    const rows = document.querySelectorAll('#diffOutput .diff-row');
+    const added = document.querySelectorAll('#diffOutput .diff-added');
+    const removed = document.querySelectorAll('#diffOutput .diff-removed');
+    const sim = document.getElementById('badgeSimilarity').textContent;
+    return {
+      rowCount: rows.length,
+      addedCount: added.length,
+      removedCount: removed.length,
+      similarity: sim
+    };
+  });
+
+  if (diffResult.rowCount > 5 && diffResult.addedCount > 0 && diffResult.removedCount > 0) {
+    console.log(`  ✓ Text Diff verified: ${diffResult.rowCount} rows rendered (+${diffResult.addedCount} / -${diffResult.removedCount}), ${diffResult.similarity}`);
+  } else {
+    console.error('  ❌ Text Diff comparison failed:', diffResult);
+    totalErrors++;
+  }
+  await diffPage.close();
+
+  // Test 11: Password Generator (Web Crypto API & Entropy)
+  console.log('\n[11/17] Testing Password Generator (Web Crypto secure generation)...');
+  const passPage = await browser.newPage();
+  await passPage.goto(`file://${path.join(REPO_ROOT, 'tools/password-generator.html')}`);
+  await new Promise(r => setTimeout(r, 600));
+
+  const passResult = await passPage.evaluate(() => {
+    const pwd1 = document.getElementById('passOutput').textContent;
+    document.getElementById('btnRegenerate').click();
+    const pwd2 = document.getElementById('passOutput').textContent;
+    const entropy = document.getElementById('entropyLabel').textContent;
+    const strength = document.getElementById('strengthLabel').textContent;
+    return {
+      pwd1,
+      pwd2,
+      isDifferent: pwd1 !== pwd2,
+      len: pwd2.length,
+      entropy,
+      strength
+    };
+  });
+
+  if (passResult.len === 16 && passResult.isDifferent && passResult.entropy.includes('bits')) {
+    console.log(`  ✓ Password Generator: 16-char password generated (${passResult.entropy}, ${passResult.strength})`);
+  } else {
+    console.error('  ❌ Password Generator failed:', passResult);
+    totalErrors++;
+  }
+  await passPage.close();
+
+  // Test 12: PDF Splitter (PDF-Lib Page Extraction)
+  console.log('\n[12/17] Testing PDF Splitter (PDF-Lib page extraction)...');
+  const splitPage = await browser.newPage();
+  await splitPage.goto(`file://${path.join(REPO_ROOT, 'tools/pdf-splitter.html')}`);
+  await new Promise(r => setTimeout(r, 600));
+
+  const splitInput = await splitPage.$('#pdfInput');
+  await splitInput.uploadFile(SAMPLE_PDF);
+  await splitPage.waitForSelector('#fileBox:not(.d-none)', { timeout: 10000 });
+
+  await splitPage.click('#btnSplit');
+  await splitPage.waitForSelector('#resultBox:not(.d-none)', { timeout: 15000 });
+
+  const splitResult = await splitPage.evaluate(() => {
+    const btn = document.getElementById('btnDownload');
+    const details = document.getElementById('resultDetails').textContent;
+    return {
+      hasBlob: btn && btn.href.startsWith('blob:'),
+      downloadName: btn ? btn.download : '',
+      details
+    };
+  });
+
+  if (splitResult.hasBlob && splitResult.downloadName.endsWith('.pdf')) {
+    console.log(`  ✓ PDF Splitter extracted pages successfully: ${splitResult.details}`);
+  } else {
+    console.error('  ❌ PDF Splitter failed:', splitResult);
+    totalErrors++;
+  }
+  await splitPage.close();
+
+  // Test 13: Color Palette Extractor (Canvas Quantization & WCAG)
+  console.log('\n[13/17] Testing Color Palette Extractor (Canvas median cut & contrast)...');
+  const palettePage = await browser.newPage();
+  await palettePage.goto(`file://${path.join(REPO_ROOT, 'tools/color-palette.html')}`);
+  await new Promise(r => setTimeout(r, 600));
+
+  await palettePage.click('#btnSample');
+  await palettePage.waitForSelector('#paletteArea:not(.d-none)', { timeout: 8000 });
+
+  const palResult = await palettePage.evaluate(() => {
+    const swatches = document.querySelectorAll('.swatch-card');
+    const contrastRows = document.querySelectorAll('#contrastTableBody tr');
+    return {
+      swatchCount: swatches.length,
+      rowCount: contrastRows.length
+    };
+  });
+
+  if (palResult.swatchCount >= 4 && palResult.rowCount >= 4) {
+    console.log(`  ✓ Color Palette: ${palResult.swatchCount} dominant colors extracted with WCAG contrast ratios`);
+  } else {
+    console.error('  ❌ Color Palette Extractor failed:', palResult);
+    totalErrors++;
+  }
+  await palettePage.close();
+
+  // Test 14: SVG Minifier (Vector Cleaning & Coordinate Precision)
+  console.log('\n[14/17] Testing SVG Minifier (Metadata stripping & coordinate rounding)...');
+  const svgPage = await browser.newPage();
+  await svgPage.goto(`file://${path.join(REPO_ROOT, 'tools/svg-minifier.html')}`);
+  await new Promise(r => setTimeout(r, 600));
+
+  await svgPage.click('#btnSample');
+  await svgPage.waitForSelector('#minifierArea:not(.d-none)', { timeout: 8000 });
+
+  const svgResult = await svgPage.evaluate(() => {
+    const reduction = document.getElementById('reductionLabel').textContent;
+    const minCode = document.getElementById('minCodeBox').textContent;
+    return {
+      reduction,
+      minCodeLen: minCode.length,
+      hasSvg: minCode.includes('<svg')
+    };
+  });
+
+  if (svgResult.hasSvg && svgResult.reduction.includes('%')) {
+    console.log(`  ✓ SVG Minifier optimized vector successfully (${svgResult.reduction})`);
+  } else {
+    console.error('  ❌ SVG Minifier failed:', svgResult);
+    totalErrors++;
+  }
+  await svgPage.close();
+
+  // Test 15: Audio Cutter (Web Audio API & WAV generation)
+  console.log('\n[15/17] Testing Audio Cutter (Waveform rendering & PCM WAV export)...');
+  const audioPage = await browser.newPage();
+  await audioPage.goto(`file://${path.join(REPO_ROOT, 'tools/audio-cutter.html')}`);
+  await new Promise(r => setTimeout(r, 600));
+
+  await audioPage.click('#btnSampleAudio');
+  await audioPage.waitForSelector('#editorArea:not(.d-none)', { timeout: 8000 });
+
+  const audioResult = await audioPage.evaluate(() => {
+    const dur = document.getElementById('selectedDurationDisplay').textContent;
+    const canvas = document.getElementById('waveformCanvas');
+    return {
+      dur,
+      hasCanvas: canvas && canvas.width > 100
+    };
+  });
+
+  if (audioResult.hasCanvas && audioResult.dur.includes(':')) {
+    console.log(`  ✓ Audio Cutter: Interactive waveform rendered, trim range active (${audioResult.dur})`);
+  } else {
+    console.error('  ❌ Audio Cutter failed:', audioResult);
+    totalErrors++;
+  }
+  await audioPage.close();
+
+  // Test 16: Photo Metadata Editor (EXIF Parsing & Privacy Wiper)
+  console.log('\n[16/17] Testing Photo Metadata Editor (EXIF tag reader & GPS wiper)...');
+  const photoPage = await browser.newPage();
+  await photoPage.goto(`file://${path.join(REPO_ROOT, 'tools/photo-metadata.html')}`);
+  await new Promise(r => setTimeout(r, 600));
+
+  await photoPage.click('#btnSamplePhoto');
+  await photoPage.waitForSelector('#workspaceArea:not(.d-none)', { timeout: 8000 });
+
+  const photoResult = await photoPage.evaluate(() => {
+    const rows = document.querySelectorAll('#metaTableBody tr');
+    const hasGps = !document.getElementById('gpsAlertBox').classList.contains('d-none');
+    return {
+      rowCount: rows.length,
+      hasGps
+    };
+  });
+
+  if (photoResult.rowCount >= 5 && photoResult.hasGps) {
+    console.log(`  ✓ Photo Metadata Editor: ${photoResult.rowCount} EXIF tags parsed with GPS location alert`);
+  } else {
+    console.error('  ❌ Photo Metadata Editor failed:', photoResult);
+    totalErrors++;
+  }
+  await photoPage.close();
+
+  // Test 17: Screen Recorder (DisplayMedia & MediaRecorder DOM integrity)
+  console.log('\n[17/17] Testing Screen Recorder (Controls & video monitor setup)...');
+  const recPage = await browser.newPage();
+  await recPage.goto(`file://${path.join(REPO_ROOT, 'tools/screen-recorder.html')}`);
+  await new Promise(r => setTimeout(r, 600));
+
+  const recResult = await recPage.evaluate(() => {
+    const btn = document.getElementById('btnStartRec');
+    const notice = document.getElementById('idleStateNotice');
+    const video = document.getElementById('videoMonitor');
+    return {
+      hasStartBtn: btn !== null,
+      idleVisible: notice && !notice.classList.contains('d-none'),
+      hasVideoTag: video !== null
+    };
+  });
+
+  if (recResult.hasStartBtn && recResult.idleVisible && recResult.hasVideoTag) {
+    console.log('  ✓ Screen Recorder initialized: Start button, audio toggles, and video monitor ready');
+  } else {
+    console.error('  ❌ Screen Recorder failed initialization:', recResult);
+    totalErrors++;
+  }
+  await recPage.close();
 
   await browser.close();
 

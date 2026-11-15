@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>SVG Minifier - Optimize & Shrink SVG Files - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="100% private, client-side SVG minifier and optimizer. Strip editor metadata, clean path coordinates, and preview before/after rendering in your browser.">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .svg-preview-box {
+      background: #18181c;
+      background-image: linear-gradient(45deg, #131316 25%, transparent 25%),
+                        linear-gradient(-45deg, #131316 25%, transparent 25%),
+                        linear-gradient(45deg, transparent 75%, #131316 75%),
+                        linear-gradient(-45deg, transparent 75%, #131316 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 16px;
+    }
+    .svg-preview-box svg {
+      max-width: 100%;
+      max-height: 100%;
+      height: auto;
+      width: auto;
+    }
+    .code-box {
+      background: #131316;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #94a3b8;
+      height: 180px;
+      overflow-y: auto;
+      padding: 12px;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+  </style>
+</head>
+
+<body class="service-details-page">
+  <main class="main">
+    <!-- Single Page Title Bar -->
+    <div class="page-title">
+      <div class="container d-flex align-items-center gap-2">
+        <h1 class="mb-0 fs-5 fw-bold text-nowrap">
+          <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
+            <i class="bi bi-arrow-left"></i>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-6 d-none d-sm-inline">| Free Stuff</span></span>
+          </a>
+        </h1>
+        <span class="text-secondary opacity-50">/</span>
+        <nav class="breadcrumbs text-nowrap text-truncate" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item active text-white text-truncate" aria-current="page">SVG Minifier</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <section id="service-details" class="service-details section py-4 py-lg-5">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-4">
+          <!-- Main Content (Col 8) -->
+          <div class="col-lg-8">
+            <div class="tool-card">
+              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+                <div>
+                  <h2 class="fs-4 fw-bold text-white mb-1">SVG Minifier & Optimizer</h2>
+                  <p class="text-secondary small mb-0">
+                    Strip unnecessary metadata, editor comments, and bloated coordinates from SVG files while preserving exact visual appearance.
+                  </p>
+                </div>
+                <div class="d-flex gap-2">
+                  <button type="button" class="btn btn-sm btn-outline-primary" id="btnSample">
+                    <i class="bi bi-filetype-svg me-1"></i> Sample SVG
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.getElementById('svgFileInput').click()">
+                    <i class="bi bi-upload me-1"></i> Upload SVG
+                  </button>
+                  <input type="file" id="svgFileInput" accept=".svg,image/svg+xml" class="d-none">
+                </div>
+              </div>
+
+              <!-- Upload Dropzone -->
+              <div id="dropzone" class="tool-dropzone mb-4" onclick="document.getElementById('svgFileInput').click()">
+                <i class="bi bi-file-earmark-code fs-1 text-secondary mb-2"></i>
+                <h5 class="mt-2 mb-1 text-white fw-semibold">Choose or drop an SVG file here</h5>
+                <p class="text-secondary small mb-3">Or click Sample SVG above. 100% processed offline in memory.</p>
+                <button type="button" class="btn btn-secondary px-4 py-2">
+                  <i class="bi bi-folder2-open me-1"></i> Browse File
+                </button>
+              </div>
+
+              <!-- Minification Area (Hidden initially) -->
+              <div id="minifierArea" class="d-none">
+                <!-- Optimization Stats Banner -->
+                <div class="p-3 rounded mb-4 border border-secondary border-opacity-25 d-flex justify-content-between align-items-center flex-wrap gap-3" style="background: rgba(255, 255, 255, 0.02);">
+                  <div>
+                    <span class="text-secondary small">Original: <strong id="origSizeLabel" class="text-white">0 B</strong></span>
+                    <span class="text-secondary small mx-2">→</span>
+                    <span class="text-secondary small">Minified: <strong id="minSizeLabel" class="text-success">0 B</strong></span>
+                  </div>
+                  <div class="d-flex gap-2 align-items-center">
+                    <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25 fs-6 py-2 px-3" id="reductionLabel">-0%</span>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="btnCopyMin">
+                      <i class="bi bi-clipboard me-1"></i> Copy Code
+                    </button>
+                    <button type="button" class="btn btn-sm btn-primary" id="btnDownloadSvg">
+                      <i class="bi bi-download me-1"></i> Download .min.svg
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Visual Comparison (Original vs Minified) -->
+                <div class="row g-3 mb-4">
+                  <div class="col-md-6">
+                    <label class="form-label text-secondary small fw-bold mb-1">Original Render:</label>
+                    <div class="svg-preview-box" id="origPreviewBox"></div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label text-secondary small fw-bold mb-1">Minified Render (Zero Distortion):</label>
+                    <div class="svg-preview-box" id="minPreviewBox"></div>
+                  </div>
+                </div>
+
+                <!-- Optimization Settings Toggles -->
+                <div class="p-3 rounded border border-secondary border-opacity-25 mb-4" style="background: rgba(255, 255, 255, 0.02);">
+                  <h6 class="text-white fw-bold mb-3">Optimization Passes</h6>
+                  <div class="row g-2 small">
+                    <div class="col-sm-6">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="chkDoctype" checked>
+                        <label class="form-check-label text-white" for="chkDoctype">Remove XML declaration & DOCTYPE</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="chkComments" checked>
+                        <label class="form-check-label text-white" for="chkComments">Remove Comments & CDATA</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="chkMetadata" checked>
+                        <label class="form-check-label text-white" for="chkMetadata">Remove &lt;metadata&gt; & &lt;desc&gt;</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="chkEditorTags" checked>
+                        <label class="form-check-label text-white" for="chkEditorTags">Strip Figma / Illustrator / Inkscape namespaces</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="chkPrecision" checked>
+                        <label class="form-check-label text-white" for="chkPrecision">Round coordinates to 2 decimal places</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="chkCollapseWhitespace" checked>
+                        <label class="form-check-label text-white" for="chkCollapseWhitespace">Collapse spaces and clean newlines</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Code View -->
+                <div class="mb-3">
+                  <label class="form-label text-secondary small fw-bold mb-1">Minified SVG Code:</label>
+                  <div class="code-box" id="minCodeBox"></div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Sidebar Column (Col 4) -->
+          <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4">
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-grid me-2 text-secondary"></i>Other Tools
+                </h5>
+                <div class="d-flex flex-column gap-1">
+                  <a href="image-compressor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-image me-2"></i>Image Compressor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="image-converter.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-arrow-repeat me-2"></i>Image Converter</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="color-palette.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-palette me-2"></i>Color Palette Extractor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="text-diff.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-diff me-2"></i>Text Diff</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="dev-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-code-slash me-2"></i>Developer Toolbox</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="password-generator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-shield-lock me-2"></i>Password Generator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="pdf-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-pdf me-2"></i>PDF Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="calculator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-calculator me-2"></i>Scientific Calculator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
+    <div class="container text-center">
+      <div class="copyright text-secondary">
+        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+      </div>
+      <div class="credits text-secondary small">
+        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="preloader"></div>
+
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/js/services.js"></script>
+
+  <script>
+    const dropzone = document.getElementById('dropzone');
+    const svgFileInput = document.getElementById('svgFileInput');
+    const minifierArea = document.getElementById('minifierArea');
+    const origPreviewBox = document.getElementById('origPreviewBox');
+    const minPreviewBox = document.getElementById('minPreviewBox');
+    const minCodeBox = document.getElementById('minCodeBox');
+    const origSizeLabel = document.getElementById('origSizeLabel');
+    const minSizeLabel = document.getElementById('minSizeLabel');
+    const reductionLabel = document.getElementById('reductionLabel');
+    const btnSample = document.getElementById('btnSample');
+    const btnCopyMin = document.getElementById('btnCopyMin');
+    const btnDownloadSvg = document.getElementById('btnDownloadSvg');
+
+    // Checkboxes
+    const chkDoctype = document.getElementById('chkDoctype');
+    const chkComments = document.getElementById('chkComments');
+    const chkMetadata = document.getElementById('chkMetadata');
+    const chkEditorTags = document.getElementById('chkEditorTags');
+    const chkPrecision = document.getElementById('chkPrecision');
+    const chkCollapseWhitespace = document.getElementById('chkCollapseWhitespace');
+
+    let rawSvgContent = '';
+    let currentFileName = 'vector.svg';
+
+    const formatBytes = (bytes) => {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    };
+
+    ['dragenter', 'dragover'].forEach(name => {
+      dropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+      });
+    });
+    ['dragleave', 'drop'].forEach(name => {
+      dropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+      });
+    });
+    dropzone.addEventListener('drop', (e) => {
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        loadSvgFile(files[0]);
+      }
+    });
+
+    svgFileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        loadSvgFile(e.target.files[0]);
+      }
+    });
+
+    function loadSvgFile(file) {
+      currentFileName = file.name || 'image.svg';
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        processSvgString(evt.target.result);
+      };
+      reader.readAsText(file);
+    }
+
+    function processSvgString(content) {
+      rawSvgContent = content.trim();
+      dropzone.classList.add('d-none');
+      minifierArea.classList.remove('d-none');
+      runMinification();
+    }
+
+    function runMinification() {
+      if (!rawSvgContent) return;
+
+      let result = rawSvgContent;
+
+      // 1. Remove XML declarations and DOCTYPE
+      if (chkDoctype.checked) {
+        result = result.replace(/<\?xml[^>]*\?>/gi, '');
+        result = result.replace(/<!DOCTYPE[^>]*>/gi, '');
+      }
+
+      // 2. Remove comments & CDATA
+      if (chkComments.checked) {
+        result = result.replace(/<!--[\s\S]*?-->/g, '');
+        result = result.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1');
+      }
+
+      // 3. Remove metadata and desc
+      if (chkMetadata.checked) {
+        result = result.replace(/<metadata[\s\S]*?<\/metadata>/gi, '');
+        result = result.replace(/<desc[\s\S]*?<\/desc>/gi, '');
+        result = result.replace(/<title[\s\S]*?<\/title>/gi, '');
+      }
+
+      // 4. Remove editor attributes and namespaces
+      if (chkEditorTags.checked) {
+        result = result.replace(/\s+(xmlns:inkscape|xmlns:sodipodi|xmlns:sketch|xmlns:adobe|xmlns:illustrator)="[^"]*"/gi, '');
+        result = result.replace(/\s+(inkscape:[a-z\-]+|sodipodi:[a-z\-]+|sketch:[a-z\-]+|adobe:[a-z\-]+|data-name)="[^"]*"/gi, '');
+        result = result.replace(/\s+xml:space="[^"]*"/gi, '');
+      }
+
+      // 5. Round coordinates to 2 decimal places
+      if (chkPrecision.checked) {
+        result = result.replace(/(\d+\.\d{3,})/g, (match) => {
+          return parseFloat(parseFloat(match).toFixed(2)).toString();
+        });
+      }
+
+      // 6. Collapse spaces and clean newlines
+      if (chkCollapseWhitespace.checked) {
+        result = result.replace(/\s+/g, ' ');
+        result = result.replace(/>\s+</g, '><');
+      }
+
+      result = result.trim();
+
+      const origBytes = new TextEncoder().encode(rawSvgContent).length;
+      const minBytes = new TextEncoder().encode(result).length;
+      const pct = origBytes > 0 ? Math.round(((origBytes - minBytes) / origBytes) * 100) : 0;
+
+      origSizeLabel.textContent = formatBytes(origBytes);
+      minSizeLabel.textContent = formatBytes(minBytes);
+      reductionLabel.textContent = `-${Math.max(0, pct)}% Saved`;
+
+      // Render previews
+      origPreviewBox.innerHTML = rawSvgContent;
+      minPreviewBox.innerHTML = result;
+      minCodeBox.textContent = result;
+    }
+
+    [chkDoctype, chkComments, chkMetadata, chkEditorTags, chkPrecision, chkCollapseWhitespace].forEach(chk => {
+      chk.addEventListener('change', runMinification);
+    });
+
+    btnCopyMin.addEventListener('click', () => {
+      const code = minCodeBox.textContent;
+      if (!code) return;
+      navigator.clipboard.writeText(code).then(() => {
+        const orig = btnCopyMin.innerHTML;
+        btnCopyMin.innerHTML = '<i class="bi bi-check2 text-success me-1"></i> Copied!';
+        setTimeout(() => { btnCopyMin.innerHTML = orig; }, 2000);
+      });
+    });
+
+    btnDownloadSvg.addEventListener('click', () => {
+      const code = minCodeBox.textContent;
+      if (!code) return;
+      const blob = new Blob([code], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+      const outName = currentFileName.replace(/\.svg$/i, '') + '.min.svg';
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = outName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+
+    btnSample.addEventListener('click', () => {
+      currentFileName = 'sample_graphic.svg';
+      const sampleSvg = `<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated by Adobe Illustrator 28.0.0 (Windows) -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" viewBox="0 0 400 300" width="400" height="300" xml:space="preserve">
+  <metadata>
+    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <cc:Work xmlns:cc="http://creativecommons.org/ns#">
+        <dc:format xmlns:dc="http://purl.org/dc/elements/1.1/">image/svg+xml</dc:format>
+        <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/">Vector Illustration Sample</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs>
+    <linearGradient id="grad1" x1="0.000000%" y1="0.000000%" x2="100.000000%" y2="100.000000%">
+      <stop offset="0.000000%" stop-color="#3b82f6" stop-opacity="1.000000"/>
+      <stop offset="100.000000%" stop-color="#8b5cf6" stop-opacity="1.000000"/>
+    </linearGradient>
+  </defs>
+  <!-- Background Rectangle -->
+  <g id="layer1" inkscape:label="Layer 1" data-name="background_group">
+    <rect x="20.123456" y="20.987654" width="359.876543" height="259.123456" rx="16.543210" fill="url(#grad1)"/>
+    <circle cx="200.000000" cy="150.000000" r="65.432109" fill="#ffffff" fill-opacity="0.950000"/>
+    <polygon points="180.1234,115.9876 240.8765,150.0000 180.1234,184.0123" fill="#3b82f6"/>
+  </g>
+</svg>`;
+      processSvgString(sampleSvg);
+    });
+  </script>
+</body>
+
+</html>

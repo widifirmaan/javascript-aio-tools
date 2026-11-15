@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>PDF Splitter - Extract & Split PDF Pages Online - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="100% private, client-side PDF Splitter powered by PDF-Lib. Extract page ranges or split PDF documents with zero server upload.">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+
+  <script src="../assets/vendor/pdfjs/pdf.min.js"></script>
+  <script src="../assets/vendor/pdf-lib/pdf-lib.min.js"></script>
+
+  <style>
+    .page-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 14px;
+      max-height: 440px;
+      overflow-y: auto;
+      padding: 12px;
+      background: #131316;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+    }
+    .page-thumb-card {
+      background: #1c1c22;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .page-thumb-card:hover {
+      border-color: rgba(59, 130, 246, 0.5);
+      transform: translateY(-2px);
+    }
+    .page-thumb-card.selected {
+      border-color: #3b82f6;
+      background: rgba(59, 130, 246, 0.12);
+    }
+    .page-thumb-canvas {
+      width: 100%;
+      height: 140px;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+    .page-num-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-top: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 4px;
+    }
+    .thumb-check {
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body class="service-details-page">
+  <main class="main">
+    <!-- Single Page Title Bar -->
+    <div class="page-title">
+      <div class="container d-flex align-items-center gap-2">
+        <h1 class="mb-0 fs-5 fw-bold text-nowrap">
+          <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
+            <i class="bi bi-arrow-left"></i>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-6 d-none d-sm-inline">| Free Stuff</span></span>
+          </a>
+        </h1>
+        <span class="text-secondary opacity-50">/</span>
+        <nav class="breadcrumbs text-nowrap text-truncate" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item active text-white text-truncate" aria-current="page">PDF Splitter</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <section id="service-details" class="service-details section py-4 py-lg-5">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-4">
+          <!-- Main Content (Col 8) -->
+          <div class="col-lg-8">
+            <div class="tool-card">
+              <h2 class="fs-4 fw-bold text-white mb-2">PDF Splitter & Page Extractor</h2>
+              <p class="text-secondary mb-4">
+                Split large PDF documents or extract custom page ranges right in your browser. Powered by client-side WebAssembly, your documents never touch any server.
+              </p>
+
+              <!-- Upload Dropzone -->
+              <div id="dropzone" class="tool-dropzone mb-4" onclick="document.getElementById('pdfInput').click()">
+                <i class="bi bi-file-earmark-pdf fs-1 text-secondary mb-2"></i>
+                <h5 class="mt-2 mb-1 text-white fw-semibold">Choose or drop a PDF file here</h5>
+                <p class="text-secondary small mb-3">All processing runs locally in browser memory.</p>
+                <input type="file" id="pdfInput" accept="application/pdf" class="d-none">
+                <button type="button" class="btn btn-secondary px-4 py-2">
+                  <i class="bi bi-folder2-open me-1"></i> Browse PDF
+                </button>
+              </div>
+
+              <!-- File Info & Controls Box -->
+              <div id="fileBox" class="p-3 rounded mb-4 border border-secondary border-opacity-25 d-none" style="background: rgba(255, 255, 255, 0.02);">
+                <div class="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom border-secondary border-opacity-25 flex-wrap gap-2">
+                  <div>
+                    <h6 class="mb-1 text-white fw-bold" id="fileName">-</h6>
+                    <span class="text-secondary small me-2" id="fileSize">-</span>
+                    <span class="text-secondary small" id="pageCount">- Pages</span>
+                  </div>
+                  <button type="button" class="btn btn-sm btn-outline-secondary px-3" id="btnChangeFile">
+                    <i class="bi bi-arrow-repeat me-1"></i> Change File
+                  </button>
+                </div>
+
+                <!-- Page Range Input -->
+                <div class="mb-3">
+                  <label class="form-label text-secondary small fw-bold mb-1">Split Range / Page Numbers:</label>
+                  <div class="input-group input-group-sm mb-2">
+                    <input type="text" id="rangeInput" class="form-control" placeholder="e.g. 1-3, 5, 8">
+                    <button class="btn btn-outline-secondary" type="button" id="btnApplyRange">Select Range</button>
+                  </div>
+                  <div class="d-flex gap-2 flex-wrap mb-3">
+                    <button type="button" class="btn btn-sm btn-outline-secondary py-0" id="btnSelectAll">All</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary py-0" id="btnSelectNone">None</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary py-0" id="btnSelectOdd">Odd Pages</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary py-0" id="btnSelectEven">Even Pages</button>
+                    <span class="text-secondary small ms-auto align-self-center" id="selectedCount">0 pages selected</span>
+                  </div>
+                </div>
+
+                <!-- Visual Page Grid -->
+                <div class="mb-4">
+                  <label class="form-label text-secondary small fw-bold mb-2">Click Pages to Include / Exclude:</label>
+                  <div class="page-grid" id="pageGrid">
+                    <!-- Thumbnails rendered here -->
+                  </div>
+                </div>
+
+                <!-- Split Options & Execute -->
+                <div class="d-flex gap-2 justify-content-end">
+                  <button type="button" class="btn btn-primary px-4 py-2 fw-semibold" id="btnSplit">
+                    <i class="bi bi-scissors me-1"></i> Extract & Download PDF
+                  </button>
+                </div>
+              </div>
+
+              <!-- Progress Box -->
+              <div id="progressBox" class="p-3 rounded mb-4 border border-secondary border-opacity-25 d-none" style="background: rgba(255, 255, 255, 0.02);">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="small fw-semibold text-white" id="progressStatus">Splitting pages...</span>
+                  <span class="small fw-bold text-white" id="progressPercent">0%</span>
+                </div>
+                <div class="progress" style="height: 8px; background: rgba(255,255,255,0.08);">
+                  <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <!-- Result Box -->
+              <div id="resultBox" class="p-4 rounded border border-secondary border-opacity-25 text-center d-none" style="background: rgba(255, 255, 255, 0.02);">
+                <i class="bi bi-check-circle-fill text-success fs-1 mb-2 d-inline-block"></i>
+                <h5 class="mt-2 mb-1 text-white fw-bold">PDF Ready</h5>
+                <p class="text-secondary small mb-3" id="resultDetails">Your extracted PDF has been created.</p>
+                <div class="d-flex justify-content-center gap-2">
+                  <a id="btnDownload" href="#" class="btn btn-primary px-4 py-2">
+                    <i class="bi bi-download me-1"></i> Download Extracted PDF
+                  </a>
+                  <button type="button" class="btn btn-outline-secondary px-3" onclick="resetSplitter()">
+                    <i class="bi bi-arrow-repeat me-1"></i> Split Another
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Sidebar Column (Col 4) -->
+          <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4">
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-grid me-2 text-secondary"></i>Other Tools
+                </h5>
+                <div class="d-flex flex-column gap-1">
+                  <a href="pdf-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-pdf me-2"></i>PDF Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="text-diff.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-diff me-2"></i>Text Diff</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="password-generator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-shield-lock me-2"></i>Password Generator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="image-compressor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-image me-2"></i>Image Compressor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="qr-code.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-qr-code me-2"></i>QR Code Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="dev-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-code-slash me-2"></i>Developer Toolbox</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="text-editor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-pencil-square me-2"></i>Text Editor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="calculator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-calculator me-2"></i>Scientific Calculator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
+    <div class="container text-center">
+      <div class="copyright text-secondary">
+        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+      </div>
+      <div class="credits text-secondary small">
+        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="preloader"></div>
+
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/js/services.js"></script>
+
+  <script>
+    if (typeof pdfjsLib !== 'undefined') {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = '../assets/vendor/pdfjs/pdf.worker.min.js';
+    }
+
+    const dropzone = document.getElementById('dropzone');
+    const pdfInput = document.getElementById('pdfInput');
+    const fileBox = document.getElementById('fileBox');
+    const fileName = document.getElementById('fileName');
+    const fileSize = document.getElementById('fileSize');
+    const pageCount = document.getElementById('pageCount');
+    const btnChangeFile = document.getElementById('btnChangeFile');
+    const pageGrid = document.getElementById('pageGrid');
+    const rangeInput = document.getElementById('rangeInput');
+    const btnApplyRange = document.getElementById('btnApplyRange');
+    const btnSelectAll = document.getElementById('btnSelectAll');
+    const btnSelectNone = document.getElementById('btnSelectNone');
+    const btnSelectOdd = document.getElementById('btnSelectOdd');
+    const btnSelectEven = document.getElementById('btnSelectEven');
+    const selectedCount = document.getElementById('selectedCount');
+    const btnSplit = document.getElementById('btnSplit');
+    const progressBox = document.getElementById('progressBox');
+    const progressBar = document.getElementById('progressBar');
+    const progressPercent = document.getElementById('progressPercent');
+    const progressStatus = document.getElementById('progressStatus');
+    const resultBox = document.getElementById('resultBox');
+    const resultDetails = document.getElementById('resultDetails');
+    const btnDownload = document.getElementById('btnDownload');
+
+    let rawPdfBytes = null;
+    let selectedFile = null;
+    let pdfJsDoc = null;
+    let totalPages = 0;
+    let selectedPages = new Set();
+    let generatedBlobUrl = null;
+
+    const formatBytes = (bytes) => {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    };
+
+    window.resetSplitter = function() {
+      rawPdfBytes = null;
+      selectedFile = null;
+      pdfJsDoc = null;
+      totalPages = 0;
+      selectedPages.clear();
+      pdfInput.value = '';
+      rangeInput.value = '';
+      pageGrid.innerHTML = '';
+      if (generatedBlobUrl) URL.revokeObjectURL(generatedBlobUrl);
+      generatedBlobUrl = null;
+
+      dropzone.classList.remove('d-none');
+      fileBox.classList.add('d-none');
+      progressBox.classList.add('d-none');
+      resultBox.classList.add('d-none');
+    };
+
+    btnChangeFile.addEventListener('click', resetSplitter);
+
+    ['dragenter', 'dragover'].forEach(name => {
+      dropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+      });
+    });
+    ['dragleave', 'drop'].forEach(name => {
+      dropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+      });
+    });
+    dropzone.addEventListener('drop', (e) => {
+      const files = e.dataTransfer.files;
+      if (files.length > 0 && (files[0].type === 'application/pdf' || files[0].name.toLowerCase().endsWith('.pdf'))) {
+        handleFile(files[0]);
+      } else {
+        alert('Please select a valid PDF file.');
+      }
+    });
+
+    pdfInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        handleFile(e.target.files[0]);
+      }
+    });
+
+    async function handleFile(file) {
+      if (!file || (file.type && file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf'))) {
+        alert('Selected file is not a valid PDF.');
+        return;
+      }
+      selectedFile = file;
+      fileName.textContent = file.name;
+      fileSize.textContent = formatBytes(file.size);
+      pageCount.textContent = 'Reading pages...';
+
+      try {
+        const ab = await file.arrayBuffer();
+        rawPdfBytes = new Uint8Array(ab);
+        // Pass a cloned slice to pdfjsLib so worker transfer does not neuter rawPdfBytes
+        pdfJsDoc = await pdfjsLib.getDocument({ data: rawPdfBytes.slice() }).promise;
+        totalPages = pdfJsDoc.numPages;
+        pageCount.textContent = `${totalPages} Pages`;
+
+        // By default select all pages
+        selectedPages = new Set(Array.from({ length: totalPages }, (_, i) => i + 1));
+        updateSelectedCount();
+
+        dropzone.classList.add('d-none');
+        fileBox.classList.remove('d-none');
+        resultBox.classList.add('d-none');
+
+        // Render page thumbnails
+        renderThumbnails();
+      } catch (err) {
+        console.error('Failed to load PDF:', err);
+        alert('Error parsing PDF: ' + err.message);
+        resetSplitter();
+      }
+    }
+
+    async function renderThumbnails() {
+      pageGrid.innerHTML = '';
+      for (let pNum = 1; pNum <= totalPages; pNum++) {
+        const card = document.createElement('div');
+        card.className = `page-thumb-card ${selectedPages.has(pNum) ? 'selected' : ''}`;
+        card.dataset.pageNum = pNum;
+
+        const canvas = document.createElement('canvas');
+        canvas.className = 'page-thumb-canvas';
+        card.appendChild(canvas);
+
+        const badge = document.createElement('div');
+        badge.className = 'page-num-badge';
+        badge.innerHTML = `<span>Page ${pNum}</span><input type="checkbox" class="thumb-check form-check-input" ${selectedPages.has(pNum) ? 'checked' : ''}>`;
+        card.appendChild(badge);
+
+        card.addEventListener('click', () => {
+          if (selectedPages.has(pNum)) {
+            selectedPages.delete(pNum);
+            card.classList.remove('selected');
+            badge.querySelector('input').checked = false;
+          } else {
+            selectedPages.add(pNum);
+            card.classList.add('selected');
+            badge.querySelector('input').checked = true;
+          }
+          updateSelectedCount();
+        });
+
+        pageGrid.appendChild(card);
+
+        // Async render thumbnail
+        renderPageCanvas(pNum, canvas).catch(() => {});
+      }
+    }
+
+    async function renderPageCanvas(pNum, canvas) {
+      if (!pdfJsDoc) return;
+      const page = await pdfJsDoc.getPage(pNum);
+      const viewport = page.getViewport({ scale: 0.25 });
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      const ctx = canvas.getContext('2d');
+      await page.render({ canvasContext: ctx, viewport }).promise;
+    }
+
+    function updateSelectedCount() {
+      selectedCount.textContent = `${selectedPages.size} of ${totalPages} pages selected`;
+      btnSplit.disabled = selectedPages.size === 0;
+    }
+
+    function updateThumbnailsSelection() {
+      document.querySelectorAll('.page-thumb-card').forEach(card => {
+        const pNum = parseInt(card.dataset.pageNum, 10);
+        const isSel = selectedPages.has(pNum);
+        card.classList.toggle('selected', isSel);
+        const chk = card.querySelector('.thumb-check');
+        if (chk) chk.checked = isSel;
+      });
+      updateSelectedCount();
+    }
+
+    btnSelectAll.addEventListener('click', () => {
+      selectedPages = new Set(Array.from({ length: totalPages }, (_, i) => i + 1));
+      updateThumbnailsSelection();
+    });
+
+    btnSelectNone.addEventListener('click', () => {
+      selectedPages.clear();
+      updateThumbnailsSelection();
+    });
+
+    btnSelectOdd.addEventListener('click', () => {
+      selectedPages.clear();
+      for (let i = 1; i <= totalPages; i += 2) selectedPages.add(i);
+      updateThumbnailsSelection();
+    });
+
+    btnSelectEven.addEventListener('click', () => {
+      selectedPages.clear();
+      for (let i = 2; i <= totalPages; i += 2) selectedPages.add(i);
+      updateThumbnailsSelection();
+    });
+
+    btnApplyRange.addEventListener('click', () => {
+      const val = rangeInput.value.trim();
+      if (!val) return;
+      selectedPages.clear();
+
+      const parts = val.split(',');
+      for (const p of parts) {
+        const item = p.trim();
+        if (item.includes('-')) {
+          const [start, end] = item.split('-').map(Number);
+          if (!isNaN(start) && !isNaN(end)) {
+            for (let i = Math.max(1, start); i <= Math.min(totalPages, end); i++) {
+              selectedPages.add(i);
+            }
+          }
+        } else {
+          const num = Number(item);
+          if (!isNaN(num) && num >= 1 && num <= totalPages) {
+            selectedPages.add(num);
+          }
+        }
+      }
+      updateThumbnailsSelection();
+    });
+
+    btnSplit.addEventListener('click', async () => {
+      if (!rawPdfBytes || selectedPages.size === 0) {
+        alert('Please select at least one page to extract.');
+        return;
+      }
+
+      btnSplit.disabled = true;
+      progressBox.classList.remove('d-none');
+      resultBox.classList.add('d-none');
+      progressBar.style.width = '20%';
+      progressPercent.textContent = '20%';
+      progressStatus.textContent = 'Loading PDF engine...';
+
+      try {
+        const PDFLib = window.PDFLib;
+        const srcDoc = await PDFLib.PDFDocument.load(rawPdfBytes);
+        const outDoc = await PDFLib.PDFDocument.create();
+
+        progressBar.style.width = '45%';
+        progressPercent.textContent = '45%';
+        progressStatus.textContent = `Extracting ${selectedPages.size} pages...`;
+
+        const sortedPages = Array.from(selectedPages).sort((a, b) => a - b);
+        const pageIndices = sortedPages.map(p => p - 1);
+
+        const copiedPages = await outDoc.copyPages(srcDoc, pageIndices);
+        for (const cp of copiedPages) {
+          outDoc.addPage(cp);
+        }
+
+        progressBar.style.width = '85%';
+        progressPercent.textContent = '85%';
+        progressStatus.textContent = 'Compiling extracted PDF...';
+
+        const outPdfBytes = await outDoc.save();
+
+        progressBar.style.width = '100%';
+        progressPercent.textContent = '100%';
+        progressStatus.textContent = 'Complete!';
+
+        const outBlob = new Blob([outPdfBytes], { type: 'application/pdf' });
+        if (generatedBlobUrl) URL.revokeObjectURL(generatedBlobUrl);
+        generatedBlobUrl = URL.createObjectURL(outBlob);
+
+        const rangeDesc = sortedPages.length === 1 ? `page_${sortedPages[0]}` : `pages_${sortedPages[0]}-${sortedPages[sortedPages.length - 1]}`;
+        const outName = selectedFile.name.replace(/\.[^/.]+$/, '') + `_${rangeDesc}.pdf`;
+
+        resultDetails.textContent = `${outName} (${formatBytes(outBlob.size)}) - Contains ${sortedPages.length} pages.`;
+        btnDownload.href = generatedBlobUrl;
+        btnDownload.download = outName;
+
+        resultBox.classList.remove('d-none');
+
+        // Auto trigger download
+        const autoLink = document.createElement('a');
+        autoLink.href = generatedBlobUrl;
+        autoLink.download = outName;
+        document.body.appendChild(autoLink);
+        autoLink.click();
+        document.body.removeChild(autoLink);
+
+      } catch (err) {
+        console.error('Splitting error:', err);
+        alert('Error during PDF extraction: ' + err.message);
+      } finally {
+        btnSplit.disabled = false;
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Text Diff - Visual Text & Code Comparison - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="100% private in-browser text and code diff comparison. Side-by-side and inline visual diff with real-time change highlighting.">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .diff-textarea {
+      background: #18181c;
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      font-family: 'Fira Code', Consolas, Monaco, monospace;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      padding: 12px;
+      resize: vertical;
+      min-height: 180px;
+    }
+    .diff-textarea:focus {
+      background: #1c1c22;
+      color: #fff;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+    }
+    .diff-output-container {
+      background: #131316;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'Fira Code', Consolas, Monaco, monospace;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    .diff-row {
+      display: flex;
+      min-width: 100%;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+    .diff-row:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .diff-line-num {
+      width: 44px;
+      min-width: 44px;
+      padding: 3px 8px;
+      text-align: right;
+      color: #64748b;
+      user-select: none;
+      background: rgba(0, 0, 0, 0.2);
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .diff-sign {
+      width: 24px;
+      min-width: 24px;
+      text-align: center;
+      user-select: none;
+      font-weight: bold;
+      padding: 3px 0;
+    }
+    .diff-text {
+      flex: 1;
+      padding: 3px 10px;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .diff-added {
+      background: rgba(34, 197, 94, 0.15);
+      color: #86efac;
+    }
+    .diff-added .diff-sign {
+      color: #22c55e;
+    }
+    .diff-removed {
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+    }
+    .diff-removed .diff-sign {
+      color: #ef4444;
+    }
+    .diff-unchanged {
+      color: #94a3b8;
+    }
+    .diff-side-col {
+      flex: 1;
+      min-width: 0;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .diff-side-col:last-child {
+      border-right: none;
+    }
+    .diff-badge {
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+
+<body class="service-details-page">
+  <main class="main">
+    <!-- Single Page Title Bar -->
+    <div class="page-title">
+      <div class="container d-flex align-items-center gap-2">
+        <h1 class="mb-0 fs-5 fw-bold text-nowrap">
+          <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
+            <i class="bi bi-arrow-left"></i>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-6 d-none d-sm-inline">| Free Stuff</span></span>
+          </a>
+        </h1>
+        <span class="text-secondary opacity-50">/</span>
+        <nav class="breadcrumbs text-nowrap text-truncate" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item active text-white text-truncate" aria-current="page">Text Diff</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <section id="service-details" class="service-details section py-4 py-lg-5">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-4">
+          <!-- Main Content (Col 8) -->
+          <div class="col-lg-8">
+            <div class="tool-card">
+              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+                <div>
+                  <h2 class="fs-4 fw-bold text-white mb-1">Text & Code Diff Checker</h2>
+                  <p class="text-secondary small mb-0">
+                    Compare two text blocks or source code snippets side-by-side with line-by-line visual change tracking.
+                  </p>
+                </div>
+                <div class="d-flex gap-2">
+                  <button type="button" class="btn btn-sm btn-outline-primary" id="btnLoadSample">
+                    <i class="bi bi-file-earmark-code me-1"></i> Sample Code
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" id="btnSwap">
+                    <i class="bi bi-arrow-left-right me-1"></i> Swap
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-danger" id="btnClearAll">
+                    <i class="bi bi-trash3 me-1"></i> Clear
+                  </button>
+                </div>
+              </div>
+
+              <!-- Input Panes -->
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label text-secondary small fw-bold mb-0">Original Text</label>
+                    <span class="text-secondary small" id="origStats">0 lines</span>
+                  </div>
+                  <textarea id="textOriginal" class="form-control diff-textarea" placeholder="Paste original text or code here..."></textarea>
+                </div>
+                <div class="col-md-6">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label text-secondary small fw-bold mb-0">Modified Text</label>
+                    <span class="text-secondary small" id="modStats">0 lines</span>
+                  </div>
+                  <textarea id="textModified" class="form-control diff-textarea" placeholder="Paste modified text or code here..."></textarea>
+                </div>
+              </div>
+
+              <!-- Diff Controls & Options -->
+              <div class="p-3 rounded mb-4 border border-secondary border-opacity-25 d-flex justify-content-between align-items-center flex-wrap gap-3" style="background: rgba(255, 255, 255, 0.02);">
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+                  <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-primary active" id="btnModeInline">Unified (Inline)</button>
+                    <button type="button" class="btn btn-outline-secondary" id="btnModeSplit">Side-by-Side</button>
+                  </div>
+                  <div class="form-check form-check-inline mb-0">
+                    <input class="form-check-input" type="checkbox" id="chkIgnoreWhitespace">
+                    <label class="form-check-label text-secondary small" for="chkIgnoreWhitespace">Ignore Whitespace</label>
+                  </div>
+                  <div class="form-check form-check-inline mb-0">
+                    <input class="form-check-input" type="checkbox" id="chkIgnoreCase">
+                    <label class="form-check-label text-secondary small" for="chkIgnoreCase">Ignore Case</label>
+                  </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                  <button type="button" class="btn btn-sm btn-outline-secondary" id="btnCopyDiff">
+                    <i class="bi bi-clipboard me-1"></i> Copy Diff
+                  </button>
+                  <button type="button" class="btn btn-sm btn-primary" id="btnRunDiff">
+                    <i class="bi bi-play-fill me-1"></i> Compare Now
+                  </button>
+                </div>
+              </div>
+
+              <!-- Statistics & Summary Bar -->
+              <div class="d-flex align-items-center gap-2 mb-3 flex-wrap" id="diffStatsBar">
+                <span class="diff-badge bg-success bg-opacity-25 text-success border border-success border-opacity-25" id="badgeAdded">+0 Added</span>
+                <span class="diff-badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-25" id="badgeRemoved">-0 Removed</span>
+                <span class="diff-badge bg-secondary bg-opacity-25 text-secondary border border-secondary border-opacity-25" id="badgeUnchanged">0 Unchanged</span>
+                <span class="diff-badge bg-primary bg-opacity-25 text-primary border border-primary border-opacity-25 ms-auto" id="badgeSimilarity">100% Identical</span>
+              </div>
+
+              <!-- Visual Diff Output Box -->
+              <div id="diffOutput" class="diff-output-container p-0">
+                <div class="p-4 text-center text-secondary small">
+                  <i class="bi bi-arrow-left-right fs-2 mb-2 d-block opacity-50"></i>
+                  Enter text above and click <strong>Compare Now</strong> to view the visual difference.
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Sidebar Column (Col 4) -->
+          <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4">
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-grid me-2 text-secondary"></i>Other Tools
+                </h5>
+                <div class="d-flex flex-column gap-1">
+                  <a href="text-editor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-pencil-square me-2"></i>Text Editor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="dev-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-code-slash me-2"></i>Developer Toolbox</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="password-generator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-shield-lock me-2"></i>Password Generator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="pdf-tools.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-file-pdf me-2"></i>PDF Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="pdf-splitter.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-scissors me-2"></i>PDF Splitter</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="image-compressor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-image me-2"></i>Image Compressor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="qr-code.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-qr-code me-2"></i>QR Code Studio</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="calculator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-calculator me-2"></i>Scientific Calculator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
+    <div class="container text-center">
+      <div class="copyright text-secondary">
+        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+      </div>
+      <div class="credits text-secondary small">
+        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="preloader"></div>
+
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/js/services.js"></script>
+
+  <script>
+    const textOriginal = document.getElementById('textOriginal');
+    const textModified = document.getElementById('textModified');
+    const origStats = document.getElementById('origStats');
+    const modStats = document.getElementById('modStats');
+    const btnRunDiff = document.getElementById('btnRunDiff');
+    const btnLoadSample = document.getElementById('btnLoadSample');
+    const btnSwap = document.getElementById('btnSwap');
+    const btnClearAll = document.getElementById('btnClearAll');
+    const btnCopyDiff = document.getElementById('btnCopyDiff');
+    const btnModeInline = document.getElementById('btnModeInline');
+    const btnModeSplit = document.getElementById('btnModeSplit');
+    const chkIgnoreWhitespace = document.getElementById('chkIgnoreWhitespace');
+    const chkIgnoreCase = document.getElementById('chkIgnoreCase');
+    const diffOutput = document.getElementById('diffOutput');
+    const badgeAdded = document.getElementById('badgeAdded');
+    const badgeRemoved = document.getElementById('badgeRemoved');
+    const badgeUnchanged = document.getElementById('badgeUnchanged');
+    const badgeSimilarity = document.getElementById('badgeSimilarity');
+
+    let currentMode = 'inline'; // 'inline' | 'split'
+    let lastDiffResult = null;
+
+    // Myers / LCS Diff Algorithm in Pure JS
+    function computeLCSDiff(origLines, modLines, ignoreWhitespace, ignoreCase) {
+      function normalize(line) {
+        let l = line || '';
+        if (ignoreWhitespace) l = l.trim().replace(/\s+/g, ' ');
+        if (ignoreCase) l = l.toLowerCase();
+        return l;
+      }
+
+      const n = origLines.length;
+      const m = modLines.length;
+
+      // DP Table
+      const dp = Array.from({ length: n + 1 }, () => new Int32Array(m + 1));
+      for (let i = 0; i < n; i++) {
+        const normA = normalize(origLines[i]);
+        for (let j = 0; j < m; j++) {
+          if (normA === normalize(modLines[j])) {
+            dp[i + 1][j + 1] = dp[i][j] + 1;
+          } else {
+            dp[i + 1][j + 1] = Math.max(dp[i + 1][j], dp[i][j + 1]);
+          }
+        }
+      }
+
+      // Backtrack
+      const diff = [];
+      let i = n, j = m;
+      while (i > 0 || j > 0) {
+        if (i > 0 && j > 0 && normalize(origLines[i - 1]) === normalize(modLines[j - 1])) {
+          diff.unshift({ type: 'unchanged', origLine: i, modLine: j, text: origLines[i - 1] });
+          i--;
+          j--;
+        } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
+          diff.unshift({ type: 'added', modLine: j, text: modLines[j - 1] });
+          j--;
+        } else if (i > 0 && (j === 0 || dp[i][j - 1] < dp[i - 1][j])) {
+          diff.unshift({ type: 'removed', origLine: i, text: origLines[i - 1] });
+          i--;
+        }
+      }
+
+      return diff;
+    }
+
+    function renderDiff() {
+      const origVal = textOriginal.value;
+      const modVal = textModified.value;
+
+      if (!origVal && !modVal) {
+        diffOutput.innerHTML = `
+          <div class="p-4 text-center text-secondary small">
+            <i class="bi bi-arrow-left-right fs-2 mb-2 d-block opacity-50"></i>
+            Enter text above and click <strong>Compare Now</strong> to view the visual difference.
+          </div>`;
+        badgeAdded.textContent = '+0 Added';
+        badgeRemoved.textContent = '-0 Removed';
+        badgeUnchanged.textContent = '0 Unchanged';
+        badgeSimilarity.textContent = '100% Identical';
+        lastDiffResult = null;
+        return;
+      }
+
+      const origLines = origVal.split('\n');
+      const modLines = modVal.split('\n');
+      const ignoreWs = chkIgnoreWhitespace.checked;
+      const ignoreCase = chkIgnoreCase.checked;
+
+      const diff = computeLCSDiff(origLines, modLines, ignoreWs, ignoreCase);
+      lastDiffResult = diff;
+
+      let addedCount = 0;
+      let removedCount = 0;
+      let unchangedCount = 0;
+
+      diff.forEach(d => {
+        if (d.type === 'added') addedCount++;
+        else if (d.type === 'removed') removedCount++;
+        else unchangedCount++;
+      });
+
+      badgeAdded.textContent = `+${addedCount} Added`;
+      badgeRemoved.textContent = `-${removedCount} Removed`;
+      badgeUnchanged.textContent = `${unchangedCount} Unchanged`;
+
+      const totalOperations = addedCount + removedCount + unchangedCount;
+      const similarity = totalOperations > 0 ? Math.round((unchangedCount / totalOperations) * 100) : 100;
+      badgeSimilarity.textContent = `${similarity}% Match`;
+
+      function escapeHtml(str) {
+        return (str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      if (currentMode === 'inline') {
+        let html = '';
+        diff.forEach(item => {
+          const cls = item.type === 'added' ? 'diff-added' : (item.type === 'removed' ? 'diff-removed' : 'diff-unchanged');
+          const sign = item.type === 'added' ? '+' : (item.type === 'removed' ? '-' : ' ');
+          const lineNum = item.type === 'added' ? (item.modLine || '') : (item.origLine || '');
+          html += `
+            <div class="diff-row ${cls}">
+              <div class="diff-line-num">${lineNum}</div>
+              <div class="diff-sign">${sign}</div>
+              <div class="diff-text">${escapeHtml(item.text) || '&nbsp;'}</div>
+            </div>`;
+        });
+        diffOutput.innerHTML = html;
+      } else {
+        // Side-by-side mode
+        let html = `
+          <div class="d-flex border-bottom border-secondary border-opacity-25 bg-black bg-opacity-25 text-secondary small fw-bold">
+            <div class="diff-side-col px-3 py-2">Original</div>
+            <div class="diff-side-col px-3 py-2">Modified</div>
+          </div>`;
+
+        let origIdx = 0;
+        let modIdx = 0;
+
+        diff.forEach(item => {
+          if (item.type === 'unchanged') {
+            html += `
+              <div class="diff-row">
+                <div class="diff-side-col d-flex diff-unchanged">
+                  <div class="diff-line-num">${item.origLine}</div>
+                  <div class="diff-text">${escapeHtml(item.text) || '&nbsp;'}</div>
+                </div>
+                <div class="diff-side-col d-flex diff-unchanged">
+                  <div class="diff-line-num">${item.modLine}</div>
+                  <div class="diff-text">${escapeHtml(item.text) || '&nbsp;'}</div>
+                </div>
+              </div>`;
+          } else if (item.type === 'removed') {
+            html += `
+              <div class="diff-row">
+                <div class="diff-side-col d-flex diff-removed">
+                  <div class="diff-line-num">${item.origLine}</div>
+                  <div class="diff-sign">-</div>
+                  <div class="diff-text">${escapeHtml(item.text) || '&nbsp;'}</div>
+                </div>
+                <div class="diff-side-col d-flex bg-black bg-opacity-25">
+                  <div class="diff-line-num">&nbsp;</div>
+                  <div class="diff-text">&nbsp;</div>
+                </div>
+              </div>`;
+          } else if (item.type === 'added') {
+            html += `
+              <div class="diff-row">
+                <div class="diff-side-col d-flex bg-black bg-opacity-25">
+                  <div class="diff-line-num">&nbsp;</div>
+                  <div class="diff-text">&nbsp;</div>
+                </div>
+                <div class="diff-side-col d-flex diff-added">
+                  <div class="diff-line-num">${item.modLine}</div>
+                  <div class="diff-sign">+</div>
+                  <div class="diff-text">${escapeHtml(item.text) || '&nbsp;'}</div>
+                </div>
+              </div>`;
+          }
+        });
+
+        diffOutput.innerHTML = html;
+      }
+    }
+
+    function updateLineCounts() {
+      const origLines = textOriginal.value ? textOriginal.value.split('\n').length : 0;
+      const modLines = textModified.value ? textModified.value.split('\n').length : 0;
+      origStats.textContent = `${origLines} line${origLines === 1 ? '' : 's'}`;
+      modStats.textContent = `${modLines} line${modLines === 1 ? '' : 's'}`;
+    }
+
+    textOriginal.addEventListener('input', () => {
+      updateLineCounts();
+    });
+    textModified.addEventListener('input', () => {
+      updateLineCounts();
+    });
+
+    btnRunDiff.addEventListener('click', renderDiff);
+
+    btnModeInline.addEventListener('click', () => {
+      currentMode = 'inline';
+      btnModeInline.classList.add('btn-primary', 'active');
+      btnModeInline.classList.remove('btn-outline-secondary');
+      btnModeSplit.classList.add('btn-outline-secondary');
+      btnModeSplit.classList.remove('btn-primary', 'active');
+      renderDiff();
+    });
+
+    btnModeSplit.addEventListener('click', () => {
+      currentMode = 'split';
+      btnModeSplit.classList.add('btn-primary', 'active');
+      btnModeSplit.classList.remove('btn-outline-secondary');
+      btnModeInline.classList.add('btn-outline-secondary');
+      btnModeInline.classList.remove('btn-primary', 'active');
+      renderDiff();
+    });
+
+    chkIgnoreWhitespace.addEventListener('change', renderDiff);
+    chkIgnoreCase.addEventListener('change', renderDiff);
+
+    btnSwap.addEventListener('click', () => {
+      const tmp = textOriginal.value;
+      textOriginal.value = textModified.value;
+      textModified.value = tmp;
+      updateLineCounts();
+      renderDiff();
+    });
+
+    btnClearAll.addEventListener('click', () => {
+      textOriginal.value = '';
+      textModified.value = '';
+      updateLineCounts();
+      renderDiff();
+    });
+
+    btnLoadSample.addEventListener('click', () => {
+      textOriginal.value = `// Server Configuration v1.0\nconst config = {\n  port: 8080,\n  environment: "development",\n  enableSSL: false,\n  maxConnections: 100,\n  cacheDuration: 3600,\n  logging: true\n};\n\nmodule.exports = config;`;
+      textModified.value = `// Server Configuration v2.0 (Production)\nconst config = {\n  port: 443,\n  environment: "production",\n  enableSSL: true,\n  maxConnections: 5000,\n  timeout: 30000,\n  cacheDuration: 86400,\n  logging: false\n};\n\nexport default config;`;
+      updateLineCounts();
+      renderDiff();
+    });
+
+    btnCopyDiff.addEventListener('click', () => {
+      if (!lastDiffResult || lastDiffResult.length === 0) {
+        alert('Please run a diff comparison first.');
+        return;
+      }
+      const lines = lastDiffResult.map(d => {
+        const sign = d.type === 'added' ? '+' : (d.type === 'removed' ? '-' : ' ');
+        return sign + ' ' + d.text;
+      });
+      navigator.clipboard.writeText(lines.join('\n')).then(() => {
+        const origText = btnCopyDiff.innerHTML;
+        btnCopyDiff.innerHTML = '<i class="bi bi-check2 me-1 text-success"></i> Copied!';
+        setTimeout(() => { btnCopyDiff.innerHTML = origText; }, 2000);
+      });
+    });
+
+    // Auto-initialize counts
+    updateLineCounts();
+  </script>
+</body>
+
+</html>

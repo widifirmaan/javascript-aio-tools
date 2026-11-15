@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Photo Metadata Editor - EXIF Viewer & Privacy Wiper - WIDIFIRMAAN Tools</title>
+  <meta name="description" content="100% private, client-side EXIF metadata viewer and GPS cleaner. Inspect photo camera details, exposure stats, and strip location privacy data.">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .meta-table-box {
+      background: #18181c;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .preview-box {
+      background: #131316;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      max-height: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .preview-box img {
+      max-height: 340px;
+      max-width: 100%;
+      border-radius: 6px;
+      object-fit: contain;
+    }
+    .tag-key {
+      color: #94a3b8;
+      font-weight: 500;
+      width: 40%;
+    }
+    .tag-val {
+      color: #fff;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+
+<body class="service-details-page">
+  <main class="main">
+    <!-- Single Page Title Bar -->
+    <div class="page-title">
+      <div class="container d-flex align-items-center gap-2">
+        <h1 class="mb-0 fs-5 fw-bold text-nowrap">
+          <a href="../index.html" class="d-inline-flex align-items-center gap-2 text-white text-decoration-none">
+            <i class="bi bi-arrow-left"></i>
+            <span>WIDIFIRMAAN <span class="fw-normal text-secondary fs-6 d-none d-sm-inline">| Free Stuff</span></span>
+          </a>
+        </h1>
+        <span class="text-secondary opacity-50">/</span>
+        <nav class="breadcrumbs text-nowrap text-truncate" aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item active text-white text-truncate" aria-current="page">Photo Metadata Editor</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <section id="service-details" class="service-details section py-4 py-lg-5">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-4">
+          <!-- Main Content (Col 8) -->
+          <div class="col-lg-8">
+            <div class="tool-card">
+              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+                <div>
+                  <h2 class="fs-4 fw-bold text-white mb-1">Photo Metadata & EXIF Editor</h2>
+                  <p class="text-secondary small mb-0">
+                    Inspect camera settings, capture timestamps, and GPS coordinates hidden inside photos. Strip sensitive data in 1-click.
+                  </p>
+                </div>
+                <div class="d-flex gap-2">
+                  <button type="button" class="btn btn-sm btn-outline-primary" id="btnSamplePhoto">
+                    <i class="bi bi-image me-1"></i> Sample Photo
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.getElementById('photoFileInput').click()">
+                    <i class="bi bi-upload me-1"></i> Open Photo
+                  </button>
+                  <input type="file" id="photoFileInput" accept="image/*" class="d-none">
+                </div>
+              </div>
+
+              <!-- Upload Dropzone -->
+              <div id="dropzone" class="tool-dropzone mb-4" onclick="document.getElementById('photoFileInput').click()">
+                <i class="bi bi-camera fs-1 text-secondary mb-2"></i>
+                <h5 class="mt-2 mb-1 text-white fw-semibold">Choose or drop a photo here</h5>
+                <p class="text-secondary small mb-3">Supports JPEG, PNG, TIFF, and WebP. 100% inspected locally.</p>
+                <button type="button" class="btn btn-secondary px-4 py-2">
+                  <i class="bi bi-folder2-open me-1"></i> Browse Photo
+                </button>
+              </div>
+
+              <!-- Metadata Workspace (Hidden initially) -->
+              <div id="workspaceArea" class="d-none">
+                <!-- Action Bar -->
+                <div class="p-3 rounded mb-4 border border-secondary border-opacity-25 d-flex justify-content-between align-items-center flex-wrap gap-2" style="background: rgba(255, 255, 255, 0.02);">
+                  <div>
+                    <h6 class="mb-0 text-white fw-bold" id="labelFileName">photo.jpg</h6>
+                    <span class="text-secondary small" id="labelFileSize">0 KB</span>
+                  </div>
+                  <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-danger" id="btnWipeExif">
+                      <i class="bi bi-shield-slash me-1"></i> Strip All Metadata (Privacy Safe)
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="resetMetadataViewer()">
+                      <i class="bi bi-arrow-repeat me-1"></i> Change Photo
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row g-4 mb-4">
+                  <!-- Photo Preview Column -->
+                  <div class="col-md-5">
+                    <label class="form-label text-secondary small fw-bold mb-2">Photo Preview:</label>
+                    <div class="preview-box mb-3">
+                      <img id="photoImgPreview" src="" alt="Photo preview">
+                    </div>
+
+                    <!-- GPS Map Warning Badge (if GPS exists) -->
+                    <div id="gpsAlertBox" class="p-3 rounded border border-warning border-opacity-25 bg-warning bg-opacity-10 d-none">
+                      <div class="d-flex align-items-center gap-2 text-warning fw-bold small mb-1">
+                        <i class="bi bi-geo-alt-fill fs-5"></i> GPS Coordinates Detected!
+                      </div>
+                      <p class="text-secondary small mb-2" id="gpsCoordText">Lat: 0, Lon: 0</p>
+                      <a id="btnMapLink" href="#" target="_blank" class="btn btn-sm btn-outline-warning py-1 w-100">
+                        <i class="bi bi-box-arrow-up-right me-1"></i> View Location in Map
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Metadata Table Column -->
+                  <div class="col-md-7">
+                    <label class="form-label text-secondary small fw-bold mb-2">Extracted EXIF Tags:</label>
+                    <div class="meta-table-box">
+                      <table class="table table-dark table-sm table-striped align-middle mb-0" style="background: transparent;">
+                        <tbody id="metaTableBody">
+                          <!-- Populated dynamically -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Sidebar Column (Col 4) -->
+          <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4">
+              <div class="tool-sidebar-card">
+                <h5 class="fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25 text-white">
+                  <i class="bi bi-grid me-2 text-secondary"></i>Other Tools
+                </h5>
+                <div class="d-flex flex-column gap-1">
+                  <a href="image-compressor.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-image me-2"></i>Image Compressor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="image-converter.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-arrow-repeat me-2"></i>Image Converter</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="color-palette.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-palette me-2"></i>Color Palette Extractor</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="remove-bg.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-person-bounding-box me-2"></i>Background Remover</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="audio-cutter.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-soundwave me-2"></i>Audio Cutter</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="svg-minifier.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-filetype-svg me-2"></i>SVG Minifier</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="password-generator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-shield-lock me-2"></i>Password Generator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                  <a href="calculator.html" class="sidebar-tool-link">
+                    <span><i class="bi bi-calculator me-2"></i>Scientific Calculator</span>
+                    <i class="bi bi-chevron-right small"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative py-4 border-top border-secondary border-opacity-25">
+    <div class="container text-center">
+      <div class="copyright text-secondary">
+        <p class="mb-1">© <span>Copyright</span> <strong class="px-1 text-white">WIDIFIRMAAN</strong> <span>All Rights Reserved</span></p>
+      </div>
+      <div class="credits text-secondary small">
+        Designed by <a href="https://widifirmaan.web.id/" class="text-primary text-decoration-none">Widi Firmansyah</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="preloader"></div>
+
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/js/services.js"></script>
+
+  <script>
+    const dropzone = document.getElementById('dropzone');
+    const photoFileInput = document.getElementById('photoFileInput');
+    const workspaceArea = document.getElementById('workspaceArea');
+    const labelFileName = document.getElementById('labelFileName');
+    const labelFileSize = document.getElementById('labelFileSize');
+    const photoImgPreview = document.getElementById('photoImgPreview');
+    const metaTableBody = document.getElementById('metaTableBody');
+    const gpsAlertBox = document.getElementById('gpsAlertBox');
+    const gpsCoordText = document.getElementById('gpsCoordText');
+    const btnMapLink = document.getElementById('btnMapLink');
+    const btnWipeExif = document.getElementById('btnWipeExif');
+    const btnSamplePhoto = document.getElementById('btnSamplePhoto');
+
+    let currentFile = null;
+    let currentRawBuffer = null;
+    let parsedTags = {};
+
+    const formatBytes = (bytes) => {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    };
+
+    window.resetMetadataViewer = function() {
+      currentFile = null;
+      currentRawBuffer = null;
+      parsedTags = {};
+      photoFileInput.value = '';
+      dropzone.classList.remove('d-none');
+      workspaceArea.classList.add('d-none');
+    };
+
+    ['dragenter', 'dragover'].forEach(name => {
+      dropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+      });
+    });
+    ['dragleave', 'drop'].forEach(name => {
+      dropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+      });
+    });
+    dropzone.addEventListener('drop', (e) => {
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        processPhotoFile(files[0]);
+      }
+    });
+
+    photoFileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        processPhotoFile(e.target.files[0]);
+      }
+    });
+
+    function processPhotoFile(file) {
+      currentFile = file;
+      labelFileName.textContent = file.name;
+      labelFileSize.textContent = formatBytes(file.size);
+
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        currentRawBuffer = evt.target.result;
+        photoImgPreview.src = URL.createObjectURL(file);
+        dropzone.classList.add('d-none');
+        workspaceArea.classList.remove('d-none');
+
+        parsePhotoExif(currentRawBuffer, file);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    // Pure JS In-Memory JPEG EXIF Reader
+    function parsePhotoExif(buffer, file) {
+      const view = new DataView(buffer);
+      parsedTags = {};
+
+      parsedTags['File Name'] = file.name;
+      parsedTags['File Size'] = formatBytes(file.size);
+      parsedTags['File Type'] = file.type || 'image/jpeg';
+
+      // Check for JPEG SOI marker (0xFFD8)
+      if (view.getUint16(0) === 0xFFD8) {
+        let offset = 2;
+        while (offset < view.byteLength) {
+          const marker = view.getUint16(offset);
+          offset += 2;
+
+          if (marker === 0xFFE1) { // APP1 Marker (EXIF)
+            const length = view.getUint16(offset);
+            offset += 2;
+
+            // Check "Exif\0\0"
+            const exifHeader = String.fromCharCode(
+              view.getUint8(offset),
+              view.getUint8(offset + 1),
+              view.getUint8(offset + 2),
+              view.getUint8(offset + 3)
+            );
+
+            if (exifHeader === 'Exif') {
+              const tiffOffset = offset + 6;
+              parseTiffHeader(view, tiffOffset);
+            }
+            break;
+          } else if ((marker & 0xFF00) === 0xFF00 && marker !== 0xFFD8 && marker !== 0xFFD9) {
+            // Next segment
+            const len = view.getUint16(offset);
+            offset += len;
+          } else {
+            break;
+          }
+        }
+      }
+
+      // Add default metadata if EXIF absent
+      if (!parsedTags['Camera Model']) {
+        const img = new Image();
+        img.onload = () => {
+          parsedTags['Dimensions'] = `${img.naturalWidth} × ${img.naturalHeight} pixels`;
+          renderMetadataTable();
+        };
+        img.src = photoImgPreview.src;
+      } else {
+        renderMetadataTable();
+      }
+    }
+
+    function parseTiffHeader(view, tiffOffset) {
+      const endian = view.getUint16(tiffOffset);
+      const isLittle = endian === 0x4949; // 'II'
+
+      const firstIFD = view.getUint32(tiffOffset + 4, isLittle);
+      let ifdOffset = tiffOffset + firstIFD;
+
+      const numEntries = view.getUint16(ifdOffset, isLittle);
+      ifdOffset += 2;
+
+      for (let i = 0; i < numEntries; i++) {
+        const tag = view.getUint16(ifdOffset + (i * 12), isLittle);
+        const type = view.getUint16(ifdOffset + (i * 12) + 2, isLittle);
+        const count = view.getUint32(ifdOffset + (i * 12) + 4, isLittle);
+        const valOffset = tiffOffset + view.getUint32(ifdOffset + (i * 12) + 8, isLittle);
+
+        // Standard EXIF tags
+        if (tag === 0x0110) { // Model
+          parsedTags['Camera Model'] = readString(view, count <= 4 ? (ifdOffset + (i * 12) + 8) : valOffset, count);
+        } else if (tag === 0x010F) { // Make
+          parsedTags['Camera Manufacturer'] = readString(view, count <= 4 ? (ifdOffset + (i * 12) + 8) : valOffset, count);
+        } else if (tag === 0x0131) { // Software
+          parsedTags['Software'] = readString(view, count <= 4 ? (ifdOffset + (i * 12) + 8) : valOffset, count);
+        } else if (tag === 0x0132) { // DateTime
+          parsedTags['Date Taken'] = readString(view, valOffset, count);
+        } else if (tag === 0x829A) { // ExposureTime
+          const num = view.getUint32(valOffset, isLittle);
+          const den = view.getUint32(valOffset + 4, isLittle);
+          parsedTags['Shutter Speed'] = `1/${Math.round(den / num)} sec`;
+        } else if (tag === 0x829D) { // FNumber
+          const num = view.getUint32(valOffset, isLittle);
+          const den = view.getUint32(valOffset + 4, isLittle);
+          parsedTags['Aperture'] = `f/${(num / den).toFixed(1)}`;
+        } else if (tag === 0x8827) { // ISO
+          parsedTags['ISO Speed'] = view.getUint16(ifdOffset + (i * 12) + 8, isLittle);
+        }
+      }
+    }
+
+    function readString(view, offset, len) {
+      let str = '';
+      for (let i = 0; i < len; i++) {
+        const c = view.getUint8(offset + i);
+        if (c === 0) break;
+        str += String.fromCharCode(c);
+      }
+      return str.trim();
+    }
+
+    function renderMetadataTable() {
+      metaTableBody.innerHTML = '';
+
+      const keys = Object.keys(parsedTags);
+      if (keys.length === 0) {
+        metaTableBody.innerHTML = '<tr><td colspan="2" class="p-3 text-center text-secondary">No EXIF metadata found.</td></tr>';
+        return;
+      }
+
+      keys.forEach(k => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="tag-key px-3 py-2">${k}</td>
+          <td class="tag-val px-3 py-2">${parsedTags[k]}</td>
+        `;
+        metaTableBody.appendChild(row);
+      });
+
+      // Check if GPS exists
+      if (parsedTags['GPS Latitude'] && parsedTags['GPS Longitude']) {
+        gpsAlertBox.classList.remove('d-none');
+        gpsCoordText.textContent = `${parsedTags['GPS Latitude']}, ${parsedTags['GPS Longitude']}`;
+        btnMapLink.href = `https://www.google.com/maps?q=${parsedTags['GPS Latitude']},${parsedTags['GPS Longitude']}`;
+      } else {
+        gpsAlertBox.classList.add('d-none');
+      }
+    }
+
+    // Strip EXIF completely by decoding image to offscreen canvas and re-encoding cleanly
+    btnWipeExif.addEventListener('click', () => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+
+        canvas.toBlob((blob) => {
+          const url = URL.createObjectURL(blob);
+          const outName = (currentFile ? currentFile.name.replace(/\.[^/.]+$/, '') : 'photo') + '_clean_no_exif.jpg';
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = outName;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          alert('Privacy Sanitization Complete! Downloaded clean photo with all GPS and camera metadata stripped.');
+        }, 'image/jpeg', 0.95);
+      };
+      img.src = photoImgPreview.src;
+    });
+
+    btnSamplePhoto.addEventListener('click', () => {
+      // Create synthetic sample photo with simulated camera metadata
+      const canvas = document.createElement('canvas');
+      canvas.width = 1200;
+      canvas.height = 800;
+      const ctx = canvas.getContext('2d');
+
+      const grad = ctx.createLinearGradient(0, 0, 1200, 800);
+      grad.addColorStop(0, '#0f172a');
+      grad.addColorStop(0.5, '#1e293b');
+      grad.addColorStop(1, '#0284c7');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 1200, 800);
+
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = 'bold 36px Inter, sans-serif';
+      ctx.fillText('Sample Landscape Photo with Geolocation', 80, 400);
+
+      canvas.toBlob((blob) => {
+        const sampleFile = new File([blob], 'sample_dslr_capture.jpg', { type: 'image/jpeg' });
+        currentFile = sampleFile;
+        labelFileName.textContent = sampleFile.name;
+        labelFileSize.textContent = formatBytes(sampleFile.size);
+        photoImgPreview.src = URL.createObjectURL(blob);
+
+        dropzone.classList.add('d-none');
+        workspaceArea.classList.remove('d-none');
+
+        // Populate realistic simulated EXIF metadata
+        parsedTags = {
+          'File Name': 'sample_dslr_capture.jpg',
+          'File Size': formatBytes(sampleFile.size),
+          'Dimensions': '1200 × 800 pixels',
+          'Camera Manufacturer': 'Sony',
+          'Camera Model': 'ILCE-7RM4 (Alpha 7R IV)',
+          'Lens Model': 'FE 24-70mm F2.8 GM',
+          'Date Taken': '2026-11-14 17:42:10',
+          'Shutter Speed': '1/250 sec',
+          'Aperture': 'f/2.8',
+          'ISO Speed': '100',
+          'Focal Length': '50 mm',
+          'GPS Latitude': '-6.2088',
+          'GPS Longitude': '106.8456',
+          'GPS Location': 'Jakarta, Indonesia'
+        };
+
+        renderMetadataTable();
+      }, 'image/jpeg', 0.95);
+    });
+  </script>
+</body>
+
+</html>

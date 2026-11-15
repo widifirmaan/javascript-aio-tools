@@ -35,6 +35,14 @@ const tasks = [
   { name: 'Image Converter', file: 'tools/image-converter.html' },
   { name: 'Text Editor', file: 'tools/text-editor.html' },
   { name: 'Tire Comparison', file: 'tools/tire-comp.html' },
+  { name: 'Text Diff', file: 'tools/text-diff.html', action: (page) => page.click('#btnLoadSample').catch(() => {}) },
+  { name: 'Password Generator', file: 'tools/password-generator.html' },
+  { name: 'PDF Splitter', file: 'tools/pdf-splitter.html' },
+  { name: 'Color Palette Extractor', file: 'tools/color-palette.html', action: (page) => page.click('#btnSample').catch(() => {}) },
+  { name: 'SVG Minifier', file: 'tools/svg-minifier.html', action: (page) => page.click('#btnSample').catch(() => {}) },
+  { name: 'Audio Cutter', file: 'tools/audio-cutter.html', action: (page) => page.click('#btnSampleAudio').catch(() => {}) },
+  { name: 'Photo Metadata Editor', file: 'tools/photo-metadata.html', action: (page) => page.click('#btnSamplePhoto').catch(() => {}) },
+  { name: 'Screen Recorder', file: 'tools/screen-recorder.html' },
 ];
 
 async function preparePage(page, task, isMobile) {
