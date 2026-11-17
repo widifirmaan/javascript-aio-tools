@@ -1,17 +1,16 @@
 # JavaScript AIO Tools
 
-> Free, fast, and 100% private browser utility suite powered by WebAssembly and client-side JavaScript.
+> Fast, 100% private in-browser utility suite powered by client-side JavaScript and modern Web APIs.
 
-JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection of 23 essential browser utilities for documents, images, audio, video, security & privacy, developer productivity, and calculations. All data is processed entirely in your browser's memory, zero server uploads, 100% private, and completely free.
+JavaScript All-in-One (AIO) Tools is a collection of 23 browser utilities for documents, images, audio, video, security & privacy, developer productivity, and calculations. Processing runs entirely in browser memory with zero server uploads—22 tools execute via native JavaScript, Canvas, and Web APIs, with on-device WebAssembly used for neural background removal.
 
 [![Live Demo](https://img.shields.io/badge/Demo-tools.widifirmaan.web.id-10B981?style=flat-square&logo=cloudflare&logoColor=white)](https://tools.widifirmaan.web.id)
-[![Architecture](https://img.shields.io/badge/Architecture-100%25_Client--Side-8B5CF6?style=flat-square)](#features)
-[![WebAssembly](https://img.shields.io/badge/Engine-WebAssembly-654FF0?style=flat-square&logo=webassembly&logoColor=white)](https://webassembly.org/)
-[![Tools](https://img.shields.io/badge/Tools-23_Interactive_Apps-F59E0B?style=flat-square)](#features)
+[![Architecture](https://img.shields.io/badge/Architecture-100%25_Client--Side-8B5CF6?style=flat-square)](https://tools.widifirmaan.web.id)
+[![Tools](https://img.shields.io/badge/Tools-23_Interactive_Apps-F59E0B?style=flat-square)](https://tools.widifirmaan.web.id)
 [![Deployment](https://img.shields.io/badge/Deployment-Cloudflare_Pages-F38020?style=flat-square&logo=cloudflare)](https://pages.cloudflare.com/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![HTML5 / CSS3](https://img.shields.io/badge/HTML5%20%2F%20CSS3-Modern_Web-E34F26?style=flat-square&logo=html5&logoColor=white)](https://developer.mozilla.org/)
-[![Tailwind & Bootstrap](https://img.shields.io/badge/UI-Tailwind_%26_Bootstrap-38BDF8?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Bootstrap](https://img.shields.io/badge/UI-Bootstrap_5.3-7952B3?style=flat-square&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
 
 ---
 
@@ -24,7 +23,7 @@ JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection
 
 ## Showcase
 
-| Desktop (MacBook Pro) | Mobile (iPhone 16 Pro) |
+| Desktop | Mobile |
 | :---: | :---: |
 | **Main Dashboard Desktop**<br>![Dashboard Desktop](screenshots/Dashboard%20Desktop.png) | **Main Dashboard Mobile**<br>![Dashboard Mobile](screenshots/Dashboard%20Mobile.png) |
 | **File Encryptor Desktop**<br>![File Encryptor Desktop](screenshots/File%20Encryptor%20Desktop.png) | **File Encryptor Mobile**<br>![File Encryptor Mobile](screenshots/File%20Encryptor%20Mobile.png) |
@@ -81,7 +80,7 @@ JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection
   - **Tire Comparison (`tools/tire-comp.html`)**: Automotive tire specification comparator calculating sidewall height, rolling diameter, ride height delta, and speedometer error percentage.
 - **100% Client-Side Privacy**: All file processing, cryptographic operations, image rendering, and document manipulation execute in browser memory—no files or metadata are uploaded to any external server.
 - **Zero Framework Runtime**: Built with Vanilla JavaScript (ES6+), HTML5, and CSS without client-side framework overhead.
-- **Responsive Dark Theme**: Modern dark theme with Bootstrap 5.3 and Tailwind CSS v4 styling, mobile off-canvas drawer navigation, and responsive tool grid.
+- **Responsive Dark Theme**: Modern dark theme with Bootstrap 5.3 and custom CSS styling, mobile off-canvas drawer navigation, and responsive tool grid.
 
 ---
 
@@ -93,10 +92,10 @@ JavaScript All-in-One (AIO) Tools is an open-source, zero-server-cost collection
 | **Cryptography & Privacy** | Web Crypto API (`SubtleCrypto`), AES-GCM, PBKDF2 | Client-side 256-bit file encryption, LSB steganography, and token inspection |
 | **Document Processing** | Mozilla PDF.js v3.11, PDF-Lib v1.17 | In-browser PDF parsing, previewing, splitting, and merging |
 | **Audio & Media APIs** | Web Audio API (YIN Pitch Autocorrelation), Canvas 2D, MediaRecorder | Pitch detection, waveform slicing, audio encoding, and screen capture |
-| **Client-Side AI & Computer Vision** | `@imgly/background-removal` (WASM), HTML5 Canvas | On-device machine learning for background removal without server GPUs |
+| **On-Device Machine Learning** | `@imgly/background-removal` (WASM), HTML5 Canvas | On-device machine learning for background removal without server processing |
 | **QR Code & Camera** | QRCode.js, Html5-QRCode v2.3 | Client-side QR generation and live webcam video stream decoding |
 | **Developer Utilities** | Pure JS Barcode Encoders (128/EAN/UPC/39/ITF), AST Tokenizer, Binary EXIF, LCS Diff | Vector barcode rendering, Regex Railroad flow generation, metadata analysis, and text diffing |
-| **Styling & Icons** | Tailwind CSS v4, Bootstrap 5.3, Bootstrap Icons, AOS | Responsive modern interface with modal dialogs and scroll animations |
+| **Styling & Icons** | Bootstrap 5.3, Bootstrap Icons, AOS, Custom CSS | Responsive modern interface with modal dialogs and scroll animations |
 
 ---
 
