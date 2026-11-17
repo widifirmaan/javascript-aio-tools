@@ -4,9 +4,9 @@
   "description": "100% client-side web utility suite powered by JavaScript, WebAssembly, and modern browser APIs.",
   "type": "module",
   "scripts": {
-    "dev": "npx wrangler pages dev . --port=3000",
+    "dev": "npx serve . -p 3000",
     "test": "node scripts/test-real-all-tools.mjs",
-    "deploy": "wrangler pages deploy . --project-name javascript-aio-tools --commit-dirty=true",
+    "deploy": "npx serve . -p 3000",
     "screenshots:capture": "node scripts/capture.mjs",
     "screenshots:mockup": "node /home/widifirmaan/Projects/readme-project/scripts/generate-mockups.mjs --input raw_screenshots --output screenshots",
     "screenshots:all": "npm run screenshots:capture && npm run screenshots:mockup"
@@ -17,8 +17,7 @@
     "client-side",
     "image-compressor",
     "background-remover",
-    "qr-code-studio",
-    "cloudflare-pages"
+    "qr-code-studio"
   ],
   "author": "Widi Firmansyah"
 }

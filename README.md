@@ -4,20 +4,11 @@
 
 JavaScript All-in-One (AIO) Tools is a collection of 23 browser utilities for documents, images, audio, video, security & privacy, developer productivity, and calculations. Processing runs entirely in browser memory with zero server uploads—22 tools execute via native JavaScript, Canvas, and Web APIs, with on-device WebAssembly used for neural background removal.
 
-[![Live Demo](https://img.shields.io/badge/Demo-tools.widifirmaan.web.id-10B981?style=flat-square&logo=cloudflare&logoColor=white)](https://tools.widifirmaan.web.id)
-[![Architecture](https://img.shields.io/badge/Architecture-100%25_Client--Side-8B5CF6?style=flat-square)](https://tools.widifirmaan.web.id)
-[![Tools](https://img.shields.io/badge/Tools-23_Interactive_Apps-F59E0B?style=flat-square)](https://tools.widifirmaan.web.id)
-[![Deployment](https://img.shields.io/badge/Deployment-Cloudflare_Pages-F38020?style=flat-square&logo=cloudflare)](https://pages.cloudflare.com/)
+[![Architecture](https://img.shields.io/badge/Architecture-100%25_Client--Side-8B5CF6?style=flat-square)](#features)
+[![Tools](https://img.shields.io/badge/Tools-23_Interactive_Apps-F59E0B?style=flat-square)](#features)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![HTML5 / CSS3](https://img.shields.io/badge/HTML5%20%2F%20CSS3-Modern_Web-E34F26?style=flat-square&logo=html5&logoColor=white)](https://developer.mozilla.org/)
 [![Bootstrap](https://img.shields.io/badge/UI-Bootstrap_5.3-7952B3?style=flat-square&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
-
----
-
-## Live Production
-
-- **URL:** [https://tools.widifirmaan.web.id](https://tools.widifirmaan.web.id)
-- **Deployment:** Cloudflare Pages (Edge delivery with static assets)
 
 ---
 
@@ -131,59 +122,63 @@ JavaScript All-in-One (AIO) Tools is a collection of 23 browser utilities for do
 │   ├── calculator.html      # Scientific online calculator
 │   ├── text-editor.html     # Real-time text editor & word counter
 │   └── tire-comp.html       # Tire & rim comparison calculator
-├── screenshots/             # Retina MacBook Pro & iPhone 16 Pro showcase mockups (48 files)
+├── screenshots/             # Showcase mockups (48 files)
 ├── scripts/                 # Automated test runner and screenshot crawler
-├── _headers                 # Cloudflare Pages HTTP caching & CORS rules
 ├── index.html               # Main dashboard with all 23 tools
-├── package.json             # NPM metadata, test scripts, and build tasks
-├── wrangler.toml            # Cloudflare Pages deployment configuration
+├── package.json             # NPM metadata and test scripts
 └── README.md
 ```
 
 ---
 
-## Getting Started & Local Development
+## Local Setup & Deployment
 
-### Prerequisites
-- Any modern web browser (Google Chrome, Firefox, Edge, or Safari).
-- (Optional) Node.js 18+ to run a local dev server or trigger the test runner.
+### 1. Prerequisites
 
-### Local Development
+- Any modern web browser (Google Chrome, Mozilla Firefox, Microsoft Edge, or Safari).
+- Python 3 (`python3`) or Node.js (`npx serve`) to host static files locally.
 
-> **Environment Variables:** No `.env` file or API keys are required. All utilities run 100% client-side in the browser.
+### 2. Menjalankan Server Lokal
+
+Aplikasi ini 100% *client-side* (statis) tanpa dependensi database eksternal:
 
 ```bash
-# 1. Clone the repository
+# 1. Clone repository
 git clone https://github.com/widifirmaan/javascript-aio-tools.git
 cd javascript-aio-tools
 
-# 2. Start local preview server with Cloudflare Wrangler
-npm run dev
-
-# Or run using Python:
+# 2. Jalankan local web server
 python3 -m http.server 3000
+
+# Atau menggunakan npx serve (jika ada Node.js)
+npx serve . -p 3000
 ```
 
-Open `http://localhost:3000` in your web browser.
+Buka [http://localhost:3000](http://localhost:3000) di browser Anda.
 
-### Automated Testing
+### 3. Pengujian Otomatis
+
+Untuk menjalankan suite pengujian otomatis terhadap 23 modul aplikasi:
 
 ```bash
-# Run test suite verifying all 23 tools
 npm test
 ```
 
-### Cloudflare Pages Deployment
+### 4. Panduan Uji Manual (Testing Checklist)
 
-Deploy static assets directly to Cloudflare Pages via Wrangler CLI:
+Lakukan verifikasi manual berikut di browser:
 
-```bash
-npm run deploy
-```
+| No | Fitur yang Diuji | Langkah Pengujian | Hasil yang Diharapkan |
+| :---: | :--- | :--- | :--- |
+| 1 | **Dashboard Utama** | Buka `http://localhost:3000`, gunakan filter pencarian kategori | Tampil 23 card tools responsif dan filter kategori berfungsi |
+| 2 | **File Encryptor** | Buka `/tools/file-encryptor.html`, upload file, input passphrase, klik Enkripsi | File terenkripsi AES-256-GCM terunduh (`.enc`), dan bisa didekripsi ulang |
+| 3 | **Steganography** | Buka `/tools/steganography.html`, masukkan gambar PNG & teks rahasia, sembunyikan | Gambar hasil steganografi LSB terunduh; saat di-decode teks terbaca tepat |
+| 4 | **Password Generator** | Buka `/tools/password-generator.html`, pilih opsi simbol & panjang 16 | Password acak aman ter-generate dengan indikator entropy bit |
+| 5 | **Barcode Studio** | Buka `/tools/barcode-studio.html`, ketik angka/teks, pilih format `Code 128` | Barcode SVG rendered seketika dan dapat diunduh (SVG / PNG) |
+| 6 | **Developer Toolbox** | Buka `/tools/dev-tools.html`, tempel string JSON tidak terformat, klik Beautify | JSON terformat rapi dengan validasi sintaksis bebas error |
 
 ---
 
 ## Author
 
 Developed by **[Widi Firmansyah](https://widifirmaan.web.id)**.
-
