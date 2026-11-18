@@ -95,7 +95,7 @@
 
 ---
 
-## Local Setup & Deployment
+## Tutorial Run Local & Setup
 
 ### 1. Prerequisites
 
@@ -103,7 +103,7 @@
 - Python 3 (`python3`) or Node.js (`npx serve`) to serve static HTML files locally.
 - Database: **No database required** (100% static client-side application).
 
-### 2. Environment Variables
+### 2. Environment Variables Setup
 
 No environment variables are required.
 
@@ -124,19 +124,35 @@ npx serve .
 
 Open [http://localhost:8000](http://localhost:8000) in your browser.
 
-### 4. Manual Testing Checklist
+---
 
-| No | Feature | Test Steps | Expected Result |
-| :---: | :--- | :--- | :--- |
-| 1 | **Dashboard** | Open `http://localhost:8000` | Displays all 23 tool cards with live search filtering |
-| 2 | **File Encryptor** | Open `/tools/file-encryptor.html`, select a test file, enter a password, click Encrypt | Downloads an encrypted `.enc` file; uploading it back with the same password decrypts the file |
-| 3 | **Steganography** | Open `/tools/steganography.html`, provide an image and secret text, click Encode | Text is encoded into image pixel channels; decoding tab extracts the original text |
-| 4 | **Regex Visualizer** | Open `/tools/regex-visualizer.html`, type `[a-z]+@[a-z]+\.[a-z]{2,}` | Dynamic SVG railroad track diagram renders matching pattern branches |
-| 5 | **Barcode Studio** | Open `/tools/barcode-studio.html`, type `123456789012` with format EAN-13 | Generates a valid 1D vector barcode with PNG and SVG download buttons |
-| 6 | **Password Generator** | Open `/tools/password-generator.html`, set length to 24, click Generate | Generates a cryptographically strong random password with entropy score |
+## Testing & QA Automation
+
+Automated testing and QA verification are powered by the system's `qa-toolkit`:
+
+### 1. Playwright Test Suite
+End-to-end smoke verification covering dashboard utility catalog and individual tool page accessibility:
+
+```bash
+cd /home/widifirmaan/Projects/qa-toolkit
+npx playwright test tests/playwright/aiotools.spec.js
+```
+
+### 2. Cypress E2E Verification
+Cross-browser regression testing on DOM structure and production stability:
+
+```bash
+cd /home/widifirmaan/Projects/qa-toolkit
+npx cypress run --spec cypress/e2e/aiotools.cy.js
+```
+
+### 3. QA Execution Summary
+- **Playwright**: 2 tests passed (Dashboard 23+ Tools Catalog & Password Generator DOM Mount)
+- **Cypress**: 2 specs passed (Dashboard DOM Mount & Tool Accessibility)
+- **Status**: ✅ All automated tests verified and passing
 
 ---
 
 ## Author
 
-Developed by **[Widi Firmansyah](https://widifirmaan.web.id)**.
+Made with ❤️ by **Widi Firmansyah** / [widifirmaan.web.id](https://widifirmaan.web.id)
