@@ -1,4 +1,4 @@
-# JavaScript AIO Tools
+# JavaScript AIO Tools 🛠️
 
 > Collection of 23 fast, private in-browser utilities for document processing, media editing, cryptography, and developer productivity running 100% on the client side.
 
@@ -19,7 +19,7 @@
 
 ## Screenshots
 
-| Desktop | Mobile |
+| Desktop (MacBook Pro M4) | Mobile (iPhone 16 Pro) |
 | :---: | :---: |
 | **Main Dashboard & 23-Tool Grid**<br>![Dashboard](screenshots/Dashboard%20Desktop.png) | **Main Dashboard & 23-Tool Grid**<br>![Dashboard](screenshots/Dashboard%20Mobile.png) |
 | **Canvas Image Compressor**<br>![Image Compressor](screenshots/Image%20Compressor%20Desktop.png) | **Canvas Image Compressor**<br>![Image Compressor](screenshots/Image%20Compressor%20Mobile.png) |
@@ -49,7 +49,7 @@
 
 ---
 
-## Features
+## Fitur
 
 - **23 In-Browser Utilities**:
   - **File Encryptor (`tools/file-encryptor.html`)**: Client-side AES-GCM 256-bit encryption and decryption with PBKDF2 key derivation (100,000 iterations) using the native Web Crypto API.
