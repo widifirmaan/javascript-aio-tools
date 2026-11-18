@@ -21,23 +21,31 @@
 
 | Desktop | Mobile |
 | :---: | :---: |
-| **Main Dashboard & Utilities Grid**<br>![Dashboard](screenshots/Dashboard%20Desktop.png) | **Main Dashboard & Utilities Grid**<br>![Dashboard](screenshots/Dashboard%20Mobile.png) |
-| **File Encryptor & Decryptor (AES-GCM)**<br>![File Encryptor](screenshots/File%20Encryptor%20Desktop.png) | **File Encryptor & Decryptor (AES-GCM)**<br>![File Encryptor](screenshots/File%20Encryptor%20Mobile.png) |
-| **Image Steganography Studio (LSB)**<br>![Steganography](screenshots/Steganography%20Desktop.png) | **Image Steganography Studio (LSB)**<br>![Steganography](screenshots/Steganography%20Mobile.png) |
-| **Password Generator & Entropy Meter**<br>![Password Generator](screenshots/Password%20Generator%20Desktop.png) | **Password Generator & Entropy Meter**<br>![Password Generator](screenshots/Password%20Generator%20Mobile.png) |
-| **1D Vector Barcode Studio**<br>![Barcode Studio](screenshots/Barcode%20Studio%20Desktop.png) | **1D Vector Barcode Studio**<br>![Barcode Studio](screenshots/Barcode%20Studio%20Mobile.png) |
-| **QR Code Studio & Live Scanner**<br>![QR Code](screenshots/QR%20Code%20Desktop.png) | **QR Code Studio & Live Scanner**<br>![QR Code](screenshots/QR%20Code%20Mobile.png) |
-| **AI Neural Background Remover (WASM)**<br>![Background Remover](screenshots/Background%20Remover%20Desktop.png) | **AI Neural Background Remover (WASM)**<br>![Background Remover](screenshots/Background%20Remover%20Mobile.png) |
+| **Main Dashboard & 23-Tool Grid**<br>![Dashboard](screenshots/Dashboard%20Desktop.png) | **Main Dashboard & 23-Tool Grid**<br>![Dashboard](screenshots/Dashboard%20Mobile.png) |
 | **Canvas Image Compressor**<br>![Image Compressor](screenshots/Image%20Compressor%20Desktop.png) | **Canvas Image Compressor**<br>![Image Compressor](screenshots/Image%20Compressor%20Mobile.png) |
-| **PDF Page Range Splitter**<br>![PDF Splitter](screenshots/PDF%20Splitter%20Desktop.png) | **PDF Page Range Splitter**<br>![PDF Splitter](screenshots/PDF%20Splitter%20Mobile.png) |
+| **AI Neural Background Remover (WASM)**<br>![Background Remover](screenshots/Background%20Remover%20Desktop.png) | **AI Neural Background Remover (WASM)**<br>![Background Remover](screenshots/Background%20Remover%20Mobile.png) |
+| **QR Code Studio & Live Scanner**<br>![QR Code](screenshots/QR%20Code%20Desktop.png) | **QR Code Studio & Live Scanner**<br>![QR Code](screenshots/QR%20Code%20Mobile.png) |
 | **PDF Multi-Tool (Merger & Img-to-PDF)**<br>![PDF Tools](screenshots/PDF%20Tools%20Desktop.png) | **PDF Multi-Tool (Merger & Img-to-PDF)**<br>![PDF Tools](screenshots/PDF%20Tools%20Mobile.png) |
-| **Regex Visualizer & SVG Railroad Diagrams**<br>![Regex Visualizer](screenshots/Regex%20Visualizer%20Desktop.png) | **Regex Visualizer & SVG Railroad Diagrams**<br>![Regex Visualizer](screenshots/Regex%20Visualizer%20Mobile.png) |
+| **Developer Toolbox (JSON, Base64, JWT)**<br>![Developer Toolbox](screenshots/Developer%20Toolbox%20Desktop.png) | **Developer Toolbox (JSON, Base64, JWT)**<br>![Developer Toolbox](screenshots/Developer%20Toolbox%20Mobile.png) |
+| **Scientific Calculator with Evaluated Result**<br>![Calculator Result](screenshots/Calculator%20Result%20Desktop.png) | **Scientific Calculator with Evaluated Result**<br>![Calculator Result](screenshots/Calculator%20Result%20Mobile.png) |
+| **JPG / PNG / WebP Image Converter**<br>![Image Converter](screenshots/Image%20Converter%20Desktop.png) | **JPG / PNG / WebP Image Converter**<br>![Image Converter](screenshots/Image%20Converter%20Mobile.png) |
+| **Rich Text Editor & Word Counter**<br>![Text Editor](screenshots/Text%20Editor%20Desktop.png) | **Rich Text Editor & Word Counter**<br>![Text Editor](screenshots/Text%20Editor%20Mobile.png) |
+| **Automotive Tire & Wheel Comparator**<br>![Tire Comparison](screenshots/Tire%20Comparison%20Desktop.png) | **Automotive Tire & Wheel Comparator**<br>![Tire Comparison](screenshots/Tire%20Comparison%20Mobile.png) |
 | **Text Diff Comparator (LCS)**<br>![Text Diff](screenshots/Text%20Diff%20Desktop.png) | **Text Diff Comparator (LCS)**<br>![Text Diff](screenshots/Text%20Diff%20Mobile.png) |
+| **Password Generator & Entropy Meter**<br>![Password Generator](screenshots/Password%20Generator%20Desktop.png) | **Password Generator & Entropy Meter**<br>![Password Generator](screenshots/Password%20Generator%20Mobile.png) |
+| **PDF Page Range Splitter**<br>![PDF Splitter](screenshots/PDF%20Splitter%20Desktop.png) | **PDF Page Range Splitter**<br>![PDF Splitter](screenshots/PDF%20Splitter%20Mobile.png) |
 | **Color Palette Extractor & CSS Variables**<br>![Color Palette](screenshots/Color%20Palette%20Desktop.png) | **Color Palette Extractor & CSS Variables**<br>![Color Palette](screenshots/Color%20Palette%20Mobile.png) |
+| **SVG Minifier & Live Vector Preview**<br>![SVG Minifier](screenshots/SVG%20Minifier%20Desktop.png) | **SVG Minifier & Live Vector Preview**<br>![SVG Minifier](screenshots/SVG%20Minifier%20Mobile.png) |
 | **Web Audio Waveform Trimmer & Cutter**<br>![Audio Cutter](screenshots/Audio%20Cutter%20Desktop.png) | **Web Audio Waveform Trimmer & Cutter**<br>![Audio Cutter](screenshots/Audio%20Cutter%20Mobile.png) |
 | **Photo EXIF Metadata Inspector & Cleaner**<br>![Photo Metadata](screenshots/Photo%20Metadata%20Desktop.png) | **Photo EXIF Metadata Inspector & Cleaner**<br>![Photo Metadata](screenshots/Photo%20Metadata%20Mobile.png) |
-| **Online Scientific Calculator**<br>![Calculator](screenshots/Calculator%20Desktop.png) | **Online Scientific Calculator**<br>![Calculator](screenshots/Calculator%20Mobile.png) |
-| **Automotive Tire & Wheel Comparator**<br>![Tire Comparison](screenshots/Tire%20Comparison%20Desktop.png) | **Automotive Tire & Wheel Comparator**<br>![Tire Comparison](screenshots/Tire%20Comparison%20Mobile.png) |
+| **Browser Screen Recorder (DisplayMedia)**<br>![Screen Recorder](screenshots/Screen%20Recorder%20Desktop.png) | **Browser Screen Recorder (DisplayMedia)**<br>![Screen Recorder](screenshots/Screen%20Recorder%20Mobile.png) |
+| **File Encryptor & Decryptor (AES-GCM)**<br>![File Encryptor](screenshots/File%20Encryptor%20Desktop.png) | **File Encryptor & Decryptor (AES-GCM)**<br>![File Encryptor](screenshots/File%20Encryptor%20Mobile.png) |
+| **Image Steganography Studio (LSB)**<br>![Steganography](screenshots/Steganography%20Desktop.png) | **Image Steganography Studio (LSB)**<br>![Steganography](screenshots/Steganography%20Mobile.png) |
+| **Image-to-ASCII Art Generator**<br>![ASCII Art](screenshots/ASCII%20Art%20Desktop.png) | **Image-to-ASCII Art Generator**<br>![ASCII Art](screenshots/ASCII%20Art%20Mobile.png) |
+| **Regex Visualizer Error Alert (Invalid Pattern)**<br>![Regex Visualizer Alert Invalid Pattern](screenshots/Regex%20Visualizer%20Alert%20Invalid%20Pattern%20Desktop.png) | **Regex Visualizer Error Alert (Invalid Pattern)**<br>![Regex Visualizer Alert Invalid Pattern](screenshots/Regex%20Visualizer%20Alert%20Invalid%20Pattern%20Mobile.png) |
+| **Regex Visualizer & SVG Railroad Diagrams**<br>![Regex Visualizer](screenshots/Regex%20Visualizer%20Desktop.png) | **Regex Visualizer & SVG Railroad Diagrams**<br>![Regex Visualizer](screenshots/Regex%20Visualizer%20Mobile.png) |
+| **Real-Time Instrument Tuner & Spectrogram**<br>![Instrument Tuner](screenshots/Instrument%20Tuner%20Desktop.png) | **Real-Time Instrument Tuner & Spectrogram**<br>![Instrument Tuner](screenshots/Instrument%20Tuner%20Mobile.png) |
+| **1D Vector Barcode Studio**<br>![Barcode Studio](screenshots/Barcode%20Studio%20Desktop.png) | **1D Vector Barcode Studio**<br>![Barcode Studio](screenshots/Barcode%20Studio%20Mobile.png) |
 
 ---
 
