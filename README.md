@@ -7,7 +7,6 @@
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![HTML5 / CSS3](https://img.shields.io/badge/HTML5%20%2F%20CSS3-Modern_Web-E34F26?style=flat-square&logo=html5&logoColor=white)](https://developer.mozilla.org/)
 [![Bootstrap](https://img.shields.io/badge/UI-Bootstrap_5.3-7952B3?style=flat-square&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
-[![Live Demo](https://img.shields.io/badge/Demo-tools.widifirmaan.web.id-10B981?style=flat-square)](https://tools.widifirmaan.web.id)
 
 ---
 
