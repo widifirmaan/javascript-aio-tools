@@ -1,4 +1,4 @@
-# JavaScript AIO Tools 🛠️
+# JavaScript AIO Tools
 
 > Collection of 23 fast, private in-browser utilities for document processing, media editing, cryptography, and developer productivity running 100% on the client side.
 
@@ -41,8 +41,8 @@
 | **File Encryptor & Decryptor (AES-GCM)**<br>![File Encryptor](screenshots/File%20Encryptor%20Desktop.png) | **File Encryptor & Decryptor (AES-GCM)**<br>![File Encryptor](screenshots/File%20Encryptor%20Mobile.png) |
 | **Image Steganography Studio (LSB)**<br>![Steganography](screenshots/Steganography%20Desktop.png) | **Image Steganography Studio (LSB)**<br>![Steganography](screenshots/Steganography%20Mobile.png) |
 | **Image-to-ASCII Art Generator**<br>![ASCII Art](screenshots/ASCII%20Art%20Desktop.png) | **Image-to-ASCII Art Generator**<br>![ASCII Art](screenshots/ASCII%20Art%20Mobile.png) |
-| **Regex Visualizer Error Alert (Invalid Pattern)**<br>![Regex Visualizer Alert Invalid Pattern](screenshots/Regex%20Visualizer%20Alert%20Invalid%20Pattern%20Desktop.png) | **Regex Visualizer Error Alert (Invalid Pattern)**<br>![Regex Visualizer Alert Invalid Pattern](screenshots/Regex%20Visualizer%20Alert%20Invalid%20Pattern%20Mobile.png) |
 | **Regex Visualizer & SVG Railroad Diagrams**<br>![Regex Visualizer](screenshots/Regex%20Visualizer%20Desktop.png) | **Regex Visualizer & SVG Railroad Diagrams**<br>![Regex Visualizer](screenshots/Regex%20Visualizer%20Mobile.png) |
+| **Regex Visualizer Error Alert (Invalid Pattern)**<br>![Regex Visualizer Alert Invalid Pattern](screenshots/Regex%20Visualizer%20Alert%20Invalid%20Pattern%20Desktop.png) | **Regex Visualizer Error Alert (Invalid Pattern)**<br>![Regex Visualizer Alert Invalid Pattern](screenshots/Regex%20Visualizer%20Alert%20Invalid%20Pattern%20Mobile.png) |
 | **Real-Time Instrument Tuner & Spectrogram**<br>![Instrument Tuner](screenshots/Instrument%20Tuner%20Desktop.png) | **Real-Time Instrument Tuner & Spectrogram**<br>![Instrument Tuner](screenshots/Instrument%20Tuner%20Mobile.png) |
 | **1D Vector Barcode Studio**<br>![Barcode Studio](screenshots/Barcode%20Studio%20Desktop.png) | **1D Vector Barcode Studio**<br>![Barcode Studio](screenshots/Barcode%20Studio%20Mobile.png) |
 
