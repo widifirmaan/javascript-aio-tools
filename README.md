@@ -125,33 +125,6 @@ Open [http://localhost:8000](http://localhost:8000) in your browser.
 
 ---
 
-## Testing & QA Automation
-
-Automated testing and QA verification are powered by the system's `qa-toolkit`:
-
-### 1. Playwright Test Suite
-End-to-end smoke verification covering dashboard utility catalog and individual tool page accessibility:
-
-```bash
-cd /home/widifirmaan/Projects/qa-toolkit
-npx playwright test tests/playwright/aiotools.spec.js
-```
-
-### 2. Cypress E2E Verification
-Cross-browser regression testing on DOM structure and production stability:
-
-```bash
-cd /home/widifirmaan/Projects/qa-toolkit
-npx cypress run --spec cypress/e2e/aiotools.cy.js
-```
-
-### 3. QA Execution Summary
-- **Playwright**: 2 tests passed (Dashboard 23+ Tools Catalog & Password Generator DOM Mount)
-- **Cypress**: 2 specs passed (Dashboard DOM Mount & Tool Accessibility)
-- **Status**: ✅ All automated tests verified and passing
-
----
-
 ## Author
 
 Made with ❤️ by **Widi Firmansyah** / [widifirmaan.web.id](https://widifirmaan.web.id)
