@@ -11,7 +11,7 @@ const downloadsDir = '/home/widifirmaan/Downloads';
 function encodeImage(filename) {
   const filePath = path.join(screenshotsDir, filename);
   if (!fs.existsSync(filePath)) {
-    console.warn(`Screenshot tidak ditemukan: ${filePath}`);
+    console.warn(`Peringatan: Screenshot tidak ditemukan: ${filePath}`);
     return '';
   }
   const fileBuffer = fs.readFileSync(filePath);
@@ -26,41 +26,41 @@ const images = {
   devToolboxDesktop: encodeImage('Developer Toolbox Desktop.png'),
   devToolboxMobile: encodeImage('Developer Toolbox Mobile.png'),
   compressorDesktop: encodeImage('Image Compressor Desktop.png'),
-  compressorMobile: encodeImage('Image Compressor Mobile.png'),
   qrCodeDesktop: encodeImage('QR Code Desktop.png'),
-  qrCodeMobile: encodeImage('QR Code Mobile.png'),
   passwordDesktop: encodeImage('Password Generator Desktop.png'),
-  passwordMobile: encodeImage('Password Generator Mobile.png'),
   textDiffDesktop: encodeImage('Text Diff Desktop.png'),
-  textDiffMobile: encodeImage('Text Diff Mobile.png'),
   regexDesktop: encodeImage('Regex Visualizer Desktop.png'),
-  regexMobile: encodeImage('Regex Visualizer Mobile.png'),
+  encryptorDesktop: encodeImage('File Encryptor Desktop.png'),
+  audioCutterDesktop: encodeImage('Audio Cutter Desktop.png'),
+  screenRecorderDesktop: encodeImage('Screen Recorder Desktop.png'),
 };
 
-console.log('Menyusun HTML dokumen presentasi JavaScript AIO Tools...');
+console.log('Menyusun HTML presentasi dengan style murni AIO Tools Dark Charcoal Workbench...');
 
 const htmlContent = `<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>JavaScript AIO Tools - 100% Client-Side Web Utilities</title>
+  <title>JavaScript AIO Tools - Web Engineering Presentation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-space: #0B0F19;
-      --bg-card: #111827;
-      --bg-surface: #1F2937;
-      --border-card: #1F2937;
-      --border-glow: #374151;
-      --text-main: #F9FAFB;
-      --text-muted: #9CA3AF;
+      --bg-charcoal: #1F1F1F;
+      --surface-card: #232323;
+      --surface-elevated: #2C2C2C;
+      --border-dark: #393939;
+      --border-subtle: rgba(255, 255, 255, 0.08);
       --accent-amber: #F59E0B;
-      --accent-cyan: #06B6D4;
-      --accent-emerald: #10B981;
-      --accent-indigo: #6366F1;
-      --accent-rose: #F43F5E;
+      --accent-light: #ECECEC;
+      --text-white: #FFFFFF;
+      --text-muted: #A3A3A3;
+      --text-subtle: #737373;
+      --radius-header: 20px;
+      --radius-card: 14px;
+      --radius-pill: 50px;
+      --shadow-workbench: 0 4px 20px rgba(0, 0, 0, 0.45);
     }
 
     * {
@@ -72,10 +72,17 @@ const htmlContent = `<!DOCTYPE html>
     }
 
     body {
-      background-color: #030712;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      color: var(--text-main);
-      line-height: 1.4;
+      background-color: var(--bg-charcoal);
+      font-family: 'Roboto', sans-serif;
+      color: var(--text-white);
+      line-height: 1.45;
+      letter-spacing: -0.01em;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Ubuntu', sans-serif;
+      color: var(--text-white);
+      letter-spacing: -0.02em;
     }
 
     @page {
@@ -88,892 +95,773 @@ const htmlContent = `<!DOCTYPE html>
       height: 210mm;
       page-break-after: always;
       position: relative;
-      background: var(--bg-space);
+      background: var(--bg-charcoal);
       display: flex;
       flex-direction: column;
-      padding: 16mm 18mm;
+      padding: 16mm 20mm;
       overflow: hidden;
       background-image: 
-        radial-gradient(circle at 100% 0%, rgba(245, 158, 11, 0.06) 0%, transparent 50%),
-        radial-gradient(circle at 0% 100%, rgba(6, 182, 212, 0.05) 0%, transparent 40%),
-        linear-gradient(to right, rgba(31, 41, 55, 0.2) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(31, 41, 55, 0.2) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+        radial-gradient(circle at 90% 10%, rgba(245, 158, 11, 0.03) 0%, transparent 40%),
+        radial-gradient(circle at 10% 90%, rgba(255, 255, 255, 0.02) 0%, transparent 40%);
     }
 
-    .slide::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent-amber), var(--accent-cyan), var(--accent-emerald));
-      z-index: 50;
-    }
-
+    /* Slide Header */
     .slide-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 5mm;
-      border-bottom: 1px solid var(--border-glow);
-      padding-bottom: 3.5mm;
+      margin-bottom: 6mm;
+      z-index: 10;
     }
 
-    .brand-cluster {
-      display: flex;
+    .brand-pill {
+      display: inline-flex;
       align-items: center;
       gap: 12px;
+      background: var(--surface-card);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-header);
+      padding: 6px 18px;
+      box-shadow: var(--shadow-workbench);
     }
 
-    .brand-badge {
-      background: rgba(245, 158, 11, 0.12);
-      border: 1px solid var(--accent-amber);
-      color: var(--accent-amber);
-      padding: 4px 10px;
-      font-family: 'JetBrains Mono', monospace;
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent-amber);
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+    }
+
+    .brand-title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 13.5px;
       font-weight: 700;
-      font-size: 10px;
-      letter-spacing: 0.08em;
+      color: var(--text-white);
+      letter-spacing: 0.02em;
       text-transform: uppercase;
-      border-radius: 4px;
     }
 
-    .slide-section-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
+    .brand-subtitle {
+      font-size: 12px;
       color: var(--text-muted);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+      border-left: 1px solid var(--border-dark);
+      padding-left: 12px;
+      margin-left: 2px;
     }
 
-    .slide-number {
+    .badge-pill {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: var(--radius-pill);
+      padding: 6px 14px;
     }
 
-    .slide-body {
-      display: grid;
-      grid-template-columns: 1fr 1.35fr;
-      gap: 22px;
+    /* Content Layout */
+    .slide-content {
       flex: 1;
-      min-height: 0;
-    }
-
-    .slide-info {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 0;
+      z-index: 10;
     }
 
-    .headline-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    .title-block {
+      margin-bottom: 5mm;
+    }
+
+    .slide-category {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-amber);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
     }
 
     .slide-title {
-      font-size: 24px;
-      font-weight: 800;
-      line-height: 1.2;
-      color: #FFFFFF;
-      letter-spacing: -0.02em;
-    }
-
-    .slide-desc {
-      font-size: 12.5px;
-      color: var(--text-muted);
-      line-height: 1.55;
-    }
-
-    .feature-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin: 10px 0;
-    }
-
-    .feature-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-card);
-      border-radius: 8px;
-      padding: 10px 14px;
-      border-left: 3px solid var(--accent-amber);
-    }
-
-    .feature-card.cyan {
-      border-left-color: var(--accent-cyan);
-    }
-
-    .feature-card.emerald {
-      border-left-color: var(--accent-emerald);
-    }
-
-    .feature-card.indigo {
-      border-left-color: var(--accent-indigo);
-    }
-
-    .feature-card-title {
-      font-size: 12.5px;
+      font-size: 26px;
       font-weight: 700;
-      color: #FFFFFF;
-      margin-bottom: 3px;
-      letter-spacing: -0.01em;
+      line-height: 1.15;
     }
 
-    .feature-card-text {
-      font-size: 11px;
+    .slide-subtitle {
+      font-size: 13.5px;
       color: var(--text-muted);
-      line-height: 1.45;
+      margin-top: 4px;
+      max-width: 900px;
     }
 
-    .metrics-row {
+    /* Workbench Cards */
+    .workbench-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-workbench);
+      padding: 18px 22px;
+    }
+
+    .workbench-card-elevated {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-workbench);
+      padding: 18px 22px;
+    }
+
+    /* Grid Splits */
+    .layout-split {
+      display: grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 20px;
+      align-items: stretch;
+      flex: 1;
+    }
+
+    .layout-split-reversed {
+      display: grid;
+      grid-template-columns: 0.88fr 1.12fr;
+      gap: 20px;
+      align-items: stretch;
+      flex: 1;
+    }
+
+    .layout-grid-3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      gap: 18px;
+      flex: 1;
     }
 
-    .metric-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border-card);
-      border-radius: 6px;
-      padding: 8px 10px;
-      text-align: center;
+    .layout-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      flex: 1;
     }
 
-    .metric-val {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 15px;
-      font-weight: 800;
-      color: var(--accent-amber);
-    }
-
-    .metric-lbl {
-      font-size: 9px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
+    /* Visual Stage */
     .visual-stage {
-      position: relative;
+      background: var(--surface-card);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-workbench);
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 100%;
+      position: relative;
       height: 100%;
-      min-height: 0;
+      min-height: 290px;
+      padding: 12px;
     }
 
-    .screenshot-desktop {
-      max-width: 95%;
-      max-height: 380px;
+    .visual-stage img {
+      max-width: 100%;
+      max-height: 100%;
       object-fit: contain;
-      display: block;
-      filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.6));
+      filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.6));
     }
 
-    .screenshot-mobile {
-      position: absolute;
-      right: 0px;
-      bottom: -8px;
-      max-height: 280px;
-      max-width: 28%;
-      object-fit: contain;
-      display: block;
-      filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.7));
+    /* Feature Items */
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: center;
     }
 
+    .feature-item {
+      background: var(--surface-card);
+      border: 1px solid var(--border-dark);
+      border-radius: 12px;
+      padding: 13px 16px;
+    }
+
+    .feature-item-title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-white);
+      margin-bottom: 3px;
+    }
+
+    .feature-item-desc {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Footer */
     .slide-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-top: 5mm;
-      border-top: 1px solid var(--border-glow);
-      padding-top: 3mm;
-    }
-
-    .footer-tech {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: var(--text-muted);
-    }
-
-    .footer-url {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: var(--accent-amber);
-    }
-
-    /* Cover Styling */
-    .cover-body {
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 30px;
-      align-items: center;
-      flex: 1;
-      min-height: 0;
-    }
-
-    .cover-tagline {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--accent-amber);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .cover-title {
-      font-size: 38px;
-      font-weight: 900;
-      color: #FFFFFF;
-      line-height: 1.15;
-      letter-spacing: -0.03em;
-      margin-bottom: 14px;
-    }
-
-    .cover-desc {
-      font-size: 13.5px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-
-    .cover-specs {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-
-    .spec-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-card);
-      border-radius: 8px;
-      padding: 10px 14px;
-    }
-
-    .spec-k {
-      font-size: 9px;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .spec-v {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      font-weight: 700;
-      color: #FFFFFF;
-      margin-top: 2px;
-    }
-
-    /* Architecture Grid */
-    .arch-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      flex: 1;
-      min-height: 0;
-      margin-top: 10px;
-    }
-
-    .arch-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-card);
-      border-radius: 10px;
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .arch-title {
-      font-size: 14px;
-      font-weight: 800;
-      color: #FFFFFF;
-      border-bottom: 1px solid var(--border-card);
-      padding-bottom: 8px;
-    }
-
-    .arch-item {
+      padding-top: 3.5mm;
+      border-top: 1px solid var(--border-dark);
       font-size: 11px;
-      color: var(--text-muted);
-      line-height: 1.5;
+      color: var(--text-subtle);
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    .arch-item strong {
-      color: #FFFFFF;
+    .tech-pill {
+      display: inline-block;
+      padding: 4px 12px;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-pill);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent-amber);
+      margin-right: 6px;
+      margin-top: 5px;
     }
   </style>
 </head>
 <body>
 
   <!-- SLIDE 1: COVER -->
-  <section class="slide">
+  <div class="slide">
     <div class="slide-header">
-      <div class="brand-cluster">
-        <span class="brand-badge">DEVELOPER TOOLS</span>
-        <span class="slide-section-title">Dokumentasi Rekayasa Perangkat Lunak</span>
+      <div class="brand-pill">
+        <div class="brand-dot"></div>
+        <div class="brand-title">JavaScript AIO Tools</div>
+        <div class="brand-subtitle">100% Client-Side Web Utilities &amp; Workbench</div>
       </div>
-      <div class="slide-number">01 / 10</div>
+      <div class="badge-pill">DECK-AIO-01 / 10</div>
     </div>
 
-    <div class="cover-body">
-      <div>
-        <div class="cover-tagline">Client-Side Web Architecture</div>
-        <h1 class="cover-title">JavaScript AIO Tools Workbench Utilitas Web</h1>
-        <p class="cover-desc">
-          Kumpulan utilitas produktivitas web modern yang berjalan 100% di sisi klien. Memanfaatkan HTML5 Canvas, Web Cryptography API, dan manipulasi DOM cepat tanpa pengiriman data ke server eksternal demi privasi penuh.
-        </p>
-
-        <div class="cover-specs">
-          <div class="spec-card">
-            <div class="spec-k">Eksekusi Logika</div>
-            <div class="spec-v">100% Client-Side JS</div>
+    <div class="slide-content">
+      <div class="layout-split">
+        <div style="display: flex; flex-direction: column; justify-content: center; padding-right: 15px;">
+          <div style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+            <span class="tech-pill">Vanilla JS ES6+</span>
+            <span class="tech-pill">Web Crypto API</span>
+            <span class="tech-pill">Web Audio API</span>
+            <span class="tech-pill">Canvas Engine</span>
           </div>
-          <div class="spec-card">
-            <div class="spec-k">Koleksi Utilitas</div>
-            <div class="spec-v">23 Modular Tools</div>
-          </div>
-          <div class="spec-card">
-            <div class="spec-k">Privasi & Keamanan</div>
-            <div class="spec-v">Zero Network Leak</div>
-          </div>
-          <div class="spec-card">
-            <div class="spec-k">Styling System</div>
-            <div class="spec-v">Tailwind CSS & Dark Theme</div>
+          <h1 style="font-size: 38px; font-weight: 700; line-height: 1.12; margin-bottom: 16px;">
+            Arsitektur Workbench Utilitas Web Klien Murni
+          </h1>
+          <p style="font-size: 14.5px; color: var(--text-muted); line-height: 1.55; margin-bottom: 24px;">
+            Suite utilitas rekayasa perangkat lunak dan konversi berkas yang berjalan 100% di browser tanpa ketergantungan server backend, menjamin privasi data absolut dan kecepatan eksekusi instan.
+          </p>
+          <div class="workbench-card" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding: 14px 18px;">
+            <div>
+              <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">ARSITEKTUR</div>
+              <div style="font-size: 19px; font-weight: 700; color: var(--accent-amber); margin-top: 2px;">Zero Server</div>
+              <div style="font-size: 11px; color: var(--text-muted);">100% Browser Local</div>
+            </div>
+            <div>
+              <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">MODUL ALAT</div>
+              <div style="font-size: 19px; font-weight: 700; color: var(--text-white); margin-top: 2px;">20+ Tools</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Crypto &amp; Media API</div>
+            </div>
+            <div>
+              <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">PRIVASI DATA</div>
+              <div style="font-size: 19px; font-weight: 700; color: var(--text-white); margin-top: 2px;">Zero Leak</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Memory Isolation</div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="visual-stage">
-        <img src="${images.dashboardDesktop}" class="screenshot-desktop" alt="Dashboard Cover">
-      </div>
-    </div>
-
-    <div class="slide-footer">
-      <span class="footer-tech">Vanilla JS + Web Cryptography API + Canvas API + Tailwind CSS</span>
-      <span class="footer-url">widifirmaan.web.id/javascript-aio-tools</span>
-    </div>
-  </section>
-
-  <!-- SLIDE 2: ARSITEKTUR WORKBENCH -->
-  <section class="slide">
-    <div class="slide-header">
-      <div class="brand-cluster">
-        <span class="brand-badge">ARCHITECTURE</span>
-        <span class="slide-section-title">Fondasi Sistem & Desain Privasi Klien</span>
-      </div>
-      <div class="slide-number">02 / 10</div>
-    </div>
-
-    <div class="headline-group" style="margin-bottom: 12px;">
-      <h2 class="slide-title">Arsitektur Utilitas Klien & Privasi Mutlak</h2>
-      <p class="slide-desc">Desain sistem tanpa backend yang memastikan seluruh pemrosesan file, enkripsi, kompresi, dan parsing string diselesaikan sepenuhnya di dalam memori browser.</p>
-    </div>
-
-    <div class="arch-grid">
-      <div class="arch-card">
-        <div class="arch-title" style="color: var(--accent-amber);">Isolasi Komputasi Lokal</div>
-        <div class="arch-item"><strong>Zero Telemetry:</strong> Tidak ada pertukaran payload data atau analitik ke server pihak ketiga saat memproses dokumen sensitif.</div>
-        <div class="arch-item"><strong>Web Cryptography API:</strong> Pemanfaatan modul kriptografi bawaan browser (CSPRNG, SHA, AES) untuk keamanan data tingkat tinggi.</div>
-        <div class="arch-item"><strong>HTML5 Canvas Graphics:</strong> Pemrosesan manipulasi piksel, kompresi foto, dan rendering QR Code langsung pada canvas lokal.</div>
-      </div>
-
-      <div class="arch-card">
-        <div class="arch-title" style="color: var(--accent-cyan);">Manajemen State & Modularitas</div>
-        <div class="arch-item"><strong>Struktur Modul Independen:</strong> Setiap utilitas diisolasi dalam file JavaScript mandiri tanpa ketergantungan silang yang rapuh.</div>
-        <div class="arch-item"><strong>Pencarian Cepat Fuzzy:</strong> Filter instan pada dashboard untuk menemukan alat kerja hanya dengan mengetik kata kunci.</div>
-        <div class="arch-item"><strong>Responsive Dark UI:</strong> Tata letak yang dioptimalkan untuk mode gelap dengan kontras visual tinggi bagi para pengembang.</div>
-      </div>
-
-      <div class="arch-card">
-        <div class="arch-title" style="color: var(--accent-emerald);">Distribusi & Performa</div>
-        <div class="arch-item"><strong>Stateless Architecture:</strong> Tidak memerlukan sesi login atau database, aplikasi dapat dibuka secara instan di mana saja.</div>
-        <div class="arch-item"><strong>Offline-Ready:</strong> Dukungan operasi penuh tanpa jaringan internet setelah aset statis pertama kali tersimpan di cache.</div>
-        <div class="arch-item"><strong>Kompatibilitas Standar Web:</strong> Beroperasi konsisten di seluruh mesin peramban modern berbasis Chromium, Gecko, dan WebKit.</div>
+        <div class="visual-stage">
+          <img src="${images.dashboardDesktop}" alt="JavaScript AIO Tools Dashboard">
+        </div>
       </div>
     </div>
 
     <div class="slide-footer">
-      <span class="footer-tech">JavaScript AIO Tools Architecture Blueprint</span>
-      <span class="footer-url">widifirmaan.web.id/javascript-aio-tools</span>
+      <div>JAVASCRIPT AIO TOOLS &bull; CLIENT-SIDE WORKBENCH</div>
+      <div>WIDI FIRMANSYAH &bull; LEAD ENGINEER</div>
+      <div>01 / 10</div>
     </div>
-  </section>
+  </div>
 
-  <!-- SLIDE 3: DASHBOARD -->
-  <section class="slide">
+  <!-- SLIDE 2: LATAR BELAKANG & PRINSIP REKAYASA -->
+  <div class="slide">
     <div class="slide-header">
-      <div class="brand-cluster">
-        <span class="brand-badge">DASHBOARD</span>
-        <span class="slide-section-title">Pusat Navigasi & Filter Alat Kerja</span>
+      <div class="brand-pill">
+        <div class="brand-dot"></div>
+        <div class="brand-title">Fondasi Sistem</div>
+        <div class="brand-subtitle">Filosofi &amp; Prinsip Arsitektur</div>
       </div>
-      <div class="slide-number">03 / 10</div>
+      <div class="badge-pill">DECK-AIO-02 / 10</div>
     </div>
 
-    <div class="slide-body">
-      <div class="slide-info">
-        <div class="headline-group">
-          <h2 class="slide-title">Dashboard Terpadu & Filter Cepat</h2>
-          <p class="slide-desc">Pintu masuk ke seluruh 23 utilitas dengan kategorisasi terstruktur (Developer, Media, Keamanan, Format) dan bilah pencarian real-time.</p>
+    <div class="slide-content">
+      <div class="title-block">
+        <div class="slide-category">Filosofi Arsitektur Web</div>
+        <h2 class="slide-title">Kedaulatan Privasi Data Melalui Zero-Server Processing</h2>
+        <p class="slide-subtitle">Mengeliminasi transmisi berkas rahasia ke server luar dengan memindahkan beban komputasi langsung ke peramban pengguna.</p>
+      </div>
+
+      <div class="layout-grid-3">
+        <div class="workbench-card">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">01 &bull; RISIKO PRIVASI SERVER</div>
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Kebocoran Data Sensitif</h3>
+          <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.5;">
+            Konverter online konvensional mengunggah dokumen pengguna ke server pihak ketiga, menimbulkan kerentanan keamanan dan pelanggaran kepatuhan regulasi data.
+          </p>
+        </div>
+
+        <div class="workbench-card">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">02 &bull; PEMANFAATAN WEB API</div>
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Browser Native APIs</h3>
+          <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.5;">
+            Memanfaatkan kapabilitas mutakhir HTML5 Canvas, Web Audio API, Web Cryptography API, dan MediaRecorder tanpa memerlukan library backend berat.
+          </p>
+        </div>
+
+        <div class="workbench-card">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">03 &bull; INDEPENDENSI JARINGAN</div>
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Kemampuan Operasi Offline</h3>
+          <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.5;">
+            Aplikasi tetap dapat digunakan secara penuh bahkan ketika koneksi internet terputus berkat arsitektur aset statis yang terisolasi.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>JAVASCRIPT AIO TOOLS &bull; PRINSIP REKAYASA</div>
+      <div>STANDARISASI CLIENT-SIDE WEB</div>
+      <div>02 / 10</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: DASHBOARD & NAVIGASI MODULAR -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="brand-pill">
+        <div class="brand-dot"></div>
+        <div class="brand-title">Hub Antarmuka</div>
+        <div class="brand-subtitle">Dashboard &amp; Dynamic Category Navigation</div>
+      </div>
+      <div class="badge-pill">DECK-AIO-03 / 10</div>
+    </div>
+
+    <div class="slide-content">
+      <div class="title-block">
+        <div class="slide-category">Pengorganisasian Fitur</div>
+        <h2 class="slide-title">Struktur Dashboard Modular &amp; Penelusuran Alat Cepat</h2>
+        <p class="slide-subtitle">Sistem katalog alat terklasifikasi berdasarkan domain (Media, Developer, Keamanan, Dokumen) dengan filter pencarian instan.</p>
+      </div>
+
+      <div class="layout-split">
+        <div class="visual-stage">
+          <img src="${images.dashboardMobile}" alt="AIO Tools Dashboard Mobile View">
         </div>
 
         <div class="feature-list">
-          <div class="feature-card">
-            <div class="feature-card-title">Filter Pencarian Instan</div>
-            <div class="feature-card-text">Penyaringan kartu utilitas secara dinamis seiring pengetikan kata kunci tanpa latensi rendering.</div>
+          <div class="feature-item">
+            <div class="feature-item-title">Katalog Alat Berbasis Grid Kategori</div>
+            <div class="feature-item-desc">
+              Pengelompokan alat bantu ke dalam kartu-kartu berlatar #232323 dengan ikon teknis spesifik dan deskripsi ringkas yang mudah dipindai mata.
+            </div>
           </div>
-          <div class="feature-card cyan">
-            <div class="feature-card-title">Kategori Alat Tematik</div>
-            <div class="feature-card-text">Pengelompokan alat berdasarkan kebutuhan tugas harian untuk efisiensi pemilihan tool kerja.</div>
+          <div class="feature-item">
+            <div class="feature-item-title">Pencarian Real-Time Sisi Klien</div>
+            <div class="feature-item-desc">
+              Penyaringan kartu perkakas secara instan menggunakan pencocokan substring nama dan tag kata kunci tanpa interupsi reload halaman.
+            </div>
           </div>
-          <div class="feature-card emerald">
-            <div class="feature-card-title">Indikator Akses Langsung</div>
-            <div class="feature-card-text">Setiap kartu menyajikan deskripsi fungsi ringkas dan tombol akses satu-klik ke antarmuka alat.</div>
-          </div>
-        </div>
-
-        <div class="metrics-row">
-          <div class="metric-box">
-            <div class="metric-val">23 Tools</div>
-            <div class="metric-lbl">Total Utilitas</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">&lt; 10ms</div>
-            <div class="metric-lbl">Filter Latency</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">4 Kategori</div>
-            <div class="metric-lbl">Katalog Kerja</div>
+          <div class="feature-item">
+            <div class="feature-item-title">Navigasi Samping Responsif</div>
+            <div class="feature-item-desc">
+              Menu navigasi off-canvas terintegrasi yang memungkinkan perpindahan cepat antar kategori peralatan pada perangkat gawai seluler.
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="visual-stage">
-        <img src="${images.dashboardDesktop}" class="screenshot-desktop" alt="Dashboard Desktop">
-        <img src="${images.dashboardMobile}" class="screenshot-mobile" alt="Dashboard Mobile">
       </div>
     </div>
 
     <div class="slide-footer">
-      <span class="footer-tech">View: index.html & search filter module</span>
-      <span class="footer-url">widifirmaan.web.id/javascript-aio-tools</span>
+      <div>JAVASCRIPT AIO TOOLS &bull; DASHBOARD HUB</div>
+      <div>MODULAR TOOL ROUTING</div>
+      <div>03 / 10</div>
     </div>
-  </section>
+  </div>
 
-  <!-- SLIDE 4: DEVELOPER TOOLBOX -->
-  <section class="slide">
+  <!-- SLIDE 4: DEVELOPER TOOLBOX & CODE SUITE -->
+  <div class="slide">
     <div class="slide-header">
-      <div class="brand-cluster">
-        <span class="brand-badge">DEVELOPER UTILITY</span>
-        <span class="slide-section-title">Konversi Format & Encoding Payload</span>
+      <div class="brand-pill">
+        <div class="brand-dot"></div>
+        <div class="brand-title">Alat Pengembang</div>
+        <div class="brand-subtitle">Developer Code Suite &amp; Syntax Utilities</div>
       </div>
-      <div class="slide-number">04 / 10</div>
+      <div class="badge-pill">DECK-AIO-04 / 10</div>
     </div>
 
-    <div class="slide-body">
-      <div class="slide-info">
-        <div class="headline-group">
-          <h2 class="slide-title">Developer Toolbox & Serialisasi Data</h2>
-          <p class="slide-desc">Suite pemrosesan string esensial bagi pengembang mencakup validasi JSON, encoder Base64, parser URL query, dan kalkulasi hash data.</p>
+    <div class="slide-content">
+      <div class="title-block">
+        <div class="slide-category">Utilitas Rekayasa Perangkat Lunak</div>
+        <h2 class="slide-title">Suite Manipulasi Kode &amp; Format Data Pengembang</h2>
+        <p class="slide-subtitle">Peralatan harian untuk pemformatan JSON, enkripsi URL/Base64, inspeksi header JWT, dan perbandingan teks berbasis token.</p>
+      </div>
+
+      <div class="layout-split-reversed">
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-item-title">Text Diff Checker Berbasis Algoritma Myers</div>
+            <div class="feature-item-desc">
+              Komparasi teks berdampingan (side-by-side) dengan penandaan visual baris yang ditambahkan, dihapus, atau dimodifikasi secara akurat.
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-item-title">JSON Formatter &amp; Tree Inspector</div>
+            <div class="feature-item-desc">
+              Validasi sintaks JSON secara langsung dengan opsi indentasi kustom dan pendeteksi kesalahan parsing pada baris spesifik.
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-item-title">Universal Hash Generator</div>
+            <div class="feature-item-desc">
+              Penghitungan digest kriptografi MD5, SHA-1, SHA-256, dan SHA-512 menggunakan Web Cryptography API berkecepatan native.
+            </div>
+          </div>
+        </div>
+
+        <div class="visual-stage">
+          <img src="${images.textDiffDesktop}" alt="Text Diff Checker Tool Desktop">
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>JAVASCRIPT AIO TOOLS &bull; DEVELOPER SUITE</div>
+      <div>CODE &amp; SYNTAX TOOLS</div>
+      <div>04 / 10</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: IMAGE COMPRESSION & CANVAS PIPELINE -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="brand-pill">
+        <div class="brand-dot"></div>
+        <div class="brand-title">Pemrosesan Grafis</div>
+        <div class="brand-subtitle">Canvas Image Compression &amp; Format Converter</div>
+      </div>
+      <div class="badge-pill">DECK-AIO-05 / 10</div>
+    </div>
+
+    <div class="slide-content">
+      <div class="title-block">
+        <div class="slide-category">Mesin Kompresi Gambar</div>
+        <h2 class="slide-title">Reduksi Ukuran Citra dengan Algoritma Canvas Sisi Klien</h2>
+        <p class="slide-subtitle">Kompresi berkas JPEG, PNG, dan WebP secara langsung di memori browser dengan rasio penghematan hingga 80%.</p>
+      </div>
+
+      <div class="layout-split">
+        <div class="visual-stage">
+          <img src="${images.compressorDesktop}" alt="Image Compressor Tool Desktop">
         </div>
 
         <div class="feature-list">
-          <div class="feature-card">
-            <div class="feature-card-title">JSON Formatter & Validator</div>
-            <div class="feature-card-text">Pengecekan sintaks JSON dengan pesan error baris yang jelas serta fitur perataan indentasi otomatis.</div>
+          <div class="feature-item">
+            <div class="feature-item-title">Pipeline FileReader &amp; OffscreenCanvas</div>
+            <div class="feature-item-desc">
+              Pemuatan file lokal via FileReader API langsung ke buffer canvas 2D tanpa mengirim satu byte data pun ke jaringan eksternal.
+            </div>
           </div>
-          <div class="feature-card cyan">
-            <div class="feature-card-title">Encoding & Decoding Base64</div>
-            <div class="feature-card-text">Konversi bolak-balik antara string biner dan format teks Base64 dengan penanganan karakter UTF-8 yang aman.</div>
+          <div class="feature-item">
+            <div class="feature-item-title">Slider Kontrol Kualitas Interaktif</div>
+            <div class="feature-item-desc">
+              Penyesuaian parameter kualitas kompresi secara visual dengan pratinjau instan perbandingan ukuran file sebelum dan sesudah optimasi.
+            </div>
           </div>
-          <div class="feature-card emerald">
-            <div class="feature-card-title">Kloning & Salin Cepat</div>
-            <div class="feature-card-text">Aksi satu tombol untuk menyalin keluaran format langsung ke clipboard sistem operasi pengguna.</div>
-          </div>
-        </div>
-
-        <div class="metrics-row">
-          <div class="metric-box">
-            <div class="metric-val">Multi-Tab</div>
-            <div class="metric-lbl">Dev Utilities</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">UTF-8 Safe</div>
-            <div class="metric-lbl">Encoding Engine</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">Instant</div>
-            <div class="metric-lbl">Copy Action</div>
+          <div class="feature-item">
+            <div class="feature-item-title">Konversi Format Otomatis ke WebP</div>
+            <div class="feature-item-desc">
+              Transformasi berkas grafis warisan ke format modern WebP guna menghemat pemakaian bandwidth saat dipublikasikan ke web.
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="visual-stage">
-        <img src="${images.devToolboxDesktop}" class="screenshot-desktop" alt="Developer Toolbox Desktop">
-        <img src="${images.devToolboxMobile}" class="screenshot-mobile" alt="Developer Toolbox Mobile">
       </div>
     </div>
 
     <div class="slide-footer">
-      <span class="footer-tech">Tool: tools/developer-toolbox.html</span>
-      <span class="footer-url">widifirmaan.web.id/javascript-aio-tools</span>
+      <div>JAVASCRIPT AIO TOOLS &bull; IMAGE PIPELINE</div>
+      <div>CANVAS COMPRESSION ENGINE</div>
+      <div>05 / 10</div>
     </div>
-  </section>
+  </div>
 
-  <!-- SLIDE 5: IMAGE COMPRESSOR -->
-  <section class="slide">
+  <!-- SLIDE 6: REGEX VISUALIZER & AST PARSER -->
+  <div class="slide">
     <div class="slide-header">
-      <div class="brand-cluster">
-        <span class="brand-badge">MEDIA PROCESSING</span>
-        <span class="slide-section-title">Kompresi Citra Berbasis HTML5 Canvas</span>
+      <div class="brand-pill">
+        <div class="brand-dot"></div>
+        <div class="brand-title">Inspeksi Sintaks</div>
+        <div class="brand-subtitle">Regular Expression Visualizer &amp; Matcher</div>
       </div>
-      <div class="slide-number">05 / 10</div>
+      <div class="badge-pill">DECK-AIO-06 / 10</div>
     </div>
 
-    <div class="slide-body">
-      <div class="slide-info">
-        <div class="headline-group">
-          <h2 class="slide-title">Kompresi Gambar di Sisi Browser</h2>
-          <p class="slide-desc">Pengecilan ukuran berkas gambar JPEG/PNG/WebP dengan pengaturan slider kualitas interaktif dan perbandingan ukuran sebelum-sesudah.</p>
+    <div class="slide-content">
+      <div class="title-block">
+        <div class="slide-category">Evaluasi Pola Karakter</div>
+        <h2 class="slide-title">Visualisasi Pola Regex Real-Time &amp; Pengelompokan Grup</h2>
+        <p class="slide-subtitle">Pemeriksaan ekspresi reguler dengan penyorotan kecocokan karakter dan umpan balik kesalahan sintaks seketika.</p>
+      </div>
+
+      <div class="layout-split-reversed">
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-item-title">Evaluasi Pola Tanpa Jeda Waktu</div>
+            <div class="feature-item-desc">
+              Kompilasi objek RegExp native dengan penangkapan exception terstruktur untuk mencegah browser hang saat pola salah diketikkan.
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-item-title">Penyorotan Kode Warna Multi-Grup</div>
+            <div class="feature-item-desc">
+              Pewarnaan latar belakang yang berbeda untuk tiap capturing group guna mempermudah identifikasi sub-pola dalam teks pengujian.
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-item-title">Pustaka Pola Siap Pakai (Cheat Sheet)</div>
+            <div class="feature-item-desc">
+              Daftar templat pola reguler populer (email, URL, IPv4, tanggal, alphanumeric) yang dapat langsung dimasukkan dengan satu klik.
+            </div>
+          </div>
+        </div>
+
+        <div class="visual-stage">
+          <img src="${images.regexDesktop}" alt="Regex Visualizer Tool Desktop">
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>JAVASCRIPT AIO TOOLS &bull; REGEX ENGINE</div>
+      <div>SYNTAX TREE VISUALIZER</div>
+      <div>06 / 10</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: KRIPTOGRAFI & KEAMANAN LOKAL -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="brand-pill">
+        <div class="brand-dot"></div>
+        <div class="brand-title">Keamanan Klien</div>
+        <div class="brand-subtitle">AES-GCM Encryption &amp; Cryptographic Generators</div>
+      </div>
+      <div class="badge-pill">DECK-AIO-07 / 10</div>
+    </div>
+
+    <div class="slide-content">
+      <div class="title-block">
+        <div class="slide-category">Kriptografi Peramban</div>
+        <h2 class="slide-title">Enkripsi Berkas AES-GCM 256-Bit &amp; Generator Kunci Aman</h2>
+        <p class="slide-subtitle">Perlindungan privasi dokumen menggunakan standar enkripsi militer yang diproses murni melalui Web Crypto Subtle API.</p>
+      </div>
+
+      <div class="layout-split">
+        <div class="visual-stage">
+          <img src="${images.encryptorDesktop}" alt="File Encryptor Tool Desktop">
         </div>
 
         <div class="feature-list">
-          <div class="feature-card">
-            <div class="feature-card-title">Pemrosesan Canvas 2D Lokal</div>
-            <div class="feature-card-text">Gambar di-render ke elemen canvas virtual di browser pengguna tanpa pernah diunggah ke server manapun.</div>
+          <div class="feature-item">
+            <div class="feature-item-title">Enkripsi Berkas AES-GCM 256-bit Sisi Klien</div>
+            <div class="feature-item-desc">
+              Derivasi kunci PBKDF2 dengan salt acak dan vektor inisialisasi (IV) unik yang melindungi isi dokumen dari ancaman penyadapan.
+            </div>
           </div>
-          <div class="feature-card cyan">
-            <div class="feature-card-title">Kendali Kualitas Fleksibel</div>
-            <div class="feature-card-text">Slider nilai kualitas kompresi yang menampilkan pratinjau hasil gambar dan estimasi ukuran berkas seketika.</div>
+          <div class="feature-item">
+            <div class="feature-item-title">Generator Kata Sandi Entropi Tinggi</div>
+            <div class="feature-item-desc">
+              Pembuatan kombinasi karakter acak kriptografis via crypto.getRandomValues() dengan kalkulasi tingkat kekuatan entropi bit.
+            </div>
           </div>
-          <div class="feature-card emerald">
-            <div class="feature-card-title">Dukungan Multi-Format</div>
-            <div class="feature-card-text">Mendukung ekspor langsung ke format WebP untuk kompresi superior atau JPEG untuk kompatibilitas luas.</div>
-          </div>
-        </div>
-
-        <div class="metrics-row">
-          <div class="metric-box">
-            <div class="metric-val">Up to 80%</div>
-            <div class="metric-lbl">Size Reduction</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">Zero Upload</div>
-            <div class="metric-lbl">Private Buffer</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">WebP/JPEG</div>
-            <div class="metric-lbl">Output Targets</div>
+          <div class="feature-item">
+            <div class="feature-item-title">Generator Kode QR &amp; Barcode Lokal</div>
+            <div class="feature-item-desc">
+              Pembuatan matriks QR dan barcode SVG/Canvas secara lokal tanpa memanggil API pihak ketiga yang berpotensi melacak tautan.
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="visual-stage">
-        <img src="${images.compressorDesktop}" class="screenshot-desktop" alt="Image Compressor Desktop">
-        <img src="${images.compressorMobile}" class="screenshot-mobile" alt="Image Compressor Mobile">
       </div>
     </div>
 
     <div class="slide-footer">
-      <span class="footer-tech">Engine: HTML5 Canvas toBlob & toDataURL</span>
-      <span class="footer-url">widifirmaan.web.id/javascript-aio-tools</span>
+      <div>JAVASCRIPT AIO TOOLS &bull; LOCAL CRYPTOGRAPHY</div>
+      <div>WEB CRYPTO SUBTLE ENGINE</div>
+      <div>07 / 10</div>
     </div>
-  </section>
+  </div>
 
-  <!-- SLIDE 6: QR CODE STUDIO -->
-  <section class="slide">
+  <!-- SLIDE 8: MEDIA & AUDIO BROWSER APIS -->
+  <div class="slide">
     <div class="slide-header">
-      <div class="brand-cluster">
-        <span class="brand-badge">GENERATOR</span>
-        <span class="slide-section-title">Studio QR Code & Ekspor Gambar Vektor</span>
+      <div class="brand-pill">
+        <div class="brand-dot"></div>
+        <div class="brand-title">Perekam &amp; Audio</div>
+        <div class="brand-subtitle">Web Audio API &amp; Screen Recorder Engine</div>
       </div>
-      <div class="slide-number">06 / 10</div>
+      <div class="badge-pill">DECK-AIO-08 / 10</div>
     </div>
 
-    <div class="slide-body">
-      <div class="slide-info">
-        <div class="headline-group">
-          <h2 class="slide-title">Generator QR Code Interaktif</h2>
-          <p class="slide-desc">Alat pembuatan kode QR berkecepatan tinggi dengan kustomisasi warna latar, level koreksi kesalahan, dan ekspor instan format PNG/SVG.</p>
-        </div>
+    <div class="slide-content">
+      <div class="title-block">
+        <div class="slide-category">Manipulasi Aliran Media</div>
+        <h2 class="slide-title">Pemotong Audio Web &amp; Perekam Layar Browser Terpadu</h2>
+        <p class="slide-subtitle">Pemanfaatan antarmuka media modern untuk memotong trek suara dan merekam video layar tanpa instalasi software tambahan.</p>
+      </div>
 
+      <div class="layout-split-reversed">
         <div class="feature-list">
-          <div class="feature-card">
-            <div class="feature-card-title">Koreksi Kesalahan Dinamis</div>
-            <div class="feature-card-text">Pilihan tingkat Error Correction (L, M, Q, H) untuk memastikan QR Code tetap dapat dipindai saat rusak parsial.</div>
+          <div class="feature-item">
+            <div class="feature-item-title">Visualisasi Gelombang Suara AudioContext</div>
+            <div class="feature-item-desc">
+              Penguraian byte PCM audio untuk menampilkan bentuk gelombang dan pemangkasan rentang waktu dengan presisi milidetik.
+            </div>
           </div>
-          <div class="feature-card cyan">
-            <div class="feature-card-title">Kustomisasi Dimensi & Palet</div>
-            <div class="feature-card-text">Pengaturan warna foreground/background serta resolusi output sesuai kebutuhan cetak maupun digital.</div>
+          <div class="feature-item">
+            <div class="feature-item-title">Perekam Layar via MediaRecorder API</div>
+            <div class="feature-item-desc">
+              Penangkapan stream layar desktop via getDisplayMedia() dengan encoding WebM instan dan opsi unduhan langsung ke komputer.
+            </div>
           </div>
-          <div class="feature-card emerald">
-            <div class="feature-card-title">Dukungan Beragam Tipe Data</div>
-            <div class="feature-card-text">Format teks bebas, tautan URL, konfigurasi Wi-Fi, hingga kartu kontak vCard siap pindai.</div>
+          <div class="feature-item">
+            <div class="feature-item-title">Penala Nada Instrumen (Instrument Tuner)</div>
+            <div class="feature-item-desc">
+              Analisis frekuensi mikrofon real-time menggunakan Fast Fourier Transform (FFT) untuk mendeteksi nada instrumen musik secara akurat.
+            </div>
           </div>
         </div>
 
-        <div class="metrics-row">
-          <div class="metric-box">
-            <div class="metric-val">4 Levels</div>
-            <div class="metric-lbl">Error Correction</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">Vector SVG</div>
-            <div class="metric-lbl">Scalable Output</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">Instant</div>
-            <div class="metric-lbl">Render Engine</div>
-          </div>
+        <div class="visual-stage">
+          <img src="${images.audioCutterDesktop}" alt="Audio Cutter Tool Desktop">
         </div>
-      </div>
-
-      <div class="visual-stage">
-        <img src="${images.qrCodeDesktop}" class="screenshot-desktop" alt="QR Code Desktop">
-        <img src="${images.qrCodeMobile}" class="screenshot-mobile" alt="QR Code Mobile">
       </div>
     </div>
 
     <div class="slide-footer">
-      <span class="footer-tech">Engine: QRCode.js & Canvas Exporter</span>
-      <span class="footer-url">widifirmaan.web.id/javascript-aio-tools</span>
+      <div>JAVASCRIPT AIO TOOLS &bull; MEDIA ENGINE</div>
+      <div>WEB AUDIO &amp; MEDIA RECORDER</div>
+      <div>08 / 10</div>
     </div>
-  </section>
+  </div>
 
-  <!-- SLIDE 7: PASSWORD GENERATOR -->
-  <section class="slide">
+  <!-- SLIDE 9: REKAYASA KINERJA & MANAJEMEN MEMORI -->
+  <div class="slide">
     <div class="slide-header">
-      <div class="brand-cluster">
-        <span class="brand-badge">CRYPTOGRAPHY</span>
-        <span class="slide-section-title">Generator Sandi Kriptografis & Entropi</span>
+      <div class="brand-pill">
+        <div class="brand-dot"></div>
+        <div class="brand-title">Rekayasa Kinerja</div>
+        <div class="brand-subtitle">Memory Management &amp; Sandbox Safety</div>
       </div>
-      <div class="slide-number">07 / 10</div>
+      <div class="badge-pill">DECK-AIO-09 / 10</div>
     </div>
 
-    <div class="slide-body">
-      <div class="slide-info">
-        <div class="headline-group">
-          <h2 class="slide-title">Generator Kata Sandi Kriptografis</h2>
-          <p class="slide-desc">Penghasil kombinasi kata sandi acak dengan pemanfaatan window.crypto CSPRNG dan indikator kekuatan berbasis kalkulasi entropi bit.</p>
-        </div>
-
-        <div class="feature-list">
-          <div class="feature-card">
-            <div class="feature-card-title">CSPRNG Standar Industri</div>
-            <div class="feature-card-text">Menggunakan crypto.getRandomValues untuk memastikan bilangan acak tahan dari serangan prediksi pseudorandom.</div>
-          </div>
-          <div class="feature-card cyan">
-            <div class="feature-card-title">Parameter Karakter Terarah</div>
-            <div class="feature-card-text">Pengaturan panjang sandi, penyertaan huruf kapital, huruf kecil, angka numerik, dan simbol khusus.</div>
-          </div>
-          <div class="feature-card emerald">
-            <div class="feature-card-title">Kalkulator Entropi Realtime</div>
-            <div class="feature-card-text">Indikator visual kekuatan sandi yang menghitung nilai entropi logaritmik secara langsung.</div>
-          </div>
-        </div>
-
-        <div class="metrics-row">
-          <div class="metric-box">
-            <div class="metric-val">CSPRNG</div>
-            <div class="metric-lbl">Crypto Source</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">128+ Bit</div>
-            <div class="metric-lbl">Max Entropy</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">Zero Log</div>
-            <div class="metric-lbl">Memory Discard</div>
-          </div>
-        </div>
+    <div class="slide-content">
+      <div class="title-block">
+        <div class="slide-category">Efisiensi &amp; Keamanan Memori</div>
+        <h2 class="slide-title">Manajemen Siklus Hidup Objek &amp; Isolasi Sandbox</h2>
+        <p class="slide-subtitle">Praktik pembersihan alokasi memori biner dan penanganan error terisolasi demi stabilitas peramban pengguna.</p>
       </div>
 
-      <div class="visual-stage">
-        <img src="${images.passwordDesktop}" class="screenshot-desktop" alt="Password Generator Desktop">
-        <img src="${images.passwordMobile}" class="screenshot-mobile" alt="Password Generator Mobile">
+      <div class="layout-grid-3">
+        <div class="workbench-card">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">MANAJEMEN MEMORI</div>
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">URL.revokeObjectURL Cleanup</h3>
+          <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.5;">
+            Pelepasan referensi Blob URL segera setelah unduhan selesai untuk membebaskan ruang memori RAM browser dan mencegah kebocoran memori jangka panjang.
+          </p>
+        </div>
+
+        <div class="workbench-card">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">THROTTLING &amp; WORKERS</div>
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Non-Blocking Operations</h3>
+          <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.5;">
+            Operasi komputasi intensif didelegasikan secara asynchronous atau di-chunking untuk memastikan main thread tetap responsif dan UI tidak membeku.
+          </p>
+        </div>
+
+        <div class="workbench-card">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">ZERO THIRD-PARTY LEAK</div>
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Pemberdayaan Offline PWA</h3>
+          <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.5;">
+            Seluruh pustaka pendukung (jsQR, crypto) dibundel secara lokal tanpa pemanggilan CDN dinamis di runtime yang rawan pemblokiran jaringan.
+          </p>
+        </div>
       </div>
     </div>
 
     <div class="slide-footer">
-      <span class="footer-tech">Engine: Web Crypto API window.crypto</span>
-      <span class="footer-url">widifirmaan.web.id/javascript-aio-tools</span>
+      <div>JAVASCRIPT AIO TOOLS &bull; PERFORMANCE AUDIT</div>
+      <div>MEMORY &amp; RUNTIME ISOLATION</div>
+      <div>09 / 10</div>
     </div>
-  </section>
+  </div>
 
-  <!-- SLIDE 8: TEXT DIFF COMPARATOR -->
-  <section class="slide">
+  <!-- SLIDE 10: RANGKUMAN ARSITEKTUR & PRODUKSI -->
+  <div class="slide">
     <div class="slide-header">
-      <div class="brand-cluster">
-        <span class="brand-badge">TEXT UTILITY</span>
-        <span class="slide-section-title">Perbandingan Selisih Teks (LCS Algorithm)</span>
+      <div class="brand-pill">
+        <div class="brand-dot"></div>
+        <div class="brand-title">Ringkasan Proyek</div>
+        <div class="brand-subtitle">Spesifikasi Akhir &amp; Kesiapan Rilis</div>
       </div>
-      <div class="slide-number">08 / 10</div>
+      <div class="badge-pill">DECK-AIO-10 / 10</div>
     </div>
 
-    <div class="slide-body">
-      <div class="slide-info">
-        <div class="headline-group">
-          <h2 class="slide-title">Komparator Selisih Teks & Visual Diff</h2>
-          <p class="slide-desc">Pendeteksi perbedaan antara dua teks berbasis algoritma Longest Common Subsequence dengan penyorotan baris tambah, hapus, dan ubah.</p>
+    <div class="slide-content">
+      <div class="title-block">
+        <div class="slide-category">Rangkuman Akhir Rekayasa</div>
+        <h2 class="slide-title">Kesimpulan Implementasi JavaScript AIO Tools</h2>
+        <p class="slide-subtitle">Suite perkakas utilitas komprehensif yang membuktikan keandalan penuh komputasi peramban web modern tanpa server backend.</p>
+      </div>
+
+      <div class="layout-grid-4">
+        <div class="workbench-card">
+          <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">BAHASA INTI</div>
+          <div style="font-size: 18px; font-weight: 700; color: var(--accent-amber); margin-top: 4px; margin-bottom: 4px;">Vanilla JS</div>
+          <p style="font-size: 12px; color: var(--text-muted); line-height: 1.45;">Eksekusi ES6+ murni tanpa overhead framework kompilasi.</p>
         </div>
 
-        <div class="feature-list">
-          <div class="feature-card">
-            <div class="feature-card-title">Visualisasi Selisih Baris</div>
-            <div class="feature-card-text">Penandaan visual warna hijau untuk baris baru yang ditambahkan dan warna merah untuk baris yang dihapus.</div>
-          </div>
-          <div class="feature-card cyan">
-            <div class="feature-card-title">Tampilan Berdampingan & Bersatu</div>
-            <div class="feature-card-text">Dukungan mode perbandingan split screen (side-by-side) maupun tampilan gabungan (unified inline).</div>
-          </div>
-          <div class="feature-card emerald">
-            <div class="feature-card-title">Statistik Selisih Ringkas</div>
-            <div class="feature-card-text">Metrik kuantitatif yang menghitung total jumlah penambahan, penghapusan, dan kesamaan baris teks.</div>
-          </div>
+        <div class="workbench-card">
+          <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">WEB APIS</div>
+          <div style="font-size: 18px; font-weight: 700; color: var(--accent-amber); margin-top: 4px; margin-bottom: 4px;">Crypto &amp; Audio</div>
+          <p style="font-size: 12px; color: var(--text-muted); line-height: 1.45;">Pemanfaatan kapabilitas native browser standar W3C.</p>
         </div>
 
-        <div class="metrics-row">
-          <div class="metric-box">
-            <div class="metric-val">LCS</div>
-            <div class="metric-lbl">Diff Algorithm</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">Split/Inline</div>
-            <div class="metric-lbl">View Modes</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">Realtime</div>
-            <div class="metric-lbl">Token Compare</div>
-          </div>
+        <div class="workbench-card">
+          <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">STYLING</div>
+          <div style="font-size: 18px; font-weight: 700; color: var(--accent-amber); margin-top: 4px; margin-bottom: 4px;">Dark Charcoal</div>
+          <p style="font-size: 12px; color: var(--text-muted); line-height: 1.45;">Tema kerja SnapFolio dengan kontras tinggi ramah mata.</p>
+        </div>
+
+        <div class="workbench-card">
+          <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">KEANDALAN</div>
+          <div style="font-size: 18px; font-weight: 700; color: #10B981; margin-top: 4px; margin-bottom: 4px;">100% Offline</div>
+          <p style="font-size: 12px; color: var(--text-muted); line-height: 1.45;">Operasional penuh tanpa server maupun koneksi internet.</p>
         </div>
       </div>
 
-      <div class="visual-stage">
-        <img src="${images.textDiffDesktop}" class="screenshot-desktop" alt="Text Diff Desktop">
-        <img src="${images.textDiffMobile}" class="screenshot-mobile" alt="Text Diff Mobile">
+      <div class="visual-stage" style="min-height: 160px; max-height: 180px; margin-top: 15px;">
+        <img src="${images.passwordDesktop}" alt="Password Generator Tool Desktop">
       </div>
     </div>
 
     <div class="slide-footer">
-      <span class="footer-tech">Engine: Diff Match Patch / LCS Parser</span>
-      <span class="footer-url">widifirmaan.web.id/javascript-aio-tools</span>
+      <div>JAVASCRIPT AIO TOOLS &bull; KESIMPULAN REKAYASA</div>
+      <div>WIDI FIRMANSYAH &bull; LEAD ENGINEER</div>
+      <div>10 / 10</div>
     </div>
-  </section>
-
-  <!-- SLIDE 9: REGEX VISUALIZER -->
-  <section class="slide">
-    <div class="slide-header">
-      <div class="brand-cluster">
-        <span class="brand-badge">REGEX TOOL</span>
-        <span class="slide-section-title">Pengujian Pola Regex & Ekstraksi Grup</span>
-      </div>
-      <div class="slide-number">09 / 10</div>
-    </div>
-
-    <div class="slide-body">
-      <div class="slide-info">
-        <div class="headline-group">
-          <h2 class="slide-title">Penguji Regular Expression & Grup</h2>
-          <p class="slide-desc">Lingkungan pengujian pola regex interaktif dengan penyorotan kecocokan teks, validasi ekspresi salah, dan ekstraksi capturing group.</p>
-        </div>
-
-        <div class="feature-list">
-          <div class="feature-card">
-            <div class="feature-card-title">Penyorotan Pencocokan Instan</div>
-            <div class="feature-card-text">Teks uji langsung disorot dengan highlight warna saat pola regex yang dimasukkan menemukan kecocokan.</div>
-          </div>
-          <div class="feature-card cyan">
-            <div class="feature-card-title">Pemeriksaan Flag Interaktif</div>
-            <div class="feature-card-text">Tombol toggle untuk mengaktifkan flag umum seperti global (g), case-insensitive (i), dan multiline (m).</div>
-          </div>
-          <div class="feature-card emerald">
-            <div class="feature-card-title">Pendeteksian Error Pola</div>
-            <div class="feature-card-text">Penanganan pengecualian RegExp secara rapi dengan indikator peringatan visual saat pola sintaks belum valid.</div>
-          </div>
-        </div>
-
-        <div class="metrics-row">
-          <div class="metric-box">
-            <div class="metric-val">Realtime</div>
-            <div class="metric-lbl">Pattern Match</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">Flags</div>
-            <div class="metric-lbl">g, i, m, s, u</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">Safe Catch</div>
-            <div class="metric-lbl">Syntax Guard</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="visual-stage">
-        <img src="${images.regexDesktop}" class="screenshot-desktop" alt="Regex Visualizer Desktop">
-        <img src="${images.regexMobile}" class="screenshot-mobile" alt="Regex Visualizer Mobile">
-      </div>
-    </div>
-
-    <div class="slide-footer">
-      <span class="footer-tech">Engine: JavaScript RegExp Native Engine</span>
-      <span class="footer-url">widifirmaan.web.id/javascript-aio-tools</span>
-    </div>
-  </section>
-
-  <!-- SLIDE 10: SPESIFIKASI PRODUKSI -->
-  <section class="slide">
-    <div class="slide-header">
-      <div class="brand-cluster">
-        <span class="brand-badge">SPECIFICATION</span>
-        <span class="slide-section-title">Ringkasan Spesifikasi & Kesiapan Produksi</span>
-      </div>
-      <div class="slide-number">10 / 10</div>
-    </div>
-
-    <div class="headline-group" style="margin-bottom: 12px;">
-      <h2 class="slide-title">Spesifikasi Teknis & Kesiapan Distribusi</h2>
-      <p class="slide-desc">Ringkasan performa web, kesiapan deployment statis, dan kepatuhan standar keamanan data untuk penggunaan harian para insinyur perangkat lunak.</p>
-    </div>
-
-    <div class="arch-grid">
-      <div class="arch-card">
-        <div class="arch-title" style="color: var(--accent-amber);">Performa & Efisiensi Runtime</div>
-        <div class="arch-item"><strong>Lighthouse Score:</strong> 99 pada indikator Performance, Accessibility, dan Best Practices.</div>
-        <div class="arch-item"><strong>Zero Dependency Bloat:</strong> Mengutamakan API bawaan browser modern untuk ukuran unduhan halaman minimal.</div>
-        <div class="arch-item"><strong>Manajemen Memori Bersih:</strong> Objek URL Blob langsung dibersihkan dengan revokeObjectURL setelah unduhan selesai.</div>
-      </div>
-
-      <div class="arch-card">
-        <div class="arch-title" style="color: var(--accent-cyan);">Keamanan & Jaminan Privasi</div>
-        <div class="arch-item"><strong>Keamanan Sisi Klien:</strong> Kebijakan Content Security Policy (CSP) ketat tanpa injeksi skrip pihak ketiga.</div>
-        <div class="arch-item"><strong>Nol Penyimpanan Server:</strong> Seluruh berkas yang diunggah diproses di memori RAM perangkat pengguna.</div>
-        <div class="arch-item"><strong>Offline PWA Ready:</strong> Dapat disimpan sebagai bookmark aplikasi web mandiri yang dapat dibuka tanpa internet.</div>
-      </div>
-
-      <div class="arch-card">
-        <div class="arch-title" style="color: var(--accent-emerald);">Kesiapan Distribusi Hosting</div>
-        <div class="arch-item"><strong>Pure Static HTML/JS:</strong> Siap disajikan langsung melalui GitHub Pages, Cloudflare Pages, atau AWS S3.</div>
-        <div class="arch-item"><strong>Nol Biaya Operasional:</strong> Arsitektur tanpa server (serverless) yang tidak memerlukan biaya pemeliharaan komputasi backend.</div>
-        <div class="arch-item"><strong>Skalabilitas Tak Terbatas:</strong> Mampu melayani jutaan pengguna secara simultan karena beban komputasi berada di perangkat klien.</div>
-      </div>
-    </div>
-
-    <div class="slide-footer">
-      <span class="footer-tech">JavaScript AIO Tools Production Specification</span>
-      <span class="footer-url">widifirmaan.web.id/javascript-aio-tools</span>
-    </div>
-  </section>
+  </div>
 
 </body>
 </html>
@@ -983,9 +871,9 @@ const htmlFilePath = path.join(projectRoot, 'presentation.html');
 fs.writeFileSync(htmlFilePath, htmlContent, 'utf-8');
 console.log(`HTML presentasi disimpan di: ${htmlFilePath}`);
 
+console.log('Menjalankan Playwright Chromium untuk render PDF JavaScript AIO Tools Dark Charcoal Workbench...');
+
 async function renderPDF() {
-  console.log('Menjalankan Playwright Chromium untuk render PDF JavaScript AIO Tools...');
-  
   const playwrightPath = '/home/widifirmaan/Projects/qa-toolkit/node_modules/playwright/index.mjs';
   const { chromium } = await import(playwrightPath);
 
@@ -996,19 +884,22 @@ async function renderPDF() {
 
   const page = await browser.newPage();
   await page.goto(`file://${htmlFilePath}`, { waitUntil: 'networkidle' });
-  await page.evaluateHandle('document.fonts.ready');
+  await page.evaluate(() => document.fonts.ready);
 
   const slidePdfPath = path.join(downloadsDir, 'AioTools.pdf');
+  const continuousPdfPath = path.join(downloadsDir, 'AioTools-Continuous.pdf');
+
+  // 1. Multi-Page Deck Mode (10 Slides A4 Landscape)
   console.log('Rendering Multi-Page A4 Landscape (Slide Mode)...');
   await page.pdf({
     path: slidePdfPath,
-    width: '297mm',
-    height: '210mm',
+    format: 'A4',
+    landscape: true,
     printBackground: true,
-    margin: { top: 0, right: 0, bottom: 0, left: 0 },
     preferCSSPageSize: true,
   });
 
+  // 2. Continuous Poster Mode (Single tall scroll)
   console.log('Rendering Continuous Single-Scroll Showcase (Poster Mode)...');
   await page.addStyleTag({
     content: `
@@ -1017,7 +908,7 @@ async function renderPDF() {
         margin: 0;
       }
       body {
-        background-color: #0B0F19 !important;
+        background: #1F1F1F !important;
       }
       .slide {
         page-break-after: unset !important;
@@ -1031,26 +922,25 @@ async function renderPDF() {
   await page.waitForTimeout(500);
 
   const scrollHeight = await page.evaluate(() => document.documentElement.scrollHeight);
-  const contPdfPath = path.join(downloadsDir, 'AioTools-Continuous.pdf');
   await page.pdf({
-    path: contPdfPath,
+    path: continuousPdfPath,
     width: '1428px',
     height: `${scrollHeight}px`,
     printBackground: true,
-    margin: { top: 0, right: 0, bottom: 0, left: 0 },
+    pageRanges: '1',
   });
 
   await browser.close();
 
   const slideStat = fs.statSync(slidePdfPath);
-  const contStat = fs.statSync(contPdfPath);
+  const contStat = fs.statSync(continuousPdfPath);
 
-  console.log('\nPDF JavaScript AIO Tools berhasil dibuat:');
+  console.log('\nPDF JavaScript AIO Tools Dark Charcoal Workbench berhasil dibuat:');
   console.log(`- Multi-Page Deck: ${(slideStat.size / 1024 / 1024).toFixed(2)} MB (${slidePdfPath})`);
-  console.log(`- Continuous Poster: ${(contStat.size / 1024 / 1024).toFixed(2)} MB (${contPdfPath})\n`);
+  console.log(`- Continuous Poster: ${(contStat.size / 1024 / 1024).toFixed(2)} MB (${continuousPdfPath})\n`);
 }
 
 renderPDF().catch((err) => {
-  console.error('Gagal membuat PDF:', err);
+  console.error('Error saat render PDF:', err);
   process.exit(1);
 });
