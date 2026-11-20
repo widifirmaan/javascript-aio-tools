@@ -11,14 +11,14 @@ const downloadsDir = '/home/widifirmaan/Downloads';
 function encodeImage(filename) {
   const filePath = path.join(screenshotsDir, filename);
   if (!fs.existsSync(filePath)) {
-    console.warn(`Peringatan: Screenshot tidak ditemukan: ${filePath}`);
+    console.warn(`Warning: Screenshot not found: ${filePath}`);
     return '';
   }
   const fileBuffer = fs.readFileSync(filePath);
   return `data:image/png;base64,${fileBuffer.toString('base64')}`;
 }
 
-console.log('Memproses screenshot JavaScript AIO Tools...');
+console.log('Encoding JavaScript AIO Tools screenshots...');
 
 const images = {
   dashboardDesktop: encodeImage('Dashboard Desktop.png'),
@@ -35,10 +35,10 @@ const images = {
   screenRecorderDesktop: encodeImage('Screen Recorder Desktop.png'),
 };
 
-console.log('Menyusun HTML presentasi dengan style murni AIO Tools Dark Charcoal Workbench...');
+console.log('Assembling English AIO Tools Dark Charcoal Workbench Presentation Deck HTML...');
 
 const htmlContent = `<!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>JavaScript AIO Tools - Web Engineering Presentation</title>
@@ -348,24 +348,24 @@ const htmlContent = `<!DOCTYPE html>
             <span class="tech-pill">Canvas Engine</span>
           </div>
           <h1 style="font-size: 38px; font-weight: 700; line-height: 1.12; margin-bottom: 16px;">
-            Arsitektur Workbench Utilitas Web Klien Murni
+            Client-Side Web Utilities &amp; Workbench Architecture
           </h1>
           <p style="font-size: 14.5px; color: var(--text-muted); line-height: 1.55; margin-bottom: 24px;">
-            Suite utilitas rekayasa perangkat lunak dan konversi berkas yang berjalan 100% di browser tanpa ketergantungan server backend, menjamin privasi data absolut dan kecepatan eksekusi instan.
+            A suite of software engineering utilities and file conversion tools running 100% inside the browser without backend server dependencies, ensuring absolute privacy, local cryptography, and instant processing speeds.
           </p>
           <div class="workbench-card" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding: 14px 18px;">
             <div>
-              <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">ARSITEKTUR</div>
+              <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">ARCHITECTURE</div>
               <div style="font-size: 19px; font-weight: 700; color: var(--accent-amber); margin-top: 2px;">Zero Server</div>
               <div style="font-size: 11px; color: var(--text-muted);">100% Browser Local</div>
             </div>
             <div>
-              <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">MODUL ALAT</div>
+              <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">TOOL SUITE</div>
               <div style="font-size: 19px; font-weight: 700; color: var(--text-white); margin-top: 2px;">20+ Tools</div>
-              <div style="font-size: 11px; color: var(--text-muted);">Crypto &amp; Media API</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Crypto &amp; Media APIs</div>
             </div>
             <div>
-              <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">PRIVASI DATA</div>
+              <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">DATA PRIVACY</div>
               <div style="font-size: 19px; font-weight: 700; color: var(--text-white); margin-top: 2px;">Zero Leak</div>
               <div style="font-size: 11px; color: var(--text-muted);">Memory Isolation</div>
             </div>
@@ -385,74 +385,74 @@ const htmlContent = `<!DOCTYPE html>
     </div>
   </div>
 
-  <!-- SLIDE 2: LATAR BELAKANG & PRINSIP REKAYASA -->
+  <!-- SLIDE 2: ARCHITECTURE & PRIVACY FOUNDATIONS -->
   <div class="slide">
     <div class="slide-header">
       <div class="brand-pill">
         <div class="brand-dot"></div>
-        <div class="brand-title">Fondasi Sistem</div>
-        <div class="brand-subtitle">Filosofi &amp; Prinsip Arsitektur</div>
+        <div class="brand-title">System Foundations</div>
+        <div class="brand-subtitle">Zero-Server Architecture Philosophy</div>
       </div>
       <div class="badge-pill">DECK-AIO-02 / 10</div>
     </div>
 
     <div class="slide-content">
       <div class="title-block">
-        <div class="slide-category">Filosofi Arsitektur Web</div>
-        <h2 class="slide-title">Kedaulatan Privasi Data Melalui Zero-Server Processing</h2>
-        <p class="slide-subtitle">Mengeliminasi transmisi berkas rahasia ke server luar dengan memindahkan beban komputasi langsung ke peramban pengguna.</p>
+        <div class="slide-category">Web Architecture Philosophy</div>
+        <h2 class="slide-title">Data Sovereignty Through Pure Client-Side Computation</h2>
+        <p class="slide-subtitle">Eliminating confidential document transmission to external servers by shifting all computational workloads directly into the client browser.</p>
       </div>
 
       <div class="layout-grid-3">
         <div class="workbench-card">
-          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">01 &bull; RISIKO PRIVASI SERVER</div>
-          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Kebocoran Data Sensitif</h3>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">01 &bull; PRIVACY RISK</div>
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Server Data Leakage</h3>
           <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.5;">
-            Konverter online konvensional mengunggah dokumen pengguna ke server pihak ketiga, menimbulkan kerentanan keamanan dan pelanggaran kepatuhan regulasi data.
+            Conventional online file converters upload user documents to third-party cloud servers, creating security vulnerabilities and regulatory compliance hazards.
           </p>
         </div>
 
         <div class="workbench-card">
-          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">02 &bull; PEMANFAATAN WEB API</div>
-          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Browser Native APIs</h3>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">02 &bull; NATIVE BROWSER APIS</div>
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Modern Web Capabilities</h3>
           <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.5;">
-            Memanfaatkan kapabilitas mutakhir HTML5 Canvas, Web Audio API, Web Cryptography API, dan MediaRecorder tanpa memerlukan library backend berat.
+            Harnessing cutting-edge HTML5 Canvas, Web Audio API, Web Cryptography API, and MediaRecorder without bloated backend infrastructure.
           </p>
         </div>
 
         <div class="workbench-card">
-          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">03 &bull; INDEPENDENSI JARINGAN</div>
-          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Kemampuan Operasi Offline</h3>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">03 &bull; NETWORK RESILIENCE</div>
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">100% Offline Autonomy</h3>
           <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.5;">
-            Aplikasi tetap dapat digunakan secara penuh bahkan ketika koneksi internet terputus berkat arsitektur aset statis yang terisolasi.
+            The workbench remains fully functional even in offline environments or air-gapped corporate intranets thanks to isolated static bundles.
           </p>
         </div>
       </div>
     </div>
 
     <div class="slide-footer">
-      <div>JAVASCRIPT AIO TOOLS &bull; PRINSIP REKAYASA</div>
-      <div>STANDARISASI CLIENT-SIDE WEB</div>
+      <div>JAVASCRIPT AIO TOOLS &bull; ENGINEERING PRINCIPLES</div>
+      <div>CLIENT-SIDE WEB STANDARDS</div>
       <div>02 / 10</div>
     </div>
   </div>
 
-  <!-- SLIDE 3: DASHBOARD & NAVIGASI MODULAR -->
+  <!-- SLIDE 3: DASHBOARD & MODULAR NAVIGATION -->
   <div class="slide">
     <div class="slide-header">
       <div class="brand-pill">
         <div class="brand-dot"></div>
-        <div class="brand-title">Hub Antarmuka</div>
-        <div class="brand-subtitle">Dashboard &amp; Dynamic Category Navigation</div>
+        <div class="brand-title">Interface Hub</div>
+        <div class="brand-subtitle">Dashboard &amp; Category Navigation</div>
       </div>
       <div class="badge-pill">DECK-AIO-03 / 10</div>
     </div>
 
     <div class="slide-content">
       <div class="title-block">
-        <div class="slide-category">Pengorganisasian Fitur</div>
-        <h2 class="slide-title">Struktur Dashboard Modular &amp; Penelusuran Alat Cepat</h2>
-        <p class="slide-subtitle">Sistem katalog alat terklasifikasi berdasarkan domain (Media, Developer, Keamanan, Dokumen) dengan filter pencarian instan.</p>
+        <div class="slide-category">Feature Organization</div>
+        <h2 class="slide-title">Modular Dashboard Grid &amp; Rapid Tool Discovery</h2>
+        <p class="slide-subtitle">Categorized utility catalog grouped across Media, Developer, Security, and Document domains with instant client-side filtering.</p>
       </div>
 
       <div class="layout-split">
@@ -462,21 +462,21 @@ const htmlContent = `<!DOCTYPE html>
 
         <div class="feature-list">
           <div class="feature-item">
-            <div class="feature-item-title">Katalog Alat Berbasis Grid Kategori</div>
+            <div class="feature-item-title">Categorized Grid Layout</div>
             <div class="feature-item-desc">
-              Pengelompokan alat bantu ke dalam kartu-kartu berlatar #232323 dengan ikon teknis spesifik dan deskripsi ringkas yang mudah dipindai mata.
+              Organizes tools into clean #232323 surface cards featuring technical vector icons and concise function descriptions.
             </div>
           </div>
           <div class="feature-item">
-            <div class="feature-item-title">Pencarian Real-Time Sisi Klien</div>
+            <div class="feature-item-title">Real-Time Client-Side Search</div>
             <div class="feature-item-desc">
-              Penyaringan kartu perkakas secara instan menggunakan pencocokan substring nama dan tag kata kunci tanpa interupsi reload halaman.
+              Instant tool filtering matches keywords and tags in memory without page refreshes or external API latency.
             </div>
           </div>
           <div class="feature-item">
-            <div class="feature-item-title">Navigasi Samping Responsif</div>
+            <div class="feature-item-title">Off-Canvas Mobile Navigation</div>
             <div class="feature-item-desc">
-              Menu navigasi off-canvas terintegrasi yang memungkinkan perpindahan cepat antar kategori peralatan pada perangkat gawai seluler.
+              Integrated drawer menu enables rapid switching between media, security, and developer utilities on compact screens.
             </div>
           </div>
         </div>
@@ -495,7 +495,7 @@ const htmlContent = `<!DOCTYPE html>
     <div class="slide-header">
       <div class="brand-pill">
         <div class="brand-dot"></div>
-        <div class="brand-title">Alat Pengembang</div>
+        <div class="brand-title">Developer Suite</div>
         <div class="brand-subtitle">Developer Code Suite &amp; Syntax Utilities</div>
       </div>
       <div class="badge-pill">DECK-AIO-04 / 10</div>
@@ -503,29 +503,29 @@ const htmlContent = `<!DOCTYPE html>
 
     <div class="slide-content">
       <div class="title-block">
-        <div class="slide-category">Utilitas Rekayasa Perangkat Lunak</div>
-        <h2 class="slide-title">Suite Manipulasi Kode &amp; Format Data Pengembang</h2>
-        <p class="slide-subtitle">Peralatan harian untuk pemformatan JSON, enkripsi URL/Base64, inspeksi header JWT, dan perbandingan teks berbasis token.</p>
+        <div class="slide-category">Software Engineering Utilities</div>
+        <h2 class="slide-title">Developer Code Manipulation &amp; Data Format Suite</h2>
+        <p class="slide-subtitle">Essential day-to-day tools for JSON beautification, Base64 encoding/decoding, JWT inspection, and Myers diffing.</p>
       </div>
 
       <div class="layout-split-reversed">
         <div class="feature-list">
           <div class="feature-item">
-            <div class="feature-item-title">Text Diff Checker Berbasis Algoritma Myers</div>
+            <div class="feature-item-title">Text Diff Checker (Myers Algorithm)</div>
             <div class="feature-item-desc">
-              Komparasi teks berdampingan (side-by-side) dengan penandaan visual baris yang ditambahkan, dihapus, atau dimodifikasi secara akurat.
+              Side-by-side text comparison displaying line additions, deletions, and character-level modifications with precision visual highlights.
             </div>
           </div>
           <div class="feature-item">
             <div class="feature-item-title">JSON Formatter &amp; Tree Inspector</div>
             <div class="feature-item-desc">
-              Validasi sintaks JSON secara langsung dengan opsi indentasi kustom dan pendeteksi kesalahan parsing pada baris spesifik.
+              Instant JSON syntax validation with customizable indentation, node collapsing, and exact error line coordinates.
             </div>
           </div>
           <div class="feature-item">
             <div class="feature-item-title">Universal Hash Generator</div>
             <div class="feature-item-desc">
-              Penghitungan digest kriptografi MD5, SHA-1, SHA-256, dan SHA-512 menggunakan Web Cryptography API berkecepatan native.
+              Calculates MD5, SHA-1, SHA-256, and SHA-512 cryptographic digests using the high-velocity native Web Crypto API.
             </div>
           </div>
         </div>
@@ -548,7 +548,7 @@ const htmlContent = `<!DOCTYPE html>
     <div class="slide-header">
       <div class="brand-pill">
         <div class="brand-dot"></div>
-        <div class="brand-title">Pemrosesan Grafis</div>
+        <div class="brand-title">Graphic Pipeline</div>
         <div class="brand-subtitle">Canvas Image Compression &amp; Format Converter</div>
       </div>
       <div class="badge-pill">DECK-AIO-05 / 10</div>
@@ -556,9 +556,9 @@ const htmlContent = `<!DOCTYPE html>
 
     <div class="slide-content">
       <div class="title-block">
-        <div class="slide-category">Mesin Kompresi Gambar</div>
-        <h2 class="slide-title">Reduksi Ukuran Citra dengan Algoritma Canvas Sisi Klien</h2>
-        <p class="slide-subtitle">Kompresi berkas JPEG, PNG, dan WebP secara langsung di memori browser dengan rasio penghematan hingga 80%.</p>
+        <div class="slide-category">Graphic Compression Engine</div>
+        <h2 class="slide-title">Client-Side Image Compression with Canvas Offscreen</h2>
+        <p class="slide-subtitle">Compressing JPEG, PNG, and WebP images directly in local browser memory with savings ratios reaching up to 80%.</p>
       </div>
 
       <div class="layout-split">
@@ -568,21 +568,21 @@ const htmlContent = `<!DOCTYPE html>
 
         <div class="feature-list">
           <div class="feature-item">
-            <div class="feature-item-title">Pipeline FileReader &amp; OffscreenCanvas</div>
+            <div class="feature-item-title">FileReader &amp; OffscreenCanvas Pipeline</div>
             <div class="feature-item-desc">
-              Pemuatan file lokal via FileReader API langsung ke buffer canvas 2D tanpa mengirim satu byte data pun ke jaringan eksternal.
+              Loads local images via FileReader directly into 2D canvas buffers without transmitting a single byte over the network.
             </div>
           </div>
           <div class="feature-item">
-            <div class="feature-item-title">Slider Kontrol Kualitas Interaktif</div>
+            <div class="feature-item-title">Interactive Quality Compression Slider</div>
             <div class="feature-item-desc">
-              Penyesuaian parameter kualitas kompresi secara visual dengan pratinjau instan perbandingan ukuran file sebelum dan sesudah optimasi.
+              Fine-tunes quality parameters with instant side-by-side previews comparing file size reduction and visual fidelity.
             </div>
           </div>
           <div class="feature-item">
-            <div class="feature-item-title">Konversi Format Otomatis ke WebP</div>
+            <div class="feature-item-title">Automated Modern WebP Conversion</div>
             <div class="feature-item-desc">
-              Transformasi berkas grafis warisan ke format modern WebP guna menghemat pemakaian bandwidth saat dipublikasikan ke web.
+              Transcodes legacy image formats into lightweight WebP binaries to optimize web delivery bandwidth.
             </div>
           </div>
         </div>
@@ -601,7 +601,7 @@ const htmlContent = `<!DOCTYPE html>
     <div class="slide-header">
       <div class="brand-pill">
         <div class="brand-dot"></div>
-        <div class="brand-title">Inspeksi Sintaks</div>
+        <div class="brand-title">Syntax Inspection</div>
         <div class="brand-subtitle">Regular Expression Visualizer &amp; Matcher</div>
       </div>
       <div class="badge-pill">DECK-AIO-06 / 10</div>
@@ -609,29 +609,29 @@ const htmlContent = `<!DOCTYPE html>
 
     <div class="slide-content">
       <div class="title-block">
-        <div class="slide-category">Evaluasi Pola Karakter</div>
-        <h2 class="slide-title">Visualisasi Pola Regex Real-Time &amp; Pengelompokan Grup</h2>
-        <p class="slide-subtitle">Pemeriksaan ekspresi reguler dengan penyorotan kecocokan karakter dan umpan balik kesalahan sintaks seketika.</p>
+        <div class="slide-category">Pattern Evaluation</div>
+        <h2 class="slide-title">Real-Time Regex Pattern Visualizer &amp; Capturing Groups</h2>
+        <p class="slide-subtitle">Testing regular expressions with real-time match highlighting, syntax validation, and instant error feedback.</p>
       </div>
 
       <div class="layout-split-reversed">
         <div class="feature-list">
           <div class="feature-item">
-            <div class="feature-item-title">Evaluasi Pola Tanpa Jeda Waktu</div>
+            <div class="feature-item-title">Instant Pattern Compilation</div>
             <div class="feature-item-desc">
-              Kompilasi objek RegExp native dengan penangkapan exception terstruktur untuk mencegah browser hang saat pola salah diketikkan.
+              Native RegExp compilation with structured exception handling prevents browser freezing when malformed patterns are typed.
             </div>
           </div>
           <div class="feature-item">
-            <div class="feature-item-title">Penyorotan Kode Warna Multi-Grup</div>
+            <div class="feature-item-title">Color-Coded Multi-Group Highlighting</div>
             <div class="feature-item-desc">
-              Pewarnaan latar belakang yang berbeda untuk tiap capturing group guna mempermudah identifikasi sub-pola dalam teks pengujian.
+              Distinct background colors identify individual capturing groups to simplify debugging complex nested sub-patterns.
             </div>
           </div>
           <div class="feature-item">
-            <div class="feature-item-title">Pustaka Pola Siap Pakai (Cheat Sheet)</div>
+            <div class="feature-item-title">Common Pattern Cheat Sheet Library</div>
             <div class="feature-item-desc">
-              Daftar templat pola reguler populer (email, URL, IPv4, tanggal, alphanumeric) yang dapat langsung dimasukkan dengan satu klik.
+              Curated library of standard patterns (Email, URL, IPv4, Date, Alphanumeric) insertable with a single click.
             </div>
           </div>
         </div>
@@ -649,12 +649,12 @@ const htmlContent = `<!DOCTYPE html>
     </div>
   </div>
 
-  <!-- SLIDE 7: KRIPTOGRAFI & KEAMANAN LOKAL -->
+  <!-- SLIDE 7: CLIENT CRYPTOGRAPHY & SECURITY -->
   <div class="slide">
     <div class="slide-header">
       <div class="brand-pill">
         <div class="brand-dot"></div>
-        <div class="brand-title">Keamanan Klien</div>
+        <div class="brand-title">Client Security</div>
         <div class="brand-subtitle">AES-GCM Encryption &amp; Cryptographic Generators</div>
       </div>
       <div class="badge-pill">DECK-AIO-07 / 10</div>
@@ -662,9 +662,9 @@ const htmlContent = `<!DOCTYPE html>
 
     <div class="slide-content">
       <div class="title-block">
-        <div class="slide-category">Kriptografi Peramban</div>
-        <h2 class="slide-title">Enkripsi Berkas AES-GCM 256-Bit &amp; Generator Kunci Aman</h2>
-        <p class="slide-subtitle">Perlindungan privasi dokumen menggunakan standar enkripsi militer yang diproses murni melalui Web Crypto Subtle API.</p>
+        <div class="slide-category">Browser Cryptography</div>
+        <h2 class="slide-title">AES-GCM 256-Bit File Encryption &amp; Secure Key Vault</h2>
+        <p class="slide-subtitle">Protecting document confidentiality with military-grade encryption executed natively via the Web Crypto Subtle API.</p>
       </div>
 
       <div class="layout-split">
@@ -674,21 +674,21 @@ const htmlContent = `<!DOCTYPE html>
 
         <div class="feature-list">
           <div class="feature-item">
-            <div class="feature-item-title">Enkripsi Berkas AES-GCM 256-bit Sisi Klien</div>
+            <div class="feature-item-title">Client-Side AES-GCM 256-Bit Encryption</div>
             <div class="feature-item-desc">
-              Derivasi kunci PBKDF2 dengan salt acak dan vektor inisialisasi (IV) unik yang melindungi isi dokumen dari ancaman penyadapan.
+              PBKDF2 key derivation with random salt and unique initialization vectors (IV) protects files from unauthorized interception.
             </div>
           </div>
           <div class="feature-item">
-            <div class="feature-item-title">Generator Kata Sandi Entropi Tinggi</div>
+            <div class="feature-item-title">High-Entropy Password Generator</div>
             <div class="feature-item-desc">
-              Pembuatan kombinasi karakter acak kriptografis via crypto.getRandomValues() dengan kalkulasi tingkat kekuatan entropi bit.
+              Generates cryptographically random character sequences via crypto.getRandomValues() with real-time bit entropy scores.
             </div>
           </div>
           <div class="feature-item">
-            <div class="feature-item-title">Generator Kode QR &amp; Barcode Lokal</div>
+            <div class="feature-item-title">Local QR &amp; Barcode Matrix Generator</div>
             <div class="feature-item-desc">
-              Pembuatan matriks QR dan barcode SVG/Canvas secara lokal tanpa memanggil API pihak ketiga yang berpotensi melacak tautan.
+              Renders QR and barcode matrices directly to SVG/Canvas without calling third-party tracking APIs.
             </div>
           </div>
         </div>
@@ -707,7 +707,7 @@ const htmlContent = `<!DOCTYPE html>
     <div class="slide-header">
       <div class="brand-pill">
         <div class="brand-dot"></div>
-        <div class="brand-title">Perekam &amp; Audio</div>
+        <div class="brand-title">Recording &amp; Audio</div>
         <div class="brand-subtitle">Web Audio API &amp; Screen Recorder Engine</div>
       </div>
       <div class="badge-pill">DECK-AIO-08 / 10</div>
@@ -715,29 +715,29 @@ const htmlContent = `<!DOCTYPE html>
 
     <div class="slide-content">
       <div class="title-block">
-        <div class="slide-category">Manipulasi Aliran Media</div>
-        <h2 class="slide-title">Pemotong Audio Web &amp; Perekam Layar Browser Terpadu</h2>
-        <p class="slide-subtitle">Pemanfaatan antarmuka media modern untuk memotong trek suara dan merekam video layar tanpa instalasi software tambahan.</p>
+        <div class="slide-category">Media Stream Manipulation</div>
+        <h2 class="slide-title">In-Browser Audio Trimmer &amp; Screen Recording Studio</h2>
+        <p class="slide-subtitle">Leveraging modern browser media streams to trim audio tracks and record desktop video without software installations.</p>
       </div>
 
       <div class="layout-split-reversed">
         <div class="feature-list">
-          <div class="feature-item">
-            <div class="feature-item-title">Visualisasi Gelombang Suara AudioContext</div>
-            <div class="feature-item-desc">
-              Penguraian byte PCM audio untuk menampilkan bentuk gelombang dan pemangkasan rentang waktu dengan presisi milidetik.
+          <div class="feature-box">
+            <div class="feature-box-title">AudioContext Waveform Visualization</div>
+            <div class="feature-box-desc">
+              Decodes audio PCM bytes to render visual waveforms with millisecond-precise time range trimming.
             </div>
           </div>
-          <div class="feature-item">
-            <div class="feature-item-title">Perekam Layar via MediaRecorder API</div>
-            <div class="feature-item-desc">
-              Penangkapan stream layar desktop via getDisplayMedia() dengan encoding WebM instan dan opsi unduhan langsung ke komputer.
+          <div class="feature-box">
+            <div class="feature-box-title">MediaRecorder Screen Video Capture</div>
+            <div class="feature-box-desc">
+              Captures display streams via getDisplayMedia() with instant WebM encoding and direct local download prompts.
             </div>
           </div>
-          <div class="feature-item">
-            <div class="feature-item-title">Penala Nada Instrumen (Instrument Tuner)</div>
-            <div class="feature-item-desc">
-              Analisis frekuensi mikrofon real-time menggunakan Fast Fourier Transform (FFT) untuk mendeteksi nada instrumen musik secara akurat.
+          <div class="feature-box">
+            <div class="feature-box-title">Real-Time Instrument Tuner (FFT Analysis)</div>
+            <div class="feature-box-desc">
+              Fast Fourier Transform (FFT) pitch detection analyzes microphone input to display accurate musical frequencies.
             </div>
           </div>
         </div>
@@ -755,12 +755,12 @@ const htmlContent = `<!DOCTYPE html>
     </div>
   </div>
 
-  <!-- SLIDE 9: REKAYASA KINERJA & MANAJEMEN MEMORI -->
+  <!-- SLIDE 9: RUNTIME PERFORMANCE & MEMORY SAFETY -->
   <div class="slide">
     <div class="slide-header">
       <div class="brand-pill">
         <div class="brand-dot"></div>
-        <div class="brand-title">Rekayasa Kinerja</div>
+        <div class="brand-title">Performance Engineering</div>
         <div class="brand-subtitle">Memory Management &amp; Sandbox Safety</div>
       </div>
       <div class="badge-pill">DECK-AIO-09 / 10</div>
@@ -768,33 +768,33 @@ const htmlContent = `<!DOCTYPE html>
 
     <div class="slide-content">
       <div class="title-block">
-        <div class="slide-category">Efisiensi &amp; Keamanan Memori</div>
-        <h2 class="slide-title">Manajemen Siklus Hidup Objek &amp; Isolasi Sandbox</h2>
-        <p class="slide-subtitle">Praktik pembersihan alokasi memori biner dan penanganan error terisolasi demi stabilitas peramban pengguna.</p>
+        <div class="slide-category">Memory Efficiency &amp; Safety</div>
+        <h2 class="slide-title">Binary Lifecycle Management &amp; Sandbox Hygiene</h2>
+        <p class="slide-subtitle">Strict memory deallocation discipline and isolated error boundaries ensuring complete browser stability.</p>
       </div>
 
       <div class="layout-grid-3">
         <div class="workbench-card">
-          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">MANAJEMEN MEMORI</div>
-          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">URL.revokeObjectURL Cleanup</h3>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">MEMORY DISCIPLINE</div>
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">URL.revokeObjectURL</h3>
           <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.5;">
-            Pelepasan referensi Blob URL segera setelah unduhan selesai untuk membebaskan ruang memori RAM browser dan mencegah kebocoran memori jangka panjang.
+            Blob URL references are revoked immediately after file export, releasing browser RAM and preventing long-term memory accumulation.
           </p>
         </div>
 
         <div class="workbench-card">
-          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">THROTTLING &amp; WORKERS</div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">THREAD ISOLATION</div>
           <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Non-Blocking Operations</h3>
           <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.5;">
-            Operasi komputasi intensif didelegasikan secara asynchronous atau di-chunking untuk memastikan main thread tetap responsif dan UI tidak membeku.
+            Heavy cryptographic iterations and media processing are chunked asynchronously to maintain UI responsiveness and prevent freezes.
           </p>
         </div>
 
         <div class="workbench-card">
-          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">ZERO THIRD-PARTY LEAK</div>
-          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Pemberdayaan Offline PWA</h3>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-amber); margin-bottom: 8px;">ZERO CDN RELIANCE</div>
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Offline PWA Architecture</h3>
           <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.5;">
-            Seluruh pustaka pendukung (jsQR, crypto) dibundel secara lokal tanpa pemanggilan CDN dinamis di runtime yang rawan pemblokiran jaringan.
+            All parsing and cryptographic libraries are bundled locally, eliminating external network dependencies that could fail offline.
           </p>
         </div>
       </div>
@@ -807,47 +807,47 @@ const htmlContent = `<!DOCTYPE html>
     </div>
   </div>
 
-  <!-- SLIDE 10: RANGKUMAN ARSITEKTUR & PRODUKSI -->
+  <!-- SLIDE 10: ARCHITECTURAL SUMMARY & DEPLOYMENT -->
   <div class="slide">
     <div class="slide-header">
       <div class="brand-pill">
         <div class="brand-dot"></div>
-        <div class="brand-title">Ringkasan Proyek</div>
-        <div class="brand-subtitle">Spesifikasi Akhir &amp; Kesiapan Rilis</div>
+        <div class="brand-title">Milestone Summary</div>
+        <div class="brand-subtitle">Production Specifications &amp; Quality Audit</div>
       </div>
       <div class="badge-pill">DECK-AIO-10 / 10</div>
     </div>
 
     <div class="slide-content">
       <div class="title-block">
-        <div class="slide-category">Rangkuman Akhir Rekayasa</div>
-        <h2 class="slide-title">Kesimpulan Implementasi JavaScript AIO Tools</h2>
-        <p class="slide-subtitle">Suite perkakas utilitas komprehensif yang membuktikan keandalan penuh komputasi peramban web modern tanpa server backend.</p>
+        <div class="slide-category">Production Readiness</div>
+        <h2 class="slide-title">Comprehensive Project Implementation Summary</h2>
+        <p class="slide-subtitle">A comprehensive utility workbench proving the full power of modern client-side browser computing without servers.</p>
       </div>
 
       <div class="layout-grid-4">
         <div class="workbench-card">
-          <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">BAHASA INTI</div>
+          <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">CORE ENGINE</div>
           <div style="font-size: 18px; font-weight: 700; color: var(--accent-amber); margin-top: 4px; margin-bottom: 4px;">Vanilla JS</div>
-          <p style="font-size: 12px; color: var(--text-muted); line-height: 1.45;">Eksekusi ES6+ murni tanpa overhead framework kompilasi.</p>
+          <p style="font-size: 12px; color: var(--text-muted); line-height: 1.45;">Pure ES6+ execution with zero framework compilation overhead.</p>
         </div>
 
         <div class="workbench-card">
           <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">WEB APIS</div>
           <div style="font-size: 18px; font-weight: 700; color: var(--accent-amber); margin-top: 4px; margin-bottom: 4px;">Crypto &amp; Audio</div>
-          <p style="font-size: 12px; color: var(--text-muted); line-height: 1.45;">Pemanfaatan kapabilitas native browser standar W3C.</p>
+          <p style="font-size: 12px; color: var(--text-muted); line-height: 1.45;">Leveraging standardized W3C browser hardware interfaces.</p>
         </div>
 
         <div class="workbench-card">
           <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">STYLING</div>
           <div style="font-size: 18px; font-weight: 700; color: var(--accent-amber); margin-top: 4px; margin-bottom: 4px;">Dark Charcoal</div>
-          <p style="font-size: 12px; color: var(--text-muted); line-height: 1.45;">Tema kerja SnapFolio dengan kontras tinggi ramah mata.</p>
+          <p style="font-size: 12px; color: var(--text-muted); line-height: 1.45;">High-contrast SnapFolio workbench theme with amber accents.</p>
         </div>
 
         <div class="workbench-card">
-          <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">KEANDALAN</div>
+          <div style="font-size: 11px; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">RELIABILITY</div>
           <div style="font-size: 18px; font-weight: 700; color: #10B981; margin-top: 4px; margin-bottom: 4px;">100% Offline</div>
-          <p style="font-size: 12px; color: var(--text-muted); line-height: 1.45;">Operasional penuh tanpa server maupun koneksi internet.</p>
+          <p style="font-size: 12px; color: var(--text-muted); line-height: 1.45;">Fully operational without servers or an internet connection.</p>
         </div>
       </div>
 
@@ -857,7 +857,7 @@ const htmlContent = `<!DOCTYPE html>
     </div>
 
     <div class="slide-footer">
-      <div>JAVASCRIPT AIO TOOLS &bull; KESIMPULAN REKAYASA</div>
+      <div>JAVASCRIPT AIO TOOLS &bull; PROJECT COMPLETION</div>
       <div>WIDI FIRMANSYAH &bull; LEAD ENGINEER</div>
       <div>10 / 10</div>
     </div>
@@ -869,9 +869,9 @@ const htmlContent = `<!DOCTYPE html>
 
 const htmlFilePath = path.join(projectRoot, 'presentation.html');
 fs.writeFileSync(htmlFilePath, htmlContent, 'utf-8');
-console.log(`HTML presentasi disimpan di: ${htmlFilePath}`);
+console.log(`Presentation HTML written to: ${htmlFilePath}`);
 
-console.log('Menjalankan Playwright Chromium untuk render PDF JavaScript AIO Tools Dark Charcoal Workbench...');
+console.log('Launching Chromium with Playwright to render English AIO Tools Dark Charcoal Workbench PDFs...');
 
 async function renderPDF() {
   const playwrightPath = '/home/widifirmaan/Projects/qa-toolkit/node_modules/playwright/index.mjs';
@@ -935,12 +935,12 @@ async function renderPDF() {
   const slideStat = fs.statSync(slidePdfPath);
   const contStat = fs.statSync(continuousPdfPath);
 
-  console.log('\nPDF JavaScript AIO Tools Dark Charcoal Workbench berhasil dibuat:');
+  console.log('\nAIO Tools English PDFs successfully generated:');
   console.log(`- Multi-Page Deck: ${(slideStat.size / 1024 / 1024).toFixed(2)} MB (${slidePdfPath})`);
   console.log(`- Continuous Poster: ${(contStat.size / 1024 / 1024).toFixed(2)} MB (${continuousPdfPath})\n`);
 }
 
 renderPDF().catch((err) => {
-  console.error('Error saat render PDF:', err);
+  console.error('Error rendering PDF:', err);
   process.exit(1);
 });
