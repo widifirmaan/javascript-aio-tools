@@ -8,7 +8,7 @@
     "test": "node scripts/test-real-all-tools.mjs",
     "deploy": "npx serve . -p 3000",
     "screenshots:capture": "node scripts/capture.mjs",
-    "screenshots:mockup": "node /home/widifirmaan/Projects/readme-project/scripts/generate-mockups.mjs --input raw_screenshots --output screenshots",
+    "screenshots:mockup": "node /home/widifirmaan/Projects/tools/readme-tools/scripts/generate-mockups.mjs --input raw_screenshots --output screenshots",
     "screenshots:all": "npm run screenshots:capture && npm run screenshots:mockup"
   },
   "keywords": [

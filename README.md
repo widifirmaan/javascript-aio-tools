@@ -2,8 +2,8 @@
 
 > Collection of 23 fast, private in-browser utilities for document processing, media editing, cryptography, and developer productivity running 100% on the client side.
 
-[![Architecture](https://img.shields.io/badge/Architecture-100%25_Client--Side-8B5CF6?style=flat-square)](#features)
-[![Tools](https://img.shields.io/badge/Tools-23_Interactive_Apps-F59E0B?style=flat-square)](#features)
+[![Architecture](https://img.shields.io/badge/Architecture-100%25_Client--Side-8B5CF6?style=flat-square)](#fitur)
+[![Tools](https://img.shields.io/badge/Tools-23_Interactive_Apps-F59E0B?style=flat-square)](#fitur)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![HTML5 / CSS3](https://img.shields.io/badge/HTML5%20%2F%20CSS3-Modern_Web-E34F26?style=flat-square&logo=html5&logoColor=white)](https://developer.mozilla.org/)
 [![Bootstrap](https://img.shields.io/badge/UI-Bootstrap_5.3-7952B3?style=flat-square&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
@@ -114,14 +114,17 @@ git clone https://github.com/widifirmaan/javascript-aio-tools.git
 cd javascript-aio-tools
 
 # 2. Run local static web server
-# Option A: Using Python 3
-python3 -m http.server 8000
+# Option A: Using npm script
+npm run dev
 
-# Option B: Using npx serve (if Node.js is installed)
-npx serve .
+# Option B: Using Python 3
+python3 -m http.server 3000
+
+# Option C: Using npx serve (if Node.js is installed)
+npx serve . -p 3000
 ```
 
-Open [http://localhost:8000](http://localhost:8000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
