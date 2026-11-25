@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /test-assets/
+
+Sitemap: https://tools.widifirmaan.web.id/sitemap.xml

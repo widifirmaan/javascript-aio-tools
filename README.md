@@ -84,7 +84,7 @@ Collection of 23 client-side web utilities for document processing, media editin
 - **Node.js** (or **Python 3**) to serve the static files over HTTP
 - **No database or environment variables required**
 
-### Run Locally
+### Quick Start
 
 ```bash
 git clone https://github.com/widifirmaan/javascript-aio-tools.git
