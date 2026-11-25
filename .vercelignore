@@ -1,0 +1,9 @@
+.git
+.wrangler
+node_modules
+raw_screenshots
+screenshots
+scripts
+test-assets
+presentation.html
+*.log
